@@ -1,0 +1,43 @@
+#!/usr/bin/env cwl-runner
+
+# example
+# cwl-runner --outdir /mnt/SCRATCH/47b42e81-2500-4ebc-a0c2-acd3187cc2f0 picard_markduplicates.cwl.yaml --bam_path ~/SCRATCH/47b42e81-2500-4ebc-a0c2-acd3187cc2f0/C440.TCGA-IN-8462-01A-11D-2340-08.1.bam --uuid test
+
+description: |
+  Usage:  cwl-runner --outdir <out-dir> <this-file-path> --bam_path <bam-path> --uuid <uuid-string>
+  Options:
+    --bam_path       BAM of which to mark duplicate reads
+    --uuid           UUID for log file and sqlite db file
+
+requirements:
+  - import: node-engine.cwl
+  - import: envvar-global.cwl
+  - class: DockerRequirement
+    dockerPull: quay.io/jeremiahsavage/picard_markduplicates
+
+class: CommandLineTool
+
+inputs:
+  - id: "#bam_path"
+    type: File
+    inputBinding:
+      prefix: --bam_path
+
+  - id: "#uuid"
+    type: string
+    inputBinding:
+      prefix: --uuid
+
+outputs:
+  - id: "#markduplicate_bam_path"
+    type: File
+    description: "The bam with marked duplicates"
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+            return "md/" + $job['bam_path'].path.split('/').slice(-1)[0];
+          }
+
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/picard_markduplicates_docker/main.py"]
