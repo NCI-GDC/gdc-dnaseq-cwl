@@ -23,6 +23,11 @@ inputs:
     inputBinding:
       prefix: --bam_path
 
+  - id: "reference"
+    type: File
+    inputBinding:
+      prefix: --reference_fasta_path
+
   - id: "#uuid"
     type: string
     inputBinding:
