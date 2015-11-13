@@ -13,7 +13,7 @@ requirements:
   - import: node-engine.cwl
   - import: envvar-global.cwl
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/picard_buildbamindex
+    dockerPull: quay.io/jeremiahsavage/picard_collectmultiplemetrics
 
 class: CommandLineTool
 
