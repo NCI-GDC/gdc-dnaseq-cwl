@@ -65,6 +65,13 @@ inputs:
     type: File
     inputBinding:
       position: 2
+      secondaryFiles:
+        - ".amb"
+        - ".ann"
+        - ".bwt"
+        - ".fai"
+        - ".pac"
+        - ".sa"
 
   - id: "#reads"
     type:
