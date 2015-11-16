@@ -9,6 +9,9 @@ inputs:
   - id: "#second_bam_path"
     type: File
 
+  - id: "second_bam_path_reference"
+    type: File
+    
   - uuid: "#uuid"
     type: string
 
@@ -34,6 +37,8 @@ steps:
     inputs:
       - id: "#picard_collectmultiplemetrics.input_bam"
         source: "remove_markduplicates.output_bam"
+      - id: "#picard_collectmultiplemetrics.reference"
+        source: "second_bam_path_reference"
         
   - id: "#picard_markduplicates"
     run: {import: picard_markduplicates.cwl.yaml}
