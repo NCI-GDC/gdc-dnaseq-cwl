@@ -47,7 +47,7 @@ inputs:
       prefix: --uuid
 
 outputs:
-  - id: "#rm_qcfail_bam"
+  - id: "#output_bam"
     type: File
     description: "The second bam file without qcfail reads"
     outputBinding:
