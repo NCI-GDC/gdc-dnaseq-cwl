@@ -29,7 +29,7 @@ inputs:
       prefix: --uuid
 
 outputs:
-  - id: "#markduplicate_bam_path"
+  - id: "#output_bam"
     type: File
     description: "The bam with marked duplicates"
     outputBinding:
