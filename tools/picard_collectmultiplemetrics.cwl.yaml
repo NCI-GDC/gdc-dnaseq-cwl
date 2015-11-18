@@ -34,7 +34,7 @@ inputs:
       prefix: --uuid
 
 outputs:
-  - id: "#index"
+  - id: "#metrics"
     type:
       type: array
       items: File
