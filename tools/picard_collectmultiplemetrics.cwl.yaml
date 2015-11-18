@@ -34,6 +34,16 @@ inputs:
       prefix: --uuid
 
 outputs:
+  - id: "#sqlite"
+    type: File
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return $job['uuid'].path.split('/').slice(-1)[0]+".db"
+          }
+  
   - id: "#alignment_summary_metrics"
     type: File
     outputBinding:
