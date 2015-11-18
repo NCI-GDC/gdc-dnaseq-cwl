@@ -34,30 +34,124 @@ inputs:
       prefix: --uuid
 
 outputs:
-  - id: "#metrics"
-    type:
-      type: array
-      items: File
-    description: "CollectMultipleMetrics files"
+  - id: "#alignment_summary_metrics"
+    type: File
     outputBinding:
       glob:
         engine: node-engine.cwl
         script: |
           {
-          return [
-          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".alignment_summary_metrics", "class": "File"},
-          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".base_distribution_by_cycle_metrics", "class": "File"},
-          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".base_distribution_by_cycle.pdf", "class": "File"},
-          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".gc_bias.detail_metrics", "class": "File"},
-          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".gc_bias.pdf", "class": "File"},
-          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".gc_bias.summary_metrics", "class": "File"},
-          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".insert_size_histogram.pdf", "class": "File"},
-          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".insert_size_metrics", "class": "File"},
-          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".quality_by_cycle_metrics", "class": "File"},
-          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".quality_by_cycle.pdf", "class": "File"},
-          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".quality_distribution_metrics", "class": "File"},
-          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".quality_distribution.pdf", "class": "File"}
-          ];
+          return "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".alignment_summary_metrics" ;
           }
 
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/picard_collectmultiplemetrics_docker/main.py"]
+  - id: "#base_distribution_by_cycle_metrics"
+    type: File
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".base_distribution_by_cycle_metrics";
+          }
+
+  - id: "#base_distribution_by_cycle_pdf"
+    type: File
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".base_distribution_by_cycle.pdf";
+          }
+
+  - id: "#gc_bias_detail_metrics"
+    type: File
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".gc_bias.detail_metrics";
+          }
+
+  - id: "#gc_bias_pdf"
+    type: File
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {          
+          return "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".gc_bias.pdf";
+          }
+
+  - id: "#gc_bias_summary_metrics"
+    type: File
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".gc_bias.summary_metrics";
+          }
+
+  - id: "#insert_size_histogram_pdf"
+    type: File
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".insert_size_histogram.pdf";
+          }
+
+  - id: "#insert_size_metrics"
+    type: File
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".insert_size_metrics";
+          }
+
+  - id: "#quality_by_cycle_metrics"
+    type: File
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".quality_by_cycle_metrics";
+          }
+
+  - id: "#quality_by_cycle_pdf"
+    type: File
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".quality_by_cycle.pdf";
+          }
+
+  - id: "#quality_distribution_metrics"
+    type: File
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".quality_distribution_metrics";
+          }
+
+  - id: "#quality_distribution_pdf"
+    type: File
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".quality_distribution.pdf";
+          }
+
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python", "/home/ubuntu/picard_collectmultiplemetrics_docker/main.py"]
