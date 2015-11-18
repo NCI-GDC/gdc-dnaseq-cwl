@@ -35,14 +35,29 @@ inputs:
 
 outputs:
   - id: "#index"
-    type: File
-    description: "The index file"
+    type:
+      type: array
+      items: File
+    description: "CollectMultipleMetrics files"
     outputBinding:
       glob:
         engine: node-engine.cwl
         script: |
           {
-            return $job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".bai";
+          return [
+          "path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".alignment_summary_metrics", "class": File";
+          "path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".base_distribution_by_cycle_metrics", "class": File";
+          "path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".base_distribution_by_cycle.pdf", "class": File";
+          "path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".gc_bias.detail_metrics", "class": File";
+          "path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".gc_bias.pdf", "class": File";
+          "path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".gc_bias.summary_metrics", "class": File";
+          "path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".insert_size_histogram.pdf", "class": File";
+          "path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".insert_size_metrics", "class": File";
+          "path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".quality_by_cycle_metrics", "class": File";
+          "path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".quality_by_cycle.pdf", "class": File";
+          "path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".quality_distribution_metrics", "class": File";
+          "path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".quality_distribution.pdf", "class": File";
+          ]
           }
 
 baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/picard_collectmultiplemetrics_docker/main.py"]
