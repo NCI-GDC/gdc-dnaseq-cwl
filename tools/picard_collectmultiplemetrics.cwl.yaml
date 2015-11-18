@@ -41,7 +41,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return $job['uuid'].path.split('/').slice(-1)[0]+".db"
+          return $job['uuid']+".db"
           }
   
   - id: "#alignment_summary_metrics"
