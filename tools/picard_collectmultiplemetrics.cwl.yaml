@@ -45,18 +45,18 @@ outputs:
         script: |
           {
           return [
-          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".alignment_summary_metrics", "class": File"},
-          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".base_distribution_by_cycle_metrics", "class": File"},
-          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".base_distribution_by_cycle.pdf", "class": File"},
-          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".gc_bias.detail_metrics", "class": File"},
-          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".gc_bias.pdf", "class": File"},
-          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".gc_bias.summary_metrics", "class": File"},
-          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".insert_size_histogram.pdf", "class": File"},
-          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".insert_size_metrics", "class": File"},
-          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".quality_by_cycle_metrics", "class": File"},
-          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".quality_by_cycle.pdf", "class": File"},
-          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".quality_distribution_metrics", "class": File"},
-          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".quality_distribution.pdf", "class": File"}
+          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".alignment_summary_metrics", "class": "File"},
+          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".base_distribution_by_cycle_metrics", "class": "File"},
+          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".base_distribution_by_cycle.pdf", "class": "File"},
+          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".gc_bias.detail_metrics", "class": "File"},
+          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".gc_bias.pdf", "class": "File"},
+          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".gc_bias.summary_metrics", "class": "File"},
+          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".insert_size_histogram.pdf", "class": "File"},
+          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".insert_size_metrics", "class": "File"},
+          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".quality_by_cycle_metrics", "class": "File"},
+          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".quality_by_cycle.pdf", "class": "File"},
+          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".quality_distribution_metrics", "class": "File"},
+          {"path": "picard_CollectMultipleMetrics_"+$job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".quality_distribution.pdf", "class": "File"}
           ];
           }
 
