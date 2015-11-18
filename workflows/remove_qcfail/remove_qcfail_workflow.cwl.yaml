@@ -16,6 +16,11 @@
     - id: "#uuid"
       type: string
 
+  outputs:
+    - id: "#remove_qcfail_output_bam"
+      type: File
+      source: "#remove_qcfail.output_bam"
+
   steps:
     - id: "#remove_qcfail"
       run: {import: ../../tools/remove_qcfail.cwl.yaml}
@@ -32,7 +37,7 @@
       outputs:
         - id: "#remove_qcfail.output_bam"
 
-  
+
     - id: "#picard_collectmultiplemetrics"
       run: {import: ../../tools/picard_collectmultiplemetrics.cwl.yaml}
       inputs:
@@ -44,10 +49,8 @@
 
         - id: "#picard_collectmultiplemetrics.uuid"
           source: "#uuid"
-      outputs:
-        -id: "#picard_collectmultiplemetrics.index"
 
-        
+
     - id: "#picard_markduplicates"
       run: {import: ../../tools/picard_markduplicates.cwl.yaml}
       inputs:
@@ -59,4 +62,3 @@
           
       outputs:
         - id: "#picard_markduplicates.output_bam"
-        
