@@ -28,7 +28,7 @@ inputs:
     inputBinding:
       prefix: --uuid
 
-  - id: "#sqlite"
+  - id: "#input_sqlite"
     type: ["null", File]
 
 
@@ -44,7 +44,7 @@ outputs:
             return "md/" + $job['input_bam'].path.split('/').slice(-1)[0];
           }
 
-  - id: "#sqlite"
+  - id: "#output_sqlite"
     type: File
     description: "sqlite file"
     outputBinding:
