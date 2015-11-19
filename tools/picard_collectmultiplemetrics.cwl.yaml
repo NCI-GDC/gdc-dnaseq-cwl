@@ -43,6 +43,16 @@ outputs:
           {
           return $job['uuid']+".db"
           }
+
+  - id: "#log"
+    type: File
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return "remove_qcfail_"+$job['uuid']+".log"
+          }
   
   - id: "#alignment_summary_metrics"
     type: File
