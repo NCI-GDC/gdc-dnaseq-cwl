@@ -29,7 +29,7 @@ inputs:
       prefix: --uuid
 
 outputs:
-  - id: "#index"
+  - id: "#bai_output"
     type: File
     description: "The index file"
     outputBinding:
@@ -40,4 +40,26 @@ outputs:
             return $job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".bai";
           }
 
+  - id: "#sqlite"
+    type: File
+    description: "sqlite file"
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script : |
+          {
+          return $job['uuid']+".db"
+          }
+  - id: "#log"
+    type: File
+    description: "python log file"
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return "picard_buildbamindex_"+$job['uuid']+".log"
+          }
+
+          
 baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/picard_buildbamindex_docker/main.py"]
