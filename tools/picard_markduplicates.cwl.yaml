@@ -18,7 +18,7 @@ requirements:
 class: CommandLineTool
 
 inputs:
-  - id: "#bam_path"
+  - id: "#input_bam"
     type: File
     inputBinding:
       prefix: --bam_path
@@ -39,5 +39,28 @@ outputs:
           {
             return "md/" + $job['bam_path'].path.split('/').slice(-1)[0];
           }
+
+  - id: "#sqlite"
+    type: File
+    description: "sqlite file"
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return $job['uuid']+".db"
+          }
+
+  - id: "#log"
+    type: File
+    description: "python log file"
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return "picard_markduplicates_"+$job['uuid']+".log"
+          }
+    
 
 baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/picard_markduplicates_docker/main.py"]
