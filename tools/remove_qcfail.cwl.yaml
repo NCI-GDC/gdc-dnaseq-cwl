@@ -77,7 +77,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return "picard_collectmultiplemetrics_"+$job['uuid']+".log"
+          return "remove_qcfail_"+$job['uuid']+".log"
           }
 
 baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/remove_qcfailed_mapped/main.py"]
