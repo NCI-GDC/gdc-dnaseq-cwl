@@ -58,4 +58,26 @@ outputs:
             return "remove_qcfail/"+$job['second_bam_path'].path.split('/').slice(-1)[0];
           }
 
+  - id: "#sqlite"
+    type: File
+    description: "sqlite file"
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script : |
+          {
+          return $job['uuid']+".db"
+          }
+
+  - id: "#log"
+    type: File
+    description: "python log file"
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return "picard_collectmultiplemetrics_"+$job['uuid']+".log"
+          }
+
 baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/remove_qcfailed_mapped/main.py"]
