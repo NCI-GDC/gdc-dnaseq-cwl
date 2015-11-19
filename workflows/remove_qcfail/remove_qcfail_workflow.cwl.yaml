@@ -1,64 +1,71 @@
 #!/usr/bin/env cwl-runner
 
-- id: "#main"
-  class: Workflow
+class: Workflow
 
-  inputs:
-    - id: "#first_bam_path"
-      type: File
+inputs:
+  - id: "#first_bam_path"
+    type: File
+  - id: "#second_bam_path"
+    type: File
+  - id: "#second_bam_path_reference"
+    type: File    
+  - id: "#uuid"
+    type: string
 
-    - id: "#second_bam_path"
-      type: File
+outputs:
+  - id: "#output_bam"
+    type: File
+    source: "#remove_qcfail.output_bam"
 
-    - id: "#second_bam_path_reference"
-      type: File
-    
-    - id: "#uuid"
-      type: string
+#    - id: "#picard_collectmultiplemetrics_sqlite"
+#      type: File
+#      source: "#picard_collectmultiplemetrics.sqlite"
 
-  outputs:
-    - id: "#remove_qcfail_output_bam"
-      type: File
-      source: "#remove_qcfail.output_bam"
+#    - id: "#picard_markduplicates_output_bam"
+#      type: File
+#      source: "#picardmarkduplicates.output_bam"
 
-  steps:
-    - id: "#remove_qcfail"
-      run: {import: ../../tools/remove_qcfail.cwl.yaml}
-      inputs:
-        - id: "#remove_qcfail.first_bam_path"
-          source: "#first_bam_path"
+steps:
+  - id: "#remove_qcfail"
+    run: {import: ../../tools/remove_qcfail.cwl.yaml}
+    inputs:
+      - id: "#remove_qcfail.first_bam_path"
+        source: "#first_bam_path"
 
-        - id: "#remove_qcfail.second_bam_path"
-          source: "#second_bam_path"
+      - id: "#remove_qcfail.second_bam_path"
+        source: "#second_bam_path"
 
-        - id: "#remove_qcfail.uuid"
-          source: "#uuid"
+      - id: "#remove_qcfail.uuid"
+        source: "#uuid"
 
-      outputs:
-        - id: "#remove_qcfail.output_bam"
+    outputs:
+      - id: "#remove_qcfail.output_bam"
+      - id: "#remove_qcfail.sqlite"
+      - id: "#remove_qcfail.log"
+
+#    - id: "#picard_collectmultiplemetrics"
+#      run: {import: ../../tools/picard_collectmultiplemetrics.cwl.yaml}
+#      inputs:
+#        - id: "#picard_collectmultiplemetrics.bam_path"
+#          source: "#picard_markduplicates.output_bam"
+#        
+#        - id: "#picard_collectmultiplemetrics.reference"
+#          source: "#second_bam_path_reference"
+#
+#        - id: "#picard_collectmultiplemetrics.uuid"
+#          source: "#uuid"
+#      outputs:
+#        - id: "#picard_collectmultple_metrics.sqlite"
 
 
-    - id: "#picard_collectmultiplemetrics"
-      run: {import: ../../tools/picard_collectmultiplemetrics.cwl.yaml}
-      inputs:
-        - id: "#picard_collectmultiplemetrics.bam_path"
-          source: "#picard_markduplicates.output_bam"
-        
-        - id: "#picard_collectmultiplemetrics.reference"
-          source: "#second_bam_path_reference"
+#  - id: "#picard_markduplicates"
+#    run: {import: ../../tools/picard_markduplicates.cwl.yaml}
+#    inputs:
+#      - id: "#picard_markduplicates.input_bam"
+#        source: "#remove_qcfail.output_bam"
 
-        - id: "#picard_collectmultiplemetrics.uuid"
-          source: "#uuid"
-
-
-    - id: "#picard_markduplicates"
-      run: {import: ../../tools/picard_markduplicates.cwl.yaml}
-      inputs:
-        - id: "#picard_markduplicates.input_bam"
-          source: "#remove_qcfail.output_bam"
-
-        - id: "#picard_markduplicates.uuid"
-          source: "#uuid"
+#      - id: "#picard_markduplicates.uuid"
+#        source: "#uuid"
           
-      outputs:
-        - id: "#picard_markduplicates.output_bam"
+#    outputs:
+#      - id: "#picard_markduplicates.output_bam"
