@@ -28,6 +28,10 @@ inputs:
     inputBinding:
       prefix: --uuid
 
+  - id: "#sqlite"
+    type: ["null", File]
+
+
 outputs:
   - id: "#output_bam"
     type: File
@@ -61,6 +65,6 @@ outputs:
           {
           return "picard_markduplicates_"+$job['uuid']+".log"
           }
-    
+
 
 baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/picard_markduplicates_docker/main.py"]
