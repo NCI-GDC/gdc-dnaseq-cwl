@@ -19,7 +19,7 @@ requirements:
 class: CommandLineTool
 
 inputs:
-  - id: "#first_bam_path"
+  - id: "#first_input_bam"
     type: File
     inputBinding:
       prefix: --first_bam
@@ -27,10 +27,10 @@ inputs:
         - engine: node-engine.cwl
           script: |
             {
-              return {"path": $job['first_bam_path'].path.slice(0,-4)+".bai", "class": "File"};
+              return {"path": $job['first_input_bam'].path.slice(0,-4)+".bai", "class": "File"};
             }
 
-  - id: "#second_bam_path"
+  - id: "#second_input_bam"
     type: File
     inputBinding:
       prefix: --second_bam
@@ -38,13 +38,16 @@ inputs:
         - engine: node-engine.cwl
           script: |
             {
-              return {"path":$job['second_bam_path'].path.slice(0,-4)+".bai", "class": "File"};
+              return {"path":$job['second_input_bam'].path.slice(0,-4)+".bai", "class": "File"};
             }
 
   - id: "#uuid"
     type: string
     inputBinding:
       prefix: --uuid
+
+  - id: "#input_sqlite"
+    type: ["null", File]
 
 outputs:
   - id: "#output_bam"
@@ -55,16 +58,16 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-            return "remove_qcfail/"+$job['second_bam_path'].path.split('/').slice(-1)[0];
+            return "remove_qcfail/"+$job['second_input_bam'].path.split('/').slice(-1)[0];
           }
 
-  - id: "#sqlite"
+  - id: "#output_sqlite"
     type: File
     description: "sqlite file"
     outputBinding:
       glob:
         engine: node-engine.cwl
-        script : |
+        script: |
           {
           return $job['uuid']+".db"
           }
