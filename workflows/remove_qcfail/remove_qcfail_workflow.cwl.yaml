@@ -11,16 +11,13 @@ inputs:
     type: File    
   - id: "#uuid"
     type: string
-
 outputs:
-  - id: "#picard_markduplicates_sqlite"
+  - id: "#picard_collectmultiplemetrics_output_sqlite"
     type: File
-    source: "#picard_markduplicates.output_sqlite"
-
+    source: "#picard_collectmultiplemetrics.output_sqlite"
   - id: "#picard_markduplicates_output_bam"
     type: File
     source: "#picard_markduplicates.output_bam"
-
 
 steps:
   - id: "#remove_qcfail"
@@ -28,32 +25,47 @@ steps:
     inputs:
       - id: "#remove_qcfail.first_input_bam"
         source: "#first_input_bam"
-
       - id: "#remove_qcfail.second_input_bam"
         source: "#second_input_bam"
-
       - id: "#remove_qcfail.uuid"
         source: "#uuid"
-
     outputs:
       - id: "#remove_qcfail.output_bam"
       - id: "#remove_qcfail.output_sqlite"
       - id: "#remove_qcfail.log"
-
 
   - id: "#picard_markduplicates"
     run: {import: ../../tools/picard_markduplicates.cwl.yaml}
     inputs:
       - id: "#picard_markduplicates.input_bam"
         source: "#remove_qcfail.output_bam"
-
       - id: "#picard_markduplicates.uuid"
         source: "#uuid"
-
       - id: "#picard_markduplicates.input_sqlite"
         source: "#remove_qcfail.output_sqlite"
-
     outputs:
       - id: "#picard_markduplicates.output_bam"
-
       - id: "#picard_markduplicates.output_sqlite"
+      - id: "#picard_markduplicates.log"
+
+  - id: "#picard_buildbamindex"
+    run: {import: ../../tools/picard_buildbamindex.cwl.yaml}
+    inputs:
+      - id: "picard_buildbamindex.input_bam"
+        source: "picard_markduplicates.output_bam"
+      - id: "picard_buildbamindex.
+
+  - id: "#picard_collectmultiplemetrics"
+    run: {import: ../../tools/picard_collectmultiplemetrics.cwl.yaml}
+    inputs:
+      - id: "#picard_collectmultiplemetrics.input_bam"
+        source: "#picard_markduplicates.output_bam"
+      - id: "#picard_collectmultiplemetrics.reference"
+        source: "#second_bam_reference"
+      - id: "#picard_collectmultiplemetrics.uuid"
+        source: "#uuid"
+      - id: "#picard_collectmultiplemetrics.input_sqlite"
+        source: "remove_markduplicates.output_sqlite"
+    outputs:
+      - id: "#picard_collectmultiplemetrics.output_sqlite"
+      - id: "#picard_collectmultiplemetrics.log"
