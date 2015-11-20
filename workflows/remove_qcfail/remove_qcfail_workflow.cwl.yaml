@@ -13,10 +13,6 @@ inputs:
     type: string
 
 outputs:
-  #- id: "#remove_qcfail_output_bam"
-  #  type: File
-  #  source: "#remove_qcfail.output_bam"
-
   - id: "#picard_markduplicates_sqlite"
     type: File
     source: "#picard_markduplicates.output_sqlite"
@@ -25,13 +21,6 @@ outputs:
     type: File
     source: "#picard_markduplicates.output_bam"
 
-#    - id: "#picard_collectmultiplemetrics_sqlite"
-#      type: File
-#      source: "#picard_collectmultiplemetrics.sqlite"
-
-#    - id: "#picard_markduplicates_output_bam"
-#      type: File
-#      source: "#picardmarkduplicates.output_bam"
 
 steps:
   - id: "#remove_qcfail"
@@ -50,20 +39,6 @@ steps:
       - id: "#remove_qcfail.output_bam"
       - id: "#remove_qcfail.output_sqlite"
       - id: "#remove_qcfail.log"
-
-#    - id: "#picard_collectmultiplemetrics"
-#      run: {import: ../../tools/picard_collectmultiplemetrics.cwl.yaml}
-#      inputs:
-#        - id: "#picard_collectmultiplemetrics.input_bam"
-#          source: "#picard_markduplicates.output_bam"
-#        
-#        - id: "#picard_collectmultiplemetrics.reference"
-#          source: "#second_bam_reference"
-#
-#        - id: "#picard_collectmultiplemetrics.uuid"
-#          source: "#uuid"
-#      outputs:
-#        - id: "#picard_collectmultple_metrics.sqlite"
 
 
   - id: "#picard_markduplicates"
