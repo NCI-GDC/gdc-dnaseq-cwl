@@ -42,19 +42,6 @@ steps:
 
 
   - id: "#picard_markduplicates"
-    requirements:
-      - class: CreateFileRequirement
-        fileDef:
-          - filename:
-              engine: "../../tools/node-engine.cwl"
-              script: |
-                {
-                return $job['uuid']+".db"
-                }
-            fileContent:
-              engine:  "cwl:JsonPointer"
-              script: "job/remove_qcfail.output_sqlite"
-  
     run: {import: ../../tools/picard_markduplicates.cwl.yaml}
     inputs:
       - id: "#picard_markduplicates.input_bam"
