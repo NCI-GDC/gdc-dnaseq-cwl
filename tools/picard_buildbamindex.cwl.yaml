@@ -50,6 +50,7 @@ outputs:
           {
           return $job['uuid']+".db"
           }
+
   - id: "#log"
     type: File
     description: "python log file"
