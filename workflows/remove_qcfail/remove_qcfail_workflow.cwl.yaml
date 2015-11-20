@@ -53,7 +53,7 @@ steps:
                 }
             fileContent:
               engine:  "cwl:JsonPointer"
-              script: "job/remove_qcfail.output.sqlite"
+              script: "job/remove_qcfail.output_sqlite"
   
     run: {import: ../../tools/picard_markduplicates.cwl.yaml}
     inputs:
