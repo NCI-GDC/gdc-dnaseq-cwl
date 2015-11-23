@@ -1,7 +1,7 @@
 #!/usr/bin/env cwl-runner
 
 description: |
-  Usage:  cwl-runner <this-file-path> --bam_path <bam-path> --uuid <uuid-string>
+  Usage:  cwl-runner <this-file-path> --input_sqlite file1.db --input_sqlite file2.db ... --uuid <uuid-string>
   Options:
     --bam_path       Generate BAI-format index from BAM file
     --uuid           UUID for log file and sqlite db file
@@ -17,8 +17,8 @@ class: CommandLineTool
 inputs:
   - id: "#input_sqlite"
     type:
-      - type: array
-        items: File
+      type: array
+      items: File
     inputBinding:
       prefix: "--input_sqlite"
 
