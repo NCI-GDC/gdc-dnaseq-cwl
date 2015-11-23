@@ -77,13 +77,13 @@ steps:
   - id: "#merge_sqlite"
     run: {import ../../tools/merge_sqlite.cwl.yaml}
     inputs:
-      - id: "#remove_qcfail_output_sqlite"
+      - id: "#merge_sqlite.input_sqlite"
         source: "#remove_qcfail.output_sqlite"
-      - id: "#picard_markduplicates_output_sqlite"
+      - id: "#merge_sqlite.input_sqlite"
         source: "picard_markduplicates.output_sqlite"
-      - id: "#picard_buildbamindex_output_sqlite"
+      - id: "#merge_sqlite.input_sqlite"
         source: "#picard_buildbamindex.output_sqlite"
-      - id: "#picard_collectmultiplemetrics_output_sqlite"
+      - id: "#merge_sqlite.input_sqlite"
         source: "#picard_collectmultiplemetrics.output_sqlite"
       - id: "merge_sqlite.uuid"
         source: "#uuid"
