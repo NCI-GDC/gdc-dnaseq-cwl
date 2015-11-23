@@ -1,10 +1,7 @@
 #!/usr/bin/env cwl-runner
 
-# example
-# cwl-runner --outdir /mnt/SCRATCH/47b42e81-2500-4ebc-a0c2-acd3187cc2f0 --verbose ~/SCRATCH/tools/picard_buildbamindex_docker/cwl/picard_buildbamindex.cwl.yaml --bam_path ~/SCRATCH/47b42e81-2500-4ebc-a0c2-acd3187cc2f0/C440.TCGA-IN-8462-01A-11D-2340-08.1.bam --uuid test
-
 description: |
-  Usage:  cwl-runner --outdir <out-dir> <this-file-path> --bam_path <bam-path> --uuid <uuid-string>
+  Usage:  cwl-runner <this-file-path> --bam_path <bam-path> --uuid <uuid-string>
   Options:
     --bam_path       Generate BAI-format index from BAM file
     --uuid           UUID for log file and sqlite db file
@@ -13,7 +10,7 @@ requirements:
   - import: node-engine.cwl
   - import: envvar-global.cwl
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/picard_buildbamindex
+    dockerPull: quay.io/jeremiahsavage/picard_tool
 
 class: CommandLineTool
 
@@ -63,4 +60,4 @@ outputs:
           }
 
           
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/picard_buildbamindex_docker/main.py"]
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/picard_tool_docker/main.py", "--tool_name", "BuildBamIndex"]
