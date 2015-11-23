@@ -12,12 +12,15 @@ inputs:
   - id: "#uuid"
     type: string
 outputs:
-  - id: "#picard_collectmultiplemetrics_output_sqlite"
-    type: File
-    source: "#picard_collectmultiplemetrics.output_sqlite"
   - id: "#picard_markduplicates_output_bam"
     type: File
     source: "#picard_markduplicates.output_bam"
+    id: "#picard_buildbamindex_output_bai"
+    type: File
+    source: "#picard_buildbamindex.output_bai"
+  - id: "#merge_sqlite_output_sqlite"
+    type: File
+    source: "#merge_sqlite.output_sqlite"
 
 steps:
   - id: "#remove_qcfail"
@@ -41,8 +44,6 @@ steps:
         source: "#remove_qcfail.output_bam"
       - id: "#picard_markduplicates.uuid"
         source: "#uuid"
-      - id: "#picard_markduplicates.input_sqlite"
-        source: "#remove_qcfail.output_sqlite"
     outputs:
       - id: "#picard_markduplicates.output_bam"
       - id: "#picard_markduplicates.output_sqlite"
@@ -51,9 +52,14 @@ steps:
   - id: "#picard_buildbamindex"
     run: {import: ../../tools/picard_buildbamindex.cwl.yaml}
     inputs:
-      - id: "picard_buildbamindex.input_bam"
-        source: "picard_markduplicates.output_bam"
-      - id: "picard_buildbamindex.
+      - id: "#picard_buildbamindex.input_bam"
+        source: "#picard_markduplicates.output_bam"
+      - id: "#picard_buildbamindex.uuid"
+        source: "#uuid"
+    outputs:
+      - id: "#picard_buildbamindex.output_bai"
+      - id: "#picard_buildbamindex.output_sqlite"
+      - id: "#picard_buildbamindex.log"
 
   - id: "#picard_collectmultiplemetrics"
     run: {import: ../../tools/picard_collectmultiplemetrics.cwl.yaml}
@@ -64,8 +70,20 @@ steps:
         source: "#second_bam_reference"
       - id: "#picard_collectmultiplemetrics.uuid"
         source: "#uuid"
-      - id: "#picard_collectmultiplemetrics.input_sqlite"
-        source: "remove_markduplicates.output_sqlite"
     outputs:
       - id: "#picard_collectmultiplemetrics.output_sqlite"
       - id: "#picard_collectmultiplemetrics.log"
+
+  - id: "#merge_sqlite"
+    run: {import ../../tools/merge_sqlite.cwl.yaml}
+    inputs:
+      - id: "#remove_qcfail_output_sqlite"
+        source: "#remove_qcfail.output_sqlite"
+      - id: "#picard_markduplicates_output_sqlite"
+        source: "picard_markduplicates.output_sqlite"
+      - id: "#picard_buildbamindex_output_sqlite"
+        source: "#picard_buildbamindex.output_sqlite"
+      - id: "#picard_collectmultiplemetrics_output_sqlite"
+        source: "#picard_collectmultiplemetrics.output_sqlite"
+    outputs:
+      - id: "#merge_sqlite.output_sqlite"
