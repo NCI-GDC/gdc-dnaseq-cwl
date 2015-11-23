@@ -60,4 +60,4 @@ outputs:
           }
 
 
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/picard_markduplicates_docker/main.py", "--tool_name", "MarkDuplicates"]
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/picard_tool/main.py", "--tool_name", "MarkDuplicates"]
