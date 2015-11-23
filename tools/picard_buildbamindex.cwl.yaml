@@ -37,7 +37,7 @@ outputs:
             return $job['bam_path'].path.split('/').slice(-1)[0].slice(0,-4)+".bai";
           }
 
-  - id: "#sqlite"
+  - id: "#output_sqlite"
     type: File
     description: "sqlite file"
     outputBinding:
