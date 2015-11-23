@@ -15,7 +15,7 @@ requirements:
 class: CommandLineTool
 
 inputs:
-  - id: "#bam_path"
+  - id: "#input_bam"
     type: File
     inputBinding:
       prefix: --bam_path
@@ -26,7 +26,7 @@ inputs:
       prefix: --uuid
 
 outputs:
-  - id: "#bai_output"
+  - id: "#output_bai"
     type: File
     description: "The index file"
     outputBinding:
