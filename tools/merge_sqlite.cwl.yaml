@@ -1,0 +1,36 @@
+#!/usr/bin/env cwl-runner
+
+description: |
+  Usage:  cwl-runner <this-file-path> --bam_path <bam-path> --uuid <uuid-string>
+  Options:
+    --bam_path       Generate BAI-format index from BAM file
+    --uuid           UUID for log file and sqlite db file
+
+requirements:
+  - import: node-engine.cwl
+  - import: envvar-global.cwl
+  - class: DockerRequirement
+    dockerPull: quay.io/jeremiahsavage/merge_sqlite
+
+class: CommandLineTool
+
+inputs:
+  - id: "#input_sqlite"
+    type:
+      - type: array
+        items: File
+    inputBinding:
+      prefix: "--input_sqlite"
+
+  - id: "#uuid"
+    type: string
+
+outputs:
+  - id: "#output_sqlite"
+    type: File
+    outputBinding:
+      glob: "node-engine.cwl"
+      script: |
+        {
+        return $job['uuid']+".db"
+        }
