@@ -46,9 +46,6 @@ inputs:
     inputBinding:
       prefix: --uuid
 
-  - id: "#input_sqlite"
-    type: ["null", File]
-
 outputs:
   - id: "#output_bam"
     type: File
