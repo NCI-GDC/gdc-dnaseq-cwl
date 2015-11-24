@@ -34,9 +34,20 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-            return "md/" + $job['input_bam'].path.split('/').slice(-1)[0];
+          return "md/" + $job['input_bam'].path.split('/').slice(-1)[0];
           }
 
+  - id: "#output_bai"
+    type: File
+    description: "bam index file"
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return $job['input_bam'].path.split('/').slice(-1)[0].slice(0,-4)+".bai";
+          }
+          
   - id: "#output_sqlite"
     type: File
     description: "sqlite file"
