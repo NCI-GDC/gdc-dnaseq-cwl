@@ -48,7 +48,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return "remove_qcfail_"+$job['uuid']+".log"
+          return $job['uuid']+"_picard_CollectMultipleMetrics.log"
           }
   
   - id: "#alignment_summary_metrics"
