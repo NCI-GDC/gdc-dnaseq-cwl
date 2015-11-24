@@ -15,9 +15,9 @@ outputs:
   - id: "#picard_markduplicates_output_bam"
     type: File
     source: "#picard_markduplicates.output_bam"
-  - id: "#picard_buildbamindex_output_bai"
+  - id: "#picard_markduplicates_output_bai"
     type: File
-    source: "#picard_buildbamindex.output_bai"
+    source: "#picard_markduplicates.output_bai"
   #- id: "#merge_sqlite_output_sqlite"
   #  type: File
   #  source: "#merge_sqlite.output_sqlite"
@@ -46,6 +46,7 @@ steps:
         source: "#uuid"
     outputs:
       - id: "#picard_markduplicates.output_bam"
+      - id: "#picard_markduplicates.output_bai"
       - id: "#picard_markduplicates.output_sqlite"
       - id: "#picard_markduplicates.log"
 
