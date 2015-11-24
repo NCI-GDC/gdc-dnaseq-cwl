@@ -56,7 +56,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return "picard_buildbamindex_"+$job['uuid']+".log"
+          return $job['uuid']+"picard_BuildBamIndex.log"
           }
 
           
