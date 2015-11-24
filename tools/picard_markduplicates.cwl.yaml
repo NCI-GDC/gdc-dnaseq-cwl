@@ -56,7 +56,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return "picard_markduplicates_"+$job['uuid']+".log"
+          return $job['uuid']+"_picard_MarkDuplicates.log"
           }
 
 
