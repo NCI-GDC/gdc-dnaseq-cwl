@@ -49,18 +49,6 @@ steps:
       - id: "#picard_markduplicates.output_sqlite"
       - id: "#picard_markduplicates.log"
 
-  - id: "#picard_buildbamindex"
-    run: {import: ../../tools/picard_buildbamindex.cwl.yaml}
-    inputs:
-      - id: "#picard_buildbamindex.input_bam"
-        source: "#picard_markduplicates.output_bam"
-      - id: "#picard_buildbamindex.uuid"
-        source: "#uuid"
-    outputs:
-      - id: "#picard_buildbamindex.output_bai"
-      - id: "#picard_buildbamindex.output_sqlite"
-      - id: "#picard_buildbamindex.log"
-
   - id: "#picard_collectmultiplemetrics"
     run: {import: ../../tools/picard_collectmultiplemetrics.cwl.yaml}
     inputs:
