@@ -19,8 +19,8 @@ inputs:
     type:
       type: array
       items: File
-    inputBinding:
-      prefix: "--input_sqlite"
+      inputBinding:
+        prefix: "--input_sqlite"
 
   - id: "#uuid"
     type: string
