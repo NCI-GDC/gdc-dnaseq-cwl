@@ -24,6 +24,8 @@ inputs:
 
   - id: "#uuid"
     type: string
+    inputBinding:
+      prefix: "--uuid"
 
 outputs:
   - id: "#output_sqlite"
