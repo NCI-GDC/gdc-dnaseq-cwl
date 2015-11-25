@@ -34,3 +34,5 @@ outputs:
         {
         return $job['uuid']+".db"
         }
+
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/merge_sqlite/main.py"]
