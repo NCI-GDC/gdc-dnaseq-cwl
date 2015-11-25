@@ -31,10 +31,11 @@ outputs:
   - id: "#output_sqlite"
     type: File
     outputBinding:
-      glob: "node-engine.cwl"
-      script: |
-        {
-        return $job['uuid']+".db"
-        }
+      glob:
+        engine: "node-engine.cwl"
+        script: |
+          {
+          return $job['uuid']+".db"
+          }
 
 baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/merge_sqlite/main.py"]
