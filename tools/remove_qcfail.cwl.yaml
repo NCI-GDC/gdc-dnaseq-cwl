@@ -38,7 +38,7 @@ inputs:
         - engine: node-engine.cwl
           script: |
             {
-              return {"path":$job['second_input_bam'].path.slice(0,-4)+".bai", "class": "File"};
+              return {"path": $job['second_input_bam'].path.slice(0,-4)+".bai", "class": "File"};
             }
 
   - id: "#uuid"
