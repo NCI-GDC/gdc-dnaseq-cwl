@@ -1,9 +1,9 @@
 #!/usr/bin/env cwl-runner
 
 description: |
-  Usage:  cwl-runner <this-file-path> --input_sqlite file1.db --input_sqlite file2.db ... --uuid <uuid-string>
+  Usage:  cwl-runner <this-file-path> --source_sqlite file1.db --source_sqlite file2.db ... --uuid <uuid-string>
   Options:
-    --input_sqlite   any number of input files to merge
+    --source_sqlite   any number of input files to merge
     --uuid           UUID for log file and sqlite db file
 
 requirements:
@@ -15,12 +15,12 @@ requirements:
 class: CommandLineTool
 
 inputs:
-  - id: "#input_sqlite"
+  - id: "#source_sqlite"
     type:
       type: array
       items: File
       inputBinding:
-        prefix: "--input_sqlite"
+        prefix: "--source_sqlite"
 
   - id: "#uuid"
     type: string
@@ -28,7 +28,7 @@ inputs:
       prefix: "--uuid"
 
 outputs:
-  - id: "#output_sqlite"
+  - id: "#destination_sqlite"
     type: File
     outputBinding:
       glob:
