@@ -18,9 +18,9 @@ outputs:
   - id: "#picard_markduplicates_output_bai"
     type: File
     source: "#picard_markduplicates.output_bai"
-  - id: "#merge_sqlite_output_sqlite"
+  - id: "#merge_sqlite_destination_sqlite"
     type: File
-    source: "#merge_sqlite.output_sqlite"
+    source: "#merge_sqlite.destination_sqlite"
 
 steps:
   - id: "#remove_qcfail"
@@ -66,9 +66,9 @@ steps:
   - id: "#merge_sqlite"
     run: {import: ../../tools/merge_sqlite.cwl.yaml}
     inputs:
-      - id: "#merge_sqlite.input_sqlite"
+      - id: "#merge_sqlite.source_sqlite"
         source: ["#remove_qcfail.output_sqlite",  "#picard_markduplicates.output_sqlite", "#picard_collectmultiplemetrics.output_sqlite"]
       - id: "#merge_sqlite.uuid"
         source: "#uuid"
     outputs:
-      - id: "#merge_sqlite.output_sqlite"
+      - id: "#merge_sqlite.destination_sqlite"
