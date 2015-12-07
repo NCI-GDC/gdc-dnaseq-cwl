@@ -49,7 +49,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return $job['uuid']+"_picard_CollectMultipleMetrics.log"
+          return $job['uuid']+"_picard_CollectWgsMetrics.log"
           }
   
   - id: "#wgs_metrics"
