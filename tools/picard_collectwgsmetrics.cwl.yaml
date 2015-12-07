@@ -1,0 +1,66 @@
+#!/usr/bin/env cwl-runner
+
+description: |
+  Usage:  cwl-runner <this-file-path> --input_bam <bam-path> --reference_fasta_path <reference-fasta-path> --uuid <uuid-string>
+  Options:
+    --input_bam      Generate metrics from BAM file
+    --reference      Genome for metrics
+    --uuid           UUID for log file and sqlite db file
+
+requirements:
+  - import: node-engine.cwl
+  - import: envvar-global.cwl
+  - class: DockerRequirement
+    dockerPull: quay.io/jeremiahsavage/picard_tool
+
+class: CommandLineTool
+
+inputs:
+  - id: "#input_bam"
+    type: File
+    inputBinding:
+      prefix: --bam_path
+
+  - id: "reference"
+    type: File
+    inputBinding:
+      prefix: --reference_fasta_path
+
+  - id: "#uuid"
+    type: string
+    inputBinding:
+      prefix: --uuid
+      
+outputs:
+  - id: "#output_sqlite"
+    type: File
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return $job['uuid']+".db"
+          }
+
+  - id: "#log"
+    type: File
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return $job['uuid']+"_picard_CollectMultipleMetrics.log"
+          }
+  
+  - id: "#wgs_metrics"
+    type: File
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return "picard_CollectWgsMetrics_"+$job['input_bam'].path.split('/').slice(-1)[0].slice(0,-4) ;
+          }
+
+
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python", "/home/ubuntu/picard_tool/main.py", "--tool_name", "CollectWgsMetrics"]
