@@ -60,4 +60,4 @@ outputs:
           }
 
           
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/picard_tool/main.py", "--tool_name", "BuildBamIndex"]
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/sra_hs_lookup/main.py"]
