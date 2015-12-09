@@ -80,7 +80,7 @@ steps:
         source: "#key_interval"
     outputs:
       - id: "#sra_hs_lookup.output_json"
-      - id: "#sra_hs_lookup.output_sqlite"
+      #- id: "#sra_hs_lookup.output_sqlite"
       - id: "#sra_hs_lookup.log"
 
   - id: "#merge_sqlite"
