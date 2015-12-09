@@ -11,6 +11,10 @@ inputs:
     type: File    
   - id: "#uuid"
     type: string
+  - id: "#bam_library_key"
+    type: File
+  - id: "#key_interval"
+    type: File
 outputs:
   - id: "#picard_markduplicates_output_bam"
     type: File
@@ -70,6 +74,10 @@ steps:
         source: "#second_input_bam"
       - id: "#sra_hs_lookup.uuid"
         source: "#uuid"
+      - id: "#sra_hs_lookup.bam_library_key"
+        source: "#bam_library_key"
+      - id: "#sra_hs_lookup.key_interval"
+        source: "#key_interval"
     outputs:
       - id: "#sra_hs_lookup.output_json"
       - id: "#sra_hs_lookup.output_sqlite"
