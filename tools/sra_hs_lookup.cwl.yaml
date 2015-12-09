@@ -25,6 +25,16 @@ inputs:
     inputBinding:
       prefix: --uuid
 
+  - id: "#bam_library_key"
+    type: File
+    inputBinding:
+      prefix: --bam_library_key_json_path
+
+  - id: "#key_interval"
+    type: File
+    inputBinding:
+      prefix: --key_interval_json_path
+
 outputs:
   - id: "#output_json"
     type: File
