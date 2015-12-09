@@ -47,17 +47,6 @@ outputs:
             return $job['input_bam'].path.split('/').slice(-1)[0].slice(0,-4)+"_readgroup_interval.json";
           }
 
-#  - id: "#output_sqlite"
-#    type: File
-#    description: "sqlite file"
-#    outputBinding:
-#      glob:
-#        engine: node-engine.cwl
-#        script : |
-#          {
-#          return $job['uuid']+".db"
-#          }
-
   - id: "#log"
     type: File
     description: "python log file"
