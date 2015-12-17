@@ -26,15 +26,15 @@ inputs:
       prefix: --uuid
 
 outputs:
-  - id: "#output_bai"
+  - id: "#output_bam"
     type: File
-    description: "The index file"
+    description: "The readgroup BAM{s}"
     outputBinding:
       glob:
         engine: node-engine.cwl
         script: |
           {
-            return "rg" + $job['input_bam'].path.split('/').slice(-1)[0].slice(0,-4)+".bai";
+            return "split.**.bam";
           }
 
   - id: "#output_sqlite"
@@ -56,7 +56,18 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return $job['uuid']+"_picard_BuildBamIndex.log"
+          return $job['uuid']+"_splitbam.log"
+          }
+
+  - id: "#bamutil_log"
+    type: File
+    description: "bamUtil log file"
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return "listFile.log"
           }
 
           
