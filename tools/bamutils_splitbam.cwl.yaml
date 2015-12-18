@@ -25,28 +25,16 @@ inputs:
     inputBinding:
       prefix: --uuid
 
+
 outputs:
   - id: "#output_bam"
     type: File
     description: "The readgroup BAM{s}"
     outputBinding:
-      glob:
-        engine: node-engine.cwl
-        script: |
-          {
-            return "split.**.bam";
-          }
+      glob: "listFile.log"
+      secondaryFiles:
+        - "split.**.bam"
 
-  - id: "#output_sqlite"
-    type: File
-    description: "sqlite file"
-    outputBinding:
-      glob:
-        engine: node-engine.cwl
-        script : |
-          {
-          return $job['uuid']+".db"
-          }
 
   - id: "#log"
     type: File
@@ -59,16 +47,6 @@ outputs:
           return $job['uuid']+"_splitbam.log"
           }
 
-  - id: "#bamutil_log"
-    type: File
-    description: "bamUtil log file"
-    outputBinding:
-      glob:
-        engine: node-engine.cwl
-        script: |
-          {
-          return "listFile.log"
-          }
 
           
 baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/bamutil_tool/main.py", "--tool_name", "splitbam"]
