@@ -28,13 +28,12 @@ inputs:
 
 outputs:
   - id: "#output_bam"
-    type: File
-    description: "The readgroup BAM{s}"
-    outputBinding:
-      glob: "listFile.log"
-      secondaryFiles:
-        - "split.**.bam"
-
+    type:
+      type: array
+      items: File
+      description: "The readgroup BAM{s}"
+      outputBinding:
+        glob: split.*.bam
 
   - id: "#log"
     type: File
