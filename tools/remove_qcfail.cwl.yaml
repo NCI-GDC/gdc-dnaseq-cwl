@@ -6,8 +6,8 @@
 description: |
   Usage:  cwl-runner --outdir <second_bam_path-dir> <this-file-path> --first_bam_path <bam-path> --second_bam_path <bam-path> --uuid <uuid-string>
   Options:
-    --first_bam       BAM containing qcfail reads with bitmask flag
-    --second_bam      BAM containing qcfail reads without bitmask flag
+    --first_input_bam       BAM containing qcfail reads with bitmask flag
+    --second_input_bam      BAM containing qcfail reads without bitmask flag
     --uuid            UUID for log file and sqlite db file
 
 requirements:
@@ -80,4 +80,4 @@ outputs:
           return $job['uuid']+"_remove_qcfail.log"
           }
 
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/remove_qcfailed_mapped/main.py"]
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/remove_qcfailed_mapped/main.py"]
