@@ -54,11 +54,21 @@ steps:
       - id: "#picard_markduplicates.output_sqlite"
       - id: "#picard_markduplicates.log"
 
+  - id: "#bamutils_splitbam"
+    run: {import: ../../tools/bamutils_splitbam.cwl.yaml}
+    inputs:
+      - id: "#bamutils_splitbam.input_bam"
+        source: "#picard_markduplicates.output_bam"
+      - id: "#bamutils_splitbam.uuid"
+        source: "#uuid"
+    outputs:
+      - id: "#bamutils_splitbam.output_bam"
+
   - id: "#picard_collectmultiplemetrics"
     run: {import: ../../tools/picard_collectmultiplemetrics.cwl.yaml}
     inputs:
       - id: "#picard_collectmultiplemetrics.input_bam"
-        source: "#picard_markduplicates.output_bam"
+        source: "#bamutils_splitbam.output_bam"
       - id: "#picard_collectmultiplemetrics.reference"
         source: "#second_bam_reference"
       - id: "#picard_collectmultiplemetrics.uuid"
