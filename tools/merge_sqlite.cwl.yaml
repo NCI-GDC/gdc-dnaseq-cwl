@@ -48,4 +48,4 @@ outputs:
           return $job['uuid']+"_log.db"
           }
 
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/merge_sqlite/main.py"]
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/merge_sqlite/main.py"]
