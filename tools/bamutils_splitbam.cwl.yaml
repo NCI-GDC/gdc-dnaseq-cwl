@@ -31,9 +31,9 @@ outputs:
     type:
       type: array
       items: File
-      description: "The readgroup BAM{s}"
-      outputBinding:
-        glob: split.*.bam
+    description: "The readgroup BAM{s}"
+    outputBinding:
+      glob: split.*.bam
 
   - id: "#log"
     type: File
