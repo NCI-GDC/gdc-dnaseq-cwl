@@ -81,19 +81,19 @@ steps:
       - id: "#picard_collectmultiplemetrics.output_sqlite"
       - id: "#picard_collectmultiplemetrics.log"
 
-  - id: "#merge_picard_collectmultiplemetrics_sqlite"
-    run: {import: ../../tools/merge_sqlite.cwl.yaml}
-    inputs:
-      - id: "#merge_picard_collectmultiplemetrics.output_sqlite"
-        source: "#picard_collectmultiplemetrics.output_sqlite"
-    outputs:
-      - id: "#merge_picard_collectmultiplemetrics.destination_sqlite"
+#  - id: "#merge_picard_collectmultiplemetrics_sqlite"
+#    run: {import: ../../tools/merge_sqlite.cwl.yaml}
+#    inputs:
+#      - id: "#merge_picard_collectmultiplemetrics.source_sqlite"
+#        source: "#picard_collectmultiplemetrics.output_sqlite"
+#    outputs:
+#      - id: "#merge_picard_collectmultiplemetrics.destination_sqlite"
         
   - id: "#merge_all_sqlite"
     run: {import: ../../tools/merge_sqlite.cwl.yaml}
     inputs:
       - id: "#merge_all_sqlite.source_sqlite"
-        source: ["#remove_qcfail.output_sqlite", "#picard_markduplicates.output_sqlite", "#merge_picard_collectmultiplemetrics.destination_sqlite"]
+        source: ["#remove_qcfail.output_sqlite", "#picard_markduplicates.output_sqlite"] #, "#merge_picard_collectmultiplemetrics.destination_sqlite"]
       - id: "#merge_all_sqlite.uuid"
         source: "#uuid"
     outputs:
