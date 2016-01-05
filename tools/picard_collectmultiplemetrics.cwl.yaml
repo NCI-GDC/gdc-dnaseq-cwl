@@ -171,4 +171,4 @@ outputs:
           return "picard_CollectMultipleMetrics_"+$job['input_bam'].path.split('/').slice(-1)[0].slice(0,-4)+".quality_distribution.pdf";
           }
 
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python", "/home/ubuntu/picard_tool/main.py", "--tool_name", "CollectMultipleMetrics"]
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python", "/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/picard_tool/main.py", "--tool_name", "CollectMultipleMetrics"]
