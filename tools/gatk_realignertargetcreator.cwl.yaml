@@ -20,12 +20,16 @@ inputs:
     inputBinding:
       prefix: --reference_fasta_path
       secondaryFiles:
-        ${
-        return {"path": $job['reference_fasta_path'].path + ".fai", "class": "File"};
-        }
-        ${
-        return {"path": $job['reference_fasta_path'].path.slice(0,-3)+".dict", "class": "File"};
-        }
+        - engine: node-engine.cwl
+          script: |
+            {
+            return {"path": $job['reference_fasta_path'].path + ".fai", "class": "File"};
+            }
+        - engine: node-engine.cwl
+          script: |
+            {
+            return {"path": $job['reference_fasta_path'].path.slice(0,-3)+".dict", "class": "File"};
+            }
 
   - id: "#uuid"
     type: string
@@ -37,9 +41,11 @@ inputs:
     inputBinding:
       prefix: --known_indel_vcf_path
       secondaryFiles:
-        ${
-        return {"path": $job['known_indel_vcf_path'].path+".idx", "class": "File"};
-        }
+        - engine: node-engine.cwl
+          script: |
+            {
+            return {"path": $job['known_indel_vcf_path'].path+".idx", "class": "File"};
+            }
 
   - id: "#input_bam_path"
     type:
@@ -48,9 +54,11 @@ inputs:
       inputBinding:
         prefix: --bam_path
         secondaryFiles:
-          ${
-          return {"path": $job['input_bam_path'].path.slice(0,-4)+".bai", "class": "File"};
-          }
+          - engine: node-engine.cwl
+            script: |
+              {
+              return {"path": $job['input_bam_path'].path.slice(0,-4)+".bai", "class": "File"};
+              }
 
   - id: "#thread_count"
     type: string
