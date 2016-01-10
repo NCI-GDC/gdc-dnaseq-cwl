@@ -25,6 +25,11 @@ inputs:
             {
             return {"path": $job['reference_fasta_path'].path + ".fai", "class": "File"};
             }
+        - engine: node-engine.cwl
+          script: |
+            {
+            return {"path": $job['reference_fasta_path'].path.slice(0,-4)+".dict", "class": "File"};
+            }
 
   - id: "#uuid"
     type: string
