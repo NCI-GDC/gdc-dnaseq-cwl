@@ -40,6 +40,12 @@ inputs:
     type: File
     inputBinding:
       prefix: --known_indel_vcf_path
+      secondaryFiles:
+        - engine: node-engine.cwl
+          script: |
+            {
+            return {"path": $job['known_indel_vcf_path'].path+".idx", "class": "File"};
+            }
 
   - id: "#input_bam_path"
     type:
