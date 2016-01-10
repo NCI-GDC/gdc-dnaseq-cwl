@@ -53,6 +53,12 @@ inputs:
       items: File
       inputBinding:
         prefix: --bam_path
+        secondaryFiles:
+          - engine: node-engine.cwl
+            script: |
+              {
+              return {"path": $job['second_input_bam'].path.slice(0,-4)+".bai", "class": "File"};
+              }
 
   - id: "#thread_count"
     type: string
