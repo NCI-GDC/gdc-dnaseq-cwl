@@ -23,7 +23,7 @@ inputs:
         - engine: node-engine.cwl
           script: |
             {
-            return {"path": job['reference_fasta_path'].path + ".fai", "class": "File"};
+            return {"path": $job['reference_fasta_path'].path + ".fai", "class": "File"};
             }
 
   - id: "#uuid"
