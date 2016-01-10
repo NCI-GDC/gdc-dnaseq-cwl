@@ -57,7 +57,7 @@ inputs:
           - engine: node-engine.cwl
             script: |
               {
-              return {"path": $job['second_input_bam'].path.slice(0,-4)+".bai", "class": "File"};
+              return {"path": $job['input_bam_path'].path.slice(0,-4)+".bai", "class": "File"};
               }
 
   - id: "#thread_count"
