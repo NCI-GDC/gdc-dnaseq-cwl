@@ -28,7 +28,7 @@ inputs:
         - engine: node-engine.cwl
           script: |
             {
-            return {"path": $job['reference_fasta_path'].path.slice(0,-4)+".dict", "class": "File"};
+            return {"path": $job['reference_fasta_path'].path.slice(0,-3)+".dict", "class": "File"};
             }
 
   - id: "#uuid"
