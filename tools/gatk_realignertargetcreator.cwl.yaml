@@ -45,12 +45,12 @@ inputs:
       items: File
       inputBinding:
         prefix: --bam_path
-      #secondaryFiles:
-      #  - engine: node-engine.cwl
-      #    script: |
-      #      {
-      #      return {"path": $job['input_bam_path'].path.slice(0,-4)+".bai", "class": "File"};
-      #      }
+        secondaryFiles:
+          - engine: node-engine.cwl
+            script: |
+              {
+              return {"path": $job['input_bam_path'][0].path.slice(0,-4)+".bai", "class": "File"};
+              }
 
   - id: "#thread_count"
     type: string
