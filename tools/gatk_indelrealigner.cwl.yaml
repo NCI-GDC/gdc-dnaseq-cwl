@@ -1,0 +1,83 @@
+#!/usr/bin/env cwl-runner
+
+description: |
+  Usage:  cwl-runner <this-file-path> XXXX
+  Options:
+    --bam_path       input bam path
+    --uuid           uuid
+
+requirements:
+  - import: node-engine.cwl
+  - import: envvar-global.cwl
+  - class: DockerRequirement
+    dockerPull: quay.io/ncigdc/cocleaning-tool
+
+class: CommandLineTool
+
+inputs:
+  - id: "#reference_fasta_path"
+    type: File
+    inputBinding:
+      prefix: --reference_fasta_path
+
+  - id: "#uuid"
+    type: string
+    inputBinding:
+      prefix: --uuid
+
+  - id: "#known_indel_vcf_path"
+    type: File
+    inputBinding:
+      prefix: --known_indel_vcf_path
+
+  - id: "#bam_path"
+    type: ["null", File]
+    inputBinding:
+      prefix: --bam_path
+
+  - id: "#harmonized_bam_list_path"
+    type: ["null", File]
+    inputBinding:
+      prefix: --bam_list_path
+
+  - id: "#thread_count"
+    type: string
+    inputBinding:
+      prefix: --thread_count
+
+outputs:
+  - id: "#output_intervals"
+    type: File
+    description: "The index file"
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+            return $job['input_bam'].path.split('/').slice(-1)[0].slice(0,-4)+".intervals";
+          }
+
+  - id: "#output_sqlite"
+    type: File
+    description: "sqlite file"
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script : |
+          {
+          return $job['uuid']+".db"
+          }
+
+  - id: "#log"
+    type: File
+    description: "python log file"
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return $job['uuid']+"_gatk_indelrealigner.log"
+          }
+
+          
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/tools/cocleaning-tool/main.py", "--tool_name", "indelrealigner"]
