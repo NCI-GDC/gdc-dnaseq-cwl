@@ -1,0 +1,76 @@
+#!/usr/bin/env cwl-runner
+
+class: Workflow
+
+inputs:
+  - id: "#bam_path"
+    type: File
+  - id: "#known_indel_vcf_path"
+    type: File
+  - id: "#known_snp_vcf_path"
+    type: File
+  - id: "#reference_fasta_path"
+    type: File
+  - id: "#thread_count"
+    type: string
+  - id: "#uuid"
+    type: string
+    
+outputs:
+  - id: "#picard_markduplicates_output_bam"
+    type: File
+    source: "#picard_markduplicates.output_bam"
+  - id: "#picard_markduplicates_output_bai"
+    type: File
+    source: "#picard_markduplicates.output_bai"
+  - id: "#merge_sqlite_destination_sqlite"
+    type: File
+    source: "#merge_picard_collectmultiplemetrics.destination_sqlite"
+
+requirements:
+  - class: ScatterFeatureRequirement
+    
+steps:
+  - id: "#gatk_realignertargetcreator"
+    run: {import: ../../tools/gatk_realignertargetcreator.cwl.yaml}
+    inputs:
+      - id: "#gatk__realignertargetcreator.input_bam_path"
+        source: "#bam_path"
+      - id: "#gatk_realignertargetcreator.known_indel_vcf_path"
+        source: "#known_indel_vcf_path"
+      - id: "#gatk_realignertargetcreator.uuid"
+        source: "#uuid"
+      - id: "#gatk_realignertargetcreator.reference_fasta_path"
+        source: "#reference_fasta_path"
+      - id: "#gatk_realignertargetcreator.thread_count"
+        source: "#thread_count"
+    outputs:
+      - id: "#gatk_realignertargetcreator.output_intervals"
+      - id: "#gatk_realignertargetcreator.output_sqlite"
+      - id: "#gatk_realignertargetcreator.log"
+
+  - id: "#gatk_indelrealigner"
+    run: {import: ../../tools/picard_markduplicates.cwl.yaml}
+    inputs:
+      - id: "#gatk_indelrealigner.input_bam_path"
+        source: "#bam_path"
+      - id: "#gatk_indelrealigner.known_indel_vcf_path"
+        source: "#known_indel_vcf_path"
+      - id: "#gatk_indelrealigner.target_intervals_path"
+        source: "#gatk_realignertargetcreator.output_intervals"
+      - id: "#gatk_indelrealigner.uuid"
+        source: "#uuid"
+    outputs:
+      - id: "#gatk_indelrealigner.output_bam"
+      - id: "#gatk_indelrealigner.output_sqlite"
+      - id: "#gatk_indelrealigner.log"
+
+  - id: "#merge_all_sqlite"
+    run: {import: ../../tools/merge_sqlite.cwl.yaml}
+    inputs:
+      - id: "#merge_all_sqlite.source_sqlite"
+        source: ["#gatk_realignertargetcreator.output_sqlite", "#gatk_indelrealigner.output_sqlite"]
+      - id: "#merge_all_sqlite.uuid"
+        source: "#uuid"
+    outputs:
+      - id: "#merge_all_sqlite.destination_sqlite"
