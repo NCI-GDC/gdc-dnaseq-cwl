@@ -24,7 +24,7 @@ outputs:
     source: "#picard_markduplicates.output_bai"
   - id: "#merge_sqlite_destination_sqlite"
     type: File
-    source: "#merge_all_sqlite.destination_sqlite"
+    source: "#merge_picard_collectmultiplemetrics.destination_sqlite"
 
 requirements:
   - class: ScatterFeatureRequirement
@@ -81,23 +81,23 @@ steps:
       - id: "#picard_collectmultiplemetrics.output_sqlite"
       - id: "#picard_collectmultiplemetrics.log"
 
-#  - id: "#merge_picard_collectmultiplemetrics_sqlite"
-#    run: {import: ../../tools/merge_sqlite.cwl.yaml}
-#    inputs:
-#      - id: "#merge_picard_collectmultiplemetrics.source_sqlite"
-#        source: "#picard_collectmultiplemetrics.output_sqlite"
-#    outputs:
-#      - id: "#merge_picard_collectmultiplemetrics.destination_sqlite"
-        
-  - id: "#merge_all_sqlite"
+  - id: "#merge_picard_collectmultiplemetrics_sqlite"
     run: {import: ../../tools/merge_sqlite.cwl.yaml}
     inputs:
-      - id: "#merge_all_sqlite.source_sqlite"
-        source: ["#remove_qcfail.output_sqlite", "#picard_markduplicates.output_sqlite"] #, "#merge_picard_collectmultiplemetrics.destination_sqlite"]
-      - id: "#merge_all_sqlite.uuid"
-        source: "#uuid"
+      - id: "#merge_picard_collectmultiplemetrics.source_sqlite"
+        source: ["#picard_collectmultiplemetrics.output_sqlite"]
     outputs:
-      - id: "#merge_all_sqlite.destination_sqlite"
+      - id: "#merge_picard_collectmultiplemetrics.destination_sqlite"
+        
+#  - id: "#merge_all_sqlite"
+#    run: {import: ../../tools/merge_sqlite.cwl.yaml}
+#    inputs:
+#      - id: "#merge_all_sqlite.source_sqlite"
+#        source: ["#remove_qcfail.output_sqlite", "#picard_markduplicates.output_sqlite"] #, "#merge_picard_collectmultiplemetrics.destination_sqlite"]
+#      - id: "#merge_all_sqlite.uuid"
+#        source: "#uuid"
+#    outputs:
+#      - id: "#merge_all_sqlite.destination_sqlite"
 
 #  - id: "#sra_hs_lookup"
 #    run: {import: ../../tools/sra_hs_lookup.cwl.yaml}
