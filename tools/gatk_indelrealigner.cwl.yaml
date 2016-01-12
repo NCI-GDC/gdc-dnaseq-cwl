@@ -37,6 +37,14 @@ inputs:
     type: File
     inputBinding:
       prefix: --reference_fasta_path
+      secondaryFiles:
+        - ".fai"
+        - engine: node-engine.cwl
+          script: |
+            {
+            return {"path": $job['reference_fasta_path'].path.slice(0,-3)+".dict", "class": "File"};
+            }
+
 
   - id: "#target_intervals_path"
     type: File
@@ -55,7 +63,7 @@ outputs:
       type: array
       items: File
     outputBinding:
-      glob: *.bam
+      glob: ./*.bam
 
   - id: "#output_sqlite"
     type: File
