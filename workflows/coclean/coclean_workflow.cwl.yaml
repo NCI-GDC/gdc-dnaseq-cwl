@@ -17,15 +17,18 @@ inputs:
     type: string
     
 outputs:
-  - id: "#picard_markduplicates_output_bam"
+  - id: "#gatk_indelrealigner_output_bam"
     type: File
-    source: "#picard_markduplicates.output_bam"
-  - id: "#picard_markduplicates_output_bai"
+    source: "#gatk_indelrealigner.output_bam"
+  - id: "#gatk_realignertargetcreator_log"
     type: File
-    source: "#picard_markduplicates.output_bai"
+    source: "#gatk_realignertargetcreateor.log"
+  - id: "#gatk_indelrealigner_log"
+    type: File
+    source "#gatk_indelrealigner.log"
   - id: "#merge_sqlite_destination_sqlite"
     type: File
-    source: "#merge_picard_collectmultiplemetrics.destination_sqlite"
+    source: "#merge_all_sqlite.destination_sqlite"
 
 requirements:
   - class: ScatterFeatureRequirement
@@ -66,23 +69,37 @@ steps:
       - id: "#gatk_indelrealigner.log"
 
 
-  - id: "#gatk_baserecalibrator"
-    run: {import: ../../tools/gatk_baserecalibrator.cwl.yaml}
-    inputs:
-      - id: "#gatk_baserecalibrator.bam_path"
-        source: "#gatk_indelrealigner.output_bam"
-      - id: "#gatk_baserecalibrator.known_snp_vcf_path"
-        source: "#known_snp_vcf_path"
-      - id: "#gatk_baserecalibrator.reference_fasta_path"
-        source: "#reference_fasta_path"
-      - id: "#gatk_baserecalibrator.thread_count"
-        source: "#thread_count"
-      - id: "#gatk_baserecalibrator.uuid"
-        source: "#uuid"
-    outputs:
-      - id: "#gatk_baserecalibrator.output_grp"
-      - id: "#gatk_baserecalibrator.output_sqlite"
-      - id: "#gatk_baserecalibrator.log"
+#  - id: "#gatk_baserecalibrator"
+#    run: {import: ../../tools/gatk_baserecalibrator.cwl.yaml}
+#    inputs:
+#      - id: "#gatk_baserecalibrator.bam_path"
+#        source: "#gatk_indelrealigner.output_bam"
+#      - id: "#gatk_baserecalibrator.known_snp_vcf_path"
+#        source: "#known_snp_vcf_path"
+#      - id: "#gatk_baserecalibrator.reference_fasta_path"
+#        source: "#reference_fasta_path"
+#      - id: "#gatk_baserecalibrator.thread_count"
+#        source: "#thread_count"
+#      - id: "#gatk_baserecalibrator.uuid"
+#        source: "#uuid"
+#    outputs:
+#      - id: "#gatk_baserecalibrator.output_grp"
+#      - id: "#gatk_baserecalibrator.output_sqlite"
+#      - id: "#gatk_baserecalibrator.log"
+
+#  - id: "#gatk_printreads"
+#    run: {import: ../../tools/gatk_printreads.cwl.yaml}
+#    inputs:
+#      - id: "#gatk_printreads.bam_path"
+#        source: 
+#      - id: "#gatk_printreads.bqsr_grp_path"
+#        source: "#gatk_baserecalibrator.output_grp"
+#      - id: "#gatk_printreads.reference_fasta_path"
+#        source: "#reference_fasta_path"
+#      - id: "#gatk_printreads.thread_count"
+#        source: "#thread_count"
+#      - id: "#gatk_printreads.uuid"
+#        source: "#uuid"
 
   - id: "#merge_all_sqlite"
     run: {import: ../../tools/merge_sqlite.cwl.yaml}
