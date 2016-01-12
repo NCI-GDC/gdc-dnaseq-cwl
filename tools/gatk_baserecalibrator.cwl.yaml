@@ -16,7 +16,7 @@ class: CommandLineTool
 
 inputs:
   - id: "#bam_path"
-    type: ["null", File]
+    type: File
     inputBinding:
       prefix: --bam_path
 
