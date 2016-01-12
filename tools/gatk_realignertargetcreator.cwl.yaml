@@ -15,30 +15,6 @@ requirements:
 class: CommandLineTool
 
 inputs:
-  - id: "#reference_fasta_path"
-    type: File
-    inputBinding:
-      prefix: --reference_fasta_path
-      secondaryFiles:
-        - ".fai"
-        - engine: node-engine.cwl
-          script: |
-            {
-            return {"path": $job['reference_fasta_path'].path.slice(0,-3)+".dict", "class": "File"};
-            }
-
-  - id: "#uuid"
-    type: string
-    inputBinding:
-      prefix: --uuid
-
-  - id: "#known_indel_vcf_path"
-    type: File
-    inputBinding:
-      prefix: --known_indel_vcf_path
-      secondaryFiles:
-        - ".idx"
-
   - id: "#input_bam_path"
     type:
       type: array
@@ -52,10 +28,34 @@ inputs:
               return {"path": $self.path.slice(0,-4)+".bai", "class": "File"};
               }
 
+  - id: "#known_indel_vcf_path"
+    type: File
+    inputBinding:
+      prefix: --known_indel_vcf_path
+      secondaryFiles:
+        - ".idx"
+
+  - id: "#reference_fasta_path"
+    type: File
+    inputBinding:
+      prefix: --reference_fasta_path
+      secondaryFiles:
+        - ".fai"
+        - engine: node-engine.cwl
+          script: |
+            {
+            return {"path": $job['reference_fasta_path'].path.slice(0,-3)+".dict", "class": "File"};
+            }
+
   - id: "#thread_count"
     type: string
     inputBinding:
       prefix: --thread_count
+
+  - id: "#uuid"
+    type: string
+    inputBinding:
+      prefix: --uuid
 
 outputs:
   - id: "#output_intervals"
