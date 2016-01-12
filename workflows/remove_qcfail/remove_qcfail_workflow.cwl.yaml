@@ -8,7 +8,7 @@ inputs:
   - id: "#second_input_bam"
     type: File
   - id: "#second_bam_reference"
-    type: File    
+    type: File
   - id: "#uuid"
     type: string
   - id: "#bam_library_key"
