@@ -1,0 +1,79 @@
+#!/usr/bin/env cwl-runner
+
+description: |
+  Usage:  cwl-runner <this-file-path> XXXX
+  Options:
+    --bam_path       XXXX
+    --uuid           XXXX
+
+requirements:
+  - import: node-engine.cwl
+  - import: envvar-global.cwl
+  - class: DockerRequirement
+    dockerPull: quay.io/ncigdc/cocleaning-tool
+
+class: CommandLineTool
+
+inputs:
+  - id: "#bam_path"
+    type: File
+    inputBinding:
+      prefix: --bam_path
+
+  - id: "#known_snp_vcf_path"
+    type: File
+    inputBinding:
+      prefix: --known_snp_vcf_path
+
+  - id: "#reference_fasta_path"
+    type: File
+    inputBinding:
+      prefix: --reference_fasta_path
+
+  - id: "#thread_count"
+    type: string
+    inputBinding:
+      prefix: --thread_count
+
+  - id: "#uuid"
+    type: string
+    inputBinding:
+      prefix: --uuid
+
+
+outputs:
+  - id: "#output_bam"
+    type: File
+    description: "The BAM file"
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+            return $job['input_bam'].path
+          }
+
+  - id: "#output_sqlite"
+    type: File
+    description: "sqlite file"
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script : |
+          {
+          return $job['uuid']+".db"
+          }
+
+  - id: "#log"
+    type: File
+    description: "python log file"
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return $job['uuid']+"_gatk_printreads.log"
+          }
+
+          
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/tools/cocleaning-tool/main.py", "--tool_name", "printreads"]
