@@ -25,7 +25,7 @@ outputs:
     source: "#gatk_realignertargetcreateor.log"
   - id: "#gatk_indelrealigner_log"
     type: File
-    source "#gatk_indelrealigner.log"
+    source: "#gatk_indelrealigner.log"
   - id: "#merge_sqlite_destination_sqlite"
     type: File
     source: "#merge_all_sqlite.destination_sqlite"
