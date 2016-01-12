@@ -4,7 +4,10 @@ class: Workflow
 
 inputs:
   - id: "#bam_path"
-    type: File
+    type:
+      type: array
+      items: File
+
   - id: "#known_indel_vcf_path"
     type: File
   - id: "#known_snp_vcf_path"
