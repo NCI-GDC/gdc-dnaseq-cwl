@@ -22,7 +22,7 @@ outputs:
     source: "#gatk_indelrealigner.output_bam"
   - id: "#gatk_realignertargetcreator_log"
     type: File
-    source: "#gatk_realignertargetcreateor.log"
+    source: "#gatk_realignertargetcreator.log"
   - id: "#gatk_indelrealigner_log"
     type: File
     source: "#gatk_indelrealigner.log"
