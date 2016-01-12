@@ -15,30 +15,31 @@ requirements:
 class: CommandLineTool
 
 inputs:
+  - id: "#bam_path"
+    type: ["null", File]
+    inputBinding:
+      prefix: --bam_path
+
+  - id: "#known_snp_vcf_path"
+    type: File
+    inputBinding:
+      prefix: --known_snp_vcf_path
+
   - id: "#reference_fasta_path"
     type: File
     inputBinding:
       prefix: --reference_fasta_path
+
+  - id: "#thread_count"
+    type: string
+    inputBinding:
+      prefix: --thread_count
 
   - id: "#uuid"
     type: string
     inputBinding:
       prefix: --uuid
 
-  - id: "#known_snp_vcf_path"
-    type: File
-    inputBinding:
-      prefix: --
-
-  - id: "#bam_path"
-    type: ["null", File]
-    inputBinding:
-      prefix: --bam_path
-
-  - id: "#thread_count"
-    type: string
-    inputBinding:
-      prefix: --thread_count
 
 outputs:
   - id: "#output_grp"
