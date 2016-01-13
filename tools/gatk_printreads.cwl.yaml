@@ -63,7 +63,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-            return $job['input_bam'].path
+            return $job['bam_path'].path
           }
 
   - id: "#output_sqlite"
