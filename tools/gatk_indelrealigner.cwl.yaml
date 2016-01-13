@@ -63,7 +63,12 @@ outputs:
       type: array
       items: File
     outputBinding:
-      glob: ./*.bam
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return $job['bam_path'].path.split('/').slice(-1)[0]
+          }
 
   - id: "#output_sqlite"
     type: File
