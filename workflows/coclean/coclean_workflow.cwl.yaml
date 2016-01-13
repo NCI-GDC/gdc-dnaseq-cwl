@@ -62,6 +62,8 @@ steps:
         source: "#bam_path"
       - id: "#gatk_indelrealigner.known_indel_vcf_path"
         source: "#known_indel_vcf_path"
+      - id: "#gatk_indelrealigner.reference_fasta_path"
+        source: "#reference_fasta_path"
       - id: "#gatk_indelrealigner.target_intervals_path"
         source: "#gatk_realignertargetcreator.output_intervals"
       - id: "#gatk_indelrealigner.uuid"
