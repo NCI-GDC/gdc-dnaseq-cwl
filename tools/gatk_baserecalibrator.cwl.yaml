@@ -19,12 +19,20 @@ inputs:
     type: File
     inputBinding:
       prefix: --bam_path
+      secondaryFiles:
+        - engine: node-engine.cwl
+          script: |
+            {
+              return {"path": $job['bam_path'].path.slice(0,-4)+".bai", "class": "File"};
+            }
 
   - id: "#known_snp_vcf_path"
     type: File
     inputBinding:
       prefix: --known_snp_vcf_path
-
+      secondaryFiles:
+        - ".idx"
+      
   - id: "#reference_fasta_path"
     type: File
     inputBinding:
