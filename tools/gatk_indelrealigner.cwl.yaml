@@ -67,7 +67,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return $job['bam_path'].path.split('/').slice(-1)[0]
+          ./*.bam  #return $job['input_bam_path'].path.split('/').slice(-1)[0]
           }
 
   - id: "#output_sqlite"
