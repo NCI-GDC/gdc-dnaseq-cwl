@@ -124,6 +124,8 @@ steps:
     inputs:
       - id: "#merge_baserecalibrator_sqlite.source_sqlite"
         source: "#gatk_baserecalibrator.output_sqlite"
+      - id: "#merge_baserecalibrator_sqlite.uuid"
+        source: "#uuid"
     outputs:
       - id: "#merge_baserecalibrator_sqlite.destination_sqlite"
 
