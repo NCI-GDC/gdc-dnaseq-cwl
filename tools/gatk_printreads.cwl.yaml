@@ -26,7 +26,7 @@ inputs:
               return {"path": $job['bam_path'].path.slice(0,-4)+".bai", "class": "File"};
             }
 
-  - id: "#bqsr_table_path"
+  - id: "#bqsr_grp_path"
     type: File
     inputBinding:
       prefix: --bqsr_table_path
@@ -64,6 +64,12 @@ outputs:
         script: |
           {
             return $job['bam_path'].path.split('/').slice(-1)[0]
+          }
+      secondaryFiles:
+        engine: node-engine.cwl
+        script: |
+          {
+            return $job['bam_path'].path.split('/').slice(-1)[0].slice(0,-3)+"bai";
           }
 
   - id: "#output_sqlite"
