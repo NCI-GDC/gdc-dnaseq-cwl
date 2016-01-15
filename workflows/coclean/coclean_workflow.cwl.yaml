@@ -129,12 +129,22 @@ steps:
     outputs:
       - id: "#merge_baserecalibrator_sqlite.destination_sqlite"
 
-#  - id: "#merge_all_sqlite"
-#    run: {import: ../../tools/merge_sqlite.cwl.yaml}
-#    inputs:
-#      - id: "#merge_all_sqlite.source_sqlite"
-#        source: [ "#gatk_indelrealigner.output_sqlite"] #["#gatk_realignertargetcreator.output_sqlite", '#gatk_baserecalibrator.output_sqlite']
-#      - id: "#merge_all_sqlite.uuid"
-#        source: "#uuid"
-#    outputs:
-#      - id: "#merge_all_sqlite.destination_sqlite"
+  - id: "#merge_printreads_sqlite"
+    run: {import: ../../tools/merge_sqlite.cwl.yaml}
+    inputs:
+      - id: "#merge_printreads_sqlite.source_sqlite"
+        source: "#gatk_printreads.output_sqlite"
+      - id: "#merge_printreads_sqlite.uuid"
+        source: "#uuid"
+    outputs:
+      - id: "#merge_printreads_sqlite.destination_sqlite"
+
+  - id: "#merge_all_sqlite"
+    run: {import: ../../tools/merge_sqlite.cwl.yaml}
+    inputs:
+      - id: "#merge_all_sqlite.source_sqlite"
+        source: [ "#gatk_realignertargetcreator.output_sqlite", "#gatk_indelrealigner.output_sqlite"] #[ "#gatk_baserecalibrator.output_sqlite", "gatk_printreads.output_sqlite"]
+      - id: "#merge_all_sqlite.uuid"
+        source: "#uuid"
+    outputs:
+      - id: "#merge_all_sqlite.destination_sqlite"
