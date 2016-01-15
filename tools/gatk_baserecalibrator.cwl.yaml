@@ -100,11 +100,12 @@ outputs:
             return $job['bam_path'].path.split('/').slice(-1)[0];
           }
       secondaryFiles:
-        engine: node-engine.cwl
-        script: |
-          {
+        glob:
+          engine: node-engine.cwl
+          script: |
+            {
             return $job['bam_path'].path.split('/').slice(-1)[0].slice(0,-3)+"bai";
-          }
+            }
       
 
           
