@@ -18,16 +18,8 @@ inputs:
     type: string
   - id: "#uuid"
     type: string
-  - id: "#output_intervals"
-    type: File
     
 outputs:
-  #- id: "#gatk_realignertargetcreator_log"
-  #  type: File
-  #  source: "#gatk_realignertargetcreator.log"
-  - id: "#gatk_indelrealigner_log"
-    type: File
-    source: "#gatk_indelrealigner.log"
   - id: "#merge_sqlite_destination_sqlite"
     type: File
     source: "#merge_all_sqlite.destination_sqlite"
@@ -41,23 +33,23 @@ requirements:
   - class: ScatterFeatureRequirement
     
 steps:
-#  - id: "#gatk_realignertargetcreator"
-#    run: {import: ../../tools/gatk_realignertargetcreator.cwl.yaml}
-#    inputs:
-#      - id: "#gatk__realignertargetcreator.input_bam_path"
-#        source: "#bam_path"
-#      - id: "#gatk_realignertargetcreator.known_indel_vcf_path"
-#        source: "#known_indel_vcf_path"
-#      - id: "#gatk_realignertargetcreator.uuid"
-#        source: "#uuid"
-#      - id: "#gatk_realignertargetcreator.reference_fasta_path"
-#        source: "#reference_fasta_path"
-#      - id: "#gatk_realignertargetcreator.thread_count"
-#        source: "#thread_count"
-#    outputs:
-#      - id: "#gatk_realignertargetcreator.output_intervals"
-#      - id: "#gatk_realignertargetcreator.output_sqlite"
-#      - id: "#gatk_realignertargetcreator.log"
+  - id: "#gatk_realignertargetcreator"
+    run: {import: ../../tools/gatk_realignertargetcreator.cwl.yaml}
+    inputs:
+      - id: "#gatk__realignertargetcreator.input_bam_path"
+        source: "#bam_path"
+      - id: "#gatk_realignertargetcreator.known_indel_vcf_path"
+        source: "#known_indel_vcf_path"
+      - id: "#gatk_realignertargetcreator.uuid"
+        source: "#uuid"
+      - id: "#gatk_realignertargetcreator.reference_fasta_path"
+        source: "#reference_fasta_path"
+      - id: "#gatk_realignertargetcreator.thread_count"
+        source: "#thread_count"
+    outputs:
+      - id: "#gatk_realignertargetcreator.output_intervals"
+      - id: "#gatk_realignertargetcreator.output_sqlite"
+      - id: "#gatk_realignertargetcreator.log"
 
   - id: "#gatk_indelrealigner"
     run: {import: ../../tools/gatk_indelrealigner.cwl.yaml}
@@ -69,7 +61,7 @@ steps:
       - id: "#gatk_indelrealigner.reference_fasta_path"
         source: "#reference_fasta_path"
       - id: "#gatk_indelrealigner.target_intervals_path"
-        source: "#output_intervals"
+        source: "#gatk_realignertargetcreateor.output_intervals"
       - id: "#gatk_indelrealigner.uuid"
         source: "#uuid"
     outputs:
@@ -143,7 +135,7 @@ steps:
     run: {import: ../../tools/merge_sqlite.cwl.yaml}
     inputs:
       - id: "#merge_all_sqlite.source_sqlite"
-        source: [ "#gatk_indelrealigner.output_sqlite", "#merge_baserecalibrator_sqlite.destination_sqlite", "#merge_printreads_sqlite.destination_sqlite"] # "#gatk_realignertargetcreator.output_sqlite",
+        source: [ "#gatk_realignertargetcreator.output_sqlite", "#gatk_indelrealigner.output_sqlite", "#merge_baserecalibrator_sqlite.destination_sqlite", "#merge_printreads_sqlite.destination_sqlite"]
       - id: "#merge_all_sqlite.uuid"
         source: "#uuid"
     outputs:
