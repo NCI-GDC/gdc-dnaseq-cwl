@@ -28,14 +28,14 @@ outputs:
   - id: "#gatk_indelrealigner_log"
     type: File
     source: "#gatk_indelrealigner.log"
-  #- id: "#merge_sqlite_destination_sqlite"
-  #  type: File
-  #  source: "#merge_all_sqlite.destination_sqlite"
-  #- id: "#gatk_printreads_output_bam"
-  #  type:
-  #    type: array
-  #    items: File
-  #  source: "#gatk_printreads.output_bam"
+  - id: "#merge_sqlite_destination_sqlite"
+    type: File
+    source: "#merge_all_sqlite.destination_sqlite"
+  - id: "#gatk_printreads_output_bam"
+    type:
+      type: array
+      items: File
+    source: "#gatk_printreads.output_bam"
 
 requirements:
   - class: ScatterFeatureRequirement
@@ -98,25 +98,25 @@ steps:
       - id: "#gatk_baserecalibrator.log"
       - id: "#gatk_baserecalibrator.output_bam"
 
-#  - id: "#gatk_printreads"
-#    run: {import: ../../tools/gatk_printreads.cwl.yaml}
-#    scatter: ["#gatk_printreads.bam_path", "#gatk_printreads.bqsr_grp_path"]
-#    scatterMethod: "dotproduct"
-#    inputs:
-#      - id: "#gatk_printreads.bam_path"
-#        source: "#gatk_baserecalibrator.output_bam"
-#      - id: "#gatk_printreads.bqsr_grp_path"
-#        source: "#gatk_baserecalibrator.output_grp"
-#      - id: "#gatk_printreads.reference_fasta_path"
-#        source: "#reference_fasta_path"
-#      - id: "#gatk_printreads.thread_count"
-#        source: "#thread_count"
-#      - id: "#gatk_printreads.uuid"
-#        source: "#uuid"
-#    outputs:
-#      - id: "#gatk_printreads.output_bam"
-#      - id: "#gatk_printreads.output_sqlite"
-#      - id: "#gatk_printreads.log"
+  - id: "#gatk_printreads"
+    run: {import: ../../tools/gatk_printreads.cwl.yaml}
+    scatter: ["#gatk_printreads.bam_path", "#gatk_printreads.bqsr_grp_path"]
+    scatterMethod: "dotproduct"
+    inputs:
+      - id: "#gatk_printreads.bam_path"
+        source: "#gatk_baserecalibrator.output_bam"
+      - id: "#gatk_printreads.bqsr_grp_path"
+        source: "#gatk_baserecalibrator.output_grp"
+      - id: "#gatk_printreads.reference_fasta_path"
+        source: "#reference_fasta_path"
+      - id: "#gatk_printreads.thread_count"
+        source: "#thread_count"
+      - id: "#gatk_printreads.uuid"
+        source: "#uuid"
+    outputs:
+      - id: "#gatk_printreads.output_bam"
+      - id: "#gatk_printreads.output_sqlite"
+      - id: "#gatk_printreads.log"
         
 
   - id: "#merge_baserecalibrator_sqlite"
@@ -143,7 +143,7 @@ steps:
     run: {import: ../../tools/merge_sqlite.cwl.yaml}
     inputs:
       - id: "#merge_all_sqlite.source_sqlite"
-        source: [ "#gatk_realignertargetcreator.output_sqlite", "#gatk_indelrealigner.output_sqlite"] #[ "#gatk_baserecalibrator.output_sqlite", "gatk_printreads.output_sqlite"]
+        source: [ "#gatk_realignertargetcreator.output_sqlite", "#gatk_indelrealigner.output_sqlite", "#merge_baserecalibrator_sqlite.destination_sqlite", "merge_printreads_sqlite.destination_sqlite"]
       - id: "#merge_all_sqlite.uuid"
         source: "#uuid"
     outputs:
