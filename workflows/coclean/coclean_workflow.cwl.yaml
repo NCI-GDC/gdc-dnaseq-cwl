@@ -143,7 +143,7 @@ steps:
     run: {import: ../../tools/merge_sqlite.cwl.yaml}
     inputs:
       - id: "#merge_all_sqlite.source_sqlite"
-        source: [ "#gatk_realignertargetcreator.output_sqlite", "#gatk_indelrealigner.output_sqlite", "#merge_baserecalibrator_sqlite.destination_sqlite", "merge_printreads_sqlite.destination_sqlite"]
+        source: [ "#gatk_realignertargetcreator.output_sqlite", "#gatk_indelrealigner.output_sqlite", "#merge_baserecalibrator_sqlite.destination_sqlite", "#merge_printreads_sqlite.destination_sqlite"]
       - id: "#merge_all_sqlite.uuid"
         source: "#uuid"
     outputs:
