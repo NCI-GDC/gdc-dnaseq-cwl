@@ -8,9 +8,9 @@ KNOWN_INDEL_VCF = "Homo_sapiens_assembly38.known_indels.vcf"
 KNOWN_SNP_VCF = "Homo_sapiens_assembly38.dbsnp138.vcf"
 REFERENCE_GENOME = "GRCh38.d1.vd1"
 THREAD_COUNT = 8
-CWL_PATH =  ~/cocleaning-cwl/workflows/coclean/coclean_workflow.cwl.yaml
-# get index files
+CWL_PATH =  "${HOME}/cocleaning-cwl/workflows/coclean/coclean_workflow.cwl.yaml"
 
+# get index files
 INDEX_DIR = /mnt/coclean_index
 mkdir -p ${INDEX_DIR}
 cd ${INDEX_DIR}
