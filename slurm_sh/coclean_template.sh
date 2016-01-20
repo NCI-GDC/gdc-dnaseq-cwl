@@ -1,5 +1,4 @@
 #!/bin/bash
-#SBATCH --workdir=/mnt/coclean/run
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 
@@ -11,7 +10,7 @@ THREAD_COUNT = 8
 CWL_PATH =  "${HOME}/cocleaning-cwl/workflows/coclean/coclean_workflow.cwl.yaml"
 
 # get index files
-INDEX_DIR = /mnt/coclean_index
+INDEX_DIR = "/mnt/coclean_index"
 mkdir -p ${INDEX_DIR}
 cd ${INDEX_DIR}
 s3cmd -c ~/.s3cfg.cleversafe --skip-existing get s3://bioinformatics_scratch/coclean/${REFERENCE_GENOME}.dict
