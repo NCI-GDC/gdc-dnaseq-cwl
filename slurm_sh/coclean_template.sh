@@ -53,7 +53,7 @@ done
 
 # run cwl
 workon p2
-cwltool ${CWL_COMMAND}
+echo "cwltool ${CWL_COMMAND}"
 
 
 # upload results
