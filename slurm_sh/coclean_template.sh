@@ -10,6 +10,7 @@ REFERENCE_GENOME="GRCh38.d1.vd1"
 THREAD_COUNT=8
 CWL_PATH="${HOME}/cocleaning-cwl/workflows/coclean/coclean_workflow.cwl.yaml"
 S3_INDEX_BUCKET="s3://bioinformatics_scratch/coclean"
+UUID="atestuuid"
 
 function install_virtenv()
 {
@@ -66,13 +67,15 @@ mkdir -p ${COCLEAN_DIR}
 
 
 # setup cwl command
-CWL_COMMAND="cwltool --debug --leave-tmpdir ${CWL_PATH} --reference_fasta_path ${INDEX_DIR}/${REFERENCE_GENOME}.fa --uuid ${UUID} --known_indel_vcf_path ${INDEX_DIR}/${KNOWN_INDEL_VCF} --known_snp_vcf_path ${INDEX_DIR}/${KNOWN_SNP_VCF} --thread_count ${THREAD_COUNT}"
+CWL_COMMAND="--debug --leave-tmpdir --outdir ${COCLEAN_DIR} ${CWL_PATH} --reference_fasta_path ${INDEX_DIR}/${REFERENCE_GENOME}.fa --uuid ${UUID} --known_indel_vcf_path ${INDEX_DIR}/${KNOWN_INDEL_VCF} --known_snp_vcf_path ${INDEX_DIR}/${KNOWN_SNP_VCF} --thread_count ${THREAD_COUNT}"
+bam_paths = ""
 for bam_url in ${bam_url_array}
 do
     bam_name=$(basename ${bam_url})
     bam_path=${DATA_DIR}/${bam_name}
-    CWL_COMMAND="${CWL_COMMAND} --bam_path ${bam_path}"
+    bam_paths="${bam_paths} --bam_path ${bam_path}"
 done
+CWL_COMMAND="${CWL_COMMAND} ${bam_paths}"
 
 cd ${COCLEAN_DIR}
 
