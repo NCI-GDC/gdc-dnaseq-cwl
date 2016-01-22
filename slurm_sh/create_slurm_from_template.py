@@ -10,6 +10,17 @@ import argparse
 import os
 import sys
 
+def get_caseid_set(sql_file):
+    caseid_set = set()
+    with open(sql_file, 'r') as sql_file_open:
+        for line in sql_file_open:
+            if line.startswith('-') or line.startswith(' '):
+                continue
+            else:
+                caseid_str = line.split('|')[2].strip()
+                caseid_set.add(caseid_str)
+    return caseid_set
+
 def main():
     parser = argparse.ArgumentParser('make slurm')
     parser.add_argument('--sql_file',
@@ -26,7 +37,7 @@ def main():
     template_file = args.template_file
 
     
-
+    caseid_set=get_caseid_set(sql_file)
 
 if __name__=='__main__':
     main()
