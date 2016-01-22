@@ -4,8 +4,8 @@
 
 bam_url_array=("$@")
 echo ${bam_url_array}
-KNOWN_INDEL_VCF="Homo_sapiens_assembly38.known_indels.vcf"
-KNOWN_SNP_VCF="Homo_sapiens_assembly38.dbsnp138.vcf"
+KNOWN_INDEL_VCF="Homo_sapiens_assembly38.known_indels.vcf.gz"
+KNOWN_SNP_VCF="dbsnp_144.hg38.vcf.gz"
 REFERENCE_GENOME="GRCh38.d1.vd1"
 THREAD_COUNT=8
 CWL_PATH="${HOME}/cocleaning-cwl/workflows/coclean/coclean_workflow.cwl.yaml"
@@ -24,9 +24,9 @@ s3cmd -c ~/.s3cfg.cleversafe --skip-existing get ${S3_INDEX_BUCKET}/${REFERENCE_
 s3cmd -c ~/.s3cfg.cleversafe --skip-existing get ${S3_INDEX_BUCKET}/${REFERENCE_GENOME}.fa
 s3cmd -c ~/.s3cfg.cleversafe --skip-existing get ${S3_INDEX_BUCKET}/${REFERENCE_GENOME}.fa.fai
 s3cmd -c ~/.s3cfg.cleversafe --skip-existing get ${S3_INDEX_BUCKET}/${KNOWN_SNP_VCF}
-s3cmd -c ~/.s3cfg.cleversafe --skip-existing get ${S3_INDEX_BUCKET}/${KNOWN_SNP_VCF}.idx
+s3cmd -c ~/.s3cfg.cleversafe --skip-existing get ${S3_INDEX_BUCKET}/${KNOWN_SNP_VCF}.tbi
 s3cmd -c ~/.s3cfg.cleversafe --skip-existing get ${S3_INDEX_BUCKET}/${KNOWN_INDEL_VCF}
-s3cmd -c ~/.s3cfg.cleversafe --skip-existing get ${S3_INDEX_BUCKET}/${KNOWN_INDEL_VCF}.idx
+s3cmd -c ~/.s3cfg.cleversafe --skip-existing get ${S3_INDEX_BUCKET}/${KNOWN_INDEL_VCF}.tbi
 
 
 #make BAM dir
