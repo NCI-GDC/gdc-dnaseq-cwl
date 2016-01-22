@@ -79,7 +79,6 @@ mkdir -p ${COCLEAN_DIR}
 
 # setup cwl command
 CWL_COMMAND="--debug --leave-tmpdir --outdir ${COCLEAN_DIR} ${COCLEAN_WORKFLOW_PATH} --reference_fasta_path ${INDEX_DIR}/${REFERENCE_GENOME}.fa --uuid ${UUID} --known_indel_vcf_path ${INDEX_DIR}/${KNOWN_INDEL_VCF} --known_snp_vcf_path ${INDEX_DIR}/${KNOWN_SNP_VCF} --thread_count ${THREAD_COUNT}"
-bam_paths = ""
 for bam_url in ${bam_url_array}
 do
     bam_name=$(basename ${bam_url})
