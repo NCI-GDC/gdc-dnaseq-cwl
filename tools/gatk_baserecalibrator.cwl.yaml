@@ -31,7 +31,7 @@ inputs:
     inputBinding:
       prefix: --known_snp_vcf_path
       secondaryFiles:
-        - ".idx"
+        - ".tbi"
       
   - id: "#reference_fasta_path"
     type: File

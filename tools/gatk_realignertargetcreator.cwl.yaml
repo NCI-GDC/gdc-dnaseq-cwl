@@ -33,7 +33,7 @@ inputs:
     inputBinding:
       prefix: --known_indel_vcf_path
       secondaryFiles:
-        - ".idx"
+        - ".tbi"
 
   - id: "#reference_fasta_path"
     type: File
