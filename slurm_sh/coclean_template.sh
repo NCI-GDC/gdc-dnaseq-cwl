@@ -111,5 +111,6 @@ do
     gdc_id=$(basename $(dirname ${bam_url}))
     bam_file=$(basename ${bam_url})
     bam_path=${COCLEAN_DIR}/${bam_file}
-    s3_put_cmd="s3cmd -c ~/.s3cfg.cleversafe put ${bam_path} ${S3_OUT_BUCKET}/${gdc_id}/"
+    echo "uploading: s3cmd -c ~/.s3cfg.cleversafe put ${bam_path} ${S3_OUT_BUCKET}/${gdc_id}/"
+    s3cmd -c ~/.s3cfg.cleversafe put ${bam_path} ${S3_OUT_BUCKET}/${gdc_id}/
 done
