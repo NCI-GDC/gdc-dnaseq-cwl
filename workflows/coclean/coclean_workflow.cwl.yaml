@@ -61,7 +61,7 @@ steps:
       - id: "#gatk_indelrealigner.reference_fasta_path"
         source: "#reference_fasta_path"
       - id: "#gatk_indelrealigner.target_intervals_path"
-        source: "#gatk_realignertargetcreateor.output_intervals"
+        source: "#gatk_realignertargetcreator.output_intervals"
       - id: "#gatk_indelrealigner.uuid"
         source: "#uuid"
     outputs:
