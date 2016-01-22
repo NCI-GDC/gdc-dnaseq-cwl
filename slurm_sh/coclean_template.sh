@@ -80,6 +80,7 @@ done
 COCLEAN_DIR=${DATA_DIR}/coclean
 mkdir -p ${COCLEAN_DIR}
 
+
 # setup cwl command
 CWL_COMMAND="--debug --leave-tmpdir --outdir ${COCLEAN_DIR} ${COCLEAN_WORKFLOW_PATH} --reference_fasta_path ${INDEX_DIR}/${REFERENCE_GENOME}.fa --uuid ${UUID} --known_indel_vcf_path ${INDEX_DIR}/${KNOWN_INDEL_VCF} --known_snp_vcf_path ${INDEX_DIR}/${KNOWN_SNP_VCF} --thread_count ${THREAD_COUNT}"
 for bam_url in ${bam_url_array}
@@ -92,6 +93,7 @@ CWL_COMMAND="${CWL_COMMAND} ${bam_paths}"
 
 cd ${COCLEAN_DIR}
 
+
 # run cwl
 if [ ! -f ${HOME}/.virtualenvs/p2/bin/cwltool ]; then
     echo "install virtenv"
@@ -103,6 +105,17 @@ source ${HOME}/.virtualenvs/p2/bin/activate
 echo "calling:
 ${HOME}/.virtualenvs/p2/bin/cwltool ${CWL_COMMAND}"
 ${HOME}/.virtualenvs/p2/bin/cwltool ${CWL_COMMAND}
+
+
+# index coclean BAM files
+cd ${COCLEAN_DIR}
+for bam_url in ${bam_url_array}
+do
+    bam_name=$(basename ${bam_url})
+    bam_path=${COCLEAN_DIR}/${bam_name}
+    CWL_COMMAND="--debug --leave-tmpdir --outdir ${DATA_DIR} ${BUILDBAMINDEX_TOOL_PATH} --uuid ${UUID} --input_bam ${bam_path}"
+    ${HOME}/.virtualenvs/p2/bin/cwltool ${CWL_COMMAND}
+done
 
 
 # upload results
