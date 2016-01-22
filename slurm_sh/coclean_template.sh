@@ -2,6 +2,8 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 
+#BAM_URL_ARRAY_STRING
+
 bam_url_array="$@"
 echo ${bam_url_array}
 KNOWN_INDEL_VCF="Homo_sapiens_assembly38.known_indels.vcf.gz"
@@ -11,6 +13,7 @@ THREAD_COUNT=8
 COCLEAN_WORKFLOW_PATH="${HOME}/cocleaning-cwl/workflows/coclean/coclean_workflow.cwl.yaml"
 BUILDBAMINDEX_TOOL_PATH="${HOME}/cocleaning-cwl/tools/picard_buildbamindex.cwl.yaml"
 S3_INDEX_BUCKET="s3://bioinformatics_scratch/coclean"
+S3_OUT_BUCKET="s3://tcga_exome_blca_coclean"
 UUID="atestuuid"
 
 function install_virtenv()
@@ -99,10 +102,14 @@ fi
 source ${HOME}/.virtualenvs/p2/bin/activate
 echo "calling:
 ${HOME}/.virtualenvs/p2/bin/cwltool ${CWL_COMMAND}"
- ${HOME}/.virtualenvs/p2/bin/cwltool ${CWL_COMMAND}
+${HOME}/.virtualenvs/p2/bin/cwltool ${CWL_COMMAND}
 
 
 # upload results
-#TODO
-
-
+for bam_url in ${bam_url_array}
+do
+    gdc_id=$(basename $(dirname ${bam_url}))
+    bam_file=$(basename ${bam_url})
+    bam_path=${COCLEAN_DIR}/${bam_file}
+    s3_put_cmd="s3cmd -c ~/.s3cfg.cleversafe put ${bam_path} ${S3_OUT_BUCKET}/${gdc_id}/"
+done
