@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 
+###SQL command###
+#prod_bioinfo=> \o out.txt
+#prod_bioinfo=> select * from harmonized_files where experimental_strategy = 'WXS' and project = 'BLCA'order by case_id;
+#prod_bioinfo=> \q
+###
 
 import argparse
 import os
