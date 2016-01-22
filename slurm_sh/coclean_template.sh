@@ -110,7 +110,12 @@ for bam_url in ${bam_url_array}
 do
     gdc_id=$(basename $(dirname ${bam_url}))
     bam_file=$(basename ${bam_url})
+    bam_base="${bam_file%.*}"
+    bai_file="${bam_base}.bai"
     bam_path=${COCLEAN_DIR}/${bam_file}
+    bai_path=${COCLEAN_DIR}/${bai_file}
+    echo "uploading: s3cmd -c ~/.s3cfg.cleversafe put ${bai_path} ${S3_OUT_BUCKET}/${gdc_id}/"
+    s3cmd -c ~/.s3cfg.cleversafe put ${bai_path} ${S3_OUT_BUCKET}/${gdc_id}/
     echo "uploading: s3cmd -c ~/.s3cfg.cleversafe put ${bam_path} ${S3_OUT_BUCKET}/${gdc_id}/"
     s3cmd -c ~/.s3cfg.cleversafe put ${bam_path} ${S3_OUT_BUCKET}/${gdc_id}/
 done
