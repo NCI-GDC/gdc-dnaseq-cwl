@@ -11,6 +11,22 @@ THREAD_COUNT=8
 CWL_PATH="${HOME}/cocleaning-cwl/workflows/coclean/coclean_workflow.cwl.yaml"
 S3_INDEX_BUCKET="s3://bioinformatics_scratch/coclean"
 
+function install_virtenv()
+{
+    export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128;
+    pip install virtualenvwrapper --user
+    echo "source ${HOME}/.local/bin/virtualenvwrapper.sh" >> ~/.bashrc
+    source ${HOME}/.local/bin/virtualenvwrapper.sh
+    mkvirtualenv --python /usr/bin/python2 p2
+}
+
+function install_cwltool()
+{
+    export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128;
+    workon p2
+    pip install cwltool
+}
+
 
 #make index dir
 INDEX_DIR="/mnt/SCRATCH/coclean_index"
@@ -50,7 +66,7 @@ mkdir -p ${COCLEAN_DIR}
 
 
 # setup cwl command
-CWL_COMMAND="cwltool --debug --leave-tmpdir --outdir ${COCLEAN_DIR} ${CWL_PATH} --reference_fasta_path ${INDEX_DIR}/${REFERENCE_GENOME}.fa --uuid ${UUID} --known_indel_vcf_path ${INDEX_DIR}/${KNOWN_INDEL_VCF} --known_snp_vcf_path ${INDEX_DIR}/${KNOWN_SNP_VCF} --thread_count ${THREAD_COUNT}"
+CWL_COMMAND="cwltool --debug --leave-tmpdir ${CWL_PATH} --reference_fasta_path ${INDEX_DIR}/${REFERENCE_GENOME}.fa --uuid ${UUID} --known_indel_vcf_path ${INDEX_DIR}/${KNOWN_INDEL_VCF} --known_snp_vcf_path ${INDEX_DIR}/${KNOWN_SNP_VCF} --thread_count ${THREAD_COUNT}"
 for bam_url in ${bam_url_array}
 do
     bam_name=$(basename ${bam_url})
@@ -61,9 +77,19 @@ done
 cd ${COCLEAN_DIR}
 
 # run cwl
-workon p2
-echo "cwltool ${CWL_COMMAND}"
+if [ ! -f ${HOME}/.virtualenvs/p2/bin/cwltool ]; then
+    echo "install virtenv"
+    install_virtenv
+    echo "install cwltool"
+    install_cwltool
+fi
+source ${HOME}/.virtualenvs/p2/bin/activate
+echo "calling:
+${HOME}/.virtualenvs/p2/bin/cwltool ${CWL_COMMAND}"
+ ${HOME}/.virtualenvs/p2/bin/cwltool ${CWL_COMMAND}
 
 
 # upload results
 #TODO
+
+
