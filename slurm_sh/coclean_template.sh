@@ -2,7 +2,7 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 
-BAM_URL_ARRAY="XX_BAM_URL_ARRAY"
+BAM_URL_ARRAY="XX_BAM_URL_ARRAY_XX"
 CASE_ID="XX_CASE_ID_XX"
 UUID=${CASE_ID}
 #bam_url_array="$@"
