@@ -46,7 +46,7 @@ def get_gdcid_set(caseid, sql_file):
     return gdcid_set
 
 
-def get_bam_name(gdcid, s3_bucket):
+def get_bam_name(gdcid, s3_bucket, logger):
     cmd = ['s3cmd','-c','~/.s3cfg.cleversafe', 'ls', s3_bucket+'/'+gdcid+'/', '>', 'out.s3']
     shell_cmd = ' '.join(cmd)
     pipe_util.do_shell_command(shell_cmd, logger)
