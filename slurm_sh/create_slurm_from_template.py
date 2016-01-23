@@ -60,20 +60,21 @@ def get_bam_name(gdcid, s3_bucket, logger):
 
 def write_case_file(caseid, bamurl_set, template_file):
     template_dir = os.path.dirname(template_file)
-    out_dir = os.path.join(template_dir, 'slurm_sh')
+    out_dir = os.path.join(template_dir, 'case_slurm_sh')
     os.makedirs(out_dir, exist_ok=True)
     out_file = 'coclean_'+caseid+'.sh'
     out_path = os.path.join(out_dir, out_file)
+    print('out_path=%s' % out_path)
     out_path_open = open(out_path, 'w')
     with open(template_file, 'r') as template_file_open:
         for line in template_file_open:
             if 'XX_BAM_URL_ARRAY_XX' in line:
                 replace_str = ' '.join(sorted(list(bamurl_set)))
                 newline = line.replace('XX_BAM_URL_ARRAY_XX', replace_str)
-                out_path.write(newline)
+                out_path_open.write(newline)
             elif 'XX_CASE_ID_XX' in line:
                 newline = line.replace('XX_CASE_ID_XX', caseid)
-                out_path.write(newline)
+                out_path_open.write(newline)
             else:
                 out_path_open.write(line)
     out_path_open.close()
