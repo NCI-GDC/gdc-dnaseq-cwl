@@ -35,7 +35,7 @@ function install_cwltool()
 
 
 #make index dir
-INDEX_DIR="/mnt/SCRATCH/coclean_index"
+INDEX_DIR="/mnt/scratch/coclean_index"
 mkdir -p ${INDEX_DIR}
 cd ${INDEX_DIR}
 
@@ -51,7 +51,7 @@ s3cmd -c ~/.s3cfg.cleversafe --skip-existing get ${S3_INDEX_BUCKET}/${KNOWN_INDE
 
 
 #make BAM dir
-DATA_DIR="/mnt/SCRATCH/data_"${CASE_ID}
+DATA_DIR="/mnt/scratch/data_"${CASE_ID}
 echo "DATA_DIR=${DATA_DIR}"
 mkdir -p ${DATA_DIR}
 
@@ -131,3 +131,7 @@ do
     echo "uploading: s3cmd -c ~/.s3cfg.cleversafe put ${bam_path} ${S3_OUT_BUCKET}/${gdc_id}/"
     s3cmd -c ~/.s3cfg.cleversafe put ${bam_path} ${S3_OUT_BUCKET}/${gdc_id}/
 done
+
+
+#cleanup
+rm -rf ${DATA_DIR}
