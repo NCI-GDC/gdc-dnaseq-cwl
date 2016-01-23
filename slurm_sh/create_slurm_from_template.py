@@ -7,6 +7,7 @@
 ###
 
 import argparse
+import logging
 import os
 import subprocess
 import sys
@@ -17,11 +18,16 @@ def get_caseid_set(sql_file):
     caseid_set = set()
     with open(sql_file, 'r') as sql_file_open:
         for line in sql_file_open:
-            if line.startswith('-') or line.startswith(' '):
+            #print('line=%s' % line)
+            if line.startswith('-') or line.startswith('    ') or line.startswith('(') or line.startswith('\n'):
                 continue
             else:
-                caseid_str = line.split('|')[2].strip()
+                line_split = line.split('|')
+                print('line_split=%s' % line_split)
+                caseid_str = line_split[2].strip()
+                print('caseid_str=%s' % caseid_str)
                 caseid_set.add(caseid_str)
+    print('caseid_set=%s' % caseid_set)
     return caseid_set
 
 
@@ -29,9 +35,10 @@ def get_gdcid_set(caseid, sql_file):
     gdcid_set = set()
     with open(sql_file, 'r') as sql_file_open:
         for line in sql_file_open:
-            if line.startswith('-') or line.startswith(' '):
+            if line.startswith('-') or line.startswith('    ') or line.startswith('(') or line.startswith('\n'):
                 continue
             else:
+                #print('line=%s' % line)
                 caseid_str = line.split('|')[2].strip()
                 if caseid==caseid_str:
                     gdcid_str = line.split('|')[0].strip()
@@ -75,6 +82,15 @@ def write_case_file(caseid, bamurl_set, template_file):
 def main():
     s3_bucket = 's3://tcga_exome_alignment_2'
     parser = argparse.ArgumentParser('make slurm')
+    # Logging flags.
+    parser.add_argument('-d', '--debug',
+        action = 'store_const',
+        const = logging.DEBUG,
+        dest = 'level',
+        help = 'Enable debug logging.',
+    )
+    parser.set_defaults(level = logging.INFO)
+
     parser.add_argument('--sql_file',
                         required = True,
                         help = 'pulled from harmonized_files'
