@@ -80,6 +80,65 @@ def write_case_file(caseid, bamurl_set, template_file):
     out_path_open.close()
     return
 
+
+def get_docker_version(gdcid, sql_file):
+    with open(sql_file, 'r') as sql_file_open:
+        for line in sql_file_open:
+            if line.startswith('-') or line.startswith('    ') or line.startswith('(') or line.startswith('\n'):
+                continue
+            else:
+                gdcid_str = line.split('|')[0].strip()
+                if gdcid == gdcid_str:
+                    docker_tag = line.split('|')[5].strip()
+                    version = docker_tag.split(':')[1].split('.')[1]
+                    return version
+    sys.exit('should not be here')
+    return
+                
+
+def get_latest_docker_tag(bamname, gdc_bamdocker_dict):
+    version_set = set()
+    for gdcid in sorted(list(gdc_bamdocker_dict.keys())):
+        bamname_str = gdc_bamdocker_dict[gdcid][0]
+        if bamname == bamname_str:
+            version_str = gdc_bamdocker_dict[gdcid][1]
+            version = int(version_str)
+            if version in version_set:
+                sys.exit('version: %s for bamname: %s is present more than once' %(str(version), bamname))
+            else:
+                version_set.add(version)
+    if len(version_set) < 1:
+        sys.exit('bamname: %s does not have a version' % (bamname))
+    max_version = str(max(version_set))
+    return max_version
+    
+def get_url_from_bamname_version(bamname, latest_version, gdc_bamdocker_dict):
+    for gdcid in sorted(list(gdc_bamdocker_dict.keys())):
+        this_bamname = gdc_bamdocker_dict[gdcid][0]
+        this_docker_version = gdc_bamdocker_dict[gdcid][1]
+        if bamname == this_bamname and latest_version == this_docker_version:
+            url = 's3://tcga_exome_alignment_2/' + gdcid + '/' + bamname
+            return url
+    sys.exit('error: couldn\'t find bamname: %s' % bamname)
+    return
+
+def remove_duplicate_bam_from_set(bamurl_set, sql_file):
+    gdc_bam_dict = dict()
+    bamname_list = list()
+    for bamurl in bamurl_set:
+        bamname = os.path.basename(bamurl)
+        gdcid = os.path.basename(os.path.dirname(bamurl))
+        docker_version = get_docker_version(gdcid, sql_file)
+        bamname_list.append(bamname)
+        gdc_bamdocker_dict[gdcid] = [bamname, docker_version]
+        bamname_list.append(bamname)
+    bamurl_set = set()
+    for bamname in bamname_list:
+        latest_version=get_latest_docker_version(bamname, gdc_bamversion_dict)
+        url_from_bamname_version=get_url_from_bamname_version(bamname, latest_version, gdc_bamdocker_dict)
+        bamurl_set.add(url_from_bamname_version)
+    return bamurl_set
+
 def main():
     s3_bucket = 's3://tcga_exome_alignment_2'
     parser = argparse.ArgumentParser('make slurm')
@@ -117,6 +176,7 @@ def main():
             bam_name = get_bam_name(gdcid, s3_bucket, logger)
             bam_url = s3_bucket+'/'+gdcid+'/'+bam_name
             bamurl_set.add(bam_url)
-        write_case_file(caseid, bamurl_set, template_file)
+        fixed_bamurl_set=remove_duplicate_bam_from_set(bamurl_set, sql_file)
+        write_case_file(caseid, fixed_bamurl_set, template_file)
 if __name__=='__main__':
     main()
