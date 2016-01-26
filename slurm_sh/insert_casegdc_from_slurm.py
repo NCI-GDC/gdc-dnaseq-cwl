@@ -10,6 +10,7 @@ import os
 import sys
 
 from cdis_pipe_utils import pipe_util
+from cdis_pipe_utils import df_util
 import pandas as pd
 
 def get_slurm_script_list(slurm_script_dir):
@@ -22,7 +23,7 @@ def get_caseid_from_slurm(slurm_script_path):
         for line in f_open:
             if line.startswith('CASE_ID'):
                 line_split = line.split('=')
-                case_id = line_split[1].strip('"')
+                case_id = line_split[1].strip().strip('"')
                 return case_id
     sys.exit('Could not find CASE_ID for %s' % slurm_script_path)
     return
@@ -31,7 +32,7 @@ def get_gdc_bam_dict_from_slurm(slurm_script_path):
     with open(slurm_script_path, 'r') as f_open:
         for line in f_open:
             if line.startswith('BAM_URL_ARRAY='):
-                bam_url_array = line.split('=')[1].strip('"').split(' ')
+                bam_url_array = line.split('=')[1].strip().strip('"').split(' ')
                 gdc_bam_dict = dict()
                 for bam_url in bam_url_array:
                     bamname = os.path.basename(bam_url)
@@ -47,7 +48,8 @@ def case_gdc_to_df(case_id, gdc_id, bamname):
         'gdc_id': gdc_id,
         'bamname': bamname
     }
-    df = pd.DataFrame(df)
+    print('case_dict=%s' % case_dict)
+    df = pd.DataFrame(case_dict)
     return df
 
 
@@ -101,15 +103,19 @@ def main():
     logger = pipe_util.setup_logging(tool_name, args, uuid)
 
     engine = pipe_util.setup_db(uuid, username=psql_username, password = psql_password,
-                                              host = psql_host, port = psql_port, db = psql_db)
+                                host = psql_host, port = psql_port, db = psql_db)
 
     
-    slurm_script_list = get_slurm_script_list(slurm_script_dir)
+    slurm_script_list = sorted(get_slurm_script_list(slurm_script_dir))
+    print('slurm_script_list=%s' % slurm_script_list)
     for slurm_script_path in slurm_script_list:
+        print('slurm_script_path=%s' % slurm_script_path)
         case_id = get_caseid_from_slurm(slurm_script_path)
+        print('\tcase_id=%s' % case_id)
         gdc_bam_dict = get_gdc_bam_dict_from_slurm(slurm_script_path)
+        print('\tgdc_bam_dict=%s' % gdc_bam_dict)
         for gdc_id in sorted(list(gdc_bam_dict.keys())):
-            bamname = gdc_bam_dict[gdcid]
+            bamname = gdc_bam_dict[gdc_id]
             df = case_gdc_to_df(case_id, gdc_id, bamname)
             unique_key_dict = {
                 'case_id': case_id,
