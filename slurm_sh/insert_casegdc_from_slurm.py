@@ -12,6 +12,23 @@ import sys
 from cdis_pipe_utils import pipe_util
 
 
+def get_slurm_script_list(slurm_script_dir):
+    coclean_slurm_list = glob.glob(os.path.join(slurm_script_dir, 'coclean_*.sh'))
+    return coclean_slurm_list
+
+
+def get_caseid_from_slurm(slurm_script_path):
+    with open(slurm_script_path, 'r') as f_open:
+        for line in f_open:
+            if line.startswith('CASE_ID'):
+                line_split = line.split('=')
+                case_id = line_split[1].strip('"')
+                return case_id
+    sys.exit('Could not find CASE_ID for %s' % slurm_script_path)
+    return
+                
+
+
 def main():
     parser = argparse.ArgumentParser('insert rows into table based on slurm scripts')
     # Logging flags.
@@ -57,13 +74,17 @@ def main():
     psql_db = args.psql_db
     uuid = args.uuid
 
-    slurm_script_list = get_slurm_script_list(slurm_script_dir)
     tool_name = 'insert_casegdc_from_slurm'
     logger = pipe_util.setup_logging(tool_name, args, uuid)
 
     engine = pipe_util.setup_db_with_postgres(uuid, username=psql_username, password = psql_password,
                                               host = psql_host, port = psql_port, db = psql_db)
 
-
+    
+    slurm_script_list = get_slurm_script_list(slurm_script_dir)
+    for slurm_script_path in slurm_script_list:
+        case_id = get_caseid_from_slurm(slurm_script_path)
+        gdc_bam_dict = get_gdc_bam_dict_from_slurm(slurm_script_path)
+    
 if __name__=='__main__':
     main()
