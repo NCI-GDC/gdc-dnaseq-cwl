@@ -13,7 +13,7 @@ echo ${bam_url_array}
 KNOWN_INDEL_VCF="Homo_sapiens_assembly38.known_indels.vcf.gz"
 KNOWN_SNP_VCF="dbsnp_144.hg38.vcf.gz"
 REFERENCE_GENOME="GRCh38.d1.vd1"
-THREAD_COUNT=8
+THREAD_COUNT=40
 COCLEAN_WORKFLOW_PATH="${HOME}/cocleaning-cwl/workflows/coclean/coclean_workflow.cwl.yaml"
 BUILDBAMINDEX_TOOL_PATH="${HOME}/cocleaning-cwl/tools/picard_buildbamindex.cwl.yaml"
 S3_INDEX_BUCKET="s3://bioinformatics_scratch/coclean"
