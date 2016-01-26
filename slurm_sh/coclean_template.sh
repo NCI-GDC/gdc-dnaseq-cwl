@@ -17,6 +17,8 @@ BUILDBAMINDEX_TOOL_PATH="${HOME}/cocleaning-cwl/tools/picard_buildbamindex.cwl.y
 S3_INDEX_BUCKET="s3://bioinformatics_scratch/coclean"
 S3_OUT_BUCKET="s3://tcga_exome_blca_coclean"
 S3_LOG_BUCKET="s3://tcga_exome_blca_coclean_log"
+S3_CWL_PATH="s3://bioinformatics_scratch/cocleaning-cwl.tar.gz"
+
 
 function install_virtenv()
 {
@@ -33,6 +35,13 @@ function install_cwltool()
     workon p2
     pip install cwltool
 }
+
+
+#cget cwl
+cd /home/ubuntu/
+cwl_tarball=$(basename ${S3_CWL_PATH})
+s3cmd -c ~/.s3cfg.cleversafe --force get ${S3_CWL_PATH}
+tar xf ${cwl_tarball}
 
 
 #make index dir
@@ -81,8 +90,8 @@ COCLEAN_DIR=${DATA_DIR}/coclean
 mkdir -p ${COCLEAN_DIR}
 
 
-# setup cwl command
-CWL_COMMAND="--debug --leave-tmpdir --outdir ${COCLEAN_DIR} ${COCLEAN_WORKFLOW_PATH} --reference_fasta_path ${INDEX_DIR}/${REFERENCE_GENOME}.fa --uuid ${UUID} --known_indel_vcf_path ${INDEX_DIR}/${KNOWN_INDEL_VCF} --known_snp_vcf_path ${INDEX_DIR}/${KNOWN_SNP_VCF} --thread_count ${THREAD_COUNT}"
+# setup cwl command removed  --leave-tmpdir
+CWL_COMMAND="--debug --outdir ${COCLEAN_DIR} ${COCLEAN_WORKFLOW_PATH} --reference_fasta_path ${INDEX_DIR}/${REFERENCE_GENOME}.fa --uuid ${UUID} --known_indel_vcf_path ${INDEX_DIR}/${KNOWN_INDEL_VCF} --known_snp_vcf_path ${INDEX_DIR}/${KNOWN_SNP_VCF} --thread_count ${THREAD_COUNT}" 
 for bam_url in ${bam_url_array}
 do
     bam_name=$(basename ${bam_url})
@@ -105,16 +114,6 @@ source ${HOME}/.virtualenvs/p2/bin/activate
 echo "calling:
 ${HOME}/.virtualenvs/p2/bin/cwltool ${CWL_COMMAND}"
 ${HOME}/.virtualenvs/p2/bin/cwltool ${CWL_COMMAND}
-
-
-# index coclean BAM files
-for bam_url in ${bam_url_array}
-do
-    bam_name=$(basename ${bam_url})
-    bam_path=${COCLEAN_DIR}/${bam_name}
-    CWL_COMMAND="--debug --leave-tmpdir --outdir ${COCLEAN_DIR} ${BUILDBAMINDEX_TOOL_PATH} --uuid ${UUID} --input_bam ${bam_path}"
-    ${HOME}/.virtualenvs/p2/bin/cwltool ${CWL_COMMAND}
-done
 
 
 # upload results
