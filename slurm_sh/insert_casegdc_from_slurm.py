@@ -100,7 +100,7 @@ def main():
     tool_name = 'insert_casegdc_from_slurm'
     logger = pipe_util.setup_logging(tool_name, args, uuid)
 
-    engine = pipe_util.setup_db_with_postgres(uuid, username=psql_username, password = psql_password,
+    engine = pipe_util.setup_db(uuid, username=psql_username, password = psql_password,
                                               host = psql_host, port = psql_port, db = psql_db)
 
     
