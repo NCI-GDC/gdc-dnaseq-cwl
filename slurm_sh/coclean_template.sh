@@ -131,7 +131,7 @@ do
     echo "uploading: s3cmd -c ~/.s3cfg.cleversafe put ${bam_path} ${S3_OUT_BUCKET}/${gdc_id}/"
     s3cmd -c ~/.s3cfg.cleversafe put ${bam_path} ${S3_OUT_BUCKET}/${gdc_id}/
 done
-s3cmd -c ~/.s3cfg.cleversafe put ${CASE_ID}.db ${S3_LOG_BUCKET}/
+s3cmd -c ~/.s3cfg.cleversafe put ${COCLEAN_DIR}/${CASE_ID}.db ${S3_LOG_BUCKET}/
 
 #cleanup
 rm -rf ${DATA_DIR}
