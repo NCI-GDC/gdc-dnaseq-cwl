@@ -10,7 +10,7 @@ import os
 import sys
 
 from cdis_pipe_utils import pipe_util
-
+import pandas as pd
 
 def get_slurm_script_list(slurm_script_dir):
     coclean_slurm_list = glob.glob(os.path.join(slurm_script_dir, 'coclean_*.sh'))
@@ -40,6 +40,15 @@ def get_gdc_bam_dict_from_slurm(slurm_script_path):
                 return gdc_bam_dict
     sys.exit('Could not find BAM_URL_ARRAY for %s' % slurm_script_path)
     return
+
+def case_gdc_to_df(case_id, gdc_id, bamname):
+    case_dict = {
+        'case_id': [case_id],
+        'gdc_id': gdc_id,
+        'bamname': bamname
+    }
+    df = pd.DataFrame(df)
+    return df
 
 
 def main():
@@ -71,7 +80,7 @@ def main():
     parser.add_argument('--psql_db',
                         required = True
     )
-    parser.add_argument('--psql_tablename',
+    parser.add_argument('--table_name',
                         required = True
     )
     parser.add_argument('--uuid',
@@ -85,6 +94,7 @@ def main():
     psql_host = args.psql_host
     psql_port = args.psql_port
     psql_db = args.psql_db
+    table_name = args.table_name
     uuid = args.uuid
 
     tool_name = 'insert_casegdc_from_slurm'
@@ -98,6 +108,15 @@ def main():
     for slurm_script_path in slurm_script_list:
         case_id = get_caseid_from_slurm(slurm_script_path)
         gdc_bam_dict = get_gdc_bam_dict_from_slurm(slurm_script_path)
+        for gdc_id in sorted(list(gdc_bam_dict.keys())):
+            bamname = gdc_bam_dict[gdcid]
+            df = case_gdc_to_df(case_id, gdc_id, bamname)
+            unique_key_dict = {
+                'case_id': case_id,
+                'gdc_id': gdc_id,
+                'bamname': bamname
+            }
+            df_util.save_df_to_sqlalchemy(df, unique_key_dict, table_name, engine, logger)
     
 if __name__=='__main__':
     main()
