@@ -16,6 +16,7 @@ COCLEAN_WORKFLOW_PATH="${HOME}/cocleaning-cwl/workflows/coclean/coclean_workflow
 BUILDBAMINDEX_TOOL_PATH="${HOME}/cocleaning-cwl/tools/picard_buildbamindex.cwl.yaml"
 S3_INDEX_BUCKET="s3://bioinformatics_scratch/coclean"
 S3_OUT_BUCKET="s3://tcga_exome_blca_coclean"
+S3_LOG_BUCKET="s3://tcga_exome_blca_coclean_log"
 
 function install_virtenv()
 {
@@ -90,10 +91,10 @@ do
 done
 CWL_COMMAND="${CWL_COMMAND} ${bam_paths}"
 
-cd ${COCLEAN_DIR}
 
 
 # run cwl
+cd ${COCLEAN_DIR}
 if [ ! -f ${HOME}/.virtualenvs/p2/bin/cwltool ]; then
     echo "install virtenv"
     install_virtenv
@@ -107,12 +108,11 @@ ${HOME}/.virtualenvs/p2/bin/cwltool ${CWL_COMMAND}
 
 
 # index coclean BAM files
-cd ${COCLEAN_DIR}
 for bam_url in ${bam_url_array}
 do
     bam_name=$(basename ${bam_url})
     bam_path=${COCLEAN_DIR}/${bam_name}
-    CWL_COMMAND="--debug --leave-tmpdir --outdir ${DATA_DIR} ${BUILDBAMINDEX_TOOL_PATH} --uuid ${UUID} --input_bam ${bam_path}"
+    CWL_COMMAND="--debug --leave-tmpdir --outdir ${COCLEAN_DIR} ${BUILDBAMINDEX_TOOL_PATH} --uuid ${UUID} --input_bam ${bam_path}"
     ${HOME}/.virtualenvs/p2/bin/cwltool ${CWL_COMMAND}
 done
 
@@ -131,7 +131,7 @@ do
     echo "uploading: s3cmd -c ~/.s3cfg.cleversafe put ${bam_path} ${S3_OUT_BUCKET}/${gdc_id}/"
     s3cmd -c ~/.s3cfg.cleversafe put ${bam_path} ${S3_OUT_BUCKET}/${gdc_id}/
 done
-
+s3cmd -c ~/.s3cfg.cleversafe put ${CASE_ID}.db ${S3_LOG_BUCKET}/
 
 #cleanup
 rm -rf ${DATA_DIR}
