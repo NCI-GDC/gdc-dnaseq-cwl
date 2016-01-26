@@ -32,6 +32,15 @@ def main():
     parser.add_argument('--psql_password',
                         required = True
     )
+    parser.add_argument('--psql_host',
+                        required = True
+    )
+    parser.add_argument('--psql_port',
+                        required = True
+    )
+    parser.add_argument('--psql_db',
+                        required = True
+    )
     parser.add_argument('--uuid',
                         required = True
     )
@@ -41,6 +50,8 @@ def main():
     psql_username = args.psql_username
     psql_password = args.psql_password
     psql_host = args.psql_host
+    psql_port = args.psql_port
+    psql_db = args.psql_db
     uuid = args.uuid
 
     slurm_script_list = get_slurm_script_list(slurm_script_dir)
