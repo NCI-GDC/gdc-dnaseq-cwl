@@ -41,6 +41,9 @@ def main():
     parser.add_argument('--psql_db',
                         required = True
     )
+    parser.add_argument('--psql_tablename',
+                        required = True
+    )
     parser.add_argument('--uuid',
                         required = True
     )
