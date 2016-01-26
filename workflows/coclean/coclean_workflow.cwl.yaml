@@ -28,6 +28,11 @@ outputs:
       type: array
       items: File
     source: "#gatk_printreads.output_bam"
+  - id: "#gatk_printreads_output_bai"
+    type:
+      type: array
+      items: File
+    source: "#gatk_printreads.output_bai"
 
 requirements:
   - class: ScatterFeatureRequirement
@@ -107,6 +112,7 @@ steps:
         source: "#uuid"
     outputs:
       - id: "#gatk_printreads.output_bam"
+      - id: "#gatk_printreads.output_bai"
       - id: "#gatk_printreads.output_sqlite"
       - id: "#gatk_printreads.log"
         
