@@ -72,7 +72,7 @@ mkdir -p ${DATA_DIR}
 cd ${DATA_DIR}
 for bam_url in ${bam_url_array}
 do
-    s3cmd -c ~/.s3cfg.cleversafe --skip-existing get ${bam_url}
+    s3cmd -c ~/.s3cfg.cleversafe --force get ${bam_url}
 done
 
 
