@@ -26,7 +26,20 @@ def get_caseid_from_slurm(slurm_script_path):
                 return case_id
     sys.exit('Could not find CASE_ID for %s' % slurm_script_path)
     return
-                
+
+def get_gdc_bam_dict_from_slurm(slurm_script_path):
+    with open(slurm_script_path, 'r') as f_open:
+        for line in f_open:
+            if line.startswith('BAM_URL_ARRAY='):
+                bam_url_array = line.split('=')[1].strip('"').split(' ')
+                gdc_bam_dict = dict()
+                for bam_url in bam_url_array:
+                    bamname = os.path.basename(bam_url)
+                    gdc_id = os.path.basename(os.path.dirname(bam_url))
+                    gdc_bam_dict[gdc_id] = bamname
+                return gdc_bam_dict
+    sys.exit('Could not find BAM_URL_ARRAY for %s' % slurm_script_path)
+    return
 
 
 def main():
