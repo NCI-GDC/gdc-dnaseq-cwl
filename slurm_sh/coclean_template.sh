@@ -1,6 +1,8 @@
 #!/bin/bash
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
+#SBATCH --workdir=/mnt/scratch/
+
 
 BAM_URL_ARRAY="XX_BAM_URL_ARRAY_XX"
 CASE_ID="XX_CASE_ID_XX"
