@@ -46,14 +46,29 @@ def get_gdcid_set(caseid, sql_file):
     return gdcid_set
 
 
-def get_bam_name(gdcid, s3_bucket, logger):
+def get_bam_name(gdcid, sql_file):
+    with open(sql_file, 'r') as sql_file_open:
+        for line in sql_file_open:
+            if line.startswith('-') or line.startswith('    ') or line.startswith('(') or line.startswith('\n'):
+                continue
+            else:
+                line_split = line.split('|')
+                this_gdcid = line_split[0].strip()
+                if gdcid == this_gdcid:
+                    bamname = line_split[15].strip()
+                    return bamname
+    sys.exit('could not find bamname for gdcid: %s' % gdcid)
+    return 
+                
+
+def get_bam_name_from_s3(gdcid, s3_bucket, logger):
     cmd = ['s3cmd','-c','~/.s3cfg.cleversafe', 'ls', s3_bucket+'/'+gdcid+'/', '>', 'out.s3']
     shell_cmd = ' '.join(cmd)
     pipe_util.do_shell_command(shell_cmd, logger)
     with open('out.s3', 'r') as s3_path_open:
         line = s3_path_open.readline()
         line_split = line.split(' ')
-        line_path = line_split[-1]
+        line_path = line_split[-1].strip()
         bam_name = os.path.basename(line_path)
     os.remove('out.s3')
     return bam_name
@@ -96,9 +111,10 @@ def get_docker_version(gdcid, sql_file):
     return
                 
 
-def get_latest_docker_tag(bamname, gdc_bamdocker_dict):
+def get_latest_docker_version(bamname, gdc_bamdocker_dict):
     version_set = set()
     for gdcid in sorted(list(gdc_bamdocker_dict.keys())):
+        print('gdcid=%s' % gdcid)
         bamname_str = gdc_bamdocker_dict[gdcid][0]
         if bamname == bamname_str:
             version_str = gdc_bamdocker_dict[gdcid][1]
@@ -123,7 +139,7 @@ def get_url_from_bamname_version(bamname, latest_version, gdc_bamdocker_dict):
     return
 
 def remove_duplicate_bam_from_set(bamurl_set, sql_file):
-    gdc_bam_dict = dict()
+    gdc_bamdocker_dict = dict()
     bamname_list = list()
     for bamurl in bamurl_set:
         bamname = os.path.basename(bamurl)
@@ -133,8 +149,10 @@ def remove_duplicate_bam_from_set(bamurl_set, sql_file):
         gdc_bamdocker_dict[gdcid] = [bamname, docker_version]
         bamname_list.append(bamname)
     bamurl_set = set()
+    print('bamname_list=%s' % bamname_list)
     for bamname in bamname_list:
-        latest_version=get_latest_docker_version(bamname, gdc_bamversion_dict)
+        print('bamname=%s' % bamname)
+        latest_version=get_latest_docker_version(bamname, gdc_bamdocker_dict)
         url_from_bamname_version=get_url_from_bamname_version(bamname, latest_version, gdc_bamdocker_dict)
         bamurl_set.add(url_from_bamname_version)
     return bamurl_set
@@ -173,7 +191,7 @@ def main():
         gdcid_set = get_gdcid_set(caseid, sql_file)
         bamurl_set = set()
         for gdcid in gdcid_set:
-            bam_name = get_bam_name(gdcid, s3_bucket, logger)
+            bam_name = get_bam_name(gdcid, sql_file)
             bam_url = s3_bucket+'/'+gdcid+'/'+bam_name
             bamurl_set.add(bam_url)
         fixed_bamurl_set=remove_duplicate_bam_from_set(bamurl_set, sql_file)
