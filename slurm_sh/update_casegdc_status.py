@@ -117,8 +117,8 @@ def main():
     tool_name = 'update_casegdc_status'
     logger = pipe_util.setup_logging(tool_name, args, uuid)
 
-    engine = pipe_util.setup_db(uuid, username=psql_username, password = psql_password,
-                                host = psql_host, port = psql_port, db = psql_db)
+    #engine = pipe_util.setup_db(uuid, username=psql_username, password = psql_password,
+    #                            host = psql_host, port = psql_port, db = psql_db)
 
     
     complete_case_list = sorted(get_complete_case_list(case_log_bucket, logger))
@@ -146,8 +146,9 @@ def main():
                 update_string = """ UPDATE %s SET status = 'COMPLETE', output_location = '%s' WHERE case_id = uuid('%s') AND gdc_id = uuid('%s');""" % (table_name, s3_url, case_id, gdc_id)
                 print(update_string)
                 cur.execute(update_string)
-                cur.commit()
+    conn.commit()
     cur.close()
+    conn.close()
     print(len(complete_case_list))
     print(len(complete_gdc_url_dict))
     print('i=%s' % i)
