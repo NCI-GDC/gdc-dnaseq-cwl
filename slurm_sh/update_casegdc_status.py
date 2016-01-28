@@ -143,9 +143,11 @@ def main():
         if case_id in complete_case_list and gdc_id in sorted(list(complete_gdc_url_dict.keys())):
             s3_url = complete_gdc_url_dict[gdc_id]
             if s3_url is not None:
-                update_string = """ UPDATE %s SET status = 'COMPLETE', output_location = '%s' WHERE case_id = uuid[%s] AND gdc_id = uuid[%s]""" % (table_name, s3_url, case_id, gdc_id)
+                update_string = """ UPDATE %s SET status = 'COMPLETE', output_location = '%s' WHERE case_id = uuid('%s') AND gdc_id = uuid('%s');""" % (table_name, s3_url, case_id, gdc_id)
                 print(update_string)
                 cur.execute(update_string)
+                cur.commit()
+    cur.close()
     print(len(complete_case_list))
     print(len(complete_gdc_url_dict))
     print('i=%s' % i)
