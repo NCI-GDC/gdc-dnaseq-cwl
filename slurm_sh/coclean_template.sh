@@ -84,13 +84,13 @@ do
 done
 
 
-# index BAM files
+# index BAM files. remove `--leave-tmpdir` on production
 cd ${DATA_DIR}
 for bam_url in ${bam_url_array}
 do
     bam_name=$(basename ${bam_url})
     bam_path=${DATA_DIR}/${bam_name}
-    CWL_COMMAND="--debug --leave-tmpdir --outdir ${DATA_DIR} ${BUILDBAMINDEX_TOOL_PATH} --uuid ${UUID} --input_bam ${bam_path}"
+    CWL_COMMAND="--debug --outdir ${DATA_DIR} ${BUILDBAMINDEX_TOOL_PATH} --uuid ${UUID} --input_bam ${bam_path}"
     ${CWL_RUNNER} ${CWL_COMMAND}
 done
 
