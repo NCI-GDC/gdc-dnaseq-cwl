@@ -26,6 +26,7 @@ COCLEAN_WORKFLOW_PATH="${COCLEAN_DIR}/cocleaning-cwl/workflows/coclean/coclean_w
 BUILDBAMINDEX_TOOL_PATH="${COCLEAN_DIR}/cocleaning-cwl/tools/picard_buildbamindex.cwl.yaml"
 S3_CFG=${HOME}/.s3cfg.cleversafe
 CWL_RUNNER=${HOME}/.virtualenvs/p2_${CASE_ID}/bin/cwltool
+THIS_VIRTENV_DIR=${HOME}/.virtualenvs/p2_${CASE_ID}
 
 function install_virtenv()
 {
@@ -33,7 +34,7 @@ function install_virtenv()
     pip install virtualenvwrapper --user
     source ${HOME}/.local/bin/virtualenvwrapper.sh
     mkvirtualenv --python /usr/bin/python2 p2_${CASE_ID}
-    source ${HOME}/.virtualenvs/p2_${CASE_ID}/bin/activate
+    source ${THIS_VIRTENV_DIR}/bin/activate
     pip install --upgrade pip
 }
 
@@ -136,4 +137,4 @@ s3cmd -c ${S3_CFG} put ${COCLEAN_DIR}/${CASE_ID}.db ${S3_LOG_BUCKET}/
 
 #cleanup
 rm -rf ${DATA_DIR}
-rm -rf ${HOME}/.virtualenvs/p2_${CASE_ID}
+rm -rf ${THIS_VIRTENV_DIR}
