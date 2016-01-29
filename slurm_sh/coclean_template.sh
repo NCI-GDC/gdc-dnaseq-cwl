@@ -39,6 +39,16 @@ function install_cwltool()
 }
 
 
+#check that cwltool is installed
+if [ ! -f ${HOME}/.virtualenvs/p2/bin/cwltool ]; then
+    echo "install virtenv"
+    install_virtenv
+    echo "install cwltool"
+    install_cwltool
+fi
+source ${HOME}/.virtualenvs/p2/bin/activate
+
+
 #cget cwl
 cd /home/ubuntu/
 cwl_tarball=$(basename ${S3_CWL_PATH})
@@ -106,13 +116,6 @@ CWL_COMMAND="${CWL_COMMAND} ${bam_paths}"
 
 # run cwl
 cd ${COCLEAN_DIR}
-if [ ! -f ${HOME}/.virtualenvs/p2/bin/cwltool ]; then
-    echo "install virtenv"
-    install_virtenv
-    echo "install cwltool"
-    install_cwltool
-fi
-source ${HOME}/.virtualenvs/p2/bin/activate
 echo "calling:
 ${HOME}/.virtualenvs/p2/bin/cwltool ${CWL_COMMAND}"
 ${HOME}/.virtualenvs/p2/bin/cwltool ${CWL_COMMAND}
