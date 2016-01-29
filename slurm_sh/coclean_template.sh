@@ -30,7 +30,6 @@ function install_virtenv()
 {
     export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128;
     pip install virtualenvwrapper --user
-    echo "source ${HOME}/.local/bin/virtualenvwrapper.sh" >> ~/.bashrc
     source ${HOME}/.local/bin/virtualenvwrapper.sh
     mkvirtualenv --python /usr/bin/python2 p2_${CASE_ID}
     pip install --upgrade pip
