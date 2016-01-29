@@ -21,6 +21,10 @@ S3_OUT_BUCKET="s3://tcga_exome_blca_coclean"
 S3_LOG_BUCKET="s3://tcga_exome_blca_coclean_log"
 S3_CWL_PATH="s3://bioinformatics_scratch/cocleaning-cwl.tar.gz"
 
+INDEX_DIR="/mnt/scratch/coclean_index"
+DATA_DIR="/mnt/scratch/data_"${CASE_ID}
+COCLEAN_DIR=${DATA_DIR}/coclean
+
 
 function install_virtenv()
 {
@@ -28,14 +32,15 @@ function install_virtenv()
     pip install virtualenvwrapper --user
     echo "source ${HOME}/.local/bin/virtualenvwrapper.sh" >> ~/.bashrc
     source ${HOME}/.local/bin/virtualenvwrapper.sh
-    mkvirtualenv --python /usr/bin/python2 p2
+    mkvirtualenv --python /usr/bin/python2 p2_${CASE_ID}
+    pip install --upgrade pip
 }
 
 function install_cwltool()
 {
     export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128;
-    workon p2
-    pip install cwltool
+    workon p2_${CASE_ID}
+    pip install -r ${REQUIREMENTS_PATH}
 }
 
 
@@ -50,14 +55,13 @@ source ${HOME}/.virtualenvs/p2/bin/activate
 
 
 #cget cwl
-cd /home/ubuntu/
+cd ${DATA_DIR}
 cwl_tarball=$(basename ${S3_CWL_PATH})
 s3cmd -c ~/.s3cfg.cleversafe --force get ${S3_CWL_PATH}
 tar xf ${cwl_tarball}
 
 
 #make index dir
-INDEX_DIR="/mnt/scratch/coclean_index"
 mkdir -p ${INDEX_DIR}
 cd ${INDEX_DIR}
 
@@ -73,8 +77,6 @@ s3cmd -c ~/.s3cfg.cleversafe --skip-existing get ${S3_INDEX_BUCKET}/${KNOWN_INDE
 
 
 #make BAM dir
-DATA_DIR="/mnt/scratch/data_"${CASE_ID}
-echo "DATA_DIR=${DATA_DIR}"
 mkdir -p ${DATA_DIR}
 
 
@@ -98,7 +100,6 @@ done
 
 
 # setup run dir
-COCLEAN_DIR=${DATA_DIR}/coclean
 mkdir -p ${COCLEAN_DIR}
 
 
