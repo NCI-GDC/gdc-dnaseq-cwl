@@ -39,20 +39,16 @@ function install_virtenv()
 function install_cwltool()
 {
     export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128;
-    workon p2_${CASE_ID}
+    source ${HOME}/.virtualenvs/p2/bin/activate
     pip install -r ${REQUIREMENTS_PATH}
 }
 
 
-#check that cwltool is installed
-if [ ! -f ${HOME}/.virtualenvs/p2/bin/cwltool ]; then
-    echo "install virtenv"
-    install_virtenv
-    echo "install cwltool"
-    install_cwltool
-fi
-source ${HOME}/.virtualenvs/p2/bin/activate
-
+#always install virtenv on every job, remove at cleanup
+echo "install virtenv"
+install_virtenv
+echo "install cwltool"
+install_cwltool
 
 #cget cwl
 cd ${DATA_DIR}
@@ -140,3 +136,4 @@ s3cmd -c ~/.s3cfg.cleversafe put ${COCLEAN_DIR}/${CASE_ID}.db ${S3_LOG_BUCKET}/
 
 #cleanup
 rm -rf ${DATA_DIR}
+rm -rf ${HOME}/.virtualenvs/p2_${CASE_ID}
