@@ -6,6 +6,8 @@
 SCRATCH_DIR="/mnt/scratch"
 BAM_URL_ARRAY="XX_BAM_URL_ARRAY_XX"
 CASE_ID="XX_CASE_ID_XX"
+THREAD_COUNT=XX_THREAD_COUNT_XX
+CWL_TMPDIR_PREFIX="XX_TMPDIR_PREFIX_XX"
 UUID=${CASE_ID}
 #bam_url_array="$@"
 bam_url_array=${BAM_URL_ARRAY}
@@ -13,16 +15,15 @@ echo ${bam_url_array}
 KNOWN_INDEL_VCF="Homo_sapiens_assembly38.known_indels.vcf.gz"
 KNOWN_SNP_VCF="dbsnp_144.hg38.vcf.gz"
 REFERENCE_GENOME="GRCh38.d1.vd1"
-THREAD_COUNT=40
 S3_INDEX_BUCKET="s3://bioinformatics_scratch/coclean"
 S3_OUT_BUCKET="s3://tcga_exome_blca_coclean"
 S3_LOG_BUCKET="s3://tcga_exome_blca_coclean_log"
 #S3_CWL_PATH="s3://bioinformatics_scratch/cocleaning-cwl.tar.gz"
 DEPLOY_KEY="s3://bioinformatics_scratch/deploy_key/coclean_cwl_deploy_rsa"
 
-INDEX_DIR="${SCRATCH_DIR}/coclean_index"
 DATA_DIR="${SCRATCH_DIR}/data_"${CASE_ID}
-COCLEAN_DIR=${DATA_DIR}/coclean
+INDEX_DIR="${DATA_DIR}/index"
+COCLEAN_DIR="${DATA_DIR}/coclean"
 COCLEAN_WORKFLOW_PATH="${COCLEAN_DIR}/cocleaning-cwl/workflows/coclean/coclean_workflow.cwl.yaml"
 BUILDBAMINDEX_TOOL_PATH="${COCLEAN_DIR}/cocleaning-cwl/tools/picard_buildbamindex.cwl.yaml"
 S3_CFG=${HOME}/.s3cfg.cleversafe
@@ -51,12 +52,12 @@ function setup_ssh()
     eval `ssh-agent`
     s3cmd -c ${S3_CFG} get s3://bioinformatics_scratch/deploy_key/coclean_cwl_deploy_rsa
     ssh-add coclean_cwl_deploy_rsa
+    cd -
 }
 
 function clone_cwl()
 {
     export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128;
-    cd ${DATA}
     #check if key is in known hosts
     ssh-keygen -H -F github.com | grep "Host github.com found: line 1 type RSA" -
     if [ $? -q 0 ]
@@ -68,7 +69,7 @@ function clone_cwl()
         if [ $? -q 0 ]
         then
             cat githubkey >> ${HOME}/.ssh/known_hosts
-            git clone -b slurm_script https://github.com/NCI-GDC/cocleaning-cwl.git
+            git clone -b slurm_script git@github.com:NCI-GDC/cocleaning-cwl.git
         else
             echo "Improper github key:  `ssh-keygen -lf githubkey`"
             exit 1
@@ -84,13 +85,10 @@ install_cwltool
 echo "setup ssh"
 setup_ssh
 echo "get cwl"
-clone_cwl
 
 #get cwl
 cd ${DATA_DIR}
-cwl_tarball=$(basename ${S3_CWL_PATH})
-s3cmd -c ${S3_CFG} --force get ${S3_CWL_PATH}
-tar xf ${cwl_tarball}
+clone_cwl
 
 
 #make index dir
@@ -136,7 +134,7 @@ mkdir -p ${COCLEAN_DIR}
 
 
 # setup cwl command removed  --leave-tmpdir
-CWL_COMMAND="--debug --outdir ${COCLEAN_DIR} ${COCLEAN_WORKFLOW_PATH} --reference_fasta_path ${INDEX_DIR}/${REFERENCE_GENOME}.fa --uuid ${UUID} --known_indel_vcf_path ${INDEX_DIR}/${KNOWN_INDEL_VCF} --known_snp_vcf_path ${INDEX_DIR}/${KNOWN_SNP_VCF} --thread_count ${THREAD_COUNT}" 
+CWL_COMMAND="--debug --outdir ${COCLEAN_DIR} ${COCLEAN_WORKFLOW_PATH} --reference_fasta_path ${INDEX_DIR}/${REFERENCE_GENOME}.fa --uuid ${UUID} --known_indel_vcf_path ${INDEX_DIR}/${KNOWN_INDEL_VCF} --known_snp_vcf_path ${INDEX_DIR}/${KNOWN_SNP_VCF} --thread_count ${THREAD_COUNT}"
 for bam_url in ${bam_url_array}
 do
     bam_name=$(basename ${bam_url})
