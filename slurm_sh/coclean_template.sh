@@ -105,14 +105,20 @@ function get_gatk_index_files()
     s3_cfg_path=$1
     s3_index_bucket=$2
     storage_dir=$3
+    reference_genome=$4
+    known_snp_vcf=$5
+    known_indel_vcf=$6
 
-    s3cmd -c ${s3_cfg_path} --force get ${s3_index_bucket}/${REFERENCE_GENOME}.dict
-    s3cmd -c ${s3_cfg_path} --force get ${s3_index_bucket}/${REFERENCE_GENOME}.fa
-    s3cmd -c ${s3_cfg_path} --force get ${s3_index_bucket}/${REFERENCE_GENOME}.fa.fai
-    s3cmd -c ${s3_cfg_path} --force get ${s3_index_bucket}/${KNOWN_SNP_VCF}
-    s3cmd -c ${s3_cfg_path} --force get ${s3_index_bucket}/${KNOWN_SNP_VCF}.tbi
-    s3cmd -c ${s3_cfg_path} --force get ${s3_index_bucket}/${KNOWN_INDEL_VCF}
-    s3cmd -c ${s3_cfg_path} --force get ${s3_index_bucket}/${KNOWN_INDEL_VCF}.tbi
+    gatk_index_dir="${storage_dir}/index"
+    mkdir -p ${gatk_index_dir}
+    
+    s3cmd -c ${s3_cfg_path} --force get ${s3_index_bucket}/${reference_genome}.dict
+    s3cmd -c ${s3_cfg_path} --force get ${s3_index_bucket}/${reference_genome}.fa
+    s3cmd -c ${s3_cfg_path} --force get ${s3_index_bucket}/${reference_genome}.fa.fai
+    s3cmd -c ${s3_cfg_path} --force get ${s3_index_bucket}/${known_snp_vcf}
+    s3cmd -c ${s3_cfg_path} --force get ${s3_index_bucket}/${known_snp_vcf}.tbi
+    s3cmd -c ${s3_cfg_path} --force get ${s3_index_bucket}/${known_indel_vcf}
+    s3cmd -c ${s3_cfg_path} --force get ${s3_index_bucket}/${known_indel_vcf}.tbi
 }
 
 function get_bam_files()
@@ -133,14 +139,21 @@ function generate_bai_files()
 {
     storage_dir=$1
     bam_url_array=$2
+    case_id=$3
     prev_wd=`pwd`
     cd ${storage_dir}
+
+    this_virtenv_dir=${HOME}/.virtualenvs/p2_${case_id}
+    cwlrunner_path=${this_virtenv_dir}/bin/cwltool
+
     for bam_url in ${bam_url_array}
     do
         bam_name=$(basename ${bam_url})
         bam_path=${storage_dir}/${bam_name}
-        CWL_COMMAND="--debug --outdir ${storage_dir} ${BUILDBAMINDEX_TOOL_PATH} --uuid ${CASE_ID} --input_bam ${bam_path}"
-        ${CWL_RUNNER} ${CWL_COMMAND}
+        cwl_command="--debug --outdir ${storage_dir} ${BUILDBAMINDEX_TOOL_PATH} --uuid ${case_id} --input_bam ${bam_path}"
+
+        echo "${cwlrunner_path} ${cwl_command}"
+        ${cwlrunner_path} ${cwl_command}
     done
     cd ${prev_wd}
 }
@@ -149,53 +162,69 @@ function run_coclean()
 {
     storage_dir=$1
     bam_url_array=$2
+    case_id=$3
     coclean_dir=${storage_dir}/coclean
     prev_wd=`pwd`
     mkdir -p ${coclean_dir}
     cd ${coclean_dir}
     
     # setup cwl command removed  --leave-tmpdir
-    CWL_COMMAND="--debug --outdir ${COCLEAN_DIR} ${COCLEAN_WORKFLOW_PATH} --reference_fasta_path ${INDEX_DIR}/${REFERENCE_GENOME}.fa --uuid ${CASE_ID} --known_indel_vcf_path ${INDEX_DIR}/${KNOWN_INDEL_VCF} --known_snp_vcf_path ${INDEX_DIR}/${KNOWN_SNP_VCF} --thread_count ${THREAD_COUNT}"
+    cwl_command="--debug --outdir ${coclean_dir} ${COCLEAN_WORKFLOW_PATH} --reference_fasta_path ${INDEX_DIR}/${REFERENCE_GENOME}.fa --uuid ${CASE_ID} --known_indel_vcf_path ${INDEX_DIR}/${KNOWN_INDEL_VCF} --known_snp_vcf_path ${INDEX_DIR}/${KNOWN_SNP_VCF} --thread_count ${THREAD_COUNT}"
     for bam_url in ${bam_url_array}
     do
         bam_name=$(basename ${bam_url})
-        bam_path=${DATA_DIR}/${bam_name}
+        bam_path=${storage_dir}/${bam_name}
         bam_paths="${bam_paths} --bam_path ${bam_path}"
     done
-    CWL_COMMAND="${CWL_COMMAND} ${bam_paths}"
+    cwl_command="${cwl_command} ${bam_paths}"
 
     # run cwl
+    this_virtenv_dir=${HOME}/.virtualenvs/p2_${case_id}
+    cwlrunner_path=${this_virtenv_dir}/bin/cwltool
     echo "calling:
-${HOME}/.virtualenvs/p2/bin/cwltool ${CWL_COMMAND}"
-    ${HOME}/.virtualenvs/p2/bin/cwltool ${CWL_COMMAND}
+         ${cwlrunner_path} ${cwl_command}"
+    ${cwlrunner_path} ${cwl_command}
 
     cd ${prev_wd}
 }
 
 function upload_coclean_results()
 {
+    case_id=$1
+    bam_url_array=$2
+    s3_out_bucket=$3
+    s3_log_bucket=$4
+    s3_cfg_path=$5
+    storage_dir=$6
+    
+    coclean_dir=${storage_dir}/coclean
+    prev_wd=`pwd`
+    cd ${coclean_dir}
     for bam_url in ${bam_url_array}
     do
         gdc_id=$(basename $(dirname ${bam_url}))
         bam_file=$(basename ${bam_url})
         bam_base="${bam_file%.*}"
         bai_file="${bam_base}.bai"
-        bam_path=${COCLEAN_DIR}/${bam_file}
-        bai_path=${COCLEAN_DIR}/${bai_file}
-        echo "uploading: s3cmd -c ${S3_CFG} put ${bai_path} ${S3_OUT_BUCKET}/${gdc_id}/"
-        s3cmd -c ${S3_CFG} put ${bai_path} ${S3_OUT_BUCKET}/${gdc_id}/
-        echo "uploading: s3cmd -c ${S3_CFG} put ${bam_path} ${S3_OUT_BUCKET}/${gdc_id}/"
-        s3cmd -c ${S3_CFG} put ${bam_path} ${S3_OUT_BUCKET}/${gdc_id}/
+        bam_path=${coclean_dir}/${bam_file}
+        bai_path=${coclean_dir}/${bai_file}
+        echo "uploading: s3cmd -c ${s3_cfg_path} put ${bai_path} ${S3_OUT_BUCKET}/${gdc_id}/"
+        s3cmd -c ${s3_cfg_path} put ${bai_path} ${s3_out_bucket}/${gdc_id}/
+        echo "uploading: s3cmd -c ${s3_cfg_path} put ${bam_path} ${S3_OUT_BUCKET}/${gdc_id}/"
+        s3cmd -c ${s3_cfg_path} put ${bam_path} ${s3_out_bucket}/${gdc_id}/
     done
-    s3cmd -c ${S3_CFG} put ${COCLEAN_DIR}/${CASE_ID}.db ${S3_LOG_BUCKET}/
+    s3cmd -c ${s3_cfg_path} put ${coclean_dir}/${case_id}.db ${s3_log_bucket}/
 }
 
 function remove_data()
 {
     data_dir=$1
-    virtenv_dir=$2
+    case_id=$2
+    echo "rm -rf ${data_dir}"
     rm -rf ${data_dir}
-    rm -rf ${virtenv_dir}
+    this_virtenv_dir=${HOME}/.virtualenvs/p2_${case_id}
+    echo "rm -rf ${this_virtenv_dir}"
+    rm -rf ${this_virtenv_dir}
 }
 
 function main()
@@ -204,18 +233,19 @@ function main()
     mkdir -p ${data_dir}
     setup_deploy_key ${S3_CFG_PATH} ${S3_DEPLOY_KEY_URL} ${data_dir}
     clone_git_repo ${GIT_SERVER} ${GIT_SERVER_FINGERPRINT} ${GIT_CWL_REPO} ${EXPORT_PROXY_STR} ${data_dir}
-    cwl_requirements=${data_dir}
+    
+    cwl_pip_requirements=${data_dir}
     
     install_unique_virtenv ${CASE_ID} ${EXPORT_PROXY}
-    pip_install_requirments ${cwl_requirments}
-    gatk_index_dir="${data_dir}/index"
-    mkdir -p ${gatk_index_dir}
-    get_gatk_index_files ${S3_CFG_PATH} ${S3_GATK_INDEX_BUCKET} ${gatk_index_dir}
+    pip_install_requirments ${cwl_pip_requirements} ${EXPORT_PROXY}
+    get_gatk_index_files ${S3_CFG_PATH} ${S3_GATK_INDEX_BUCKET} ${data_dir} \
+                         ${REFERENCE_GENOME} ${KNOWN_SNP_VCF} ${KNOWN_INDEL_VCF}
     get_bam_files ${S3_CFG_PATH} ${bam_url_array} ${data_dir}
-    generate_bai_files ${data_dir} ${bam_url_array}
-    run_coclean ${data_dir} ${bam_url_array}
-    upload_coclean_results ${data_dir} ${bam_url_array}
-    remove_data ${data_dir}
+    generate_bai_files ${data_dir} ${bam_url_array} ${CASE_ID}
+    run_coclean ${data_dir} ${bam_url_array} ${CASE_ID}
+    upload_coclean_results ${data_dir} ${bam_url_array} ${S3_OUT_BUCKET} ${S3_LOG_BUCKET} ${S3_CFG_PATH} \
+                           ${data_dir}
+    remove_data ${data_dir} ${CASE_ID}
 }
 
 main "$@"
