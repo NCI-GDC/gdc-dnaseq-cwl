@@ -265,7 +265,7 @@ function main()
     run_coclean ${data_dir} ${bam_url_array} ${CASE_ID} ${coclean_workflow_path} \
                 ${reference_genome_path} ${known_indel_vcf_path} ${known_snp_vcf_path} \
                 ${THREAD_COUNT}
-    upload_coclean_results ${data_dir} ${bam_url_array} ${S3_OUT_BUCKET} ${S3_LOG_BUCKET} ${S3_CFG_PATH} \
+    upload_coclean_results ${case_id} ${bam_url_array} ${S3_OUT_BUCKET} ${S3_LOG_BUCKET} ${S3_CFG_PATH} \
                            ${data_dir}
     remove_data ${data_dir} ${CASE_ID}
 }
