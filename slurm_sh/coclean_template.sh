@@ -7,88 +7,109 @@ SCRATCH_DIR="/mnt/scratch"
 BAM_URL_ARRAY="XX_BAM_URL_ARRAY_XX"
 CASE_ID="XX_CASE_ID_XX"
 THREAD_COUNT=XX_THREAD_COUNT_XX
-CWL_TMPDIR_PREFIX="XX_TMPDIR_PREFIX_XX"
-UUID=${CASE_ID}
+S3_CFG=${HOME}/.s3cfg.cleversafe
+GIT_CWL_SERVER="github.com"
+GIT_CWL_SERVER_FINGERPRINT="16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48"
+GIT_CWL_DEPLOY_KEY="s3://bioinformatics_scratch/deploy_key/coclean_cwl_deploy_rsa"
+GIT_CWL_REPO=" -b slurm_script git@github.com:NCI-GDC/cocleaning-cwl.git"
+EXPORT_PROXY_STR="export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128;"
+
 #bam_url_array="$@"
 bam_url_array=${BAM_URL_ARRAY}
 echo ${bam_url_array}
+
+#index file names
 KNOWN_INDEL_VCF="Homo_sapiens_assembly38.known_indels.vcf.gz"
 KNOWN_SNP_VCF="dbsnp_144.hg38.vcf.gz"
 REFERENCE_GENOME="GRCh38.d1.vd1"
 S3_INDEX_BUCKET="s3://bioinformatics_scratch/coclean"
 S3_OUT_BUCKET="s3://tcga_exome_blca_coclean"
 S3_LOG_BUCKET="s3://tcga_exome_blca_coclean_log"
-#S3_CWL_PATH="s3://bioinformatics_scratch/cocleaning-cwl.tar.gz"
-DEPLOY_KEY="s3://bioinformatics_scratch/deploy_key/coclean_cwl_deploy_rsa"
 
 DATA_DIR="${SCRATCH_DIR}/data_"${CASE_ID}
 INDEX_DIR="${DATA_DIR}/index"
 COCLEAN_DIR="${DATA_DIR}/coclean"
 COCLEAN_WORKFLOW_PATH="${COCLEAN_DIR}/cocleaning-cwl/workflows/coclean/coclean_workflow.cwl.yaml"
 BUILDBAMINDEX_TOOL_PATH="${COCLEAN_DIR}/cocleaning-cwl/tools/picard_buildbamindex.cwl.yaml"
-S3_CFG=${HOME}/.s3cfg.cleversafe
 CWL_RUNNER=${HOME}/.virtualenvs/p2_${CASE_ID}/bin/cwltool
+CWL_RUNNER_TMPDIR_PREFIX="XX_TMPDIR_PREFIX_XX"
 THIS_VIRTENV_DIR=${HOME}/.virtualenvs/p2_${CASE_ID}
 
 function install_virtenv()
 {
-    export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128;
+    uuid=$1
+    export_proxy_str=$2
+    eval ${export_proxy_str}
     pip install virtualenvwrapper --user
     source ${HOME}/.local/bin/virtualenvwrapper.sh
-    mkvirtualenv --python /usr/bin/python2 p2_${CASE_ID}
-    source ${THIS_VIRTENV_DIR}/bin/activate
+    mkvirtualenv --python /usr/bin/python2 p2_${uuid}
+    this_virtenv_dir=${HOME}/.virtualenvs/p2_${uuid}
+    source ${this_virtenv_dir}/bin/activate
     pip install --upgrade pip
 }
 
-function install_cwltool()
+function pip_install_requirements()
 {
-    export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128;
-    pip install -r ${REQUIREMENTS_PATH}
+    requirements_path=$1
+    export_proxy_str=$2
+    eval ${export_proxy_str}
+    pip install -r ${requirements_path}
 }
 
-function setup_ssh()
+function setup_deploy_key()
 {
-    cd ${DATA_DIR}
+    s3_cfg_path=$1
+    s3_deploy_key_url=$2
+    store_dir=$3
+    prev_wd=`pwd`
+    key_name=$(basename ${s3_deploy_key_url})
+    cd ${store_dir}
     eval `ssh-agent`
-    s3cmd -c ${S3_CFG} get s3://bioinformatics_scratch/deploy_key/coclean_cwl_deploy_rsa
-    ssh-add coclean_cwl_deploy_rsa
-    cd -
+    s3cmd -c ${s3_cfg_path} get ${s3_deploy_key_url}
+    ssh-add ${key_name}
+    cd ${prev_wd}
 }
 
-function clone_cwl()
+function clone_git_repo()
 {
-    export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128;
+    git_server=$1
+    git_server_fingerprint=$2
+    git_repo=$3
+    export_proxy_str=$4
+    clone_dir=$5
+    prev_wd=`pwd`
+    eval ${export_proxy_str}
+    cd ${clone_dir}
     #check if key is in known hosts
-    ssh-keygen -H -F github.com | grep "Host github.com found: line 1 type RSA" -
+    ssh-keygen -H -F ${git_server} | grep "Host ${git_server} found: line 1 type RSA" -
     if [ $? -q 0 ]
     then
-        git clone -b slurm_script https://github.com/NCI-GDC/cocleaning-cwl.git
+        git clone ${git_repo}
     else # if not known, get key, check it, then add it
-        ssh-keyscan github.com >> githubkey
-        echo `ssh-keygen -lf githubkey` | grep 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48
+        ssh-keyscan ${git_server} > ${git_server}_gitkey
+        echo `ssh-keygen -lf gitkey` | grep ${git_server_fingerprint}
         if [ $? -q 0 ]
         then
-            cat githubkey >> ${HOME}/.ssh/known_hosts
-            git clone -b slurm_script git@github.com:NCI-GDC/cocleaning-cwl.git
+            cat ${git_server}_gitkey >> ${HOME}/.ssh/known_hosts
+            git clone ${git_repo}
         else
-            echo "Improper github key:  `ssh-keygen -lf githubkey`"
+            echo "git server fingerprint is not ${git_server_fingerprint}, but instead:  `ssh-keygen -lf ${git_server}_gitkey`"
             exit 1
         fi
     fi
+    cd ${prev_wd}
 }
+
+echo "setup deploy key"
+setup_deploy_key ${S3_CFG_PATH} ${S3_DEPLOY_KEY_URL} ${DATA_DIR}
+echo "get cwl"
+clone_git_repo ${GIT_SERVER} ${GIT_SERVER_FINGERPRINT} ${GIT_CWL_REPO} ${EXPORT_PROXY_STR} ${DATA_DIR}
 
 #always install virtenv on every job, remove at cleanup
 echo "install virtenv"
-install_virtenv
+install_virtenv ${CASE_ID} ${EXPORT_PROXY}
 echo "install cwltool"
-install_cwltool
-echo "setup ssh"
-setup_ssh
-echo "get cwl"
-
-#get cwl
-cd ${DATA_DIR}
-clone_cwl
+pip_install_requirments ${
 
 
 #make index dir
@@ -124,7 +145,7 @@ for bam_url in ${bam_url_array}
 do
     bam_name=$(basename ${bam_url})
     bam_path=${DATA_DIR}/${bam_name}
-    CWL_COMMAND="--debug --outdir ${DATA_DIR} ${BUILDBAMINDEX_TOOL_PATH} --uuid ${UUID} --input_bam ${bam_path}"
+    CWL_COMMAND="--debug --outdir ${DATA_DIR} ${BUILDBAMINDEX_TOOL_PATH} --uuid ${CASE_ID} --input_bam ${bam_path}"
     ${CWL_RUNNER} ${CWL_COMMAND}
 done
 
@@ -134,7 +155,7 @@ mkdir -p ${COCLEAN_DIR}
 
 
 # setup cwl command removed  --leave-tmpdir
-CWL_COMMAND="--debug --outdir ${COCLEAN_DIR} ${COCLEAN_WORKFLOW_PATH} --reference_fasta_path ${INDEX_DIR}/${REFERENCE_GENOME}.fa --uuid ${UUID} --known_indel_vcf_path ${INDEX_DIR}/${KNOWN_INDEL_VCF} --known_snp_vcf_path ${INDEX_DIR}/${KNOWN_SNP_VCF} --thread_count ${THREAD_COUNT}"
+CWL_COMMAND="--debug --outdir ${COCLEAN_DIR} ${COCLEAN_WORKFLOW_PATH} --reference_fasta_path ${INDEX_DIR}/${REFERENCE_GENOME}.fa --uuid ${CASE_ID} --known_indel_vcf_path ${INDEX_DIR}/${KNOWN_INDEL_VCF} --known_snp_vcf_path ${INDEX_DIR}/${KNOWN_SNP_VCF} --thread_count ${THREAD_COUNT}"
 for bam_url in ${bam_url_array}
 do
     bam_name=$(basename ${bam_url})
