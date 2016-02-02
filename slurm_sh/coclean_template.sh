@@ -14,10 +14,6 @@ GIT_CWL_DEPLOY_KEY="s3://bioinformatics_scratch/deploy_key/coclean_cwl_deploy_rs
 GIT_CWL_REPO=" -b slurm_script git@github.com:NCI-GDC/cocleaning-cwl.git"
 EXPORT_PROXY_STR="export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128;"
 
-#bam_url_array="$@"
-bam_url_array=${BAM_URL_ARRAY}
-echo ${bam_url_array}
-
 #index file names
 KNOWN_INDEL_VCF="Homo_sapiens_assembly38.known_indels.vcf.gz"
 KNOWN_SNP_VCF="dbsnp_144.hg38.vcf.gz"
@@ -28,10 +24,8 @@ S3_GATK_INDEX_BUCKET="s3://bioinformatics_scratch/coclean"
 S3_OUT_BUCKET="s3://tcga_exome_blca_coclean"
 S3_LOG_BUCKET="s3://tcga_exome_blca_coclean_log"
 
-COCLEAN_DIR="${DATA_DIR}/coclean"
-COCLEAN_WORKFLOW_PATH="${COCLEAN_DIR}/cocleaning-cwl/workflows/coclean/coclean_workflow.cwl.yaml"
-BUILDBAMINDEX_TOOL_PATH="${COCLEAN_DIR}/cocleaning-cwl/tools/picard_buildbamindex.cwl.yaml"
-CWL_RUNNER=${HOME}/.virtualenvs/p2_${CASE_ID}/bin/cwltool
+COCLEAN_WORKFLOW="coclean/coclean_workflow.cwl.yaml"
+BUILDBAMINDEX_TOOL="picard_buildbamindex.cwl.yaml"
 CWL_RUNNER_TMPDIR_PREFIX="XX_TMPDIR_PREFIX_XX"
 
 function install_unique_virtenv()
@@ -137,20 +131,21 @@ function get_bam_files()
 
 function generate_bai_files()
 {
-    storage_dir=$1
-    bam_url_array=$2
-    case_id=$3
-    prev_wd=`pwd`
+    local storage_dir=$1
+    local bam_url_array=$2
+    local case_id=$3
+    local cwl_tool_path=$4
+    local prev_wd=`pwd`
     cd ${storage_dir}
 
-    this_virtenv_dir=${HOME}/.virtualenvs/p2_${case_id}
-    cwlrunner_path=${this_virtenv_dir}/bin/cwltool
+    local this_virtenv_dir=${HOME}/.virtualenvs/p2_${case_id}
+    local cwlrunner_path=${this_virtenv_dir}/bin/cwltool
 
     for bam_url in ${bam_url_array}
     do
-        bam_name=$(basename ${bam_url})
-        bam_path=${storage_dir}/${bam_name}
-        cwl_command="--debug --outdir ${storage_dir} ${BUILDBAMINDEX_TOOL_PATH} --uuid ${case_id} --input_bam ${bam_path}"
+        local bam_name=$(basename ${bam_url})
+        local bam_path=${storage_dir}/${bam_name}
+        local cwl_command="--debug --outdir ${storage_dir} ${BUILDBAMINDEX_TOOL_PATH} --uuid ${case_id} --input_bam ${bam_path}"
 
         echo "${cwlrunner_path} ${cwl_command}"
         ${cwlrunner_path} ${cwl_command}
@@ -160,16 +155,21 @@ function generate_bai_files()
 
 function run_coclean()
 {
-    storage_dir=$1
-    bam_url_array=$2
-    case_id=$3
-    coclean_dir=${storage_dir}/coclean
-    prev_wd=`pwd`
+    local storage_dir=$1
+    local bam_url_array=$2
+    local case_id=$3
+    local coclean_workflow_path=$4
+    local reference_genome_path=$5
+    local known_indel_vcf_path=$6
+    local known_snp_vcf_path=$7
+    local thread_count=$8
+    local coclean_dir=${storage_dir}/coclean
+    local prev_wd=`pwd`
     mkdir -p ${coclean_dir}
     cd ${coclean_dir}
     
     # setup cwl command removed  --leave-tmpdir
-    cwl_command="--debug --outdir ${coclean_dir} ${COCLEAN_WORKFLOW_PATH} --reference_fasta_path ${INDEX_DIR}/${REFERENCE_GENOME}.fa --uuid ${CASE_ID} --known_indel_vcf_path ${INDEX_DIR}/${KNOWN_INDEL_VCF} --known_snp_vcf_path ${INDEX_DIR}/${KNOWN_SNP_VCF} --thread_count ${THREAD_COUNT}"
+    cwl_command="--debug --outdir ${coclean_dir} ${coclean_workflow_path} --reference_fasta_path ${reference_genome_path}.fa --uuid ${case_id} --known_indel_vcf_path ${known_indel_vcf_path} --known_snp_vcf_path ${known_snp_vcf_path} --thread_count ${thread_count}"
     for bam_url in ${bam_url_array}
     do
         bam_name=$(basename ${bam_url})
@@ -179,8 +179,8 @@ function run_coclean()
     cwl_command="${cwl_command} ${bam_paths}"
 
     # run cwl
-    this_virtenv_dir=${HOME}/.virtualenvs/p2_${case_id}
-    cwlrunner_path=${this_virtenv_dir}/bin/cwltool
+    local this_virtenv_dir=${HOME}/.virtualenvs/p2_${case_id}
+    local cwlrunner_path=${this_virtenv_dir}/bin/cwltool
     echo "calling:
          ${cwlrunner_path} ${cwl_command}"
     ${cwlrunner_path} ${cwl_command}
@@ -190,24 +190,24 @@ function run_coclean()
 
 function upload_coclean_results()
 {
-    case_id=$1
-    bam_url_array=$2
-    s3_out_bucket=$3
-    s3_log_bucket=$4
-    s3_cfg_path=$5
-    storage_dir=$6
+    local case_id=$1
+    local bam_url_array=$2
+    local s3_out_bucket=$3
+    local s3_log_bucket=$4
+    local s3_cfg_path=$5
+    local storage_dir=$6
     
-    coclean_dir=${storage_dir}/coclean
-    prev_wd=`pwd`
+    local coclean_dir=${storage_dir}/coclean
+    local prev_wd=`pwd`
     cd ${coclean_dir}
     for bam_url in ${bam_url_array}
     do
-        gdc_id=$(basename $(dirname ${bam_url}))
-        bam_file=$(basename ${bam_url})
-        bam_base="${bam_file%.*}"
-        bai_file="${bam_base}.bai"
-        bam_path=${coclean_dir}/${bam_file}
-        bai_path=${coclean_dir}/${bai_file}
+        local gdc_id=$(basename $(dirname ${bam_url}))
+        local bam_file=$(basename ${bam_url})
+        local bam_base="${bam_file%.*}"
+        local bai_file="${bam_base}.bai"
+        local bam_path=${coclean_dir}/${bam_file}
+        local bai_path=${coclean_dir}/${bai_file}
         echo "uploading: s3cmd -c ${s3_cfg_path} put ${bai_path} ${S3_OUT_BUCKET}/${gdc_id}/"
         s3cmd -c ${s3_cfg_path} put ${bai_path} ${s3_out_bucket}/${gdc_id}/
         echo "uploading: s3cmd -c ${s3_cfg_path} put ${bam_path} ${S3_OUT_BUCKET}/${gdc_id}/"
@@ -218,13 +218,23 @@ function upload_coclean_results()
 
 function remove_data()
 {
-    data_dir=$1
-    case_id=$2
+    local data_dir=$1
+    local case_id=$2
     echo "rm -rf ${data_dir}"
     rm -rf ${data_dir}
-    this_virtenv_dir=${HOME}/.virtualenvs/p2_${case_id}
+    local this_virtenv_dir=${HOME}/.virtualenvs/p2_${case_id}
     echo "rm -rf ${this_virtenv_dir}"
     rm -rf ${this_virtenv_dir}
+}
+
+function get_git_name()
+{
+    repo_str=$1
+    git_url=($repo_str)[-1]
+    IFS=':' read -r -a array <<< "$git_url"
+    git_reponame=($array)[-1]
+    git_name="${git_reponame%.*}"
+    echo "$git_name"
 }
 
 function main()
@@ -232,17 +242,29 @@ function main()
     data_dir="${SCRATCH_DIR}/data_"${CASE_ID}
     mkdir -p ${data_dir}
     setup_deploy_key ${S3_CFG_PATH} ${S3_DEPLOY_KEY_URL} ${data_dir}
-    clone_git_repo ${GIT_SERVER} ${GIT_SERVER_FINGERPRINT} ${GIT_CWL_REPO} ${EXPORT_PROXY_STR} ${data_dir}
-    
-    cwl_pip_requirements=${data_dir}
-    
+    clone_git_repo ${GIT_SERVER} ${GIT_SERVER_FINGERPRINT} ${GIT_CWL_REPO} ${EXPORT_PROXY_STR} ${data_dir}    
     install_unique_virtenv ${CASE_ID} ${EXPORT_PROXY}
+
+    git_name=$(get_git_name ${GIT_CWL_REPO})
+    cwl_dir=${data_dir}/${git_name}
+    cwl_pip_requirements=${cwl_dir}/slurm_sh/requirements.sh
+
     pip_install_requirments ${cwl_pip_requirements} ${EXPORT_PROXY}
     get_gatk_index_files ${S3_CFG_PATH} ${S3_GATK_INDEX_BUCKET} ${data_dir} \
                          ${REFERENCE_GENOME} ${KNOWN_SNP_VCF} ${KNOWN_INDEL_VCF}
     get_bam_files ${S3_CFG_PATH} ${bam_url_array} ${data_dir}
-    generate_bai_files ${data_dir} ${bam_url_array} ${CASE_ID}
-    run_coclean ${data_dir} ${bam_url_array} ${CASE_ID}
+
+    #setup path variables
+    buildbamindex_tool_path=${cwl_dir}/tools/${BUILDBAMINDEX_TOOL}
+    coclean_workflow_path=${cwl_dir}/workflows/${COCLEAN_WORKFLOW}
+    reference_genome_path=${data_dir}/index/${REFERENCE_GENOME}
+    known_indel_vcf_path=${data_dir}/index/${KNOWN_INDEL_VCF}
+    known_snp_vcf_path=${data_dir}/index/${KNOWN_SNP_VCF}
+    
+    generate_bai_files ${data_dir} ${bam_url_array} ${CASE_ID} ${buildbamindex_tool_path}
+    run_coclean ${data_dir} ${bam_url_array} ${CASE_ID} ${coclean_workflow_path} \
+                ${reference_genome_path} ${known_indel_vcf_path} ${known_snp_vcf_path} \
+                ${THREAD_COUNT}
     upload_coclean_results ${data_dir} ${bam_url_array} ${S3_OUT_BUCKET} ${S3_LOG_BUCKET} ${S3_CFG_PATH} \
                            ${data_dir}
     remove_data ${data_dir} ${CASE_ID}
