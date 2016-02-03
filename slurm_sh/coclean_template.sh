@@ -246,13 +246,12 @@ function get_git_name()
     echo "repo_str=${repo_str}"
     echo "git_url=${git_url}"
     IFS=':' read -r -a array <<< "${git_url}"
-    echo "array=${array}"
     owner_repo=${array[-1]}
     echo "owner_repo=${owner_repo}"
     git_repo=$(basename ${owner_repo})
     echo "git_repo=${git_repo}"
-    local git_name="${git_repo%.*}"
-    echo "$git_name"
+    git_name="${git_repo%.*}"
+    echo "${git_name}"
 }
 
 function main()
@@ -264,11 +263,11 @@ function main()
     #install_unique_virtenv ${CASE_ID} ${EXPORT_PROXY}
 
     get_git_name
-    local git_name=$(get_git_name)
+    echo "git_name=${git_name}"
     local cwl_dir=${data_dir}/${git_name}
     local cwl_pip_requirements=${cwl_dir}/slurm_sh/requirements.sh
 
-    #pip_install_requirments ${cwl_pip_requirements} ${EXPORT_PROXY}
+    pip_install_requirments ${cwl_pip_requirements} ${EXPORT_PROXY}
     #get_gatk_index_files ${S3_CFG_PATH} ${S3_GATK_INDEX_BUCKET} ${data_dir} \
     #                     ${REFERENCE_GENOME} ${KNOWN_SNP_VCF} ${KNOWN_INDEL_VCF}
     #get_bam_files ${S3_CFG_PATH} ${bam_url_array} ${data_dir}
