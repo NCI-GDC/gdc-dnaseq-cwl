@@ -11,7 +11,7 @@ THREAD_COUNT=XX_THREAD_COUNT_XX
 S3_CFG_PATH=${HOME}/.s3cfg.cleversafe
 GIT_CWL_SERVER="github.com"
 GIT_CWL_SERVER_FINGERPRINT="16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48"
-GIT_CWL_DEPLOY_KEY="s3://bioinformatics_scratch/deploy_key/coclean_cwl_deploy_rsa"
+GIT_CWL_DEPLOY_KEY_S3_URL="s3://bioinformatics_scratch/deploy_key/coclean_cwl_deploy_rsa"
 GIT_CWL_REPO=" -b slurm_script git@github.com:NCI-GDC/cocleaning-cwl.git"
 EXPORT_PROXY_STR="export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128;"
 
@@ -56,10 +56,19 @@ function setup_deploy_key()
     local store_dir=$3
     local prev_wd=`pwd`
     local key_name=$(basename ${s3_deploy_key_url})
+    echo "cd ${store_dir}"
     cd ${store_dir}
     eval `ssh-agent`
-    s3cmd -c ${s3_cfg_path} get ${s3_deploy_key_url}
+    echo "s3cmd -c ${s3_cfg_path} get --force ${s3_deploy_key_url}"
+    s3cmd -c ${s3_cfg_path} get --force ${s3_deploy_key_url}
+    echo "chmod 400 ${key_name}"
+    chmod 400 ${key_name}
+    echo "ssh-add ${key_name}"
     ssh-add ${key_name}
+    ssh-add -L
+    echo "rm -f ${key_name} "
+    rm -f ${key_name}
+    echo "cd ${prev_wd}"
     cd ${prev_wd}
 }
 
@@ -231,11 +240,18 @@ function remove_data()
 
 function get_git_name()
 {
-    local repo_str=$1
-    local git_url=($repo_str)[-1]
-    IFS=':' read -r -a array <<< "$git_url"
-    local git_reponame=($array)[-1]
-    local git_name="${git_reponame%.*}"
+    local repo_str=${GIT_CWL_REPO} #only global used in a function
+    local git_array=(${repo_str})
+    local git_url=${git_array[-1]}
+    echo "repo_str=${repo_str}"
+    echo "git_url=${git_url}"
+    IFS=':' read -r -a array <<< "${git_url}"
+    echo "array=${array}"
+    owner_repo=${array[-1]}
+    echo "owner_repo=${owner_repo}"
+    git_repo=$(basename ${owner_repo})
+    echo "git_repo=${git_repo}"
+    local git_name="${git_repo%.*}"
     echo "$git_name"
 }
 
@@ -243,33 +259,34 @@ function main()
 {
     local data_dir="${SCRATCH_DIR}/data_"${CASE_ID}
     mkdir -p ${data_dir}
-    setup_deploy_key ${S3_CFG_PATH} ${S3_DEPLOY_KEY_URL} ${data_dir}
-    clone_git_repo ${GIT_SERVER} ${GIT_SERVER_FINGERPRINT} ${GIT_CWL_REPO} ${EXPORT_PROXY_STR} ${data_dir}    
-    install_unique_virtenv ${CASE_ID} ${EXPORT_PROXY}
+    setup_deploy_key ${S3_CFG_PATH} ${GIT_CWL_DEPLOY_KEY_S3_URL} ${data_dir}
+    #clone_git_repo ${GIT_SERVER} ${GIT_SERVER_FINGERPRINT} ${GIT_CWL_REPO} ${EXPORT_PROXY_STR} ${data_dir}    
+    #install_unique_virtenv ${CASE_ID} ${EXPORT_PROXY}
 
-    local git_name=$(get_git_name ${GIT_CWL_REPO})
+    get_git_name
+    local git_name=$(get_git_name)
     local cwl_dir=${data_dir}/${git_name}
     local cwl_pip_requirements=${cwl_dir}/slurm_sh/requirements.sh
 
-    pip_install_requirments ${cwl_pip_requirements} ${EXPORT_PROXY}
-    get_gatk_index_files ${S3_CFG_PATH} ${S3_GATK_INDEX_BUCKET} ${data_dir} \
-                         ${REFERENCE_GENOME} ${KNOWN_SNP_VCF} ${KNOWN_INDEL_VCF}
-    get_bam_files ${S3_CFG_PATH} ${bam_url_array} ${data_dir}
+    #pip_install_requirments ${cwl_pip_requirements} ${EXPORT_PROXY}
+    #get_gatk_index_files ${S3_CFG_PATH} ${S3_GATK_INDEX_BUCKET} ${data_dir} \
+    #                     ${REFERENCE_GENOME} ${KNOWN_SNP_VCF} ${KNOWN_INDEL_VCF}
+    #get_bam_files ${S3_CFG_PATH} ${bam_url_array} ${data_dir}
 
-    #setup path variables
+    ###setup path variables
     local buildbamindex_tool_path=${cwl_dir}/tools/${BUILDBAMINDEX_TOOL}
     local coclean_workflow_path=${cwl_dir}/workflows/${COCLEAN_WORKFLOW}
     local reference_genome_path=${data_dir}/index/${REFERENCE_GENOME}
     local known_indel_vcf_path=${data_dir}/index/${KNOWN_INDEL_VCF}
     local known_snp_vcf_path=${data_dir}/index/${KNOWN_SNP_VCF}
     
-    generate_bai_files ${data_dir} ${bam_url_array} ${CASE_ID} ${buildbamindex_tool_path}
-    run_coclean ${data_dir} ${bam_url_array} ${CASE_ID} ${coclean_workflow_path} \
-                ${reference_genome_path} ${known_indel_vcf_path} ${known_snp_vcf_path} \
-                ${THREAD_COUNT}
-    upload_coclean_results ${case_id} ${bam_url_array} ${S3_OUT_BUCKET} ${S3_LOG_BUCKET} ${S3_CFG_PATH} \
-                           ${data_dir}
-    remove_data ${data_dir} ${CASE_ID}
+    #generate_bai_files ${data_dir} ${bam_url_array} ${CASE_ID} ${buildbamindex_tool_path}
+    #run_coclean ${data_dir} ${bam_url_array} ${CASE_ID} ${coclean_workflow_path} \
+    #            ${reference_genome_path} ${known_indel_vcf_path} ${known_snp_vcf_path} \
+    #            ${THREAD_COUNT}
+    #upload_coclean_results ${case_id} ${bam_url_array} ${S3_OUT_BUCKET} ${S3_LOG_BUCKET} ${S3_CFG_PATH} \
+    #                       ${data_dir}
+    #remove_data ${data_dir} ${CASE_ID}
 }
 
 main "$@"
