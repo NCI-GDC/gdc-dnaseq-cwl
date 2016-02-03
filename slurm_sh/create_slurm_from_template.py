@@ -73,7 +73,7 @@ def get_bam_name_from_s3(gdcid, s3_bucket, logger):
     os.remove('out.s3')
     return bam_name
 
-def write_case_file(caseid, bamurl_set, template_file):
+def write_case_file(template_file, caseid, bamurl_set, scratch_dir, thread_count):
     template_dir = os.path.dirname(template_file)
     out_dir = os.path.join(template_dir, 'case_slurm_sh')
     os.makedirs(out_dir, exist_ok=True)
@@ -89,6 +89,12 @@ def write_case_file(caseid, bamurl_set, template_file):
                 out_path_open.write(newline)
             elif 'XX_CASE_ID_XX' in line:
                 newline = line.replace('XX_CASE_ID_XX', caseid)
+                out_path_open.write(newline)
+            elif 'XX_SCRATCH_DIR_XX' in line:
+                newline = line.replace('XX_SCRATCH_DIR_XX', scratch_dir)
+                out_path_open.write(newline)
+            elif 'XX' in line:
+                newline = line.replace('XX_THREAD_COUNT_XX', thread_count)
                 out_path_open.write(newline)
             else:
                 out_path_open.write(line)
@@ -177,10 +183,18 @@ def main():
                         required = True,
                         help = 'slurm template file',
     )
+    parser.add_argument('--scratch_dir',
+                        required = True
+    )
+    parser.add_argument('--thread_count',
+                        required = True
+    )
 
     args = parser.parse_args()
     sql_file = args.sql_file
     template_file = args.template_file
+    scratch_dir = args.scratch_dir
+    thread_count = args.thread_count
     uuid = 'a_uuid'
     tool_name = 'create_slurm_from_template'
     logger = pipe_util.setup_logging(tool_name, args, uuid)
@@ -195,6 +209,6 @@ def main():
             bam_url = s3_bucket+'/'+gdcid+'/'+bam_name
             bamurl_set.add(bam_url)
         fixed_bamurl_set=remove_duplicate_bam_from_set(bamurl_set, sql_file)
-        write_case_file(caseid, fixed_bamurl_set, template_file)
+        write_case_file(template_file, caseid, fixed_bamurl_set, scratch_dir, thread_count)
 if __name__=='__main__':
     main()
