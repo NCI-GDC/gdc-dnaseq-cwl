@@ -30,9 +30,14 @@ BUILDBAMINDEX_TOOL="picard_buildbamindex.cwl.yaml"
 
 function install_unique_virtenv()
 {
-    local uuid=$1
-    local export_proxy_str=$2
+    echo ""
+    echo "install_unique_virtenv()"
+    local uuid="$1"
+    local export_proxy_str="$2"
     eval ${export_proxy_str}
+    echo "deactive"
+    deactivate
+    echo "pip install virtualenvwrapper --user"
     pip install virtualenvwrapper --user
     source ${HOME}/.local/bin/virtualenvwrapper.sh
     mkvirtualenv --python /usr/bin/python2 p2_${uuid}
@@ -43,8 +48,10 @@ function install_unique_virtenv()
 
 function pip_install_requirements()
 {
-    local requirements_path=$1
-    local export_proxy_str=$2
+    echo ""
+    echo "pip_install_requirements()"
+    local requirements_path="$1"
+    local export_proxy_str="$2"
     eval ${export_proxy_str}
     pip install -r ${requirements_path}
 }
@@ -52,7 +59,7 @@ function pip_install_requirements()
 function setup_deploy_key()
 {
     echo ""
-    echo "   enter setup_deploy_key()"
+    echo "setup_deploy_key()"
     local s3_cfg_path="$1"
     local s3_deploy_key_url="$2"
     local store_dir="$3"
@@ -68,8 +75,6 @@ function setup_deploy_key()
     echo "ssh-add ${key_name}"
     ssh-add ${key_name}
     ssh-add -L
-    echo "rm -f ${key_name} "
-    rm -f ${key_name}
     echo "cd ${prev_wd}"
     cd ${prev_wd}
 }
@@ -77,7 +82,7 @@ function setup_deploy_key()
 function clone_git_repo()
 {
     echo ""
-    echo "    enter clone_git_repo()"
+    echo "clone_git_repo()"
     local git_server="$1"
     local git_server_fingerprint="$2"
     local git_repo="$3"
@@ -97,8 +102,6 @@ function clone_git_repo()
     if [ $? -eq 0 ]
     then
         echo "git_server ${git_server} is known"
-        echo "rm -rf ${git_name}"
-        rm -rf ${git_name}
         echo "git clone ${git_repo}"
         git clone ${git_repo}
     else # if not known, get key, check it, then add it
@@ -110,8 +113,6 @@ function clone_git_repo()
         then
             echo "cat ${git_server}_gitkey >> ${HOME}/.ssh/known_hosts"
             cat ${git_server}_gitkey >> ${HOME}/.ssh/known_hosts
-            echo "rm -rf ${git_name}"
-            rm -rf ${git_name}
             echo "git clone ${git_repo}"
             git clone ${git_repo}
         else
@@ -278,19 +279,19 @@ function get_git_name()
 function main()
 {
     local data_dir="${SCRATCH_DIR}/data_"${CASE_ID}
+    remove_data ${data_dir} ${CASE_ID} ## removes all data from previous run of script
     mkdir -p ${data_dir}
     
     get_git_name
     echo "git_name=${git_name}"
     local cwl_dir=${data_dir}/${git_name}
-    local cwl_pip_requirements="${cwl_dir}/slurm_sh/requirements.sh"
+    local cwl_pip_requirements="${cwl_dir}/slurm_sh/requirements.txt"
     
     setup_deploy_key "${S3_CFG_PATH}" "${GIT_CWL_DEPLOY_KEY_S3_URL}" "${data_dir}"
     clone_git_repo "${GIT_CWL_SERVER}" "${GIT_CWL_SERVER_FINGERPRINT}" "${GIT_CWL_REPO}" "${EXPORT_PROXY_STR}" "${data_dir}" "${git_name}"
-    #install_unique_virtenv ${CASE_ID} ${EXPORT_PROXY}
-
-
-    #pip_install_requirements ${cwl_pip_requirements} ${EXPORT_PROXY}
+    install_unique_virtenv "${CASE_ID}" "${EXPORT_PROXY}"
+    pip_install_requirements "${cwl_pip_requirements}" "${EXPORT_PROXY}"
+    
     #get_gatk_index_files ${S3_CFG_PATH} ${S3_GATK_INDEX_BUCKET} ${data_dir} \
     #                     ${REFERENCE_GENOME} ${KNOWN_SNP_VCF} ${KNOWN_INDEL_VCF}
     #get_bam_files ${S3_CFG_PATH} ${bam_url_array} ${data_dir}
