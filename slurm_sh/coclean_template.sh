@@ -10,7 +10,7 @@ CASE_ID="XX_CASE_ID_XX"
 THREAD_COUNT=XX_THREAD_COUNT_XX
 S3_CFG_PATH=${HOME}/.s3cfg.cleversafe
 GIT_CWL_SERVER="github.com"
-GIT_CWL_SERVER_FINGERPRINT="16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48"
+GIT_CWL_SERVER_FINGERPRINT="2048 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48"
 GIT_CWL_DEPLOY_KEY_S3_URL="s3://bioinformatics_scratch/deploy_key/coclean_cwl_deploy_rsa"
 GIT_CWL_REPO=" -b slurm_script git@github.com:NCI-GDC/cocleaning-cwl.git"
 EXPORT_PROXY_STR="export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128;"
@@ -51,9 +51,11 @@ function pip_install_requirements()
 
 function setup_deploy_key()
 {
-    local s3_cfg_path=$1
-    local s3_deploy_key_url=$2
-    local store_dir=$3
+    echo ""
+    echo "   enter setup_deploy_key()"
+    local s3_cfg_path="$1"
+    local s3_deploy_key_url="$2"
+    local store_dir="$3"
     local prev_wd=`pwd`
     local key_name=$(basename ${s3_deploy_key_url})
     echo "cd ${store_dir}"
@@ -74,12 +76,17 @@ function setup_deploy_key()
 
 function clone_git_repo()
 {
-    local git_server=$1
-    local git_server_fingerprint=$2
-    local git_repo=$3
-    local export_proxy_str=$4
-    local storage_dir=$5
+    echo ""
+    echo "    enter clone_git_repo()"
+    local git_server="$1"
+    local git_server_fingerprint="$2"
+    local git_repo="$3"
+    local export_proxy_str="$4"
+    local storage_dir="$5"
+    local git_name="$6"
     local prev_wd=`pwd`
+
+    echo "git_name=${git_name}"
     echo "eval ${export_proxy_str}"
     eval ${export_proxy_str}
     echo "cd ${storage_dir}"
@@ -87,21 +94,28 @@ function clone_git_repo()
     #check if key is in known hosts
     echo 'ssh-keygen -H -F ${git_server} | grep "Host ${git_server} found: line 1 type RSA" -'
     ssh-keygen -H -F ${git_server} | grep "Host ${git_server} found: line 1 type RSA" -
-    if [ $? -q 0 ]
+    if [ $? -eq 0 ]
     then
+        echo "git_server ${git_server} is known"
+        echo "rm -rf ${git_name}"
+        rm -rf ${git_name}
+        echo "git clone ${git_repo}"
         git clone ${git_repo}
     else # if not known, get key, check it, then add it
+        echo "git_server ${git_server} is NOT known"
         echo "ssh-keyscan ${git_server} > ${git_server}_gitkey"
         ssh-keyscan ${git_server} > ${git_server}_gitkey
-        echo `ssh-keygen -lf ${git_server}_gitkey` | grep ${git_server_fingerprint}
-        if [ $? -q 0 ]
+        echo `ssh-keygen -lf ${git_server}_gitkey` | grep "${git_server_fingerprint} ${git_server} (RSA)"
+        if [ $? -eq 0 ]
         then
             echo "cat ${git_server}_gitkey >> ${HOME}/.ssh/known_hosts"
             cat ${git_server}_gitkey >> ${HOME}/.ssh/known_hosts
+            echo "rm -rf ${git_name}"
+            rm -rf ${git_name}
             echo "git clone ${git_repo}"
             git clone ${git_repo}
         else
-            echo "git server fingerprint is not ${git_server_fingerprint}, but instead:  `ssh-keygen -lf ${git_server}_gitkey`"
+            echo "git server fingerprint is not '${git_server_fingerprint} ${git_server} (RSA)', but instead:  `ssh-keygen -lf ${git_server}_gitkey`"
             exit 1
         fi
     fi
@@ -214,6 +228,7 @@ function upload_coclean_results()
     local s3_cfg_path=$5
     local storage_dir=$6
     
+    
     local coclean_dir=${storage_dir}/coclean
     local prev_wd=`pwd`
     cd ${coclean_dir}
@@ -264,14 +279,16 @@ function main()
 {
     local data_dir="${SCRATCH_DIR}/data_"${CASE_ID}
     mkdir -p ${data_dir}
-    setup_deploy_key ${S3_CFG_PATH} ${GIT_CWL_DEPLOY_KEY_S3_URL} ${data_dir}
-    clone_git_repo ${GIT_CWL_SERVER} ${GIT_CWL_SERVER_FINGERPRINT} ${GIT_CWL_REPO} ${EXPORT_PROXY_STR} ${data_dir}    
-    #install_unique_virtenv ${CASE_ID} ${EXPORT_PROXY}
-
+    
     get_git_name
     echo "git_name=${git_name}"
     local cwl_dir=${data_dir}/${git_name}
     local cwl_pip_requirements="${cwl_dir}/slurm_sh/requirements.sh"
+    
+    setup_deploy_key "${S3_CFG_PATH}" "${GIT_CWL_DEPLOY_KEY_S3_URL}" "${data_dir}"
+    clone_git_repo "${GIT_CWL_SERVER}" "${GIT_CWL_SERVER_FINGERPRINT}" "${GIT_CWL_REPO}" "${EXPORT_PROXY_STR}" "${data_dir}" "${git_name}"
+    #install_unique_virtenv ${CASE_ID} ${EXPORT_PROXY}
+
 
     #pip_install_requirements ${cwl_pip_requirements} ${EXPORT_PROXY}
     #get_gatk_index_files ${S3_CFG_PATH} ${S3_GATK_INDEX_BUCKET} ${data_dir} \
