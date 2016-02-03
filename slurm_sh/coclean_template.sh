@@ -80,19 +80,25 @@ function clone_git_repo()
     local export_proxy_str=$4
     local storage_dir=$5
     local prev_wd=`pwd`
+    echo "eval ${export_proxy_str}"
     eval ${export_proxy_str}
+    echo "cd ${storage_dir}"
     cd ${storage_dir}
     #check if key is in known hosts
+    echo 'ssh-keygen -H -F ${git_server} | grep "Host ${git_server} found: line 1 type RSA" -'
     ssh-keygen -H -F ${git_server} | grep "Host ${git_server} found: line 1 type RSA" -
     if [ $? -q 0 ]
     then
         git clone ${git_repo}
     else # if not known, get key, check it, then add it
+        echo "ssh-keyscan ${git_server} > ${git_server}_gitkey"
         ssh-keyscan ${git_server} > ${git_server}_gitkey
-        echo `ssh-keygen -lf gitkey` | grep ${git_server_fingerprint}
+        echo `ssh-keygen -lf ${git_server}_gitkey` | grep ${git_server_fingerprint}
         if [ $? -q 0 ]
         then
+            echo "cat ${git_server}_gitkey >> ${HOME}/.ssh/known_hosts"
             cat ${git_server}_gitkey >> ${HOME}/.ssh/known_hosts
+            echo "git clone ${git_repo}"
             git clone ${git_repo}
         else
             echo "git server fingerprint is not ${git_server_fingerprint}, but instead:  `ssh-keygen -lf ${git_server}_gitkey`"
@@ -259,15 +265,15 @@ function main()
     local data_dir="${SCRATCH_DIR}/data_"${CASE_ID}
     mkdir -p ${data_dir}
     setup_deploy_key ${S3_CFG_PATH} ${GIT_CWL_DEPLOY_KEY_S3_URL} ${data_dir}
-    #clone_git_repo ${GIT_SERVER} ${GIT_SERVER_FINGERPRINT} ${GIT_CWL_REPO} ${EXPORT_PROXY_STR} ${data_dir}    
+    clone_git_repo ${GIT_CWL_SERVER} ${GIT_CWL_SERVER_FINGERPRINT} ${GIT_CWL_REPO} ${EXPORT_PROXY_STR} ${data_dir}    
     #install_unique_virtenv ${CASE_ID} ${EXPORT_PROXY}
 
     get_git_name
     echo "git_name=${git_name}"
     local cwl_dir=${data_dir}/${git_name}
-    local cwl_pip_requirements=${cwl_dir}/slurm_sh/requirements.sh
+    local cwl_pip_requirements="${cwl_dir}/slurm_sh/requirements.sh"
 
-    pip_install_requirments ${cwl_pip_requirements} ${EXPORT_PROXY}
+    #pip_install_requirements ${cwl_pip_requirements} ${EXPORT_PROXY}
     #get_gatk_index_files ${S3_CFG_PATH} ${S3_GATK_INDEX_BUCKET} ${data_dir} \
     #                     ${REFERENCE_GENOME} ${KNOWN_SNP_VCF} ${KNOWN_INDEL_VCF}
     #get_bam_files ${S3_CFG_PATH} ${bam_url_array} ${data_dir}
