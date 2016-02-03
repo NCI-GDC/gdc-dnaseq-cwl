@@ -1,9 +1,9 @@
 #!/bin/bash
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --workdir=/mnt/scratch/
+#SBATCH --workdir=XX_SCRATCH_DIR_XX
 
-SCRATCH_DIR="/mnt/scratch"
+SCRATCH_DIR="XX_SCRATCH_DIR_XX"
 BAM_URL_ARRAY="XX_BAM_URL_ARRAY_XX"
 CASE_ID="XX_CASE_ID_XX"
 THREAD_COUNT=XX_THREAD_COUNT_XX
