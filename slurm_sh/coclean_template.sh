@@ -26,7 +26,6 @@ S3_LOG_BUCKET="s3://tcga_exome_blca_coclean_log"
 
 COCLEAN_WORKFLOW="coclean/coclean_workflow.cwl.yaml"
 BUILDBAMINDEX_TOOL="picard_buildbamindex.cwl.yaml"
-CWL_RUNNER_TMPDIR_PREFIX="XX_TMPDIR_PREFIX_XX"
 
 function install_unique_virtenv()
 {
