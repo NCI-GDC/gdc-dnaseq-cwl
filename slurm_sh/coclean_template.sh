@@ -169,6 +169,10 @@ function get_bam_files()
     local s3_cfg_path="$1"
     local bam_url_array="$2"
     local storage_dir="$3"
+
+    echo "s3_cfg_path=${s3_cfg_path}"
+    echo "bam_url_array=${bam_url_array}"
+    echo "storage_dir=${storage_dir}"
     
     local prev_wd=`pwd`
     echo "cd ${storage_dir}"
@@ -335,7 +339,7 @@ function main()
     
     #get_gatk_index_files "${S3_CFG_PATH}" "${S3_GATK_INDEX_BUCKET}" "${data_dir}" \
     #                     "${REFERENCE_GENOME}" "${KNOWN_SNP_VCF}" "${KNOWN_INDEL_VCF}"
-    get_bam_files "${S3_CFG_PATH}" "${bam_url_array}" "${data_dir}"
+    get_bam_files "${S3_CFG_PATH}" "${BAM_URL_ARRAY}" "${data_dir}"
 
     ###setup path variables
     local buildbamindex_tool_path=${cwl_dir}/tools/${BUILDBAMINDEX_TOOL}
