@@ -145,7 +145,7 @@ function generate_bai_files()
     do
         local bam_name=$(basename ${bam_url})
         local bam_path=${storage_dir}/${bam_name}
-        local cwl_command="--debug --outdir ${storage_dir} ${BUILDBAMINDEX_TOOL_PATH} --uuid ${case_id} --input_bam ${bam_path}"
+        local cwl_command="--debug --outdir ${storage_dir} ${cwl_tool_path} --uuid ${case_id} --input_bam ${bam_path}"
 
         echo "${cwlrunner_path} ${cwl_command}"
         ${cwlrunner_path} ${cwl_command}
@@ -164,12 +164,14 @@ function run_coclean()
     local known_snp_vcf_path=$7
     local thread_count=$8
     local coclean_dir=${storage_dir}/coclean
+    local tmp_dir=${storage_dir}/tmp
     local prev_wd=`pwd`
     mkdir -p ${coclean_dir}
+    mkdir -p ${tmp_dir}
     cd ${coclean_dir}
     
     # setup cwl command removed  --leave-tmpdir
-    cwl_command="--debug --outdir ${coclean_dir} ${coclean_workflow_path} --reference_fasta_path ${reference_genome_path}.fa --uuid ${case_id} --known_indel_vcf_path ${known_indel_vcf_path} --known_snp_vcf_path ${known_snp_vcf_path} --thread_count ${thread_count}"
+    cwl_command="--debug --outdir ${coclean_dir} ${coclean_workflow_path} --reference_fasta_path ${reference_genome_path}.fa --uuid ${case_id} --known_indel_vcf_path ${known_indel_vcf_path} --known_snp_vcf_path ${known_snp_vcf_path} --thread_count ${thread_count} --tmp-outdir-prefix ${tmp_dir}"
     for bam_url in ${bam_url_array}
     do
         bam_name=$(basename ${bam_url})
