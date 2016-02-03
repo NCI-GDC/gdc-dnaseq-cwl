@@ -30,8 +30,8 @@ CWL_RUNNER_TMPDIR_PREFIX="XX_TMPDIR_PREFIX_XX"
 
 function install_unique_virtenv()
 {
-    uuid=$1
-    export_proxy_str=$2
+    local uuid=$1
+    local export_proxy_str=$2
     eval ${export_proxy_str}
     pip install virtualenvwrapper --user
     source ${HOME}/.local/bin/virtualenvwrapper.sh
@@ -43,19 +43,19 @@ function install_unique_virtenv()
 
 function pip_install_requirements()
 {
-    requirements_path=$1
-    export_proxy_str=$2
+    local requirements_path=$1
+    local export_proxy_str=$2
     eval ${export_proxy_str}
     pip install -r ${requirements_path}
 }
 
 function setup_deploy_key()
 {
-    s3_cfg_path=$1
-    s3_deploy_key_url=$2
-    store_dir=$3
-    prev_wd=`pwd`
-    key_name=$(basename ${s3_deploy_key_url})
+    local s3_cfg_path=$1
+    local s3_deploy_key_url=$2
+    local store_dir=$3
+    local prev_wd=`pwd`
+    local key_name=$(basename ${s3_deploy_key_url})
     cd ${store_dir}
     eval `ssh-agent`
     s3cmd -c ${s3_cfg_path} get ${s3_deploy_key_url}
@@ -65,12 +65,12 @@ function setup_deploy_key()
 
 function clone_git_repo()
 {
-    git_server=$1
-    git_server_fingerprint=$2
-    git_repo=$3
-    export_proxy_str=$4
-    storage_dir=$5
-    prev_wd=`pwd`
+    local git_server=$1
+    local git_server_fingerprint=$2
+    local git_repo=$3
+    local export_proxy_str=$4
+    local storage_dir=$5
+    local prev_wd=`pwd`
     eval ${export_proxy_str}
     cd ${storage_dir}
     #check if key is in known hosts
@@ -96,14 +96,14 @@ function clone_git_repo()
 
 function get_gatk_index_files()
 {
-    s3_cfg_path=$1
-    s3_index_bucket=$2
-    storage_dir=$3
-    reference_genome=$4
-    known_snp_vcf=$5
-    known_indel_vcf=$6
+    local s3_cfg_path=$1
+    local s3_index_bucket=$2
+    local storage_dir=$3
+    local reference_genome=$4
+    local known_snp_vcf=$5
+    local known_indel_vcf=$6
 
-    gatk_index_dir="${storage_dir}/index"
+    local gatk_index_dir="${storage_dir}/index"
     mkdir -p ${gatk_index_dir}
     
     s3cmd -c ${s3_cfg_path} --force get ${s3_index_bucket}/${reference_genome}.dict
@@ -117,10 +117,10 @@ function get_gatk_index_files()
 
 function get_bam_files()
 {
-    s3_cfg_path=$1
-    bam_url_array=$2
-    storage_dir=$3
-    prev_wd=`pwd`
+    local s3_cfg_path=$1
+    local bam_url_array=$2
+    local storage_dir=$3
+    local prev_wd=`pwd`
     cd ${storage_dir}
     for bam_url in ${bam_url_array}
     do
@@ -171,14 +171,14 @@ function run_coclean()
     cd ${coclean_dir}
     
     # setup cwl command removed  --leave-tmpdir
-    cwl_command="--debug --outdir ${coclean_dir} ${coclean_workflow_path} --reference_fasta_path ${reference_genome_path}.fa --uuid ${case_id} --known_indel_vcf_path ${known_indel_vcf_path} --known_snp_vcf_path ${known_snp_vcf_path} --thread_count ${thread_count} --tmp-outdir-prefix ${tmp_dir}"
+    local cwl_command="--debug --outdir ${coclean_dir} ${coclean_workflow_path} --reference_fasta_path ${reference_genome_path}.fa --uuid ${case_id} --known_indel_vcf_path ${known_indel_vcf_path} --known_snp_vcf_path ${known_snp_vcf_path} --thread_count ${thread_count} --tmp-outdir-prefix ${tmp_dir}"
     for bam_url in ${bam_url_array}
     do
-        bam_name=$(basename ${bam_url})
-        bam_path=${storage_dir}/${bam_name}
-        bam_paths="${bam_paths} --bam_path ${bam_path}"
+        local bam_name=$(basename ${bam_url})
+        local bam_path=${storage_dir}/${bam_name}
+        local bam_paths="${bam_paths} --bam_path ${bam_path}"
     done
-    cwl_command="${cwl_command} ${bam_paths}"
+    local cwl_command="${cwl_command} ${bam_paths}"
 
     # run cwl
     local this_virtenv_dir=${HOME}/.virtualenvs/p2_${case_id}
@@ -231,25 +231,25 @@ function remove_data()
 
 function get_git_name()
 {
-    repo_str=$1
-    git_url=($repo_str)[-1]
+    local repo_str=$1
+    local git_url=($repo_str)[-1]
     IFS=':' read -r -a array <<< "$git_url"
-    git_reponame=($array)[-1]
-    git_name="${git_reponame%.*}"
+    local git_reponame=($array)[-1]
+    local git_name="${git_reponame%.*}"
     echo "$git_name"
 }
 
 function main()
 {
-    data_dir="${SCRATCH_DIR}/data_"${CASE_ID}
+    local data_dir="${SCRATCH_DIR}/data_"${CASE_ID}
     mkdir -p ${data_dir}
     setup_deploy_key ${S3_CFG_PATH} ${S3_DEPLOY_KEY_URL} ${data_dir}
     clone_git_repo ${GIT_SERVER} ${GIT_SERVER_FINGERPRINT} ${GIT_CWL_REPO} ${EXPORT_PROXY_STR} ${data_dir}    
     install_unique_virtenv ${CASE_ID} ${EXPORT_PROXY}
 
-    git_name=$(get_git_name ${GIT_CWL_REPO})
-    cwl_dir=${data_dir}/${git_name}
-    cwl_pip_requirements=${cwl_dir}/slurm_sh/requirements.sh
+    local git_name=$(get_git_name ${GIT_CWL_REPO})
+    local cwl_dir=${data_dir}/${git_name}
+    local cwl_pip_requirements=${cwl_dir}/slurm_sh/requirements.sh
 
     pip_install_requirments ${cwl_pip_requirements} ${EXPORT_PROXY}
     get_gatk_index_files ${S3_CFG_PATH} ${S3_GATK_INDEX_BUCKET} ${data_dir} \
@@ -257,11 +257,11 @@ function main()
     get_bam_files ${S3_CFG_PATH} ${bam_url_array} ${data_dir}
 
     #setup path variables
-    buildbamindex_tool_path=${cwl_dir}/tools/${BUILDBAMINDEX_TOOL}
-    coclean_workflow_path=${cwl_dir}/workflows/${COCLEAN_WORKFLOW}
-    reference_genome_path=${data_dir}/index/${REFERENCE_GENOME}
-    known_indel_vcf_path=${data_dir}/index/${KNOWN_INDEL_VCF}
-    known_snp_vcf_path=${data_dir}/index/${KNOWN_SNP_VCF}
+    local buildbamindex_tool_path=${cwl_dir}/tools/${BUILDBAMINDEX_TOOL}
+    local coclean_workflow_path=${cwl_dir}/workflows/${COCLEAN_WORKFLOW}
+    local reference_genome_path=${data_dir}/index/${REFERENCE_GENOME}
+    local known_indel_vcf_path=${data_dir}/index/${KNOWN_INDEL_VCF}
+    local known_snp_vcf_path=${data_dir}/index/${KNOWN_SNP_VCF}
     
     generate_bai_files ${data_dir} ${bam_url_array} ${CASE_ID} ${buildbamindex_tool_path}
     run_coclean ${data_dir} ${bam_url_array} ${CASE_ID} ${coclean_workflow_path} \
