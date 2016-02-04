@@ -4,7 +4,7 @@
 #SBATCH --workdir=XX_SCRATCH_DIR_XX
 ###SBATCH --cpus-per-task=XX_THREAD_COUNT_XX
 
-
+##deb reqs: python-dev libssl-dev s3cmd
 #environment variables
 SCRATCH_DIR="XX_SCRATCH_DIR_XX"
 THREAD_COUNT=XX_THREAD_COUNT_XX
@@ -72,7 +72,7 @@ function install_unique_virtenv()
     local export_proxy_str="$2"
     
     eval ${export_proxy_str}
-    echo "deactive"
+    echo "deactivate"
     deactivate
     echo "pip install virtualenvwrapper --user"
     pip install virtualenvwrapper --user
@@ -417,18 +417,18 @@ function main()
     local data_dir="${SCRATCH_DIR}/data_"${CASE_ID}
     local index_dir="${data_dir}/index"
     echo "main() index_dir=${index_dir}"
-    #remove_data ${data_dir} ${CASE_ID} ## removes all data from previous run of script
-    #mkdir -p ${data_dir}
+    remove_data ${data_dir} ${CASE_ID} ## removes all data from previous run of script
+    mkdir -p ${data_dir}
     
    
-    #setup_deploy_key "${S3_CFG_PATH}" "${GIT_CWL_DEPLOY_KEY_S3_URL}" "${data_dir}"
-    #clone_git_repo "${GIT_CWL_SERVER}" "${GIT_CWL_SERVER_FINGERPRINT}" "${GIT_CWL_REPO}" "${EXPORT_PROXY_STR}" "${data_dir}"
-    #install_unique_virtenv "${CASE_ID}" "${EXPORT_PROXY_STR}"
-    #pip_install_requirements "${GIT_CWL_REPO}" "${CWLTOOL_REQUIREMENTS_PATH}" "${EXPORT_PROXY_STR}" "${data_dir}" "${CASE_ID}"
+    setup_deploy_key "${S3_CFG_PATH}" "${GIT_CWL_DEPLOY_KEY_S3_URL}" "${data_dir}"
+    clone_git_repo "${GIT_CWL_SERVER}" "${GIT_CWL_SERVER_FINGERPRINT}" "${GIT_CWL_REPO}" "${EXPORT_PROXY_STR}" "${data_dir}"
+    install_unique_virtenv "${CASE_ID}" "${EXPORT_PROXY_STR}"
+    pip_install_requirements "${GIT_CWL_REPO}" "${CWLTOOL_REQUIREMENTS_PATH}" "${EXPORT_PROXY_STR}" "${data_dir}" "${CASE_ID}"
     #clone_pip_git_hash "${CASE_ID}" "${CWLTOOL_URL}" "${CWLTOOL_HASH}" "${data_dir}" "${EXPORT_PROXY_STR}"
-    #get_gatk_index_files "${S3_CFG_PATH}" "${S3_GATK_INDEX_BUCKET}" "${index_dir}" "${REFERENCE_GENOME}" "${KNOWN_SNP_VCF}" "${KNOWN_INDEL_VCF}"
-    #get_bam_files "${S3_CFG_PATH}" "${BAM_URL_ARRAY}" "${data_dir}"
-    #generate_bai_files "${data_dir}" "${BAM_URL_ARRAY}" "${CASE_ID}" "${GIT_CWL_REPO}" "${BUILDBAMINDEX_TOOL}"
+    get_gatk_index_files "${S3_CFG_PATH}" "${S3_GATK_INDEX_BUCKET}" "${index_dir}" "${REFERENCE_GENOME}" "${KNOWN_SNP_VCF}" "${KNOWN_INDEL_VCF}"
+    get_bam_files "${S3_CFG_PATH}" "${BAM_URL_ARRAY}" "${data_dir}"
+    generate_bai_files "${data_dir}" "${BAM_URL_ARRAY}" "${CASE_ID}" "${GIT_CWL_REPO}" "${BUILDBAMINDEX_TOOL}"
     run_coclean "${data_dir}" "${BAM_URL_ARRAY}" "${CASE_ID}" "${COCLEAN_WORKFLOW}" "${REFERENCE_GENOME}" "${KNOWN_INDEL_VCF}" "${KNOWN_SNP_VCF}" "${THREAD_COUNT}" "${GIT_CWL_REPO}" "${index_dir}"
     #upload_coclean_results ${case_id} ${BAM_URL_ARRAY} ${S3_OUT_BUCKET} ${S3_LOG_BUCKET} ${S3_CFG_PATH} \
     #                       ${data_dir}
