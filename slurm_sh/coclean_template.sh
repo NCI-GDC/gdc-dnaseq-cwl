@@ -236,7 +236,7 @@ function run_coclean()
     cd ${coclean_dir}
     
     # setup cwl command removed  --leave-tmpdir
-    local cwl_command="--debug --outdir ${coclean_dir} ${coclean_workflow_path} --reference_fasta_path ${reference_genome_path}.fa --uuid ${case_id} --known_indel_vcf_path ${known_indel_vcf_path} --known_snp_vcf_path ${known_snp_vcf_path} --thread_count ${thread_count} --tmp-outdir-prefix ${tmp_dir}"
+    local cwl_command="--debug --outdir ${coclean_dir} --tmp-outdir-prefix ${tmp_dir} ${coclean_workflow_path} --reference_fasta_path ${reference_genome_path}.fa --uuid ${case_id} --known_indel_vcf_path ${known_indel_vcf_path} --known_snp_vcf_path ${known_snp_vcf_path} --thread_count ${thread_count}"
     for bam_url in ${bam_url_array}
     do
         local bam_name=$(basename ${bam_url})
@@ -251,7 +251,14 @@ function run_coclean()
     echo "calling:
          ${cwlrunner_path} ${cwl_command}"
     ${cwlrunner_path} ${cwl_command}
-
+    if [ $? -eq 0 ]
+    then
+        "completed cocleaning"
+    else
+        "failed cocleaning"
+        ##update db with a fail
+        exit 1
+    fi
     cd ${prev_wd}
 }
 
@@ -323,6 +330,7 @@ function get_git_name()
 
 function main()
 {
+    ## hit db with start time ${CASE_ID}
     local data_dir="${SCRATCH_DIR}/data_"${CASE_ID}
     #remove_data ${data_dir} ${CASE_ID} ## removes all data from previous run of script
     #mkdir -p ${data_dir}
@@ -339,7 +347,7 @@ function main()
     
     #get_gatk_index_files "${S3_CFG_PATH}" "${S3_GATK_INDEX_BUCKET}" "${data_dir}" \
     #                     "${REFERENCE_GENOME}" "${KNOWN_SNP_VCF}" "${KNOWN_INDEL_VCF}"
-    get_bam_files "${S3_CFG_PATH}" "${BAM_URL_ARRAY}" "${data_dir}"
+    #get_bam_files "${S3_CFG_PATH}" "${BAM_URL_ARRAY}" "${data_dir}"
 
     ###setup path variables
     local buildbamindex_tool_path=${cwl_dir}/tools/${BUILDBAMINDEX_TOOL}
@@ -348,13 +356,14 @@ function main()
     local known_indel_vcf_path=${data_dir}/index/${KNOWN_INDEL_VCF}
     local known_snp_vcf_path=${data_dir}/index/${KNOWN_SNP_VCF}
     
-    #generate_bai_files ${data_dir} ${bam_url_array} ${CASE_ID} ${buildbamindex_tool_path}
-    #run_coclean ${data_dir} ${bam_url_array} ${CASE_ID} ${coclean_workflow_path} \
-    #            ${reference_genome_path} ${known_indel_vcf_path} ${known_snp_vcf_path} \
-    #            ${THREAD_COUNT}
-    #upload_coclean_results ${case_id} ${bam_url_array} ${S3_OUT_BUCKET} ${S3_LOG_BUCKET} ${S3_CFG_PATH} \
+    #generate_bai_files "${data_dir}" "${BAM_URL_ARRAY}" "${CASE_ID}" "${buildbamindex_tool_path}"
+    run_coclean "${data_dir}" "${BAM_URL_ARRAY}" "${CASE_ID}" "${coclean_workflow_path}" \
+                "${reference_genome_path}" "${known_indel_vcf_path}" "${known_snp_vcf_path}" \
+                "${THREAD_COUNT}"
+    #upload_coclean_results ${case_id} ${BAM_URL_ARRAY} ${S3_OUT_BUCKET} ${S3_LOG_BUCKET} ${S3_CFG_PATH} \
     #                       ${data_dir}
     #remove_data ${data_dir} ${CASE_ID}
+    ## hit db with end time ${CASE_ID}
 }
 
 main "$@"
