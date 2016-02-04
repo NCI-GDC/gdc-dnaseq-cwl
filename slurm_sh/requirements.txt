@@ -9,6 +9,6 @@ pyparsing==2.0.7
 rdflib==4.2.1
 rdflib-jsonld==0.3
 requests==2.9.1
-schema-salad==1.5.20160126213649
+schema-salad==1.4.20160108200836
 shellescape==3.4.1
 six==1.10.0
