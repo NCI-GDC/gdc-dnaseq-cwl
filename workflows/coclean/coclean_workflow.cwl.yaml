@@ -41,7 +41,7 @@ steps:
   - id: "#gatk_realignertargetcreator"
     run: {import: ../../tools/gatk_realignertargetcreator.cwl.yaml}
     inputs:
-      - id: "#gatk__realignertargetcreator.input_bam_path"
+      - id: "#gatk_realignertargetcreator.input_bam_path"
         source: "#bam_path"
       - id: "#gatk_realignertargetcreator.known_indel_vcf_path"
         source: "#known_indel_vcf_path"
