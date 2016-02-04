@@ -189,11 +189,10 @@ function get_gatk_index_files()
     local known_snp_vcf="$5"
     local known_indel_vcf="$6"
 
-    local gatk_index_dir="${index_dir}"
-    mkdir -p ${gatk_index_dir}
+    mkdir -p ${index_dir}
     prev_wd=`pwd`
-    echo "cd ${gatk_index_dir}"
-    cd ${gatk_index_dir}
+    echo "cd ${index_dir}"
+    cd ${index_dir}
     
     s3cmd -c ${s3_cfg_path} --force get ${s3_index_bucket}/${reference_genome}.dict
     s3cmd -c ${s3_cfg_path} --force get ${s3_index_bucket}/${reference_genome}.fa
@@ -280,8 +279,9 @@ function run_coclean()
     local known_snp_vcf="$7"
     local thread_count="$8"
     local git_cwl_repo="$9"
-    local index_dir="$10"
+    local index_dir="${10}"
 
+    
     local reference_genome_path=${index_dir}/${reference_genome}
     local known_indel_vcf_path=${index_dir}/${known_indel_vcf}
     local known_snp_vcf_path=${index_dir}/${known_snp_vcf}
@@ -415,8 +415,8 @@ function main()
     ## hit db with start time ${CASE_ID}
 
     local data_dir="${SCRATCH_DIR}/data_"${CASE_ID}
-    local index_dir=${data_dir}/index
-    
+    local index_dir="${data_dir}/index"
+    echo "main() index_dir=${index_dir}"
     #remove_data ${data_dir} ${CASE_ID} ## removes all data from previous run of script
     #mkdir -p ${data_dir}
     
@@ -429,7 +429,7 @@ function main()
     #get_gatk_index_files "${S3_CFG_PATH}" "${S3_GATK_INDEX_BUCKET}" "${index_dir}" "${REFERENCE_GENOME}" "${KNOWN_SNP_VCF}" "${KNOWN_INDEL_VCF}"
     #get_bam_files "${S3_CFG_PATH}" "${BAM_URL_ARRAY}" "${data_dir}"
     #generate_bai_files "${data_dir}" "${BAM_URL_ARRAY}" "${CASE_ID}" "${GIT_CWL_REPO}" "${BUILDBAMINDEX_TOOL}"
-    run_coclean "${data_dir}" "${BAM_URL_ARRAY}" "${CASE_ID}" "${COCLEAN_WORKFLOW}" "${reference_genome_path}" "${known_indel_vcf_path}" "${known_snp_vcf_path}" "${THREAD_COUNT}" "${GIT_CWL_REPO}" "${index_dir}"
+    run_coclean "${data_dir}" "${BAM_URL_ARRAY}" "${CASE_ID}" "${COCLEAN_WORKFLOW}" "${REFERENCE_GENOME}" "${KNOWN_INDEL_VCF}" "${KNOWN_SNP_VCF}" "${THREAD_COUNT}" "${GIT_CWL_REPO}" "${index_dir}"
     #upload_coclean_results ${case_id} ${BAM_URL_ARRAY} ${S3_OUT_BUCKET} ${S3_LOG_BUCKET} ${S3_CFG_PATH} \
     #                       ${data_dir}
     #remove_data ${data_dir} ${CASE_ID}
