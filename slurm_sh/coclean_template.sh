@@ -425,14 +425,13 @@ function main()
     clone_git_repo "${GIT_CWL_SERVER}" "${GIT_CWL_SERVER_FINGERPRINT}" "${GIT_CWL_REPO}" "${EXPORT_PROXY_STR}" "${data_dir}"
     install_unique_virtenv "${CASE_ID}" "${EXPORT_PROXY_STR}"
     pip_install_requirements "${GIT_CWL_REPO}" "${CWLTOOL_REQUIREMENTS_PATH}" "${EXPORT_PROXY_STR}" "${data_dir}" "${CASE_ID}"
-    #clone_pip_git_hash "${CASE_ID}" "${CWLTOOL_URL}" "${CWLTOOL_HASH}" "${data_dir}" "${EXPORT_PROXY_STR}"
+    clone_pip_git_hash "${CASE_ID}" "${CWLTOOL_URL}" "${CWLTOOL_HASH}" "${data_dir}" "${EXPORT_PROXY_STR}"
     get_gatk_index_files "${S3_CFG_PATH}" "${S3_GATK_INDEX_BUCKET}" "${index_dir}" "${REFERENCE_GENOME}" "${KNOWN_SNP_VCF}" "${KNOWN_INDEL_VCF}"
     get_bam_files "${S3_CFG_PATH}" "${BAM_URL_ARRAY}" "${data_dir}"
     generate_bai_files "${data_dir}" "${BAM_URL_ARRAY}" "${CASE_ID}" "${GIT_CWL_REPO}" "${BUILDBAMINDEX_TOOL}"
     run_coclean "${data_dir}" "${BAM_URL_ARRAY}" "${CASE_ID}" "${COCLEAN_WORKFLOW}" "${REFERENCE_GENOME}" "${KNOWN_INDEL_VCF}" "${KNOWN_SNP_VCF}" "${THREAD_COUNT}" "${GIT_CWL_REPO}" "${index_dir}"
-    #upload_coclean_results ${case_id} ${BAM_URL_ARRAY} ${S3_OUT_BUCKET} ${S3_LOG_BUCKET} ${S3_CFG_PATH} \
-    #                       ${data_dir}
-    #remove_data ${data_dir} ${CASE_ID}
+    #upload_coclean_results "${case_id}" "${BAM_URL_ARRAY}" "${S3_OUT_BUCKET}" "${S3_LOG_BUCKET}" "${S3_CFG_PATH}" "${data_dir}"
+    #remove_data "${data_dir}" "${CASE_ID}"
     ## hit db with end time ${CASE_ID}
 }
 
