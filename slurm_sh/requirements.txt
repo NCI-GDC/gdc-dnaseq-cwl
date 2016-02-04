@@ -1,6 +1,7 @@
 PyYAML==3.11
 SPARQLWrapper==1.7.6
 avro==1.7.7
+cwltool==1.0.20160203221531
 html5lib==0.9999999
 isodate==0.5.4
 keepalive==0.5
@@ -9,6 +10,6 @@ pyparsing==2.0.7
 rdflib==4.2.1
 rdflib-jsonld==0.3
 requests==2.9.1
-schema-salad==1.4.20160108200836
+schema-salad==1.6.20160202222448
 shellescape==3.4.1
 six==1.10.0
