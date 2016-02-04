@@ -274,11 +274,21 @@ function run_coclean()
     local data_dir="$1"
     local bam_url_array="$2"
     local case_id="$3"
-    local coclean_workflow_path="$4"
-    local reference_genome_path="$5"
-    local known_indel_vcf_path="$6"
-    local known_snp_vcf_path="$7"
+    local coclean_workflow="$4"
+    local reference_genome="$5"
+    local known_indel_vcf="$6"
+    local known_snp_vcf="$7"
     local thread_count="$8"
+    local git_cwl_repo="$9"
+    local index_dir="$10"
+
+    local reference_genome_path=${index_dir}/${reference_genome}
+    local known_indel_vcf_path=${index_dir}/${known_indel_vcf}
+    local known_snp_vcf_path=${index_dir}/${known_snp_vcf}
+    
+    get_git_name "${git_cwl_repo}"
+    local cwl_dir=${data_dir}/${git_name}
+    local workflow_path=${cwl_dir}/${coclean_workflow}
     
     local coclean_dir=${data_dir}/coclean
     local tmp_dir=${data_dir}/tmp/tmp
@@ -290,7 +300,7 @@ function run_coclean()
     cd ${coclean_dir}
     
     # setup cwl command removed  --leave-tmpdir
-    local cwl_command="--debug --outdir ${coclean_dir} --tmpdir-prefix ${tmp_dir} --tmp-outdir-prefix ${tmpout_dir} ${coclean_workflow_path} --reference_fasta_path ${reference_genome_path}.fa --uuid ${case_id} --known_indel_vcf_path ${known_indel_vcf_path} --known_snp_vcf_path ${known_snp_vcf_path} --thread_count ${thread_count}"
+    local cwl_command="--debug --outdir ${coclean_dir} --tmpdir-prefix ${tmp_dir} --tmp-outdir-prefix ${tmpout_dir} ${workflow_path} --reference_fasta_path ${reference_genome_path}.fa --uuid ${case_id} --known_indel_vcf_path ${known_indel_vcf_path} --known_snp_vcf_path ${known_snp_vcf_path} --thread_count ${thread_count}"
     for bam_url in ${bam_url_array}
     do
         local bam_name=$(basename ${bam_url})
@@ -404,6 +414,7 @@ function main()
 {
     ## hit db with start time ${CASE_ID}
     local data_dir="${SCRATCH_DIR}/data_"${CASE_ID}
+    local index_dir=${data_dir}/index
     #remove_data ${data_dir} ${CASE_ID} ## removes all data from previous run of script
     #mkdir -p ${data_dir}
     
@@ -418,15 +429,9 @@ function main()
     #get_bam_files "${S3_CFG_PATH}" "${BAM_URL_ARRAY}" "${data_dir}"
 
     
-    generate_bai_files "${data_dir}" "${BAM_URL_ARRAY}" "${CASE_ID}" "${GIT_CWL_REPO}" "${BUILDBAMINDEX_TOOL}"
+    #generate_bai_files "${data_dir}" "${BAM_URL_ARRAY}" "${CASE_ID}" "${GIT_CWL_REPO}" "${BUILDBAMINDEX_TOOL}"
 
-    ###setup path variables
-    local coclean_workflow_path=${cwl_dir}/workflows/${COCLEAN_WORKFLOW}
-    local reference_genome_path=${data_dir}/index/${REFERENCE_GENOME}
-    local known_indel_vcf_path=${data_dir}/index/${KNOWN_INDEL_VCF}
-    local known_snp_vcf_path=${data_dir}/index/${KNOWN_SNP_VCF}
-
-    #run_coclean "${data_dir}" "${BAM_URL_ARRAY}" "${CASE_ID}" "${coclean_workflow_path}" "${reference_genome_path}" "${known_indel_vcf_path}" "${known_snp_vcf_path}" "${THREAD_COUNT}"
+    run_coclean "${data_dir}" "${BAM_URL_ARRAY}" "${CASE_ID}" "${COCLEAN_WORKFLOW}" "${reference_genome_path}" "${known_indel_vcf_path}" "${known_snp_vcf_path}" "${THREAD_COUNT}" "${GIT_CWL_REPO}" "${index_dir}"
     #upload_coclean_results ${case_id} ${BAM_URL_ARRAY} ${S3_OUT_BUCKET} ${S3_LOG_BUCKET} ${S3_CFG_PATH} \
     #                       ${data_dir}
     #remove_data ${data_dir} ${CASE_ID}
