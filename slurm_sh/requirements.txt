@@ -1,7 +1,6 @@
 PyYAML==3.11
 SPARQLWrapper==1.7.6
 avro==1.7.7
-cwltool==1.0.20160129183049
 html5lib==0.9999999
 isodate==0.5.4
 keepalive==0.5
