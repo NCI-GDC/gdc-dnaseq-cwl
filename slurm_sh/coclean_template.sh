@@ -229,7 +229,7 @@ function run_coclean()
     local thread_count="$8"
     
     local coclean_dir=${storage_dir}/coclean
-    local tmp_dir=${storage_dir}/tmp
+    local tmp_dir=${storage_dir}/tmp/
     local prev_wd=`pwd`
     mkdir -p ${coclean_dir}
     mkdir -p ${tmp_dir}
