@@ -4,29 +4,63 @@
 #SBATCH --workdir=XX_SCRATCH_DIR_XX
 ###SBATCH --cpus-per-task=XX_THREAD_COUNT_XX
 
+
+#environment variables
 SCRATCH_DIR="XX_SCRATCH_DIR_XX"
+THREAD_COUNT=XX_THREAD_COUNT_XX
+
+#job variables
 BAM_URL_ARRAY="XX_BAM_URL_ARRAY_XX"
 CASE_ID="XX_CASE_ID_XX"
-THREAD_COUNT=XX_THREAD_COUNT_XX
+
+#server environment
 S3_CFG_PATH=${HOME}/.s3cfg.cleversafe
+EXPORT_PROXY_STR="export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128;"
+
+#private cwl
 GIT_CWL_SERVER="github.com"
 GIT_CWL_SERVER_FINGERPRINT="2048 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48"
 GIT_CWL_DEPLOY_KEY_S3_URL="s3://bioinformatics_scratch/deploy_key/coclean_cwl_deploy_rsa"
 GIT_CWL_REPO=" -b slurm_script git@github.com:NCI-GDC/cocleaning-cwl.git"
-EXPORT_PROXY_STR="export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128;"
+COCLEAN_WORKFLOW="coclean/coclean_workflow.cwl.yaml"
+BUILDBAMINDEX_TOOL="picard_buildbamindex.cwl.yaml"
+
+#cwl runner
+CWLTOOL_REQUIREMENTS_PATH="slurm_sh/requirements.txt"
+CWLTOOL_REPO="https://github.com/chapmanb/cwltool.git"
+CWLTOOL_HASH="221cf2395b2745ae1c3899c691d94edf3152327d"
 
 #index file names
 KNOWN_INDEL_VCF="Homo_sapiens_assembly38.known_indels.vcf.gz"
 KNOWN_SNP_VCF="dbsnp_144.hg38.vcf.gz"
 REFERENCE_GENOME="GRCh38.d1.vd1"
 
-#buckets used
+#input bucket
 S3_GATK_INDEX_BUCKET="s3://bioinformatics_scratch/coclean"
+#output buckets
 S3_OUT_BUCKET="s3://tcga_exome_blca_coclean"
 S3_LOG_BUCKET="s3://tcga_exome_blca_coclean_log"
 
-COCLEAN_WORKFLOW="coclean/coclean_workflow.cwl.yaml"
-BUILDBAMINDEX_TOOL="picard_buildbamindex.cwl.yaml"
+
+function get_git_name()
+{
+    echo ""
+    echo "get_git_name()"
+    
+    local repo_str="$1"
+
+    local git_array=(${repo_str})
+    local git_url=${git_array[-1]}
+    echo "repo_str=${repo_str}"
+    echo "git_url=${git_url}"
+    IFS=':' read -r -a array <<< "${git_url}"
+    owner_repo=${array[-1]}
+    echo "owner_repo=${owner_repo}"
+    git_repo=$(basename ${owner_repo})
+    echo "git_repo=${git_repo}"
+    git_name="${git_repo%.*}" # need global var for return
+    echo "${git_name}"
+}
 
 function install_unique_virtenv()
 {
@@ -43,7 +77,7 @@ function install_unique_virtenv()
     pip install virtualenvwrapper --user
     source ${HOME}/.local/bin/virtualenvwrapper.sh
     mkvirtualenv --python /usr/bin/python2 p2_${uuid}
-    this_virtenv_dir=${HOME}/.virtualenvs/p2_${uuid}
+    local this_virtenv_dir=${HOME}/.virtualenvs/p2_${uuid}
     source ${this_virtenv_dir}/bin/activate
     pip install --upgrade pip
 }
@@ -52,9 +86,20 @@ function pip_install_requirements()
 {
     echo ""
     echo "pip_install_requirements()"
+
+    local git_cwl_repo="$1"
+    local requirements_path="$2"
+    local export_proxy_str="$3"
+    local data_dir=$4
+    local uuid=$5
+
+    local this_virtenv_dir=${HOME}/.virtualenvs/p2_${uuid}
+    source ${this_virtenv_dir}/bin/activate
     
-    local requirements_path="$1"
-    local export_proxy_str="$2"
+    get_git_name "${git_cwl_repo}"
+    echo ${git_name}
+    requirments_dir="${data_dir}/${git_name}/"
+    requirements_path="${requirments_dir}/${requirements_path}"
     
     eval ${export_proxy_str}
     pip install -r ${requirements_path}
@@ -95,10 +140,9 @@ function clone_git_repo()
     local git_repo="$3"
     local export_proxy_str="$4"
     local storage_dir="$5"
-    local git_name="$6"
+
     
     local prev_wd=`pwd`
-    echo "git_name=${git_name}"
     echo "eval ${export_proxy_str}"
     eval ${export_proxy_str}
     echo "cd ${storage_dir}"
@@ -124,6 +168,7 @@ function clone_git_repo()
             git clone ${git_repo}
         else
             echo "git server fingerprint is not '${git_server_fingerprint} ${git_server} (RSA)', but instead:  `ssh-keygen -lf ${git_server}_gitkey`"
+            cd ${prev_wd}
             exit 1
         fi
     fi
@@ -229,14 +274,16 @@ function run_coclean()
     local thread_count="$8"
     
     local coclean_dir=${storage_dir}/coclean
-    local tmp_dir=${storage_dir}/tmp/
+    local tmp_dir=${storage_dir}/tmp/tmp
+    local tmpout_dir=${storage_dir}/tmp_out/tmp
     local prev_wd=`pwd`
     mkdir -p ${coclean_dir}
-    mkdir -p ${tmp_dir}
+    mkdir -p $(dirname ${tmp_dir})
+    mkdir -p $(dirname ${tmpout_dir})
     cd ${coclean_dir}
     
     # setup cwl command removed  --leave-tmpdir
-    local cwl_command="--debug --outdir ${coclean_dir} --tmp-outdir-prefix ${tmp_dir} ${coclean_workflow_path} --reference_fasta_path ${reference_genome_path}.fa --uuid ${case_id} --known_indel_vcf_path ${known_indel_vcf_path} --known_snp_vcf_path ${known_snp_vcf_path} --thread_count ${thread_count}"
+    local cwl_command="--debug --outdir ${coclean_dir} --tmpdir-prefix ${tmp_dir} --tmp-outdir-prefix ${tmpout_dir} ${coclean_workflow_path} --reference_fasta_path ${reference_genome_path}.fa --uuid ${case_id} --known_indel_vcf_path ${known_indel_vcf_path} --known_snp_vcf_path ${known_snp_vcf_path} --thread_count ${thread_count}"
     for bam_url in ${bam_url_array}
     do
         local bam_name=$(basename ${bam_url})
@@ -253,9 +300,9 @@ function run_coclean()
     ${cwlrunner_path} ${cwl_command}
     if [ $? -eq 0 ]
     then
-        "completed cocleaning"
+        echo "completed cocleaning"
     else
-        "failed cocleaning"
+        echo "failed cocleaning"
         ##update db with a fail
         exit 1
     fi
@@ -308,42 +355,55 @@ function remove_data()
     rm -rf ${this_virtenv_dir}
 }
 
-function get_git_name()
+function clone_pip_git_hash()
 {
     echo ""
-    echo "get_git_name()"
-    
-    local repo_str="$1"
+    echo "clone_pip_cwltool()"
 
-    local git_array=(${repo_str})
-    local git_url=${git_array[-1]}
-    echo "repo_str=${repo_str}"
-    echo "git_url=${git_url}"
-    IFS=':' read -r -a array <<< "${git_url}"
-    owner_repo=${array[-1]}
-    echo "owner_repo=${owner_repo}"
-    git_repo=$(basename ${owner_repo})
-    echo "git_repo=${git_repo}"
-    git_name="${git_repo%.*}" # need global var for return
+    local uuid="$1"
+    local git_url="$2"
+    local git_hash="$3"
+    local data_dir="$4"
+    local export_proxy_str="$5"
+
+    eval ${export_proxy_str}
+    
+    this_virtenv_dir=${HOME}/.virtualenvs/p2_${uuid}
+    source ${this_virtenv_dir}/bin/activate
+
+    prev_wd=`pwd`
+    echo "cd ${data_dir}"
+    cd ${data_dir}
+
+    git clone ${git_url}
+    get_git_name "${git_url}"
     echo "${git_name}"
+    echo "cd ${data_dir}/${git_name}"
+    cd ${data_dir}/${git_name}
+    echo "git reset --hard ${git_hash}"
+    git reset --hard ${git_hash}
+
+    echo "pip install -e ."
+    pip install -e .
 }
 
 function main()
 {
     ## hit db with start time ${CASE_ID}
     local data_dir="${SCRATCH_DIR}/data_"${CASE_ID}
-    #remove_data ${data_dir} ${CASE_ID} ## removes all data from previous run of script
-    #mkdir -p ${data_dir}
+    remove_data ${data_dir} ${CASE_ID} ## removes all data from previous run of script
+    mkdir -p ${data_dir}
     
     get_git_name "${GIT_CWL_REPO}"
     echo "git_name=${git_name}"
     local cwl_dir=${data_dir}/${git_name}
     local cwl_pip_requirements="${cwl_dir}/slurm_sh/requirements.txt"
     
-    #setup_deploy_key "${S3_CFG_PATH}" "${GIT_CWL_DEPLOY_KEY_S3_URL}" "${data_dir}"
-    #clone_git_repo "${GIT_CWL_SERVER}" "${GIT_CWL_SERVER_FINGERPRINT}" "${GIT_CWL_REPO}" "${EXPORT_PROXY_STR}" "${data_dir}" "${git_name}"
-    #install_unique_virtenv "${CASE_ID}" "${EXPORT_PROXY}"
-    #pip_install_requirements "${cwl_pip_requirements}" "${EXPORT_PROXY}"
+    setup_deploy_key "${S3_CFG_PATH}" "${GIT_CWL_DEPLOY_KEY_S3_URL}" "${data_dir}"
+    clone_git_repo "${GIT_CWL_SERVER}" "${GIT_CWL_SERVER_FINGERPRINT}" "${GIT_CWL_REPO}" "${EXPORT_PROXY_STR}" "${data_dir}"
+    install_unique_virtenv "${CASE_ID}" "${EXPORT_PROXY}"
+    pip_install_requirements "${GIT_CWL_REPO}" "${CWLTOOL_REQUIREMENTS_PATH}" "${EXPORT_PROXY}" "${data_dir}" "${CASE_ID}"
+    clone_pip_git_hash "${CASE_ID}" "${CWLTOOL_URL}" "${CWLTOOL_HASH}" "${data_dir}" "${EXPORT_PROXY}"
     
     #get_gatk_index_files "${S3_CFG_PATH}" "${S3_GATK_INDEX_BUCKET}" "${data_dir}" \
     #                     "${REFERENCE_GENOME}" "${KNOWN_SNP_VCF}" "${KNOWN_INDEL_VCF}"
