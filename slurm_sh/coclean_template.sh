@@ -295,8 +295,8 @@ function run_coclean()
     local tmpout_dir=${data_dir}/tmp_out/tmp
     local prev_wd=`pwd`
     mkdir -p ${coclean_dir}
-    mkdir -p $(dirname ${tmp_dir})
-    mkdir -p $(dirname ${tmpout_dir})
+    mkdir -p ${tmp_dir}
+    mkdir -p ${tmpout_dir}
     cd ${coclean_dir}
     
     # setup cwl command removed  --leave-tmpdir
