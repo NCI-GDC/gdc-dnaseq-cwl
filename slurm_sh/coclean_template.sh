@@ -394,11 +394,7 @@ function main()
     remove_data ${data_dir} ${CASE_ID} ## removes all data from previous run of script
     mkdir -p ${data_dir}
     
-    get_git_name "${GIT_CWL_REPO}"
-    echo "git_name=${git_name}"
-    local cwl_dir=${data_dir}/${git_name}
-    local cwl_pip_requirements="${cwl_dir}/slurm_sh/requirements.txt"
-    
+   
     setup_deploy_key "${S3_CFG_PATH}" "${GIT_CWL_DEPLOY_KEY_S3_URL}" "${data_dir}"
     clone_git_repo "${GIT_CWL_SERVER}" "${GIT_CWL_SERVER_FINGERPRINT}" "${GIT_CWL_REPO}" "${EXPORT_PROXY_STR}" "${data_dir}"
     install_unique_virtenv "${CASE_ID}" "${EXPORT_PROXY}"
