@@ -27,7 +27,7 @@ BUILDBAMINDEX_TOOL="picard_buildbamindex.cwl.yaml"
 
 #cwl runner
 CWLTOOL_REQUIREMENTS_PATH="slurm_sh/requirements.txt"
-CWLTOOL_REPO="https://github.com/chapmanb/cwltool.git"
+CWLTOOL_URL="https://github.com/chapmanb/cwltool.git"
 CWLTOOL_HASH="221cf2395b2745ae1c3899c691d94edf3152327d"
 
 #index file names
@@ -366,6 +366,12 @@ function clone_pip_git_hash()
     local data_dir="$4"
     local export_proxy_str="$5"
 
+    echo uuid=${uuid}
+    echo git_url=${git_url}
+    echo git_hash=${git_hash}
+    echo data_dir=${data_dir}
+    echo export_proxy_str=${export_proxy_str}
+    
     eval ${export_proxy_str}
     
     this_virtenv_dir=${HOME}/.virtualenvs/p2_${uuid}
@@ -397,9 +403,9 @@ function main()
    
     setup_deploy_key "${S3_CFG_PATH}" "${GIT_CWL_DEPLOY_KEY_S3_URL}" "${data_dir}"
     clone_git_repo "${GIT_CWL_SERVER}" "${GIT_CWL_SERVER_FINGERPRINT}" "${GIT_CWL_REPO}" "${EXPORT_PROXY_STR}" "${data_dir}"
-    install_unique_virtenv "${CASE_ID}" "${EXPORT_PROXY}"
-    pip_install_requirements "${GIT_CWL_REPO}" "${CWLTOOL_REQUIREMENTS_PATH}" "${EXPORT_PROXY}" "${data_dir}" "${CASE_ID}"
-    clone_pip_git_hash "${CASE_ID}" "${CWLTOOL_URL}" "${CWLTOOL_HASH}" "${data_dir}" "${EXPORT_PROXY}"
+    install_unique_virtenv "${CASE_ID}" "${EXPORT_PROXY_STR}"
+    pip_install_requirements "${GIT_CWL_REPO}" "${CWLTOOL_REQUIREMENTS_PATH}" "${EXPORT_PROXY_STR}" "${data_dir}" "${CASE_ID}"
+    clone_pip_git_hash "${CASE_ID}" "${CWLTOOL_URL}" "${CWLTOOL_HASH}" "${data_dir}" "${EXPORT_PROXY_STR}"
     
     #get_gatk_index_files "${S3_CFG_PATH}" "${S3_GATK_INDEX_BUCKET}" "${data_dir}" \
     #                     "${REFERENCE_GENOME}" "${KNOWN_SNP_VCF}" "${KNOWN_INDEL_VCF}"
