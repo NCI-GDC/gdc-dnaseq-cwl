@@ -184,12 +184,12 @@ function get_gatk_index_files()
     
     local s3_cfg_path="$1"
     local s3_index_bucket="$2"
-    local data_dir="$3"
+    local index_dir="$3"
     local reference_genome="$4"
     local known_snp_vcf="$5"
     local known_indel_vcf="$6"
 
-    local gatk_index_dir="${data_dir}/index"
+    local gatk_index_dir="${index_dir}"
     mkdir -p ${gatk_index_dir}
     prev_wd=`pwd`
     echo "cd ${gatk_index_dir}"
@@ -425,7 +425,7 @@ function main()
     #pip_install_requirements "${GIT_CWL_REPO}" "${CWLTOOL_REQUIREMENTS_PATH}" "${EXPORT_PROXY_STR}" "${data_dir}" "${CASE_ID}"
     #clone_pip_git_hash "${CASE_ID}" "${CWLTOOL_URL}" "${CWLTOOL_HASH}" "${data_dir}" "${EXPORT_PROXY_STR}"
     
-    #get_gatk_index_files "${S3_CFG_PATH}" "${S3_GATK_INDEX_BUCKET}" "${data_dir}" "${REFERENCE_GENOME}" "${KNOWN_SNP_VCF}" "${KNOWN_INDEL_VCF}"
+    #get_gatk_index_files "${S3_CFG_PATH}" "${S3_GATK_INDEX_BUCKET}" "${index_dir}" "${REFERENCE_GENOME}" "${KNOWN_SNP_VCF}" "${KNOWN_INDEL_VCF}"
     #get_bam_files "${S3_CFG_PATH}" "${BAM_URL_ARRAY}" "${data_dir}"
 
     
