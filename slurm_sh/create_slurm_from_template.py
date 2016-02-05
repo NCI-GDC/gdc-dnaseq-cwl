@@ -163,6 +163,20 @@ def remove_duplicate_bam_from_set(bamurl_set, sql_file):
         bamurl_set.add(url_from_bamname_version)
     return bamurl_set
 
+def get_bamurl_set(sql_file):
+    bamurl_set = set()
+    with open(sql_file, 'r') as sql_file_open:
+        for line in sql_file_open:
+            if line.startswith('-') or line.startswith('    ') or line.startswith('(') or line.startswith('\n'):
+                continue
+            else:
+                line_split = line.split('|')
+                bamurl = line_split[17].strip()
+                bamurl = bamurl.replace('cleversafe.service.consul/', '')
+                bamurl_set.add(bamurl)
+    return bamurl_set
+            
+
 def main():
     s3_bucket = 's3://tcga_exome_alignment_2'
     parser = argparse.ArgumentParser('make slurm')
@@ -203,11 +217,7 @@ def main():
 
     for caseid in caseid_set:
         gdcid_set = get_gdcid_set(caseid, sql_file)
-        bamurl_set = set()
-        for gdcid in gdcid_set:
-            bam_name = get_bam_name(gdcid, sql_file)
-            bam_url = s3_bucket+'/'+gdcid+'/'+bam_name
-            bamurl_set.add(bam_url)
+        bamurl_set = get_bamurl_set(sql_file)
         fixed_bamurl_set=remove_duplicate_bam_from_set(bamurl_set, sql_file)
         write_case_file(template_file, caseid, fixed_bamurl_set, scratch_dir, thread_count)
 if __name__=='__main__':
