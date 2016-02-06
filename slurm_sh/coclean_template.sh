@@ -40,8 +40,8 @@ REFERENCE_GENOME="GRCh38.d1.vd1"
 #input bucket
 S3_GATK_INDEX_BUCKET="s3://bioinformatics_scratch/coclean"
 #output buckets
-S3_OUT_BUCKET="s3://tcga_exome_blca_coclean"
-S3_LOG_BUCKET="s3://tcga_exome_blca_coclean_log"
+S3_OUT_BUCKET="s3://qcpass_tcga_exome_blca_coclean"
+S3_LOG_BUCKET="s3://qcpass_tcga_exome_blca_coclean_log"
 
 
 function get_git_name()
