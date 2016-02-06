@@ -14,22 +14,6 @@ import sys
 
 from cdis_pipe_utils import pipe_util
 
-def get_caseid_set(sql_file):
-    caseid_set = set()
-    with open(sql_file, 'r') as sql_file_open:
-        for line in sql_file_open:
-            #print('line=%s' % line)
-            if line.startswith('-') or line.startswith('    ') or line.startswith('(') or line.startswith('\n'):
-                continue
-            else:
-                line_split = line.split('|')
-                print('line_split=%s' % line_split)
-                caseid_str = line_split[2].strip()
-                print('caseid_str=%s' % caseid_str)
-                caseid_set.add(caseid_str)
-    print('caseid_set=%s' % caseid_set)
-    return caseid_set
-
 
 def get_gdcid_set(caseid, sql_file):
     gdcid_set = set()
@@ -38,7 +22,6 @@ def get_gdcid_set(caseid, sql_file):
             if line.startswith('-') or line.startswith('    ') or line.startswith('(') or line.startswith('\n'):
                 continue
             else:
-                #print('line=%s' % line)
                 caseid_str = line.split('|')[2].strip()
                 if caseid==caseid_str:
                     gdcid_str = line.split('|')[0].strip()
@@ -60,18 +43,6 @@ def get_bam_name(gdcid, sql_file):
     sys.exit('could not find bamname for gdcid: %s' % gdcid)
     return 
                 
-
-def get_bam_name_from_s3(gdcid, s3_bucket, logger):
-    cmd = ['s3cmd','-c','~/.s3cfg.cleversafe', 'ls', s3_bucket+'/'+gdcid+'/', '>', 'out.s3']
-    shell_cmd = ' '.join(cmd)
-    pipe_util.do_shell_command(shell_cmd, logger)
-    with open('out.s3', 'r') as s3_path_open:
-        line = s3_path_open.readline()
-        line_split = line.split(' ')
-        line_path = line_split[-1].strip()
-        bam_name = os.path.basename(line_path)
-    os.remove('out.s3')
-    return bam_name
 
 def write_case_file(template_file, caseid, bamurl_set, scratch_dir, thread_count):
     template_dir = os.path.dirname(template_file)
@@ -118,67 +89,99 @@ def get_docker_version(gdcid, sql_file):
                 
 
 def get_latest_docker_version(bamname, gdc_bamdocker_dict):
-    version_set = set()
+    version_gdcid_dict = dict()
     for gdcid in sorted(list(gdc_bamdocker_dict.keys())):
-        print('gdcid=%s' % gdcid)
         bamname_str = gdc_bamdocker_dict[gdcid][0]
         if bamname == bamname_str:
             version_str = gdc_bamdocker_dict[gdcid][1]
             version = int(version_str)
-            if version in version_set:
+            if version in version_gdcid_dict.keys():
                 sys.exit('version: %s for bamname: %s is present more than once' %(str(version), bamname))
             else:
-                version_set.add(version)
+                version_gdcid_dict[version]=gdcid
     if len(version_set) < 1:
         sys.exit('bamname: %s does not have a version' % (bamname))
     max_version = str(max(version_set))
-    return max_version
+    max_gdcid = version_gdcid_dict[str(max_version)]
+    return max_version, max_gdcid
     
-def get_url_from_bamname_version(bamname, latest_version, gdc_bamdocker_dict):
-    for gdcid in sorted(list(gdc_bamdocker_dict.keys())):
-        this_bamname = gdc_bamdocker_dict[gdcid][0]
-        this_docker_version = gdc_bamdocker_dict[gdcid][1]
-        if bamname == this_bamname and latest_version == this_docker_version:
-            url = 's3://tcga_exome_alignment_2/' + gdcid + '/' + bamname
-            return url
-    sys.exit('error: couldn\'t find bamname: %s' % bamname)
-    return
 
-def remove_duplicate_bam_from_set(bamurl_set, sql_file):
+def get_latest_url(gdc_bamdocker_dict, latest_gdcid):
+    bamurl = gdc_bamdocker_dict[latest_gdcid][2]
+    return bamurl
+
+def get_keep_bamurl_set(case_bamurl_dict, sql_file):
     gdc_bamdocker_dict = dict()
-    bamname_list = list()
-    for bamurl in bamurl_set:
+    bamname_set = set()
+    for bamurl in sorted(list(case_bamurl_dict.values())):
         bamname = os.path.basename(bamurl)
         gdcid = os.path.basename(os.path.dirname(bamurl))
         docker_version = get_docker_version(gdcid, sql_file)
-        bamname_list.append(bamname)
-        gdc_bamdocker_dict[gdcid] = [bamname, docker_version]
-        bamname_list.append(bamname)
+        gdc_bamdocker_dict[gdcid] = [bamname, docker_version, bamurl]
+        bamname_set.add(bamname)
     bamurl_set = set()
-    print('bamname_list=%s' % bamname_list)
-    for bamname in bamname_list:
-        print('bamname=%s' % bamname)
-        latest_version=get_latest_docker_version(bamname, gdc_bamdocker_dict)
-        url_from_bamname_version=get_url_from_bamname_version(bamname, latest_version, gdc_bamdocker_dict)
-        bamurl_set.add(url_from_bamname_version)
+    for bamname in sorted(list(bamname_set)):
+        latest_version, latest_gdcid = get_latest_docker_version(bamname, gdc_bamdocker_dict)
+        url_from_latest_version = get_latest_url(gdc_bamdocker_dict, latest_gdcid)
+        bamurl_set.add(url_from_latest_version)
     return bamurl_set
 
-def get_bamurl_set(sql_file):
-    bamurl_set = set()
+def get_case_bamurl_dict(sql_file):
+    case_bamurl_dict = dict()
     with open(sql_file, 'r') as sql_file_open:
         for line in sql_file_open:
             if line.startswith('-') or line.startswith('    ') or line.startswith('(') or line.startswith('\n'):
                 continue
             else:
                 line_split = line.split('|')
-                bamurl = line_split[17].strip()
+                caseid = line_split[2].strip()
+                bamurl = line_split[18].strip()
                 bamurl = bamurl.replace('cleversafe.service.consul/', '')
-                bamurl_set.add(bamurl)
-    return bamurl_set
-            
+                if caseid in case_bamurl_dict.keys():
+                    case_bamurl_dict[caseid].add(bamurl)
+                else:
+                    case_bamurl_dict[caseid] = set()
+                    case_bamurl_dict[caseid].add(bamurl)
+    return case_bamurl_dict
+
+def get_qcfail_set(sql_file):
+    fail_set = set()
+    with open(sql_file, 'r') as sql_file_open:
+        for line in sql_file_open:
+            if line.startswith('-') or line.startswith('    ') or line.startswith('(') or line.startswith('\n'):
+                continue
+            else:
+                line_split = line.split('|')
+                fail_qc = line_split[17].strip()
+                case_id = line_split[2].strip()
+                if 't' in fail_qc:
+                    case_id = line_split[2].strip()
+                    fail_set.add(case_id)
+    return fail_set
+
+
+def reduce_case_set(case_bamurl_dict, keep_bamurl_set):
+    reduced_dict = dict()
+    for caseid in sorted(list)case_bamurl_dict.keys())):
+        original_bamurl_set = case_bamurl_dict[caseid]
+        for original_bamurl in original_bamurl_set:
+            if original_bamurl in keep_bamurl_set:
+                if caseid in reduced_dict:
+                    reduced_dict[caseid].add(original_bamurl)
+                else:
+                    reduced_dict[caseid] = set()
+                    reduced_dict[caseid].add(original_bamurl)
+    return reduced_dict
+
+
+def subtract_fail_set(case_bamurl_dict, fail_caseid_set):
+    qcpass_case_bamurl_dict = dict()
+    for caseid in sorted(list(case_bamurl_dict.keys())):
+        if caseid not in fail_caseid_set:
+            qcpass_case_bamurl_dict[caseid] = case_bamurl_dict[caseid]
+    return qcpass_case_bamurl_dict
 
 def main():
-    s3_bucket = 's3://tcga_exome_alignment_2'
     parser = argparse.ArgumentParser('make slurm')
     # Logging flags.
     parser.add_argument('-d', '--debug',
@@ -212,13 +215,25 @@ def main():
     uuid = 'a_uuid'
     tool_name = 'create_slurm_from_template'
     logger = pipe_util.setup_logging(tool_name, args, uuid)
-    
-    caseid_set=get_caseid_set(sql_file)
 
-    for caseid in caseid_set:
+    case_bamurl_dict = get_case_bamurl_dict(sql_file)
+    
+    keep_bamurl_set = get_keep_bamurl_set(case_bamurl_dict, sql_file)
+
+    reduced_case_bamurl_dict = reduce_case_set(case_bamurl_dict, keep_bamurl_set)
+    
+    fail_caseid_set = get_qcfail_set(sql_file)
+
+    qcpass_case_bamurl_dict = subtract_fail_set(reduced_case_bamurl_dict, fail_caseid_set)
+    
+    print('len(caseid_set)=%s' % len(caseid_set))
+    print('len(fail_caseid_set)=%s' % len(fail_caseid_set))
+    print('len(use_caseid_set)=%s' % len(use_caseid_set))
+    print('len(bamurl_set)=%s' % len(bamurl_set))
+    print('len(fixed_bamurl_set)=%s' % len(fixed_bamurl_set))
+    for caseid in sorted(list(qcpass_case_bamurl_dict.keys())):
         gdcid_set = get_gdcid_set(caseid, sql_file)
-        bamurl_set = get_bamurl_set(sql_file)
-        fixed_bamurl_set=remove_duplicate_bam_from_set(bamurl_set, sql_file)
+        print('\ngdcid_set=%s' % gdcid_set)
         write_case_file(template_file, caseid, fixed_bamurl_set, scratch_dir, thread_count)
 if __name__=='__main__':
     main()
