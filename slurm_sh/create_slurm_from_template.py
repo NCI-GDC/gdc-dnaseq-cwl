@@ -99,10 +99,10 @@ def get_latest_docker_version(bamname, gdc_bamdocker_dict):
                 sys.exit('version: %s for bamname: %s is present more than once' %(str(version), bamname))
             else:
                 version_gdcid_dict[version]=gdcid
-    if len(version_set) < 1:
+    if len(version_gdcid_dict.keys()) < 1:
         sys.exit('bamname: %s does not have a version' % (bamname))
-    max_version = str(max(version_set))
-    max_gdcid = version_gdcid_dict[str(max_version)]
+    max_version = str(max(version_gdcid_dict.keys()))
+    max_gdcid = version_gdcid_dict[int(max_version)]
     return max_version, max_gdcid
     
 
@@ -110,10 +110,19 @@ def get_latest_url(gdc_bamdocker_dict, latest_gdcid):
     bamurl = gdc_bamdocker_dict[latest_gdcid][2]
     return bamurl
 
+def get_all_bamurl(case_bamurl_dict):
+    all_set = set()
+    for caseid in sorted(list(case_bamurl_dict.keys())):
+        for bamurl in sorted(list(case_bamurl_dict[caseid])):
+            all_set.add(bamurl)
+    return all_set
+
 def get_keep_bamurl_set(case_bamurl_dict, sql_file):
     gdc_bamdocker_dict = dict()
     bamname_set = set()
-    for bamurl in sorted(list(case_bamurl_dict.values())):
+    bamurl_set = get_all_bamurl(case_bamurl_dict)
+    for bamurl in sorted(list(bamurl_set)):
+        print('bamurl=%s' % bamurl)
         bamname = os.path.basename(bamurl)
         gdcid = os.path.basename(os.path.dirname(bamurl))
         docker_version = get_docker_version(gdcid, sql_file)
@@ -162,7 +171,7 @@ def get_qcfail_set(sql_file):
 
 def reduce_case_set(case_bamurl_dict, keep_bamurl_set):
     reduced_dict = dict()
-    for caseid in sorted(list)case_bamurl_dict.keys())):
+    for caseid in sorted(list(case_bamurl_dict.keys())):
         original_bamurl_set = case_bamurl_dict[caseid]
         for original_bamurl in original_bamurl_set:
             if original_bamurl in keep_bamurl_set:
@@ -217,23 +226,16 @@ def main():
     logger = pipe_util.setup_logging(tool_name, args, uuid)
 
     case_bamurl_dict = get_case_bamurl_dict(sql_file)
-    
     keep_bamurl_set = get_keep_bamurl_set(case_bamurl_dict, sql_file)
-
     reduced_case_bamurl_dict = reduce_case_set(case_bamurl_dict, keep_bamurl_set)
     
     fail_caseid_set = get_qcfail_set(sql_file)
 
     qcpass_case_bamurl_dict = subtract_fail_set(reduced_case_bamurl_dict, fail_caseid_set)
     
-    print('len(caseid_set)=%s' % len(caseid_set))
-    print('len(fail_caseid_set)=%s' % len(fail_caseid_set))
-    print('len(use_caseid_set)=%s' % len(use_caseid_set))
-    print('len(bamurl_set)=%s' % len(bamurl_set))
-    print('len(fixed_bamurl_set)=%s' % len(fixed_bamurl_set))
     for caseid in sorted(list(qcpass_case_bamurl_dict.keys())):
         gdcid_set = get_gdcid_set(caseid, sql_file)
         print('\ngdcid_set=%s' % gdcid_set)
-        write_case_file(template_file, caseid, fixed_bamurl_set, scratch_dir, thread_count)
+        write_case_file(template_file, caseid, qcpass_case_bamurl_dict, scratch_dir, thread_count)
 if __name__=='__main__':
     main()
