@@ -44,7 +44,7 @@ def get_bam_name(gdcid, sql_file):
     return 
                 
 
-def write_case_file(template_file, caseid, bamurl_set, scratch_dir, thread_count):
+def write_case_file(template_file, caseid, qcpass_case_bamurl_dict, scratch_dir, thread_count):
     template_dir = os.path.dirname(template_file)
     out_dir = os.path.join(template_dir, 'case_slurm_sh')
     os.makedirs(out_dir, exist_ok=True)
@@ -55,7 +55,7 @@ def write_case_file(template_file, caseid, bamurl_set, scratch_dir, thread_count
     with open(template_file, 'r') as template_file_open:
         for line in template_file_open:
             if 'XX_BAM_URL_ARRAY_XX' in line:
-                replace_str = ' '.join(sorted(list(bamurl_set)))
+                replace_str = ' '.join(sorted(list(qcpass_case_bamurl_dict[caseid])))
                 newline = line.replace('XX_BAM_URL_ARRAY_XX', replace_str)
                 out_path_open.write(newline)
             elif 'XX_CASE_ID_XX' in line:
