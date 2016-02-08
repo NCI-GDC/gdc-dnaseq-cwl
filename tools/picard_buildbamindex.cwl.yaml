@@ -10,7 +10,7 @@ requirements:
   - import: node-engine.cwl
   - import: envvar-global.cwl
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/picard_tool:1
+    dockerPull: quay.io/jeremiahsavage/picard_tool:2
 
 class: CommandLineTool
 
