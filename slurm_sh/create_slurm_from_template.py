@@ -70,7 +70,7 @@ def write_case_file(template_file, caseid, qcpass_case_bamurl_dict, scratch_dir,
                 newline = line.replace('XX_POSTGRES_USERNAME_XX', db_username)
                 out_path_open.write(newline)
             elif 'XX_POSTGRES_PASSWORD_XX' in line:
-                newline = line.required('XX_POSTGRES_PASSWORD_XX', db_password)
+                newline = line.replace('XX_POSTGRES_PASSWORD_XX', db_password)
                 out_path_open.write(newline)
             else:
                 out_path_open.write(line)
