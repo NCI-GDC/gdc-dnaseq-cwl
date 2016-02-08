@@ -9,10 +9,9 @@
 import argparse
 import logging
 import os
-import subprocess
 import sys
 
-from cdis_pipe_utils import pipe_util
+#from cdis_pipe_utils import pipe_util
 
 
 def get_gdcid_set(caseid, sql_file):
@@ -221,15 +220,15 @@ def main():
     template_file = args.template_file
     scratch_dir = args.scratch_dir
     thread_count = args.thread_count
-    uuid = 'a_uuid'
-    tool_name = 'create_slurm_from_template'
-    logger = pipe_util.setup_logging(tool_name, args, uuid)
+    #uuid = 'a_uuid'
+    #tool_name = 'create_slurm_from_template'
+    #logger = pipe_util.setup_logging(tool_name, args, uuid)
 
-    case_bamurl_dict = get_case_bamurl_dict(sql_file)
-    keep_bamurl_set = get_keep_bamurl_set(case_bamurl_dict, sql_file)
-    reduced_case_bamurl_dict = reduce_case_set(case_bamurl_dict, keep_bamurl_set)
+    case_bamurl_dict = get_case_bamurl_dict(sql_file) # gets all BAM files/case, even those with dup
+    keep_bamurl_set = get_keep_bamurl_set(case_bamurl_dict, sql_file) # gets the latest version of each BAM
+    reduced_case_bamurl_dict = reduce_case_set(case_bamurl_dict, keep_bamurl_set) # uses the latest version to reduce dict
     
-    fail_caseid_set = get_qcfail_set(sql_file)
+    fail_caseid_set = get_qcfail_set(sql_file) # cases where any BAM has qcfail
 
     qcpass_case_bamurl_dict = subtract_fail_set(reduced_case_bamurl_dict, fail_caseid_set)
     
