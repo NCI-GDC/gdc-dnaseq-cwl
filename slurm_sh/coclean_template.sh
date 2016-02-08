@@ -16,6 +16,8 @@ CASE_ID="XX_CASE_ID_XX"
 #server environment
 S3_CFG_PATH=${HOME}/.s3cfg.cleversafe
 EXPORT_PROXY_STR="export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128;"
+POSTGRES_USERNAME="XX_POSTGRES_USERNAME_XX"
+POSTGRES_PASSWORD="XX_POSTGRES_PASSWORD_XX"
 
 #private cwl
 GIT_CWL_SERVER="github.com"
@@ -242,6 +244,8 @@ function generate_bai_files()
     local case_id="$3"
     local git_cwl_repo="$4"
     local buildbamindex_tool="$5"
+    local postgres_username="$6"
+    local postgres_password="$7"
 
     get_git_name "${git_cwl_repo}"
     echo "git_name=${git_name}"
@@ -258,7 +262,7 @@ function generate_bai_files()
     do
         local bam_name=$(basename ${bam_url})
         local bam_path=${data_dir}/${bam_name}
-        local cwl_command="--debug --outdir ${data_dir} ${cwl_tool_path} --uuid ${case_id} --input_bam ${bam_path}"
+        local cwl_command="--debug --outdir ${data_dir} ${cwl_tool_path} --uuid ${case_id} --input_bam ${bam_path} --db_username ${postgres_username} --db_password ${postgres_password}"
 
         echo "${cwlrunner_path} ${cwl_command}"
         ${cwlrunner_path} ${cwl_command}
@@ -281,6 +285,9 @@ function run_coclean()
     local thread_count="$8"
     local git_cwl_repo="$9"
     local index_dir="${10}"
+    local postgres_username="$6"
+    local postgres_password="$7"
+
 
     
     local reference_genome_path=${index_dir}/${reference_genome}
@@ -301,7 +308,7 @@ function run_coclean()
     cd ${coclean_dir}
     
     # setup cwl command removed  --leave-tmpdir
-    local cwl_command="--debug --outdir ${coclean_dir} --tmpdir-prefix ${tmp_dir} --tmp-outdir-prefix ${tmpout_dir} ${workflow_path} --reference_fasta_path ${reference_genome_path}.fa --uuid ${case_id} --known_indel_vcf_path ${known_indel_vcf_path} --known_snp_vcf_path ${known_snp_vcf_path} --thread_count ${thread_count}"
+    local cwl_command="--debug --outdir ${coclean_dir} --tmpdir-prefix ${tmp_dir} --tmp-outdir-prefix ${tmpout_dir} ${workflow_path} --reference_fasta_path ${reference_genome_path}.fa --uuid ${case_id} --known_indel_vcf_path ${known_indel_vcf_path} --known_snp_vcf_path ${known_snp_vcf_path} --thread_count ${thread_count} --db_username ${postgres_username} --db_password ${postgres_password}"
     for bam_url in ${bam_url_array}
     do
         local bam_name=$(basename ${bam_url})
@@ -430,8 +437,8 @@ function main()
     clone_pip_git_hash "${CASE_ID}" "${CWLTOOL_URL}" "${CWLTOOL_HASH}" "${data_dir}" "${EXPORT_PROXY_STR}"
     get_gatk_index_files "${S3_CFG_PATH}" "${S3_GATK_INDEX_BUCKET}" "${index_dir}" "${REFERENCE_GENOME}" "${KNOWN_SNP_VCF}" "${KNOWN_INDEL_VCF}"
     get_bam_files "${S3_CFG_PATH}" "${BAM_URL_ARRAY}" "${data_dir}"
-    generate_bai_files "${data_dir}" "${BAM_URL_ARRAY}" "${CASE_ID}" "${GIT_CWL_REPO}" "${BUILDBAMINDEX_TOOL}"
-    run_coclean "${data_dir}" "${BAM_URL_ARRAY}" "${CASE_ID}" "${COCLEAN_WORKFLOW}" "${REFERENCE_GENOME}" "${KNOWN_INDEL_VCF}" "${KNOWN_SNP_VCF}" "${THREAD_COUNT}" "${GIT_CWL_REPO}" "${index_dir}"
+    generate_bai_files "${data_dir}" "${BAM_URL_ARRAY}" "${CASE_ID}" "${GIT_CWL_REPO}" "${BUILDBAMINDEX_TOOL}" "${POSTGRES_USERNAME}" "${POSTGRES_PASSWORD}"
+    run_coclean "${data_dir}" "${BAM_URL_ARRAY}" "${CASE_ID}" "${COCLEAN_WORKFLOW}" "${REFERENCE_GENOME}" "${KNOWN_INDEL_VCF}" "${KNOWN_SNP_VCF}" "${THREAD_COUNT}" "${GIT_CWL_REPO}" "${index_dir}" "${POSTGRES_USERNAME}" "${POSTGRES_PASSWORD}"
     upload_coclean_results "${CASE_ID}" "${BAM_URL_ARRAY}" "${S3_OUT_BUCKET}" "${S3_LOG_BUCKET}" "${S3_CFG_PATH}" "${data_dir}"
     #remove_data "${data_dir}" "${CASE_ID}"
     ## hit db with end time ${CASE_ID}
