@@ -53,6 +53,16 @@ inputs:
     inputBinding:
       prefix: --uuid
 
+  - id: "#db_username"
+    type: string
+    inputBinding:
+      prefix: --db_username
+
+  - id: "#db_password"
+    type: string
+    inputBinding:
+      prefix: --db_password
+
 
 outputs:
   - id: "#output_bam"
@@ -74,17 +84,6 @@ outputs:
         script: |
           {
           return $job['bam_path'].path.split('/').slice(-1)[0].slice(0,-3)+"bai";
-          }
-
-  - id: "#output_sqlite"
-    type: File
-    description: "sqlite file"
-    outputBinding:
-      glob:
-        engine: node-engine.cwl
-        script : |
-          {
-          return $job['uuid']+".db"
           }
 
   - id: "#log"

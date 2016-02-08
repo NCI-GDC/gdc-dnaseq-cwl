@@ -35,7 +35,6 @@ inputs:
       secondaryFiles:
         - ".tbi"
 
-
   - id: "#reference_fasta_path"
     type: File
     inputBinding:
@@ -48,7 +47,6 @@ inputs:
             return {"path": $job['reference_fasta_path'].path.slice(0,-3)+".dict", "class": "File"};
             }
 
-
   - id: "#target_intervals_path"
     type: File
     inputBinding:
@@ -59,6 +57,16 @@ inputs:
     inputBinding:
       prefix: --uuid
 
+  - id: "#db_username"
+    type: string
+    inputBinding:
+      prefix: --db_username
+
+  - id: "#db_password"
+    type: string
+    inputBinding:
+      prefix: --db_password
+
 
 outputs:
   - id: "#output_bam"
@@ -67,17 +75,6 @@ outputs:
       items: File
     outputBinding:
       glob: ./*.bam  #return $job['input_bam_path'].path.split('/').slice(-1)[0] need to build an array, not a file
-
-  - id: "#output_sqlite"
-    type: File
-    description: "sqlite file"
-    outputBinding:
-      glob:
-        engine: node-engine.cwl
-        script : |
-          {
-          return $job['uuid']+".db"
-          }
 
   - id: "#log"
     type: File

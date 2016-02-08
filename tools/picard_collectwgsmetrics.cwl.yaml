@@ -30,18 +30,18 @@ inputs:
     type: string
     inputBinding:
       prefix: --uuid
+
+  - id: "#db_username"
+    type: string
+    inputBinding:
+      prefix: --db_username
+
+  - id: "#db_password"
+    type: string
+    inputBinding:
+      prefix: --db_password
       
 outputs:
-  - id: "#output_sqlite"
-    type: File
-    outputBinding:
-      glob:
-        engine: node-engine.cwl
-        script: |
-          {
-          return $job['uuid']+".db"
-          }
-
   - id: "#log"
     type: File
     outputBinding:

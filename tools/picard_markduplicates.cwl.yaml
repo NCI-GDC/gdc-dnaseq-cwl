@@ -25,6 +25,16 @@ inputs:
     inputBinding:
       prefix: --uuid
 
+  - id: "#db_username"
+    type: string
+    inputBinding:
+      prefix: --db_username
+
+  - id: "#db_password"
+    type: string
+    inputBinding:
+      prefix: --db_password
+
 outputs:
   - id: "#output_bam"
     type: File
@@ -48,17 +58,6 @@ outputs:
           return "md/" + $job['input_bam'].path.split('/').slice(-1)[0].slice(0,-4)+".bai";
           }
           
-  - id: "#output_sqlite"
-    type: File
-    description: "sqlite file"
-    outputBinding:
-      glob:
-        engine: node-engine.cwl
-        script: |
-          {
-          return $job['uuid']+".db"
-          }
-
   - id: "#log"
     type: File
     description: "python log file"
