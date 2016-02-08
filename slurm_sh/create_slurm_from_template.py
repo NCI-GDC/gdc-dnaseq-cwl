@@ -63,8 +63,14 @@ def write_case_file(template_file, caseid, qcpass_case_bamurl_dict, scratch_dir,
             elif 'XX_SCRATCH_DIR_XX' in line:
                 newline = line.replace('XX_SCRATCH_DIR_XX', scratch_dir)
                 out_path_open.write(newline)
-            elif 'XX' in line:
+            elif 'XX_THREAD_COUNT_XX' in line:
                 newline = line.replace('XX_THREAD_COUNT_XX', thread_count)
+                out_path_open.write(newline)
+            elif 'XX_POSTGRES_USERNAME_XX' in line:
+                newline = line.replace('XX_POSTGRES_USERNAME_XX', db_username)
+                out_path_open.write(newline)
+            elif 'XX_POSTGRES_PASSWORD_XX' in line:
+                newline = line.required('XX_POSTGRES_PASSWORD_XX', db_password)
                 out_path_open.write(newline)
             else:
                 out_path_open.write(line)
@@ -214,12 +220,20 @@ def main():
     parser.add_argument('--thread_count',
                         required = True
     )
+    parser.add_argument('--db_username',
+                        required = True
+    )
+    parser.add_argument('--db_password',
+                        required = True
+    )
 
     args = parser.parse_args()
     sql_file = args.sql_file
     template_file = args.template_file
     scratch_dir = args.scratch_dir
     thread_count = args.thread_count
+    db_username = args.db_username
+    db_password = args.db_password
     #uuid = 'a_uuid'
     #tool_name = 'create_slurm_from_template'
     #logger = pipe_util.setup_logging(tool_name, args, uuid)
@@ -235,6 +249,6 @@ def main():
     for caseid in sorted(list(qcpass_case_bamurl_dict.keys())):
         gdcid_set = get_gdcid_set(caseid, sql_file)
         print('\ngdcid_set=%s' % gdcid_set)
-        write_case_file(template_file, caseid, qcpass_case_bamurl_dict, scratch_dir, thread_count)
+        write_case_file(template_file, caseid, qcpass_case_bamurl_dict, scratch_dir, thread_count, db_username, db_password)
 if __name__=='__main__':
     main()
