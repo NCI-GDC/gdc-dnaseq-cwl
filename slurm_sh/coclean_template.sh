@@ -355,6 +355,7 @@ function upload_coclean_results()
         echo "uploading: s3cmd -c ${s3_cfg_path} put ${bam_path} ${S3_OUT_BUCKET}/${gdc_id}/"
         s3cmd -c ${s3_cfg_path} put ${bam_path} ${s3_out_bucket}/${gdc_id}/
     done
+    echo "s3cmd -c ${s3_cfg_path} put ${coclean_dir}/${case_id}.db ${s3_log_bucket}/"
     s3cmd -c ${s3_cfg_path} put ${coclean_dir}/${case_id}.db ${s3_log_bucket}/
 }
 
@@ -431,7 +432,7 @@ function main()
     get_bam_files "${S3_CFG_PATH}" "${BAM_URL_ARRAY}" "${data_dir}"
     generate_bai_files "${data_dir}" "${BAM_URL_ARRAY}" "${CASE_ID}" "${GIT_CWL_REPO}" "${BUILDBAMINDEX_TOOL}"
     run_coclean "${data_dir}" "${BAM_URL_ARRAY}" "${CASE_ID}" "${COCLEAN_WORKFLOW}" "${REFERENCE_GENOME}" "${KNOWN_INDEL_VCF}" "${KNOWN_SNP_VCF}" "${THREAD_COUNT}" "${GIT_CWL_REPO}" "${index_dir}"
-    upload_coclean_results "${case_id}" "${BAM_URL_ARRAY}" "${S3_OUT_BUCKET}" "${S3_LOG_BUCKET}" "${S3_CFG_PATH}" "${data_dir}"
+    upload_coclean_results "${CASE_ID}" "${BAM_URL_ARRAY}" "${S3_OUT_BUCKET}" "${S3_LOG_BUCKET}" "${S3_CFG_PATH}" "${data_dir}"
     #remove_data "${data_dir}" "${CASE_ID}"
     ## hit db with end time ${CASE_ID}
 }
