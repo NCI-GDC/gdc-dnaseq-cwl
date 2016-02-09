@@ -2,7 +2,8 @@
 
 ###SQL command###
 #prod_bioinfo=> \o out.txt
-#prod_bioinfo=> select * from harmonized_files where experimental_strategy = 'WXS' and project = 'BLCA'order by case_id;
+#prod_bioinfo=> select * from harmonized_files where experimental_strategy = 'WXS' and project = 'BLCA' and docker_tag = 'pipeline:gdc0.513' order by case_id, filename;
+#prod_bioinfo=> select * from harmonized_files where experimental_strategy = 'WXS' and project = 'BLCA' order by case_id, filename;
 #prod_bioinfo=> \q
 ###
 
@@ -43,7 +44,7 @@ def get_bam_name(gdcid, sql_file):
     return 
                 
 
-def write_case_file(template_file, caseid, qcpass_case_bamurl_dict, scratch_dir, thread_count):
+def write_case_file(template_file, caseid, qcpass_case_bamurl_dict, scratch_dir, thread_count, cwl_git_hash):
     template_dir = os.path.dirname(template_file)
     out_dir = os.path.join(template_dir, 'case_slurm_sh')
     os.makedirs(out_dir, exist_ok=True)
@@ -71,6 +72,9 @@ def write_case_file(template_file, caseid, qcpass_case_bamurl_dict, scratch_dir,
                 out_path_open.write(newline)
             elif 'XX_POSTGRES_PASSWORD_XX' in line:
                 newline = line.replace('XX_POSTGRES_PASSWORD_XX', db_password)
+                out_path_open.write(newline)
+            elif 'XX_CWL_GIT_HASH_XX' in line:
+                newline = line.replace('XX_CWL_GIT_HASH_XX', cwl_git_hash)
                 out_path_open.write(newline)
             else:
                 out_path_open.write(line)
@@ -226,6 +230,9 @@ def main():
     parser.add_argument('--db_password',
                         required = True
     )
+    parser.add_argument('--cwl_git_hash',
+                        required = True
+    )
 
     args = parser.parse_args()
     sql_file = args.sql_file
@@ -234,6 +241,7 @@ def main():
     thread_count = args.thread_count
     db_username = args.db_username
     db_password = args.db_password
+    cwl_git_hash = args.cwl_git_hash
     #uuid = 'a_uuid'
     #tool_name = 'create_slurm_from_template'
     #logger = pipe_util.setup_logging(tool_name, args, uuid)
@@ -242,13 +250,13 @@ def main():
     keep_bamurl_set = get_keep_bamurl_set(case_bamurl_dict, sql_file) # gets the latest version of each BAM
     reduced_case_bamurl_dict = reduce_case_set(case_bamurl_dict, keep_bamurl_set) # uses the latest version to reduce dict
     
-    fail_caseid_set = get_qcfail_set(sql_file) # cases where any BAM has qcfail
+    #fail_caseid_set = get_qcfail_set(sql_file) # cases where any BAM has qcfail
 
-    qcpass_case_bamurl_dict = subtract_fail_set(reduced_case_bamurl_dict, fail_caseid_set)
+    #qcpass_case_bamurl_dict = subtract_fail_set(reduced_case_bamurl_dict, fail_caseid_set)
     
     for caseid in sorted(list(qcpass_case_bamurl_dict.keys())):
         gdcid_set = get_gdcid_set(caseid, sql_file)
         print('\ngdcid_set=%s' % gdcid_set)
-        write_case_file(template_file, caseid, qcpass_case_bamurl_dict, scratch_dir, thread_count, db_username, db_password)
+        write_case_file(template_file, caseid, qcpass_case_bamurl_dict, scratch_dir, thread_count, db_username, db_password, cwl_git_hash)
 if __name__=='__main__':
     main()
