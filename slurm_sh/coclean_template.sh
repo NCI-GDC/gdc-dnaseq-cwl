@@ -16,15 +16,14 @@ CASE_ID="XX_CASE_ID_XX"
 #server environment
 S3_CFG_PATH=${HOME}/.s3cfg.cleversafe
 EXPORT_PROXY_STR="export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128;"
-POSTGRES_USERNAME="XX_POSTGRES_USERNAME_XX"
-POSTGRES_PASSWORD="XX_POSTGRES_PASSWORD_XX"
+POSTGRES_CRED_URL="s3://bioinformatics_scratch/deploy_key/prod_bioinfo_readwrite.cred"
 
 #private cwl
 GIT_CWL_SERVER="github.com"
 GIT_CWL_SERVER_FINGERPRINT="2048 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48"
 GIT_CWL_DEPLOY_KEY_S3_URL="s3://bioinformatics_scratch/deploy_key/coclean_cwl_deploy_rsa"
 GIT_CWL_REPO=" -b slurm_script git@github.com:NCI-GDC/cocleaning-cwl.git"
-GIT_CWL_HASH="XX_GIT_CWL_HASH_XX" #not yet used
+CWL_GIT_HASH="XX_CWL_GIT_HASH_XX" #not yet used
 COCLEAN_WORKFLOW="workflows/coclean/coclean_workflow.cwl.yaml"
 BUILDBAMINDEX_TOOL="tools/picard_buildbamindex.cwl.yaml"
 
@@ -109,6 +108,11 @@ function pip_install_requirements()
     pip install -r ${requirements_path}
 }
 
+function get_db_creds()
+{
+    echo ""
+}
+
 function setup_deploy_key()
 {
     echo ""
@@ -144,8 +148,11 @@ function clone_git_repo()
     local git_repo="$3"
     local export_proxy_str="$4"
     local data_dir="$5"
+    local cwl_git_hash="$6"
 
-    
+    get_git_name "${git_repo}"
+    echo "git_name=${git_name}"
+
     local prev_wd=`pwd`
     echo "eval ${export_proxy_str}"
     eval ${export_proxy_str}
@@ -159,6 +166,9 @@ function clone_git_repo()
         echo "git_server ${git_server} is known"
         echo "git clone ${git_repo}"
         git clone ${git_repo}
+        cd ${git_name}
+        echo "git checkout ${cwl_git_hash}"
+        git checkout ${cwl_git_hash}
     else # if not known, get key, check it, then add it
         echo "git_server ${git_server} is NOT known"
         echo "ssh-keyscan ${git_server} > ${git_server}_gitkey"
@@ -170,6 +180,9 @@ function clone_git_repo()
             cat ${git_server}_gitkey >> ${HOME}/.ssh/known_hosts
             echo "git clone ${git_repo}"
             git clone ${git_repo}
+            cd ${git_name}
+            echo "git checkout ${cwl_git_hash}"
+            git checkout ${cwl_git_hash}
         else
             echo "git server fingerprint is not '${git_server_fingerprint} ${git_server} (RSA)', but instead:  `ssh-keygen -lf ${git_server}_gitkey`"
             cd ${prev_wd}
@@ -431,10 +444,11 @@ function main()
     
    
     setup_deploy_key "${S3_CFG_PATH}" "${GIT_CWL_DEPLOY_KEY_S3_URL}" "${data_dir}"
-    clone_git_repo "${GIT_CWL_SERVER}" "${GIT_CWL_SERVER_FINGERPRINT}" "${GIT_CWL_REPO}" "${EXPORT_PROXY_STR}" "${data_dir}"
+    clone_git_repo "${GIT_CWL_SERVER}" "${GIT_CWL_SERVER_FINGERPRINT}" "${GIT_CWL_REPO}" "${EXPORT_PROXY_STR}" "${data_dir}" "${CWL_GIT_HASH}"
     install_unique_virtenv "${CASE_ID}" "${EXPORT_PROXY_STR}"
     pip_install_requirements "${GIT_CWL_REPO}" "${CWLTOOL_REQUIREMENTS_PATH}" "${EXPORT_PROXY_STR}" "${data_dir}" "${CASE_ID}"
     clone_pip_git_hash "${CASE_ID}" "${CWLTOOL_URL}" "${CWLTOOL_HASH}" "${data_dir}" "${EXPORT_PROXY_STR}"
+    get_db_creds "${S3_CFG_PATH}" "${POSTGRES_CRED_URL}" "${data_dir}"
     get_gatk_index_files "${S3_CFG_PATH}" "${S3_GATK_INDEX_BUCKET}" "${index_dir}" "${REFERENCE_GENOME}" "${KNOWN_SNP_VCF}" "${KNOWN_INDEL_VCF}"
     get_bam_files "${S3_CFG_PATH}" "${BAM_URL_ARRAY}" "${data_dir}"
     generate_bai_files "${data_dir}" "${BAM_URL_ARRAY}" "${CASE_ID}" "${GIT_CWL_REPO}" "${BUILDBAMINDEX_TOOL}" "${POSTGRES_USERNAME}" "${POSTGRES_PASSWORD}"
