@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
 ###SQL command###
-#prod_bioinfo=> \o out.txt
+#prod_bioinfo=> \o blca_513.txt
 #prod_bioinfo=> select * from harmonized_files where experimental_strategy = 'WXS' and project = 'BLCA' and docker_tag = 'pipeline:gdc0.513' order by case_id, filename;
+#prod_bioinfo=> \o blca.txt
 #prod_bioinfo=> select * from harmonized_files where experimental_strategy = 'WXS' and project = 'BLCA' order by case_id, filename;
 #prod_bioinfo=> \q
 ###
@@ -23,7 +24,7 @@ def get_case_bamname_dict(sql_file):
                 line_split = line.split('|')
                 caseid = line_split[2].strip()
                 bamname = line_split[15].strip()
-                if caseid in case_bamurl_dict.keys():
+                if caseid in case_bamname_dict.keys():
                     case_bamname_dict[caseid].add(bamname)
                 else:
                     case_bamname_dict[caseid] = set()
@@ -35,12 +36,15 @@ def reduce_case_set(total_case_bam_dict, subset_case_bam_dict):
     case_set = set()
     for caseid in sorted(list(subset_case_bam_dict.keys())):
         if len(total_case_bam_dict[caseid]) == len(subset_case_bam_dict[caseid]):
-            case_set.add_argument(caseid)
+            case_set.add(caseid)
+        else:
+            print('removing case: %s' % caseid)
     return case_set
 
 def write_new_sql_subset(case_set, sql_file):
     new_file = sql_file + '.subset'
-    with open(new_file, 'w') as f_open:
+    outfile_open = open(new_file, 'w')
+    with open(sql_file, 'r') as f_open:
         for line in f_open:
             if line.startswith('-') or line.startswith('    ') or line.startswith('(') or line.startswith('\n'):
                 continue
@@ -48,7 +52,8 @@ def write_new_sql_subset(case_set, sql_file):
                 line_split = line.split('|')
                 caseid = line_split[2].strip()
                 if caseid in case_set:
-                    f_open.write(line)
+                    outfile_open.write(line)
+    outfile_open.close()
     return
 
 
@@ -77,7 +82,7 @@ def main():
     #tool_name = 'create_slurm_from_template'
     #logger = pipe_util.setup_logging(tool_name, args, uuid)
 
-    total_case_bam_dict = get_case_bamnamedict(sql_file_subset)
+    total_case_bam_dict = get_case_bamname_dict(sql_file_subset)
     subset_case_bam_dict = get_case_bamname_dict(sql_file_subset)
     case_set = reduce_case_set(total_case_bam_dict, subset_case_bam_dict) # uses the latest version to reduce dict
     write_new_sql_subset(case_set, sql_file_subset)
