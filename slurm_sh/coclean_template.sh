@@ -23,7 +23,7 @@ GIT_CWL_SERVER="github.com"
 GIT_CWL_SERVER_FINGERPRINT="2048 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48"
 GIT_CWL_DEPLOY_KEY_S3_URL="s3://bioinformatics_scratch/deploy_key/coclean_cwl_deploy_rsa"
 GIT_CWL_REPO=" -b slurm_script git@github.com:NCI-GDC/cocleaning-cwl.git"
-CWL_GIT_HASH="XX_CWL_GIT_HASH_XX" #not yet used
+CWL_GIT_HASH="XX_CWL_GIT_HASH_XX"
 COCLEAN_WORKFLOW="workflows/coclean/coclean_workflow.cwl.yaml"
 BUILDBAMINDEX_TOOL="tools/picard_buildbamindex.cwl.yaml"
 
@@ -182,7 +182,7 @@ function clone_git_repo()
             git clone ${git_repo}
             cd ${git_name}
             echo "git checkout ${cwl_git_hash}"
-            git checkout ${cwl_git_hash}
+            git checskout ${cwl_git_hash}
         else
             echo "git server fingerprint is not '${git_server_fingerprint} ${git_server} (RSA)', but instead:  `ssh-keygen -lf ${git_server}_gitkey`"
             cd ${prev_wd}
