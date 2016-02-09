@@ -47,7 +47,7 @@ def write_new_sql_subset(case_set, sql_file):
     with open(sql_file, 'r') as f_open:
         for line in f_open:
             if line.startswith('-') or line.startswith('    ') or line.startswith('(') or line.startswith('\n'):
-                continue
+                outfile_open.write(line)
             else:
                 line_split = line.split('|')
                 caseid = line_split[2].strip()
