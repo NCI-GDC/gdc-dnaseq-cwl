@@ -11,7 +11,7 @@ requirements:
   - import: node-engine.cwl
   - import: envvar-global.cwl
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/picard_tool:1
+    dockerPull: quay.io/jeremiahsavage/picard_tool:3
 
 class: CommandLineTool
 
@@ -31,15 +31,15 @@ inputs:
     inputBinding:
       prefix: --uuid
 
-  - id: "#db_username"
+  - id: "#db_cred_s3url"
     type: string
     inputBinding:
-      prefix: --db_username
+      prefix: --db_cred_s3url
 
-  - id: "#db_password"
+  - id: "#s3cfg_path"
     type: string
     inputBinding:
-      prefix: --db_password
+      prefix: --s3cfg_path
       
 outputs:
   - id: "#log"
