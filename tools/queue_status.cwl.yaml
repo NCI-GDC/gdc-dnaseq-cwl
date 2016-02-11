@@ -1,0 +1,51 @@
+#!/usr/bin/env cwl-runner
+
+description: |
+  Usage:  cwl-runner <this-file-path> --bam_path <bam-path> --uuid <uuid-string>
+  Options:
+    --bam_path       Generate BAI-format index from BAM file
+    --uuid           UUID for log file and sqlite db file
+
+requirements:
+  - import: node-engine.cwl
+  - import: envvar-global.cwl
+  - class: DockerRequirement
+    dockerPull: quay.io/jeremiahsavage/queue_status:3
+
+class: CommandLineTool
+
+inputs:
+  - id: "#uuid"
+    type: string
+    inputBinding:
+      prefix: --uuid
+
+  - id: "#repo"
+    type: string
+    inputBinding:
+      prefix: --repo
+
+  - id: "#repo_hash"
+    type: string
+    inputBinding:
+      prefix: --repo_hash
+
+  - id: "#s3cfg_path"
+    type: File
+    inputBinding:
+      prefix: --s3cfg_path
+
+  - id: "#table_name"
+    type: string
+    inputBinding:
+      prefix: --table_name
+
+  - id: "#status"
+    type: string
+    inputBinding:
+      prefix: --status
+
+outputs:
+
+          
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/queue_status/main.py"]
