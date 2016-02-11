@@ -26,7 +26,7 @@ GIT_CWL_REPO="git@github.com:NCI-GDC/cocleaning-cwl.git"
 GIT_CWL_HASH="XX_GIT_CWL_HASH_XX"
 COCLEAN_WORKFLOW="workflows/coclean/coclean_worflow.cwl.yaml"
 BUILDBAMINDEX_TOOL="tools/picard_buildbamindex.cwl.yaml"
-QUEUE_STATUS_TOOL="tools/queuestatus.cwl.yaml"
+QUEUE_STATUS_TOOL="tools/queue_status.cwl.yaml"
 
 
 #cwl runner
