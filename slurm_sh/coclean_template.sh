@@ -14,18 +14,19 @@ BAM_URL_ARRAY="XX_BAM_URL_ARRAY_XX"
 CASE_ID="XX_CASE_ID_XX"
 
 #server environment
-S3_CFG_PATH=${HOME}/.s3cfg.cleversafe
+S3_CFG_PATH="XX_S3_CFG_PATH_XX"
 EXPORT_PROXY_STR="export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128;"
-POSTGRES_CRED_URL="s3://bioinformatics_scratch/deploy_key/prod_bioinfo_readwrite.cred"
+DB_CRED_URL="XX_DB_CRED_URL_XX"
 
 #private cwl
 GIT_CWL_SERVER="github.com"
 GIT_CWL_SERVER_FINGERPRINT="2048 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48"
 GIT_CWL_DEPLOY_KEY_S3_URL="s3://bioinformatics_scratch/deploy_key/coclean_cwl_deploy_rsa"
-GIT_CWL_REPO=" -b slurm_script git@github.com:NCI-GDC/cocleaning-cwl.git"
-CWL_GIT_HASH="XX_CWL_GIT_HASH_XX"
-COCLEAN_WORKFLOW="workflows/coclean/coclean_workflow.cwl.yaml"
+GIT_CWL_REPO="git@github.com:NCI-GDC/cocleaning-cwl.git"
+GIT_CWL_HASH="XX_GIT_CWL_HASH_XX"
+COCLEAN_WORKFLOW="workflows/coclean/coclean_worflow.cwl.yaml"
 BUILDBAMINDEX_TOOL="tools/picard_buildbamindex.cwl.yaml"
+QUEUE_STATUS_TOOL="tools/queuestatus.cwl.yaml"
 
 
 #cwl runner
@@ -43,6 +44,34 @@ S3_GATK_INDEX_BUCKET="s3://bioinformatics_scratch/coclean"
 #output buckets
 S3_OUT_BUCKET="s3://qcpass_tcga_exome_blca_coclean"
 S3_LOG_BUCKET="s3://qcpass_tcga_exome_blca_coclean_log"
+
+function queue_status_update()
+{
+    echo ""
+    echo "queue_status_update()"
+
+    local data_dir="$1"
+    local cwl_tool="$2"
+    local s3cfg_path="$3"
+    local db_cred_url="$4"
+    local git_cwl_repo="$5"
+    local git_cwl_hash="$6"
+    local uuid="$7"
+    local status="$8"
+    local table_name="$9"
+
+    get_git_name "${git_cwl_repo}"
+    echo "git_name=${git_name}"
+    local cwl_dir=${data_dir}/${git_name}
+    local cwl_tool_path=${cwl_dir}/${cwl_tool}
+
+    local this_virtenv_dir=${HOME}/.virtualenvs/p2_${case_id}
+    local cwlrunner_path=${this_virtenv_dir}/bin/cwltool
+    local cwl_command="--debug --outdir ${data_dir} ${cwl_tool_path} --uuid ${uuid} --repo ${git_cwl_repo} --repo_hash ${git_cwl_hash} --s3cfg_path ${s3cfg_path} --table_name ${table_name} --status ${status}"
+
+    echo "${cwlrunner_path} ${cwl_command}"
+    ${cwlrunner_path} ${cwl_command}
+}
 
 
 function get_git_name()
@@ -341,7 +370,7 @@ function run_coclean()
         echo "completed cocleaning"
     else
         echo "failed cocleaning"
-        ##update db with a fail
+        queue_status_update "${data_dir}" "${QUEUE_STATUS_TOOL}" "${S3_CFG_PATH}" "${DB_CRED_URL}" "${GIT_CWL_REPO}" "${GIT_CWL_HASH}" "${CASE_ID}" "FAIL" "coclean_caseid_queue"
         exit 1
     fi
     cd ${prev_wd}
@@ -434,9 +463,9 @@ function clone_pip_git_hash()
 
 function main()
 {
-    ## hit db with start time ${CASE_ID}
 
     local data_dir="${SCRATCH_DIR}/data_"${CASE_ID}
+    queue_status_update "${data_dir}" "${QUEUE_STATUS_TOOL}" "${S3_CFG_PATH}" "${DB_CRED_URL}" "${GIT_CWL_REPO}" "${GIT_CWL_HASH}" "${CASE_ID}" "RUNNING" "coclean_caseid_queue"
     local index_dir="${data_dir}/index"
     echo "main() index_dir=${index_dir}"
     remove_data ${data_dir} ${CASE_ID} ## removes all data from previous run of script
@@ -444,7 +473,7 @@ function main()
     
    
     setup_deploy_key "${S3_CFG_PATH}" "${GIT_CWL_DEPLOY_KEY_S3_URL}" "${data_dir}"
-    clone_git_repo "${GIT_CWL_SERVER}" "${GIT_CWL_SERVER_FINGERPRINT}" "${GIT_CWL_REPO}" "${EXPORT_PROXY_STR}" "${data_dir}" "${CWL_GIT_HASH}"
+    clone_git_repo "${GIT_CWL_SERVER}" "${GIT_CWL_SERVER_FINGERPRINT}" "${GIT_CWL_REPO}" "${EXPORT_PROXY_STR}" "${data_dir}" "${GIT_CWL_HASH}"
     install_unique_virtenv "${CASE_ID}" "${EXPORT_PROXY_STR}"
     pip_install_requirements "${GIT_CWL_REPO}" "${CWLTOOL_REQUIREMENTS_PATH}" "${EXPORT_PROXY_STR}" "${data_dir}" "${CASE_ID}"
     clone_pip_git_hash "${CASE_ID}" "${CWLTOOL_URL}" "${CWLTOOL_HASH}" "${data_dir}" "${EXPORT_PROXY_STR}"
@@ -455,7 +484,7 @@ function main()
     run_coclean "${data_dir}" "${BAM_URL_ARRAY}" "${CASE_ID}" "${COCLEAN_WORKFLOW}" "${REFERENCE_GENOME}" "${KNOWN_INDEL_VCF}" "${KNOWN_SNP_VCF}" "${THREAD_COUNT}" "${GIT_CWL_REPO}" "${index_dir}" "${POSTGRES_USERNAME}" "${POSTGRES_PASSWORD}"
     upload_coclean_results "${CASE_ID}" "${BAM_URL_ARRAY}" "${S3_OUT_BUCKET}" "${S3_LOG_BUCKET}" "${S3_CFG_PATH}" "${data_dir}"
     #remove_data "${data_dir}" "${CASE_ID}"
-    ## hit db with end time ${CASE_ID}
+    queue_status_update "${data_dir}" "${QUEUE_STATUS_TOOL}" "${S3_CFG_PATH}" "${DB_CRED_URL}" "${GIT_CWL_REPO}" "${GIT_CWL_HASH}" "${CASE_ID}" "COMPLETE" "coclean_caseid_queue"
 }
 
 main "$@"
