@@ -56,21 +56,37 @@ function queue_status_update()
     local db_cred_url="$4"
     local git_cwl_repo="$5"
     local git_cwl_hash="$6"
-    local uuid="$7"
-    local status="$8"
-    local table_name="$9"
+    local case_id="$7"
+    local bam_url_array="$8"
+    local status="$9"
+    local table_name="$10"
 
     get_git_name "${git_cwl_repo}"
     echo "git_name=${git_name}"
     local cwl_dir=${data_dir}/${git_name}
     local cwl_tool_path=${cwl_dir}/${cwl_tool}
 
+
     local this_virtenv_dir=${HOME}/.virtualenvs/p2_${case_id}
     local cwlrunner_path=${this_virtenv_dir}/bin/cwltool
-    local cwl_command="--debug --outdir ${data_dir} ${cwl_tool_path} --uuid ${uuid} --repo ${git_cwl_repo} --repo_hash ${git_cwl_hash} --s3cfg_path ${s3cfg_path} --table_name ${table_name} --status ${status}"
+    for bam_url in ${bam_url_array}
+    do
+        local gdc_id=$(basename $(dirname ${bam_url}))
 
-    echo "${cwlrunner_path} ${cwl_command}"
-    ${cwlrunner_path} ${cwl_command}
+        if [[ "${status}" == "COMPLETE" ]]
+        then
+            local bam_file=$(basename ${bam_url})
+            local s3_url=${s3_out_bucket}/${gdc_id}/${bam_file}
+            local cwl_command="--debug --outdir ${data_dir} ${cwl_tool_path} --case_id ${case_id} --gdc_id ${gdc_id} --repo ${git_cwl_repo} --repo_hash ${git_cwl_hash} --s3cfg_path ${s3cfg_path} --table_name ${table_name} --status ${status} --s3_url ${s3_url}"
+            echo "${cwlrunner_path} ${cwl_command}"
+            ${cwlrunner_path} ${cwl_command}
+        else
+            local cwl_command="--debug --outdir ${data_dir} ${cwl_tool_path} --case_id ${case_id} --gdc_id ${gdc_id} --repo ${git_cwl_repo} --repo_hash ${git_cwl_hash} --s3cfg_path ${s3cfg_path} --table_name ${table_name} --status ${status}"
+            echo "${cwlrunner_path} ${cwl_command}"
+            ${cwlrunner_path} ${cwl_command}
+        fi
+        
+    done
 }
 
 
@@ -370,7 +386,7 @@ function run_coclean()
         echo "completed cocleaning"
     else
         echo "failed cocleaning"
-        queue_status_update "${data_dir}" "${QUEUE_STATUS_TOOL}" "${S3_CFG_PATH}" "${DB_CRED_URL}" "${GIT_CWL_REPO}" "${GIT_CWL_HASH}" "${CASE_ID}" "FAIL" "coclean_caseid_queue"
+        queue_status_update "${data_dir}" "${QUEUE_STATUS_TOOL}" "${S3_CFG_PATH}" "${DB_CRED_URL}" "${GIT_CWL_REPO}" "${GIT_CWL_HASH}" "${CASE_ID}" "${BAM_URL_ARRAY}" "FAIL" "coclean_caseid_queue"
         exit 1
     fi
     cd ${prev_wd}
@@ -465,7 +481,7 @@ function main()
 {
 
     local data_dir="${SCRATCH_DIR}/data_"${CASE_ID}
-    queue_status_update "${data_dir}" "${QUEUE_STATUS_TOOL}" "${S3_CFG_PATH}" "${DB_CRED_URL}" "${GIT_CWL_REPO}" "${GIT_CWL_HASH}" "${CASE_ID}" "RUNNING" "coclean_caseid_queue"
+    queue_status_update "${data_dir}" "${QUEUE_STATUS_TOOL}" "${S3_CFG_PATH}" "${DB_CRED_URL}" "${GIT_CWL_REPO}" "${GIT_CWL_HASH}" "${CASE_ID}" "${BAM_URL_ARRAY}" "RUNNING" "coclean_caseid_queue"
     local index_dir="${data_dir}/index"
     echo "main() index_dir=${index_dir}"
     remove_data ${data_dir} ${CASE_ID} ## removes all data from previous run of script
@@ -484,7 +500,7 @@ function main()
     run_coclean "${data_dir}" "${BAM_URL_ARRAY}" "${CASE_ID}" "${COCLEAN_WORKFLOW}" "${REFERENCE_GENOME}" "${KNOWN_INDEL_VCF}" "${KNOWN_SNP_VCF}" "${THREAD_COUNT}" "${GIT_CWL_REPO}" "${index_dir}" "${POSTGRES_USERNAME}" "${POSTGRES_PASSWORD}"
     upload_coclean_results "${CASE_ID}" "${BAM_URL_ARRAY}" "${S3_OUT_BUCKET}" "${S3_LOG_BUCKET}" "${S3_CFG_PATH}" "${data_dir}"
     #remove_data "${data_dir}" "${CASE_ID}"
-    queue_status_update "${data_dir}" "${QUEUE_STATUS_TOOL}" "${S3_CFG_PATH}" "${DB_CRED_URL}" "${GIT_CWL_REPO}" "${GIT_CWL_HASH}" "${CASE_ID}" "COMPLETE" "coclean_caseid_queue"
+    queue_status_update "${data_dir}" "${QUEUE_STATUS_TOOL}" "${S3_CFG_PATH}" "${DB_CRED_URL}" "${GIT_CWL_REPO}" "${GIT_CWL_HASH}" "${CASE_ID}" "${BAM_URL_ARRAY}" "COMPLETE" "coclean_caseid_queue"
 }
 
 main "$@"
