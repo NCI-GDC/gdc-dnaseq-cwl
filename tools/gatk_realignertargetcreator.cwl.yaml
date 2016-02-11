@@ -10,7 +10,7 @@ requirements:
   - import: node-engine.cwl
   - import: envvar-global.cwl
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/cocleaning-tool
+    dockerPull: quay.io/ncigdc/cocleaning-tool:2
 
 class: CommandLineTool
 
@@ -57,6 +57,16 @@ inputs:
     inputBinding:
       prefix: --uuid
 
+  - id: "#db_username"
+    type: string
+    inputBinding:
+      prefix: --db_username
+
+  - id: "#db_password"
+    type: string
+    inputBinding:
+      prefix: --db_password
+
 outputs:
   - id: "#output_intervals"
     type: File
@@ -67,17 +77,6 @@ outputs:
         script: |
           {
             return $job['uuid']+".intervals";
-          }
-
-  - id: "#output_sqlite"
-    type: File
-    description: "sqlite file"
-    outputBinding:
-      glob:
-        engine: node-engine.cwl
-        script : |
-          {
-          return $job['uuid']+".db"
           }
 
   - id: "#log"

@@ -10,7 +10,7 @@ requirements:
   - import: node-engine.cwl
   - import: envvar-global.cwl
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/picard_tool
+    dockerPull: quay.io/jeremiahsavage/picard_tool:1
 
 class: CommandLineTool
 
@@ -29,18 +29,18 @@ inputs:
     type: string
     inputBinding:
       prefix: --uuid
+
+  - id: "#db_username"
+    type: string
+    inputBinding:
+      prefix: --db_username
+
+  - id: "#db_password"
+    type: string
+    inputBinding:
+      prefix: --db_password
       
 outputs:
-  - id: "#output_sqlite"
-    type: File
-    outputBinding:
-      glob:
-        engine: node-engine.cwl
-        script: |
-          {
-          return $job['uuid']+".db"
-          }
-
   - id: "#log"
     type: File
     outputBinding:

@@ -10,7 +10,7 @@ requirements:
   - import: node-engine.cwl
   - import: envvar-global.cwl
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/merge_sqlite
+    dockerPull: quay.io/jeremiahsavage/merge_sqlite:1
 
 class: CommandLineTool
 

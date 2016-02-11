@@ -18,6 +18,10 @@ inputs:
     type: string
   - id: "#uuid"
     type: string
+  - id: "#db_username"
+    type: string
+  - id: "#db_password"
+    type: string
     
 outputs:
   - id: "#merge_sqlite_destination_sqlite"
@@ -28,6 +32,11 @@ outputs:
       type: array
       items: File
     source: "#gatk_printreads.output_bam"
+  - id: "#gatk_printreads_output_bai"
+    type:
+      type: array
+      items: File
+    source: "#gatk_printreads.output_bai"
 
 requirements:
   - class: ScatterFeatureRequirement
@@ -36,7 +45,7 @@ steps:
   - id: "#gatk_realignertargetcreator"
     run: {import: ../../tools/gatk_realignertargetcreator.cwl.yaml}
     inputs:
-      - id: "#gatk__realignertargetcreator.input_bam_path"
+      - id: "#gatk_realignertargetcreator.input_bam_path"
         source: "#bam_path"
       - id: "#gatk_realignertargetcreator.known_indel_vcf_path"
         source: "#known_indel_vcf_path"
@@ -46,9 +55,12 @@ steps:
         source: "#reference_fasta_path"
       - id: "#gatk_realignertargetcreator.thread_count"
         source: "#thread_count"
+      - id: "#gatk_realignertargetcreator.db_username"
+        source: "#db_username"
+      - id: "gatk_realignertargetcreator.db_password"
+        source: "#db_password"
     outputs:
       - id: "#gatk_realignertargetcreator.output_intervals"
-      - id: "#gatk_realignertargetcreator.output_sqlite"
       - id: "#gatk_realignertargetcreator.log"
 
   - id: "#gatk_indelrealigner"
@@ -64,9 +76,12 @@ steps:
         source: "#gatk_realignertargetcreator.output_intervals"
       - id: "#gatk_indelrealigner.uuid"
         source: "#uuid"
+      - id: "#gatk_indelrealigner.db_username"
+        source: "#db_username"
+      - id: "gatk_indelrealigner.db_password"
+        source: "#db_password"
     outputs:
       - id: "#gatk_indelrealigner.output_bam"
-      - id: "#gatk_indelrealigner.output_sqlite"
       - id: "#gatk_indelrealigner.log"
 
 
@@ -84,9 +99,12 @@ steps:
         source: "#thread_count"
       - id: "#gatk_baserecalibrator.uuid"
         source: "#uuid"
+      - id: "#gatk_baserecalibrator.db_username"
+        source: "#db_username"
+      - id: "gatk_baserecalibrator.db_password"
+        source: "#db_password"
     outputs:
       - id: "#gatk_baserecalibrator.output_grp"
-      - id: "#gatk_baserecalibrator.output_sqlite"
       - id: "#gatk_baserecalibrator.log"
       - id: "#gatk_baserecalibrator.output_bam"
 
@@ -105,38 +123,11 @@ steps:
         source: "#thread_count"
       - id: "#gatk_printreads.uuid"
         source: "#uuid"
+      - id: "#gatk_printreads.db_username"
+        source: "#db_username"
+      - id: "gatk_printreads.db_password"
+        source: "#db_password"
     outputs:
       - id: "#gatk_printreads.output_bam"
-      - id: "#gatk_printreads.output_sqlite"
+      - id: "#gatk_printreads.output_bai"
       - id: "#gatk_printreads.log"
-        
-
-  - id: "#merge_baserecalibrator_sqlite"
-    run: {import: ../../tools/merge_sqlite.cwl.yaml}
-    inputs:
-      - id: "#merge_baserecalibrator_sqlite.source_sqlite"
-        source: "#gatk_baserecalibrator.output_sqlite"
-      - id: "#merge_baserecalibrator_sqlite.uuid"
-        source: "#uuid"
-    outputs:
-      - id: "#merge_baserecalibrator_sqlite.destination_sqlite"
-
-  - id: "#merge_printreads_sqlite"
-    run: {import: ../../tools/merge_sqlite.cwl.yaml}
-    inputs:
-      - id: "#merge_printreads_sqlite.source_sqlite"
-        source: "#gatk_printreads.output_sqlite"
-      - id: "#merge_printreads_sqlite.uuid"
-        source: "#uuid"
-    outputs:
-      - id: "#merge_printreads_sqlite.destination_sqlite"
-
-  - id: "#merge_all_sqlite"
-    run: {import: ../../tools/merge_sqlite.cwl.yaml}
-    inputs:
-      - id: "#merge_all_sqlite.source_sqlite"
-        source: [ "#gatk_realignertargetcreator.output_sqlite", "#gatk_indelrealigner.output_sqlite", "#merge_baserecalibrator_sqlite.destination_sqlite", "#merge_printreads_sqlite.destination_sqlite"]
-      - id: "#merge_all_sqlite.uuid"
-        source: "#uuid"
-    outputs:
-      - id: "#merge_all_sqlite.destination_sqlite"
