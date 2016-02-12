@@ -126,8 +126,8 @@ function install_unique_virtenv()
     eval ${export_proxy_str}
     echo "deactivate"
     deactivate
-    echo "pip install virtualenvwrapper --user"
-    pip install virtualenvwrapper --user
+    echo "pip install virtualenvwrapper --user --ignore-installed"
+    pip install virtualenvwrapper --user --ignore-installed
     source ${HOME}/.local/bin/virtualenvwrapper.sh
     mkvirtualenv --python /usr/bin/python2 p2_${uuid}
     local this_virtenv_dir=${HOME}/.virtualenvs/p2_${uuid}
