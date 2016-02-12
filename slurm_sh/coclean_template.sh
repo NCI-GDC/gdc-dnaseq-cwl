@@ -102,9 +102,9 @@ function get_git_name()
     echo "repo_str=${repo_str}"
     echo "git_url=${git_url}"
     IFS=':' read -r -a array <<< "${git_url}"
-    owner_repo=${array[-1]}
+    local owner_repo=${array[-1]}
     echo "owner_repo=${owner_repo}"
-    git_repo=$(basename ${owner_repo})
+    local git_repo=$(basename ${owner_repo})
     echo "git_repo=${git_repo}"
     git_name="${git_repo%.*}" # need global var for return
     echo "${git_name}"
