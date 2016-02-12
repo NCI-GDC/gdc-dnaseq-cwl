@@ -363,7 +363,7 @@ function run_coclean()
     cd ${coclean_dir}
     
     # setup cwl command removed  --leave-tmpdir
-    local cwl_command="--debug --outdir ${coclean_dir} --tmpdir-prefix ${tmp_dir} --tmp-outdir-prefix ${tmpout_dir} ${workflow_path} --reference_fasta_path ${reference_genome_path}.fa --uuid ${case_id} --known_indel_vcf_path ${known_indel_vcf_path} --known_snp_vcf_path ${known_snp_vcf_path} --thread_count ${thread_count} --db_cred_s3url ${db_cred_s3url} --s3cfg_path {s3_cfg_path}"
+    local cwl_command="--debug --outdir ${coclean_dir} --tmpdir-prefix ${tmp_dir} --tmp-outdir-prefix ${tmpout_dir} ${workflow_path} --reference_fasta_path ${reference_genome_path}.fa --uuid ${case_id} --known_indel_vcf_path ${known_indel_vcf_path} --known_snp_vcf_path ${known_snp_vcf_path} --thread_count ${thread_count} --db_cred_s3url ${db_cred_s3url} --s3cfg_path ${s3_cfg_path}"
     for bam_url in ${bam_url_array}
     do
         local bam_name=$(basename ${bam_url})
