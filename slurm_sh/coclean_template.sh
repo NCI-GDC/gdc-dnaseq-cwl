@@ -17,6 +17,7 @@ CASE_ID="XX_CASE_ID_XX"
 S3_CFG_PATH="XX_S3_CFG_PATH_XX"
 EXPORT_PROXY_STR="export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128;"
 DB_CRED_URL="XX_DB_CRED_URL_XX"
+QUAY_PULL_KEY_URL="s3://bioinformatics_scratch/deploy_key/.dockercfg"
 
 #private cwl
 GIT_CWL_SERVER="github.com"
@@ -474,6 +475,18 @@ function clone_pip_git_hash()
     pip install -e .
 }
 
+function get_dockercfg()
+{
+    local s3_cfg_path="$1"
+    local quay_pull_key_url="$2"
+
+    local prev_wd=`pwd`
+    cd ${HOME}
+    echo 's3cmd -c ${s3_cfg_path} --force get "${quay_pull_key_url}"'
+    s3cmd -c ${s3_cfg_path} --force get "${quay_pull_key_url}"
+    cd "${prev_wd}"
+}
+
 function main()
 {
 
@@ -489,6 +502,7 @@ function main()
     install_unique_virtenv "${CASE_ID}" "${EXPORT_PROXY_STR}"
     pip_install_requirements "${GIT_CWL_REPO}" "${CWLTOOL_REQUIREMENTS_PATH}" "${EXPORT_PROXY_STR}" "${data_dir}" "${CASE_ID}"
     clone_pip_git_hash "${CASE_ID}" "${CWLTOOL_URL}" "${CWLTOOL_HASH}" "${data_dir}" "${EXPORT_PROXY_STR}"
+    get_dockercfg "${S3_CFG_PATH}" "${QUAY_PULL_KEY_URL}"
     queue_status_update "${data_dir}" "${QUEUE_STATUS_TOOL}" "${S3_CFG_PATH}" "${DB_CRED_URL}" "${GIT_CWL_REPO}" "${GIT_CWL_HASH}" "${CASE_ID}" "${BAM_URL_ARRAY}" "RUNNING" "coclean_caseid_queue"
     get_gatk_index_files "${S3_CFG_PATH}" "${S3_GATK_INDEX_BUCKET}" "${index_dir}" "${REFERENCE_GENOME}" "${KNOWN_SNP_VCF}" "${KNOWN_INDEL_VCF}"
     get_bam_files "${S3_CFG_PATH}" "${BAM_URL_ARRAY}" "${data_dir}"
