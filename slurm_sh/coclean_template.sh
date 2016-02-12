@@ -156,6 +156,9 @@ function pip_install_requirements()
 function get_db_creds()
 {
     echo ""
+    echo "get_db_creds()"
+
+    
 }
 
 function setup_deploy_key()
@@ -193,7 +196,7 @@ function clone_git_repo()
     local git_repo="$3"
     local export_proxy_str="$4"
     local data_dir="$5"
-    local cwl_git_hash="$6"
+    local git_cwl_hash="$6"
 
     get_git_name "${git_repo}"
     echo "git_name=${git_name}"
@@ -212,8 +215,8 @@ function clone_git_repo()
         echo "git clone ${git_repo}"
         git clone ${git_repo}
         cd ${git_name}
-        echo "git checkout ${cwl_git_hash}"
-        git checkout ${cwl_git_hash}
+        echo "git checkout ${git_cwl_hash}"
+        git checkout ${git_cwl_hash}
     else # if not known, get key, check it, then add it
         echo "git_server ${git_server} is NOT known"
         echo "ssh-keyscan ${git_server} > ${git_server}_gitkey"
@@ -226,8 +229,8 @@ function clone_git_repo()
             echo "git clone ${git_repo}"
             git clone ${git_repo}
             cd ${git_name}
-            echo "git checkout ${cwl_git_hash}"
-            git checskout ${cwl_git_hash}
+            echo "git checkout ${git_cwl_hash}"
+            git checskout ${git_cwl_hash}
         else
             echo "git server fingerprint is not '${git_server_fingerprint} ${git_server} (RSA)', but instead:  `ssh-keygen -lf ${git_server}_gitkey`"
             cd ${prev_wd}
@@ -302,8 +305,7 @@ function generate_bai_files()
     local case_id="$3"
     local git_cwl_repo="$4"
     local buildbamindex_tool="$5"
-    local postgres_username="$6"
-    local postgres_password="$7"
+    local db_cred_url="$6"
 
     get_git_name "${git_cwl_repo}"
     echo "git_name=${git_name}"
@@ -320,7 +322,7 @@ function generate_bai_files()
     do
         local bam_name=$(basename ${bam_url})
         local bam_path=${data_dir}/${bam_name}
-        local cwl_command="--debug --outdir ${data_dir} ${cwl_tool_path} --uuid ${case_id} --input_bam ${bam_path} --db_username ${postgres_username} --db_password ${postgres_password}"
+        local cwl_command="--debug --outdir ${data_dir} ${cwl_tool_path} --uuid ${case_id} --input_bam ${bam_path} --db_cred_url ${db_cred_url}"
 
         echo "${cwlrunner_path} ${cwl_command}"
         ${cwlrunner_path} ${cwl_command}
@@ -343,10 +345,7 @@ function run_coclean()
     local thread_count="$8"
     local git_cwl_repo="$9"
     local index_dir="${10}"
-    local postgres_username="$6"
-    local postgres_password="$7"
-
-
+    local db_cred_url="$6"
     
     local reference_genome_path=${index_dir}/${reference_genome}
     local known_indel_vcf_path=${index_dir}/${known_indel_vcf}
@@ -366,7 +365,7 @@ function run_coclean()
     cd ${coclean_dir}
     
     # setup cwl command removed  --leave-tmpdir
-    local cwl_command="--debug --outdir ${coclean_dir} --tmpdir-prefix ${tmp_dir} --tmp-outdir-prefix ${tmpout_dir} ${workflow_path} --reference_fasta_path ${reference_genome_path}.fa --uuid ${case_id} --known_indel_vcf_path ${known_indel_vcf_path} --known_snp_vcf_path ${known_snp_vcf_path} --thread_count ${thread_count} --db_username ${postgres_username} --db_password ${postgres_password}"
+    local cwl_command="--debug --outdir ${coclean_dir} --tmpdir-prefix ${tmp_dir} --tmp-outdir-prefix ${tmpout_dir} ${workflow_path} --reference_fasta_path ${reference_genome_path}.fa --uuid ${case_id} --known_indel_vcf_path ${known_indel_vcf_path} --known_snp_vcf_path ${known_snp_vcf_path} --thread_count ${thread_count} --db_cred_url ${db_cred_url}"
     for bam_url in ${bam_url_array}
     do
         local bam_name=$(basename ${bam_url})
@@ -493,11 +492,11 @@ function main()
     install_unique_virtenv "${CASE_ID}" "${EXPORT_PROXY_STR}"
     pip_install_requirements "${GIT_CWL_REPO}" "${CWLTOOL_REQUIREMENTS_PATH}" "${EXPORT_PROXY_STR}" "${data_dir}" "${CASE_ID}"
     clone_pip_git_hash "${CASE_ID}" "${CWLTOOL_URL}" "${CWLTOOL_HASH}" "${data_dir}" "${EXPORT_PROXY_STR}"
-    get_db_creds "${S3_CFG_PATH}" "${POSTGRES_CRED_URL}" "${data_dir}"
+    get_db_creds "${S3_CFG_PATH}" "${DB_CRED_URL}" "${data_dir}"
     get_gatk_index_files "${S3_CFG_PATH}" "${S3_GATK_INDEX_BUCKET}" "${index_dir}" "${REFERENCE_GENOME}" "${KNOWN_SNP_VCF}" "${KNOWN_INDEL_VCF}"
     get_bam_files "${S3_CFG_PATH}" "${BAM_URL_ARRAY}" "${data_dir}"
-    generate_bai_files "${data_dir}" "${BAM_URL_ARRAY}" "${CASE_ID}" "${GIT_CWL_REPO}" "${BUILDBAMINDEX_TOOL}" "${POSTGRES_USERNAME}" "${POSTGRES_PASSWORD}"
-    run_coclean "${data_dir}" "${BAM_URL_ARRAY}" "${CASE_ID}" "${COCLEAN_WORKFLOW}" "${REFERENCE_GENOME}" "${KNOWN_INDEL_VCF}" "${KNOWN_SNP_VCF}" "${THREAD_COUNT}" "${GIT_CWL_REPO}" "${index_dir}" "${POSTGRES_USERNAME}" "${POSTGRES_PASSWORD}"
+    generate_bai_files "${data_dir}" "${BAM_URL_ARRAY}" "${CASE_ID}" "${GIT_CWL_REPO}" "${BUILDBAMINDEX_TOOL}" "${DB_CRED_URL}"
+    run_coclean "${data_dir}" "${BAM_URL_ARRAY}" "${CASE_ID}" "${COCLEAN_WORKFLOW}" "${REFERENCE_GENOME}" "${KNOWN_INDEL_VCF}" "${KNOWN_SNP_VCF}" "${THREAD_COUNT}" "${GIT_CWL_REPO}" "${index_dir}" "${DB_CRED_URL}"
     upload_coclean_results "${CASE_ID}" "${BAM_URL_ARRAY}" "${S3_OUT_BUCKET}" "${S3_LOG_BUCKET}" "${S3_CFG_PATH}" "${data_dir}"
     #remove_data "${data_dir}" "${CASE_ID}"
     queue_status_update "${data_dir}" "${QUEUE_STATUS_TOOL}" "${S3_CFG_PATH}" "${DB_CRED_URL}" "${GIT_CWL_REPO}" "${GIT_CWL_HASH}" "${CASE_ID}" "${BAM_URL_ARRAY}" "COMPLETE" "coclean_caseid_queue"
