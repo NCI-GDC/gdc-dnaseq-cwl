@@ -18,7 +18,7 @@ import sys
 
                 
 
-def write_case_file(template_file, caseid, case_bamurl_dict, scratch_dir, thread_count, git_cwl_hash,
+def write_case_file(template_file, caseid, caseid_bamurl_dict, scratch_dir, thread_count, git_cwl_hash,
                     db_cred_url, s3_cfg_path):
     template_dir = os.path.dirname(template_file)
     out_dir = os.path.join(template_dir, 'case_slurm_sh')
@@ -30,7 +30,7 @@ def write_case_file(template_file, caseid, case_bamurl_dict, scratch_dir, thread
     with open(template_file, 'r') as template_file_open:
         for line in template_file_open:
             if 'XX_BAM_URL_ARRAY_XX' in line:
-                replace_str = ' '.join(sorted(list(case_bamurl_dict[caseid])))
+                replace_str = ' '.join(sorted(list(caseid_bamurl_dict[caseid])))
                 newline = line.replace('XX_BAM_URL_ARRAY_XX', replace_str)
                 out_path_open.write(newline)
             elif 'XX_CASE_ID_XX' in line:
@@ -61,8 +61,8 @@ def get_gdcid_bamurl_dict(harmonized_file):
     f_open = open(harmonized_file, 'rt')
     reader = csv.reader(f_open, quotechar='"', delimiter='|',quoting=csv.QUOTE_ALL, skipinitialspace=True)
     for line_split in reader:
-        gdc_id = line_split[0]
-        s3_location = line_split[18]
+        gdc_id = line_split[0].strip()
+        s3_location = line_split[18].strip().replace('cleversafe.service.consul/', '')
         gdcid_bamurl_dict[gdc_id] = s3_location
     return gdcid_bamurl_dict
 
@@ -71,12 +71,12 @@ def get_caseid_gdcid_dict(zhenyu_file):
     f_open = open(zhenyu_file, 'rt')
     reader = csv.reader(f_open, quotechar='"', delimiter='|',quoting=csv.QUOTE_ALL, skipinitialspace=True)
     for line_split in reader:
-        study = line_split[0]
-        disease = line_split[1]
-        case_id = line_split[2]
-        participant_id = line_split[3]
-        gdc_id = line_split[4]
-        sample_type = line_split[5]
+        study = line_split[0].strip()
+        disease = line_split[1].strip()
+        case_id = line_split[2].strip()
+        participant_id = line_split[3].strip()
+        gdc_id = line_split[4].strip()
+        sample_type = line_split[5].strip()
         if case_id in caseid_gdcid_dict.keys():
             caseid_gdcid_dict[case_id].add(gdc_id)
         else:
@@ -95,7 +95,7 @@ def join_caseid_bamurl(caseid_gdcid_dict, gdcid_bamurl_dict):
             else:
                 caseid_bamurl_dict[caseid] = set()
                 caseid_bamurl_dict[caseid].add(bamurl)
-    return case_bamurl_dict
+    return caseid_bamurl_dict
 
 def main():
     parser = argparse.ArgumentParser('make slurm')
@@ -152,7 +152,7 @@ def main():
     gdcid_bamurl_dict = get_gdcid_bamurl_dict(harmonized_file)
     caseid_bamurl_dict = join_caseid_bamurl(caseid_gdcid_dict, gdcid_bamurl_dict)
     
-    for caseid in sorted(list(case_bamurl_dict.keys())):
+    for caseid in sorted(list(caseid_bamurl_dict.keys())):
         write_case_file(template_file, caseid, caseid_bamurl_dict, scratch_dir, thread_count, git_cwl_hash, db_cred_url, s3_cfg_path)
 if __name__=='__main__':
     main()
