@@ -301,7 +301,7 @@ function generate_bai_files()
     local case_id="$3"
     local git_cwl_repo="$4"
     local buildbamindex_tool="$5"
-    local db_cred_url="$6"
+    local db_cred_s3url="$6"
 
     get_git_name "${git_cwl_repo}"
     echo "git_name=${git_name}"
@@ -318,7 +318,7 @@ function generate_bai_files()
     do
         local bam_name=$(basename ${bam_url})
         local bam_path=${data_dir}/${bam_name}
-        local cwl_command="--debug --outdir ${data_dir} ${cwl_tool_path} --uuid ${case_id} --input_bam ${bam_path} --db_cred_url ${db_cred_url}"
+        local cwl_command="--debug --outdir ${data_dir} ${cwl_tool_path} --uuid ${case_id} --input_bam ${bam_path} --db_cred_s3url ${db_cred_s3url}"
 
         echo "${cwlrunner_path} ${cwl_command}"
         ${cwlrunner_path} ${cwl_command}
@@ -341,7 +341,7 @@ function run_coclean()
     local thread_count="$8"
     local git_cwl_repo="$9"
     local index_dir="${10}"
-    local db_cred_url="${11}"
+    local db_cred_s3url="${11}"
     
     local reference_genome_path=${index_dir}/${reference_genome}
     local known_indel_vcf_path=${index_dir}/${known_indel_vcf}
@@ -361,7 +361,7 @@ function run_coclean()
     cd ${coclean_dir}
     
     # setup cwl command removed  --leave-tmpdir
-    local cwl_command="--debug --outdir ${coclean_dir} --tmpdir-prefix ${tmp_dir} --tmp-outdir-prefix ${tmpout_dir} ${workflow_path} --reference_fasta_path ${reference_genome_path}.fa --uuid ${case_id} --known_indel_vcf_path ${known_indel_vcf_path} --known_snp_vcf_path ${known_snp_vcf_path} --thread_count ${thread_count} --db_cred_url ${db_cred_url}"
+    local cwl_command="--debug --outdir ${coclean_dir} --tmpdir-prefix ${tmp_dir} --tmp-outdir-prefix ${tmpout_dir} ${workflow_path} --reference_fasta_path ${reference_genome_path}.fa --uuid ${case_id} --known_indel_vcf_path ${known_indel_vcf_path} --known_snp_vcf_path ${known_snp_vcf_path} --thread_count ${thread_count} --db_cred_s3url ${db_cred_s3url}"
     for bam_url in ${bam_url_array}
     do
         local bam_name=$(basename ${bam_url})
