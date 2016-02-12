@@ -44,8 +44,5 @@ inputs:
     type: string
     inputBinding:
       prefix: --status
-
-outputs:
-
           
 baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/queue_status/main.py"]
