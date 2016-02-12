@@ -59,7 +59,7 @@ inputs:
       prefix: --db_cred_s3url
 
   - id: "#s3cfg_path"
-    type: string
+    type: File
     inputBinding:
       prefix: --s3cfg_path
 
