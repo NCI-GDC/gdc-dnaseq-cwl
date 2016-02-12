@@ -69,7 +69,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return $job['uuid']+"_queue_status.log"
+          return $job['case_id']+"_queue_status.log"
           }
 
           
