@@ -59,8 +59,8 @@ function queue_status_update()
     local case_id="$7"
     local bam_url_array="$8"
     local status="$9"
-    local table_name="$10"
-    local s3_out_bucket="$11"
+    local table_name="${10}"
+    local s3_out_bucket="${11}"
 
     echo "status=${status}"
     echo "table_name=${table_name}"
@@ -341,7 +341,7 @@ function run_coclean()
     local thread_count="$8"
     local git_cwl_repo="$9"
     local index_dir="${10}"
-    local db_cred_url="$6"
+    local db_cred_url="${11}"
     
     local reference_genome_path=${index_dir}/${reference_genome}
     local known_indel_vcf_path=${index_dir}/${known_indel_vcf}
