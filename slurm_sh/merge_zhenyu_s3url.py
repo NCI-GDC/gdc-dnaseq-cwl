@@ -84,7 +84,7 @@ def get_caseid_gdcid_dict(zhenyu_file):
             caseid_gdcid_dict[case_id].add(gdc_id)
     return caseid_gdcid_dict
 
-def join_case_bamurl(caseid_gdcid_dict, gdcid_bamurl_dict):
+def join_caseid_bamurl(caseid_gdcid_dict, gdcid_bamurl_dict):
     caseid_bamurl_dict = dict()
     for caseid in sorted(list(caseid_gdcid_dict.keys())):
         gdcid_list = sorted(list(caseid_gdcid_dict[caseid]))
@@ -150,7 +150,7 @@ def main():
 
     caseid_gdcid_dict = get_caseid_gdcid_dict(zhenyu_file)    
     gdcid_bamurl_dict = get_gdcid_bamurl_dict(harmonized_file)
-    caseid_bamurl_dict = join_case_bamurl(case_bamurl_dict, keep_bamurl_set)
+    caseid_bamurl_dict = join_caseid_bamurl(caseid_bamurl_dict, keep_bamurl_set)
     
     for caseid in sorted(list(case_bamurl_dict.keys())):
         write_case_file(template_file, caseid, case_bamurl_dict, scratch_dir, thread_count, git_cwl_hash, db_cred_url, s3_cfg_path)
