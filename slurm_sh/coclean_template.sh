@@ -53,7 +53,7 @@ function queue_status_update()
     local data_dir="$1"
     local cwl_tool="$2"
     local s3cfg_path="$3"
-    local db_cred_url="$4"
+    local db_cred_s3url="$4"
     local git_cwl_repo="$5"
     local git_cwl_hash="$6"
     local case_id="$7"
@@ -77,11 +77,11 @@ function queue_status_update()
         then
             local bam_file=$(basename ${bam_url})
             local s3_url=${s3_out_bucket}/${gdc_id}/${bam_file}
-            local cwl_command="--debug --outdir ${data_dir} ${cwl_tool_path} --case_id ${case_id} --gdc_id ${gdc_id} --repo ${git_cwl_repo} --repo_hash ${git_cwl_hash} --s3cfg_path ${s3cfg_path} --table_name ${table_name} --status ${status} --s3_url ${s3_url}"
+            local cwl_command="--debug --outdir ${data_dir} ${cwl_tool_path} --case_id ${case_id} --db_cred_s3url ${db_cred_s3url} --gdc_id ${gdc_id} --repo ${git_cwl_repo} --repo_hash ${git_cwl_hash} --s3cfg_path ${s3cfg_path} --table_name ${table_name} --status ${status} --s3_url ${s3_url}"
             echo "${cwlrunner_path} ${cwl_command}"
             ${cwlrunner_path} ${cwl_command}
         else
-            local cwl_command="--debug --outdir ${data_dir} ${cwl_tool_path} --case_id ${case_id} --gdc_id ${gdc_id} --repo ${git_cwl_repo} --repo_hash ${git_cwl_hash} --s3cfg_path ${s3cfg_path} --table_name ${table_name} --status ${status}"
+            local cwl_command="--debug --outdir ${data_dir} ${cwl_tool_path} --case_id ${case_id}} --db_cred_s3url ${db_cred_s3url} --gdc_id ${gdc_id} --repo ${git_cwl_repo} --repo_hash ${git_cwl_hash} --s3cfg_path ${s3cfg_path} --table_name ${table_name} --status ${status}"
             echo "${cwlrunner_path} ${cwl_command}"
             ${cwlrunner_path} ${cwl_command}
         fi
