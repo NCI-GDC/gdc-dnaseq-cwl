@@ -24,7 +24,7 @@ GIT_CWL_SERVER_FINGERPRINT="2048 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48
 GIT_CWL_DEPLOY_KEY_S3_URL="s3://bioinformatics_scratch/deploy_key/coclean_cwl_deploy_rsa"
 GIT_CWL_REPO="git@github.com:NCI-GDC/cocleaning-cwl.git"
 GIT_CWL_HASH="XX_GIT_CWL_HASH_XX"
-COCLEAN_WORKFLOW="workflows/coclean/coclean_worflow.cwl.yaml"
+COCLEAN_WORKFLOW="workflows/coclean/coclean_workflow.cwl.yaml"
 BUILDBAMINDEX_TOOL="tools/picard_buildbamindex.cwl.yaml"
 QUEUE_STATUS_TOOL="tools/queue_status.cwl.yaml"
 
