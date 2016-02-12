@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 
 ###SQL command###
-#prod_bioinfo=> \o out.txt
-#prod_bioinfo=> select * from harmonized_files where experimental_strategy = 'WXS' and project = 'BLCA' order by case_id, filename;
-#prod_bioinfo=> select * from wxs_coclean_participantid_gdcid where study = 'TCGA' and project = 'BLCA' order by case_id, filename;
+#prod_bioinfo=> \o harmonized_files.out
+#prod_bioinfo=> select * from harmonized_files where experimental_strategy = 'WXS' and project = 'BLCA' order by case_id, gdc_id;
+#prod_bioinfo=> \o wxs_coclean.out
+#prod_bioinfo=> select * from wxs_coclean_participantid_gdcid where study = 'TCGA' and disease = 'BLCA' order by case_id, gdc_id;
 #prod_bioinfo=> \q
 ###
 
@@ -29,7 +30,7 @@ def write_case_file(template_file, caseid, case_bamurl_dict, scratch_dir, thread
     with open(template_file, 'r') as template_file_open:
         for line in template_file_open:
             if 'XX_BAM_URL_ARRAY_XX' in line:
-                replace_str = ' '.join(sorted(list(qcpass_case_bamurl_dict[caseid])))
+                replace_str = ' '.join(sorted(list(case_bamurl_dict[caseid])))
                 newline = line.replace('XX_BAM_URL_ARRAY_XX', replace_str)
                 out_path_open.write(newline)
             elif 'XX_CASE_ID_XX' in line:
@@ -61,8 +62,9 @@ def get_gdcid_bamurl_dict(harmonized_file):
     reader = csv.reader(f_open, quotechar='"', delimiter='|',quoting=csv.QUOTE_ALL, skipinitialspace=True)
     for line_split in reader:
         gdc_id = line_split[0]
-        aliquot_id = line_split[1]
-        
+        s3_location = line_split[18]
+        gdcid_bamurl_dict[gdc_id] = s3_location
+    return gdcid_bamurl_dict
 
 def get_caseid_gdcid_dict(zhenyu_file):
     caseid_gdcid_dict = dict()
@@ -81,6 +83,19 @@ def get_caseid_gdcid_dict(zhenyu_file):
             caseid_gdcid_dict[case_id]=set()
             caseid_gdcid_dict[case_id].add(gdc_id)
     return caseid_gdcid_dict
+
+def join_case_bamurl(caseid_gdcid_dict, gdcid_bamurl_dict):
+    caseid_bamurl_dict = dict()
+    for caseid in sorted(list(caseid_gdcid_dict.keys())):
+        gdcid_list = sorted(list(caseid_gdcid_dict[caseid]))
+        for gdcid in gdcid_list:
+            bamurl = gdcid_bamurl_dict[gdcid]
+            if caseid in caseid_bamurl_dict.keys():
+                caseid_bamurl_dict[caseid].append(bamurl)
+            else:
+                caseid_bamurl_dict[caseid] = set()
+                caseid_bamurl_dict[caseid].add(bamurl)
+    return case_bamurl_dict
 
 def main():
     parser = argparse.ArgumentParser('make slurm')
@@ -121,7 +136,7 @@ def main():
     )
 
     args = parser.parse_args()
-    harmonized_file = args.sql_file
+    harmonized_file = args.harmonized_file
     zhenyu_file = args.zhenyu_file
     template_file = args.template_file
     scratch_dir = args.scratch_dir
@@ -133,9 +148,9 @@ def main():
     #tool_name = 'create_slurm_from_template'
     #logger = pipe_util.setup_logging(tool_name, args, uuid)
 
-    case_gdcid_dict = get_caseid_gdcid_dict(zhenyu_file)    
+    caseid_gdcid_dict = get_caseid_gdcid_dict(zhenyu_file)    
     gdcid_bamurl_dict = get_gdcid_bamurl_dict(harmonized_file)
-    case_bamurl_dict = join_case_bamurl(case_bamurl_dict, keep_bamurl_set)
+    caseid_bamurl_dict = join_case_bamurl(case_bamurl_dict, keep_bamurl_set)
     
     for caseid in sorted(list(case_bamurl_dict.keys())):
         write_case_file(template_file, caseid, case_bamurl_dict, scratch_dir, thread_count, git_cwl_hash, db_cred_url, s3_cfg_path)
