@@ -46,7 +46,7 @@ inputs:
       prefix: --s3cfg_path
 
   - id: "#s3_url"
-    type: ["null", File]
+    type: ["null", string]
     inputBinding:
       prefix: --s3_url
 
