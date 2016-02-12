@@ -85,7 +85,7 @@ function queue_status_update()
             echo "${cwlrunner_path} ${cwl_command}"
             ${cwlrunner_path} ${cwl_command}
         else
-            local cwl_command="--debug --outdir ${data_dir} ${cwl_tool_path} --case_id ${case_id}} --db_cred_s3url ${db_cred_s3url} --gdc_id ${gdc_id} --repo ${git_cwl_repo} --repo_hash ${git_cwl_hash} --s3cfg_path ${s3cfg_path} --table_name ${table_name} --status ${status}"
+            local cwl_command="--debug --outdir ${data_dir} ${cwl_tool_path} --case_id ${case_id} --db_cred_s3url ${db_cred_s3url} --gdc_id ${gdc_id} --repo ${git_cwl_repo} --repo_hash ${git_cwl_hash} --s3cfg_path ${s3cfg_path} --table_name ${table_name} --status ${status}"
             echo "${cwlrunner_path} ${cwl_command}"
             ${cwlrunner_path} ${cwl_command}
         fi
