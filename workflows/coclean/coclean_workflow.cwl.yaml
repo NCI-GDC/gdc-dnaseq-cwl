@@ -24,9 +24,6 @@ inputs:
     type: File
     
 outputs:
-  - id: "#merge_sqlite_destination_sqlite"
-    type: File
-    source: "#merge_all_sqlite.destination_sqlite"
   - id: "#gatk_printreads_output_bam"
     type:
       type: array
