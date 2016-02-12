@@ -15,11 +15,21 @@ requirements:
 class: CommandLineTool
 
 inputs:
-  - id: "#uuid"
+  - id: "#case_id"
     type: string
     inputBinding:
-      prefix: --uuid
+      prefix: --case_id
 
+  - id: "#db_cred_s3url"
+    type: string
+    inputBinding:
+      prefix: --db_cred_s3url
+
+  - id: "#gdc_id"
+    type: string
+    inputBinding:
+      prefix: --gdc_id
+      
   - id: "#repo"
     type: string
     inputBinding:
@@ -35,15 +45,15 @@ inputs:
     inputBinding:
       prefix: --s3cfg_path
 
-  - id: "#table_name"
-    type: string
-    inputBinding:
-      prefix: --table_name
-
   - id: "#status"
     type: string
     inputBinding:
       prefix: --status
+
+  - id: "#table_name"
+    type: string
+    inputBinding:
+      prefix: --table_name
 
 outputs:
   - id: "#log"
