@@ -10,7 +10,7 @@ requirements:
   - import: node-engine.cwl
   - import: envvar-global.cwl
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/cocleaning-tool:3
+    dockerPull: quay.io/ncigdc/cocleaning-tool:4
 
 class: CommandLineTool
 
