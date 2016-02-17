@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #server environment
-S3_CFG_PATH="${HOME}/.s3cfg"
+S3_CFG_PATH="${HOME}/.s3cfg.cleversafe"
 EXPORT_PROXY_STR="export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128;"
 DB_CRED_URL="s3://bioinformatics_scratch/deploy_key/connect_jhsavage.ini"
 QUAY_PULL_KEY_URL="s3://bioinformatics_scratch/deploy_key/.dockercfg"
@@ -311,9 +311,12 @@ function main()
     
     for f in script_dir/coclean_*.sh
     do
-        case_id=get_case_id "${f}"
-        bam_url_array=get_bam_url_array "${f}"
-        queue_status_update "${data_dir}" "${QUEUE_STATUS_TOOL}" "${S3_CFG_PATH}" "${DB_CRED_URL}" "${GIT_CWL_REPO}" "${GIT_CWL_HASH}" "${case_id}" "${bam_url_array}" "QUEUED" "coclean_caseid_queue"
+        get_case_id "${f}"
+        get_bam_url_array "${f}"
+        echo ""
+        echo "case_id=${case_id}"
+        echo "bam_url_array=${bam_url_array}"
+        queue_status_update "${data_dir}" "${QUEUE_STATUS_TOOL}" "${S3_CFG_PATH}" "${DB_CRED_URL}" "${GIT_CWL_REPO}" "${GIT_CWL_HASH}" "${case_id}" "${bam_url_array}" "QUEUED" "test_coclean_caseid_queue_test"
         sbatch ${f}
     done
     remove_data ${data_dir} ${uuid}
