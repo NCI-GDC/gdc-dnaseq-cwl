@@ -50,6 +50,9 @@ def write_case_file(template_file, caseid, caseid_bamurl_dict, scratch_dir, thre
             elif 'XX_GIT_CWL_HASH_XX' in line:
                 newline = line.replace('XX_GIT_CWL_HASH_XX', git_cwl_hash)
                 out_path_open.write(newline)
+            elif 'XX_STATUS_TABLE_NAME_XX' in line:
+                newline = line.replace('XX_STATUS_TABLE_NAME_XX', status_table_name)
+                out_path_open.write(newline)
             else:
                 out_path_open.write(line)
     out_path_open.close()
@@ -133,6 +136,9 @@ def main():
     parser.add_argument('--git_cwl_hash',
                         required = True
     )
+    parser.add_argument('--status_table_name',
+                        required = True
+    )
 
     args = parser.parse_args()
     harmonized_file = args.harmonized_file
@@ -143,6 +149,7 @@ def main():
     db_cred_url = args.db_cred_url
     s3_cfg_path = args.s3_cfg_path
     git_cwl_hash = args.git_cwl_hash
+    status_table_name = args.status_table_name
     #uuid = 'a_uuid'
     #tool_name = 'create_slurm_from_template'
     #logger = pipe_util.setup_logging(tool_name, args, uuid)
@@ -152,6 +159,6 @@ def main():
     caseid_bamurl_dict = join_caseid_bamurl(caseid_gdcid_dict, gdcid_bamurl_dict)
     
     for caseid in sorted(list(caseid_bamurl_dict.keys())):
-        write_case_file(template_file, caseid, caseid_bamurl_dict, scratch_dir, thread_count, git_cwl_hash, db_cred_url, s3_cfg_path)
+        write_case_file(template_file, caseid, caseid_bamurl_dict, scratch_dir, thread_count, git_cwl_hash, db_cred_url, s3_cfg_path, status_table_name)
 if __name__=='__main__':
     main()
