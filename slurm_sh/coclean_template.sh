@@ -18,6 +18,7 @@ S3_CFG_PATH="XX_S3_CFG_PATH_XX"
 EXPORT_PROXY_STR="export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128;"
 DB_CRED_URL="XX_DB_CRED_URL_XX"
 QUAY_PULL_KEY_URL="s3://bioinformatics_scratch/deploy_key/.dockercfg"
+STATUS_TABLE_NAME="XX_STATUS_TABLE_NAME_XX"
 
 #private cwl
 GIT_CWL_SERVER="github.com"
@@ -384,7 +385,7 @@ function run_coclean()
         echo "completed cocleaning"
     else
         echo "failed cocleaning"
-        queue_status_update "${data_dir}" "${QUEUE_STATUS_TOOL}" "${S3_CFG_PATH}" "${DB_CRED_URL}" "${GIT_CWL_REPO}" "${GIT_CWL_HASH}" "${CASE_ID}" "${BAM_URL_ARRAY}" "FAIL" "coclean_caseid_queue"
+        queue_status_update "${data_dir}" "${QUEUE_STATUS_TOOL}" "${S3_CFG_PATH}" "${DB_CRED_URL}" "${GIT_CWL_REPO}" "${GIT_CWL_HASH}" "${CASE_ID}" "${BAM_URL_ARRAY}" "FAIL" "${STATUS_TABLE_NAME}"
         exit 1
     fi
     cd ${prev_wd}
@@ -503,14 +504,14 @@ function main()
     pip_install_requirements "${GIT_CWL_REPO}" "${CWLTOOL_REQUIREMENTS_PATH}" "${EXPORT_PROXY_STR}" "${data_dir}" "${CASE_ID}"
     clone_pip_git_hash "${CASE_ID}" "${CWLTOOL_URL}" "${CWLTOOL_HASH}" "${data_dir}" "${EXPORT_PROXY_STR}"
     get_dockercfg "${S3_CFG_PATH}" "${QUAY_PULL_KEY_URL}"
-    queue_status_update "${data_dir}" "${QUEUE_STATUS_TOOL}" "${S3_CFG_PATH}" "${DB_CRED_URL}" "${GIT_CWL_REPO}" "${GIT_CWL_HASH}" "${CASE_ID}" "${BAM_URL_ARRAY}" "RUNNING" "coclean_caseid_queue"
+    queue_status_update "${data_dir}" "${QUEUE_STATUS_TOOL}" "${S3_CFG_PATH}" "${DB_CRED_URL}" "${GIT_CWL_REPO}" "${GIT_CWL_HASH}" "${CASE_ID}" "${BAM_URL_ARRAY}" "RUNNING" "${STATUS_TABLE_NAME}"
     get_gatk_index_files "${S3_CFG_PATH}" "${S3_GATK_INDEX_BUCKET}" "${index_dir}" "${REFERENCE_GENOME}" "${KNOWN_SNP_VCF}" "${KNOWN_INDEL_VCF}"
     get_bam_files "${S3_CFG_PATH}" "${BAM_URL_ARRAY}" "${data_dir}"
     generate_bai_files "${data_dir}" "${BAM_URL_ARRAY}" "${CASE_ID}" "${GIT_CWL_REPO}" "${BUILDBAMINDEX_TOOL}" "${DB_CRED_URL}" "${S3_CFG_PATH}"
     run_coclean "${data_dir}" "${BAM_URL_ARRAY}" "${CASE_ID}" "${COCLEAN_WORKFLOW}" "${REFERENCE_GENOME}" "${KNOWN_INDEL_VCF}" "${KNOWN_SNP_VCF}" "${THREAD_COUNT}" "${GIT_CWL_REPO}" "${index_dir}" "${DB_CRED_URL}" "${S3_CFG_PATH}"
     upload_coclean_results "${CASE_ID}" "${BAM_URL_ARRAY}" "${S3_OUT_BUCKET}" "${S3_LOG_BUCKET}" "${S3_CFG_PATH}" "${data_dir}"
     #remove_data "${data_dir}" "${CASE_ID}"
-    queue_status_update "${data_dir}" "${QUEUE_STATUS_TOOL}" "${S3_CFG_PATH}" "${DB_CRED_URL}" "${GIT_CWL_REPO}" "${GIT_CWL_HASH}" "${CASE_ID}" "${BAM_URL_ARRAY}" "COMPLETE" "coclean_caseid_queue" "${S3_OUT_BUCKET}"
+    queue_status_update "${data_dir}" "${QUEUE_STATUS_TOOL}" "${S3_CFG_PATH}" "${DB_CRED_URL}" "${GIT_CWL_REPO}" "${GIT_CWL_HASH}" "${CASE_ID}" "${BAM_URL_ARRAY}" "COMPLETE" "${STATUS_TABLE_NAME}" "${S3_OUT_BUCKET}"
 }
 
 main "$@"
