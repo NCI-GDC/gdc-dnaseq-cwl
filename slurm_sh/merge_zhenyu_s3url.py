@@ -18,7 +18,7 @@ import sys
 
                 
 
-def write_case_file(template_file, caseid, caseid_bamurl_dict, scratch_dir, thread_count, git_cwl_hash, db_cred_url, s3_cfg_path):
+def write_case_file(template_file, caseid, caseid_bamurl_dict, scratch_dir, thread_count, git_cwl_hash, db_cred_url, s3_cfg_path, status_table_name):
     template_dir = os.path.dirname(template_file)
     out_dir = os.path.join(template_dir, 'case_slurm_sh')
     os.makedirs(out_dir, exist_ok=True)
