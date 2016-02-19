@@ -227,7 +227,7 @@ function clone_git_repo()
             git clone ${git_repo}
             cd ${git_name}
             echo "git checkout ${git_cwl_hash}"
-            git checskout ${git_cwl_hash}
+            git checkout ${git_cwl_hash}
         else
             echo "git server fingerprint is not '${git_server_fingerprint} ${git_server} (RSA)', but instead:  `ssh-keygen -lf ${git_server}_gitkey`"
             cd ${prev_wd}
