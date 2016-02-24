@@ -135,7 +135,7 @@ function install_unique_virtenv()
     mkvirtualenv --python /usr/bin/python2 p2_${uuid}
     local this_virtenv_dir=${HOME}/.virtualenvs/p2_${uuid}
     source ${this_virtenv_dir}/bin/activate
-    pip install --upgrade pip
+    pip install --upgrade pip --build ${build_dir}
 }
 
 function pip_install_requirements()
@@ -149,6 +149,7 @@ function pip_install_requirements()
     local data_dir=$4
     local uuid=$5
 
+    local build_dir=${data_dir}/pip_build
     local this_virtenv_dir=${HOME}/.virtualenvs/p2_${uuid}
     source ${this_virtenv_dir}/bin/activate
     
@@ -158,7 +159,7 @@ function pip_install_requirements()
     requirements_path="${requirments_dir}/${requirements_path}"
     
     eval ${export_proxy_str}
-    pip install -r ${requirements_path}
+    pip install -r ${requirements_path} --build ${build_dir}
 }
 
 function setup_deploy_key()
@@ -451,6 +452,7 @@ function clone_pip_git_hash()
     local data_dir="$4"
     local export_proxy_str="$5"
 
+    local build_dir=${data_dir}/pip_build
     echo uuid=${uuid}
     echo git_url=${git_url}
     echo git_hash=${git_hash}
@@ -475,7 +477,7 @@ function clone_pip_git_hash()
     git reset --hard ${git_hash}
 
     echo "pip install -e ."
-    pip install -e .
+    pip install --build ${build_dir} -e .
 }
 
 function get_dockercfg()
