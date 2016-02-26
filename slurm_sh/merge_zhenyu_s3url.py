@@ -18,7 +18,7 @@ import sys
 
                 
 
-def write_case_file(template_file, caseid, caseid_bamurl_dict, scratch_dir, thread_count, git_cwl_hash, db_cred_url, s3_cfg_path):
+def write_case_file(template_file, caseid, caseid_bamurl_dict, scratch_dir, thread_count, git_cwl_hash, db_cred_url, s3_cfg_pull_path, s3_cfg_push_path):
     template_dir = os.path.dirname(template_file)
     out_dir = os.path.join(template_dir, 'case_slurm_sh')
     os.makedirs(out_dir, exist_ok=True)
@@ -44,8 +44,11 @@ def write_case_file(template_file, caseid, caseid_bamurl_dict, scratch_dir, thre
             elif 'XX_DB_CRED_URL_XX' in line:
                 newline = line.replace('XX_DB_CRED_URL_XX', db_cred_url)
                 out_path_open.write(newline)
-            elif 'XX_S3_CFG_PATH_XX' in line:
-                newline = line.replace('XX_S3_CFG_PATH_XX', s3_cfg_path)
+            elif 'XX_S3_CFG_PULL_PATH_XX' in line:
+                newline = line.replace('XX_S3_CFG_PULL_PATH_XX', s3_cfg_pull_path)
+                out_path_open.write(newline)
+            elif 'XX_S3_CFG_PUSH_PATH_XX' in line:
+                newline = line.replace('XX_S3_CFG_PUSH_PATH_XX', s3_cfg_push_path)
                 out_path_open.write(newline)
             elif 'XX_GIT_CWL_HASH_XX' in line:
                 newline = line.replace('XX_GIT_CWL_HASH_XX', git_cwl_hash)
@@ -127,7 +130,10 @@ def main():
     parser.add_argument('--db_cred_url',
                         required = True
     )
-    parser.add_argument('--s3_cfg_path',
+    parser.add_argument('--s3_cfg_pull_path',
+                        required = True
+    )
+    parser.add_argument('--s3_cfg_push_path',
                         required = True
     )
     parser.add_argument('--git_cwl_hash',
@@ -141,7 +147,8 @@ def main():
     scratch_dir = args.scratch_dir
     thread_count = args.thread_count
     db_cred_url = args.db_cred_url
-    s3_cfg_path = args.s3_cfg_path
+    s3_cfg_pull_path = args.s3_cfg_pull_path
+    s3_cfg_push_path = args.s3_cfg_push_path
     git_cwl_hash = args.git_cwl_hash
     #uuid = 'a_uuid'
     #tool_name = 'create_slurm_from_template'
@@ -152,6 +159,6 @@ def main():
     caseid_bamurl_dict = join_caseid_bamurl(caseid_gdcid_dict, gdcid_bamurl_dict)
     
     for caseid in sorted(list(caseid_bamurl_dict.keys())):
-        write_case_file(template_file, caseid, caseid_bamurl_dict, scratch_dir, thread_count, git_cwl_hash, db_cred_url, s3_cfg_path)
+        write_case_file(template_file, caseid, caseid_bamurl_dict, scratch_dir, thread_count, git_cwl_hash, db_cred_url, s3_cfg_pull_path, s3_cfg_push_path)
 if __name__=='__main__':
     main()
