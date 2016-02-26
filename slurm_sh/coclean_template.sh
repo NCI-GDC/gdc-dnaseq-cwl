@@ -123,17 +123,19 @@ function install_unique_virtenv()
     
     local uuid="$1"
     local export_proxy_str="$2"
-    
+    local data_dir="$3"
+
+    local build_dir=${data_dir}/pip_build
     eval ${export_proxy_str}
     echo "deactivate"
     deactivate
-    echo "pip install virtualenvwrapper --user --ignore-installed"
-    pip install virtualenvwrapper --user --ignore-installed
+    echo "pip install virtualenvwrapper --build ${build_dir} --user --ignore-installed"
+    pip install virtualenvwrapper --build ${build_dir} --user --ignore-installed
     source ${HOME}/.local/bin/virtualenvwrapper.sh
     mkvirtualenv --python /usr/bin/python2 p2_${uuid}
     local this_virtenv_dir=${HOME}/.virtualenvs/p2_${uuid}
     source ${this_virtenv_dir}/bin/activate
-    pip install --upgrade pip
+    pip install --upgrade pip --build ${build_dir}
 }
 
 function pip_install_requirements()
@@ -147,6 +149,7 @@ function pip_install_requirements()
     local data_dir=$4
     local uuid=$5
 
+    local build_dir=${data_dir}/pip_build
     local this_virtenv_dir=${HOME}/.virtualenvs/p2_${uuid}
     source ${this_virtenv_dir}/bin/activate
     
@@ -156,7 +159,7 @@ function pip_install_requirements()
     requirements_path="${requirments_dir}/${requirements_path}"
     
     eval ${export_proxy_str}
-    pip install -r ${requirements_path}
+    pip install -r ${requirements_path} --build ${build_dir}
 }
 
 function setup_deploy_key()
@@ -449,6 +452,7 @@ function clone_pip_git_hash()
     local data_dir="$4"
     local export_proxy_str="$5"
 
+    local build_dir=${data_dir}/pip_build
     echo uuid=${uuid}
     echo git_url=${git_url}
     echo git_hash=${git_hash}
@@ -473,7 +477,7 @@ function clone_pip_git_hash()
     git reset --hard ${git_hash}
 
     echo "pip install -e ."
-    pip install -e .
+    pip install --build ${build_dir} -e .
 }
 
 function get_dockercfg()
@@ -500,7 +504,7 @@ function main()
    
     setup_deploy_key "${S3_CFG_PULL_PATH}" "${GIT_CWL_DEPLOY_KEY_S3_URL}" "${data_dir}"
     clone_git_repo "${GIT_CWL_SERVER}" "${GIT_CWL_SERVER_FINGERPRINT}" "${GIT_CWL_REPO}" "${EXPORT_PROXY_STR}" "${data_dir}" "${GIT_CWL_HASH}"
-    install_unique_virtenv "${CASE_ID}" "${EXPORT_PROXY_STR}"
+    install_unique_virtenv "${CASE_ID}" "${EXPORT_PROXY_STR}" "${data_dir}"
     pip_install_requirements "${GIT_CWL_REPO}" "${CWLTOOL_REQUIREMENTS_PATH}" "${EXPORT_PROXY_STR}" "${data_dir}" "${CASE_ID}"
     clone_pip_git_hash "${CASE_ID}" "${CWLTOOL_URL}" "${CWLTOOL_HASH}" "${data_dir}" "${EXPORT_PROXY_STR}"
     get_dockercfg "${S3_CFG_PULL_PATH}" "${QUAY_PULL_KEY_URL}"
