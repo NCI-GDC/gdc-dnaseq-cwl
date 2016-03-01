@@ -47,21 +47,37 @@ S3_GATK_INDEX_BUCKET="s3://bioinformatics_scratch/coclean"
 S3_OUT_BUCKET="s3://ceph_qcpass_tcga_exome_blca_coclean"
 S3_LOG_BUCKET="s3://ceph_qcpass_tcga_exome_blca_coclean_log"
 
+
+function remove_data()
+{
+    echo ""
+    echo "remove_data()"
+    
+    local data_dir="$1"
+    local case_id="$2"
+    
+    echo "rm -rf ${data_dir}"
+    rm -rf ${data_dir}
+    local this_virtenv_dir=${HOME}/.virtualenvs/p2_${case_id}
+    echo "rm -rf ${this_virtenv_dir}"
+    rm -rf ${this_virtenv_dir}
+}
+
 function queue_status_update()
 {
     echo ""
     echo "queue_status_update()"
 
-    local data_dir="$1"
-    local cwl_tool="$2"
-    local s3cfg_path="$3"
-    local db_cred_s3url="$4"
-    local git_cwl_repo="$5"
-    local git_cwl_hash="$6"
-    local case_id="$7"
-    local bam_url_array="$8"
-    local status="$9"
-    local table_name="${10}"
+    local data_dir="${1}"
+    local cwl_tool="${2}"
+    local git_cwl_repo="${3}"
+    local git_cwl_hash="${4}"
+    local case_id="${5}"
+    local bam_url_array="${6}"
+    local status="${7}"
+    local table_name="${8}"
+    local s3cfg_path="${9}"
+    local db_cred_s3url="${10}"
     local s3_out_bucket="${11}"
 
     echo "status=${status}"
@@ -79,19 +95,19 @@ function queue_status_update()
     do
         local gdc_id=$(basename $(dirname ${bam_url}))
 
-        if [[ "${status}" == "COMPLETE" ]]
+        if [ ${db_cred_s3url} -eq "XX_DB_CRED_S3URL_XX" ]
+        then
+            local cwl_command="--debug --outdir ${data_dir} ${cwl_tool_path} --case_id ${case_id} --gdc_id ${gdc_id} --repo ${git_cwl_repo} --repo_hash ${git_cwl_hash} --table_name ${table_name} --status ${status}"
+        elif [[ "${status}" == "COMPLETE" ]]
         then
             local bam_file=$(basename ${bam_url})
             local s3_url=${s3_out_bucket}/${gdc_id}/${bam_file}
             local cwl_command="--debug --outdir ${data_dir} ${cwl_tool_path} --case_id ${case_id} --db_cred_s3url ${db_cred_s3url} --gdc_id ${gdc_id} --repo ${git_cwl_repo} --repo_hash ${git_cwl_hash} --s3cfg_path ${s3cfg_path} --table_name ${table_name} --status ${status} --s3_url ${s3_url}"
-            echo "${cwlrunner_path} ${cwl_command}"
-            ${cwlrunner_path} ${cwl_command}
         else
             local cwl_command="--debug --outdir ${data_dir} ${cwl_tool_path} --case_id ${case_id} --db_cred_s3url ${db_cred_s3url} --gdc_id ${gdc_id} --repo ${git_cwl_repo} --repo_hash ${git_cwl_hash} --s3cfg_path ${s3cfg_path} --table_name ${table_name} --status ${status}"
-            echo "${cwlrunner_path} ${cwl_command}"
-            ${cwlrunner_path} ${cwl_command}
         fi
-        
+        echo "${cwlrunner_path} ${cwl_command}"
+        ${cwlrunner_path} ${cwl_command}
     done
 }
 
@@ -136,6 +152,12 @@ function install_unique_virtenv()
     local this_virtenv_dir=${HOME}/.virtualenvs/p2_${uuid}
     source ${this_virtenv_dir}/bin/activate
     pip install --upgrade pip --build ${build_dir}
+    if [ $? -ne 0 ]
+    then
+        echo "FAILED: pip install --upgrade pip --build ${build_dir}"
+        remove_data ${data_dir} ${uuid}
+        exit 1
+    fi
 }
 
 function pip_install_requirements()
@@ -160,6 +182,12 @@ function pip_install_requirements()
     
     eval ${export_proxy_str}
     pip install -r ${requirements_path} --build ${build_dir}
+    if [ $? -ne 0 ]
+    then 
+        echo "FAILED: pip install -r ${requirements_path} --build ${build_dir}"
+        remove_data ${data_dir} ${uuid}
+        exit 1       
+    fi
 }
 
 function setup_deploy_key()
@@ -328,6 +356,13 @@ function generate_bai_files()
 
         echo "${cwlrunner_path} ${cwl_command}"
         ${cwlrunner_path} ${cwl_command}
+        if [ $? -ne 0 ]
+        then
+            echo "FAILED: ${cwlrunner_path} ${cwl_command}"
+            queue_status_update "${data_dir}" "${QUEUE_STATUS_TOOL}" "${GIT_CWL_REPO}" "${GIT_CWL_HASH}" "${CASE_ID}" "${BAM_URL_ARRAY}" "FAIL" "coclean_caseid_queue" "${S3_CFG_PULL_PATH}" "${DB_CRED_URL}"
+            remove_data ${data_dir} ${uuid}
+            exit 1
+        fi
     done
     cd ${prev_wd}
 }
@@ -388,7 +423,8 @@ function run_coclean()
         echo "completed cocleaning"
     else
         echo "failed cocleaning"
-        queue_status_update "${data_dir}" "${QUEUE_STATUS_TOOL}" "${S3_CFG_PULL_PATH}" "${DB_CRED_URL}" "${GIT_CWL_REPO}" "${GIT_CWL_HASH}" "${CASE_ID}" "${BAM_URL_ARRAY}" "FAIL" "coclean_caseid_queue"
+        queue_status_update "${data_dir}" "${QUEUE_STATUS_TOOL}" "${GIT_CWL_REPO}" "${GIT_CWL_HASH}" "${CASE_ID}" "${BAM_URL_ARRAY}" "FAIL" "coclean_caseid_queue" "${S3_CFG_PULL_PATH}" "${DB_CRED_URL}"
+        remove_data ${data_dir} ${uuid}
         exit 1
     fi
     cd ${prev_wd}
@@ -424,21 +460,6 @@ function upload_coclean_results()
     done
     echo "s3cmd -c ${s3_cfg_path} put ${coclean_dir}/${case_id}.db ${s3_log_bucket}/"
     s3cmd -c ${s3_cfg_path} put ${coclean_dir}/${case_id}.db ${s3_log_bucket}/
-}
-
-function remove_data()
-{
-    echo ""
-    echo "remove_data()"
-    
-    local data_dir="$1"
-    local case_id="$2"
-    
-    echo "rm -rf ${data_dir}"
-    rm -rf ${data_dir}
-    local this_virtenv_dir=${HOME}/.virtualenvs/p2_${case_id}
-    echo "rm -rf ${this_virtenv_dir}"
-    rm -rf ${this_virtenv_dir}
 }
 
 function clone_pip_git_hash()
@@ -508,13 +529,13 @@ function main()
     pip_install_requirements "${GIT_CWL_REPO}" "${CWLTOOL_REQUIREMENTS_PATH}" "${EXPORT_PROXY_STR}" "${data_dir}" "${CASE_ID}"
     clone_pip_git_hash "${CASE_ID}" "${CWLTOOL_URL}" "${CWLTOOL_HASH}" "${data_dir}" "${EXPORT_PROXY_STR}"
     get_dockercfg "${S3_CFG_PULL_PATH}" "${QUAY_PULL_KEY_URL}"
-    queue_status_update "${data_dir}" "${QUEUE_STATUS_TOOL}" "${S3_CFG_PULL_PATH}" "${DB_CRED_URL}" "${GIT_CWL_REPO}" "${GIT_CWL_HASH}" "${CASE_ID}" "${BAM_URL_ARRAY}" "RUNNING" "coclean_caseid_queue"
+    queue_status_update "${data_dir}" "${QUEUE_STATUS_TOOL}" "${GIT_CWL_REPO}" "${GIT_CWL_HASH}" "${CASE_ID}" "${BAM_URL_ARRAY}" "RUNNING" "coclean_caseid_queue" "${S3_CFG_PULL_PATH}" "${DB_CRED_URL}" "${S3_OUT_BUCKET}"
     get_gatk_index_files "${S3_CFG_PULL_PATH}" "${S3_GATK_INDEX_BUCKET}" "${index_dir}" "${REFERENCE_GENOME}" "${KNOWN_SNP_VCF}" "${KNOWN_INDEL_VCF}"
     get_bam_files "${S3_CFG_PULL_PATH}" "${BAM_URL_ARRAY}" "${data_dir}"
     generate_bai_files "${data_dir}" "${BAM_URL_ARRAY}" "${CASE_ID}" "${GIT_CWL_REPO}" "${BUILDBAMINDEX_TOOL}" "${DB_CRED_URL}" "${S3_CFG_PULL_PATH}"
     run_coclean "${data_dir}" "${BAM_URL_ARRAY}" "${CASE_ID}" "${COCLEAN_WORKFLOW}" "${REFERENCE_GENOME}" "${KNOWN_INDEL_VCF}" "${KNOWN_SNP_VCF}" "${THREAD_COUNT}" "${GIT_CWL_REPO}" "${index_dir}" "${DB_CRED_URL}" "${S3_CFG_PULL_PATH}"
     upload_coclean_results "${CASE_ID}" "${BAM_URL_ARRAY}" "${S3_OUT_BUCKET}" "${S3_LOG_BUCKET}" "${S3_CFG_PUSH_PATH}" "${data_dir}"
-    queue_status_update "${data_dir}" "${QUEUE_STATUS_TOOL}" "${S3_CFG_PULL_PATH}" "${DB_CRED_URL}" "${GIT_CWL_REPO}" "${GIT_CWL_HASH}" "${CASE_ID}" "${BAM_URL_ARRAY}" "COMPLETE" "coclean_caseid_queue" "${S3_OUT_BUCKET}"
+    queue_status_update "${data_dir}" "${QUEUE_STATUS_TOOL}" "${GIT_CWL_REPO}" "${GIT_CWL_HASH}" "${CASE_ID}" "${BAM_URL_ARRAY}" "COMPLETE" "coclean_caseid_queue" "${S3_CFG_PULL_PATH}" "${DB_CRED_URL}" "${S3_OUT_BUCKET}"
     remove_data "${data_dir}" "${CASE_ID}"
 }
 
