@@ -168,8 +168,8 @@ function pip_install_requirements()
     local git_cwl_repo="$1"
     local requirements_path="$2"
     local export_proxy_str="$3"
-    local data_dir=$4
-    local uuid=$5
+    local data_dir="$4"
+    local uuid="$5"
 
     local build_dir=${data_dir}/pip_build
     local this_virtenv_dir=${HOME}/.virtualenvs/p2_${uuid}
@@ -424,7 +424,7 @@ function run_coclean()
     else
         echo "failed cocleaning"
         queue_status_update "${data_dir}" "${QUEUE_STATUS_TOOL}" "${GIT_CWL_REPO}" "${GIT_CWL_HASH}" "${CASE_ID}" "${BAM_URL_ARRAY}" "FAIL" "coclean_caseid_queue" "${S3_CFG_PULL_PATH}" "${DB_CRED_URL}"
-        remove_data ${data_dir} ${uuid}
+        remove_data ${data_dir} ${case_id}
         exit 1
     fi
     cd ${prev_wd}
