@@ -3,6 +3,7 @@
 #SBATCH --ntasks=1
 #SBATCH --workdir=XX_SCRATCH_DIR_XX
 #SBATCH --cpus-per-task=XX_THREAD_COUNT_XX
+#SBATCH --mem=18000
 
 ##deb reqs: python-dev libssl-dev s3cmd
 #environment variables
