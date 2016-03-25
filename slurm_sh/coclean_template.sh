@@ -96,7 +96,7 @@ function queue_status_update()
     do
         local gdc_id=$(basename $(dirname ${bam_url}))
 
-        if [ ${db_cred_s3url} -eq "XX_DB_CRED_S3URL_XX" ]
+        if [ ${db_cred_s3url} == "XX_DB_CRED_S3URL_XX" ]
         then
             local cwl_command="--debug --outdir ${data_dir} ${cwl_tool_path} --case_id ${case_id} --gdc_id ${gdc_id} --repo ${git_cwl_repo} --repo_hash ${git_cwl_hash} --table_name ${table_name} --status ${status}"
         elif [[ "${status}" == "COMPLETE" ]]
