@@ -42,12 +42,12 @@ outputs:
       items: File
     description: "The readgroups pairs split into compressed fastq"
     outputBinding:
-      glob: "1.gz.tar"
+      glob: "fastq/*1.gz.tar"
       secondaryFiles:
         engine: node-engine.cwl
         script: |
           {
-          return {"path": $self.path.slice(0,-7)+"2.fq.gz", "class": "File"}
+          return {"path": "fastq/" + $self.path.slice(0,-7)+"2.fq.gz", "class": "File"}
           }
 
   - id: "#log"
