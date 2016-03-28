@@ -10,7 +10,7 @@ requirements:
   - import: node-engine.cwl
   - import: envvar-global.cwl
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/picard_tool:4
+    dockerPull: quay.io/jeremiahsavage/biobambam_tool
 
 class: CommandLineTool
 
@@ -40,15 +40,15 @@ outputs:
     type:
       type: array
       items: File
-      description: "The readgroups pairs split into compressed fastq"
-      outputBinding:
-        glob: *_1.fq.gz
-        secondaryFiles:
-          engine: node-engine.cwl
-          script: |
-            {
-            return {"path": $self.path.slice(0,-7)+"2.fq.gz", "class": "File"}
-            }
+    description: "The readgroups pairs split into compressed fastq"
+    outputBinding:
+      glob: "1.gz.tar"
+      secondaryFiles:
+        engine: node-engine.cwl
+        script: |
+          {
+          return {"path": $self.path.slice(0,-7)+"2.fq.gz", "class": "File"}
+          }
 
   - id: "#log"
     type: File
