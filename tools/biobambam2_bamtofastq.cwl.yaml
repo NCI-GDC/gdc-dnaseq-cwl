@@ -1,0 +1,65 @@
+#!/usr/bin/env cwl-runner
+
+description: |
+  Usage:  cwl-runner <this-file-path> --bam_path <bam-path> --uuid <uuid-string>
+  Options:
+    --bam_path       Write an arbitrary number of compressed readgroups
+    --uuid           UUID for log file and sqlite db file
+
+requirements:
+  - import: node-engine.cwl
+  - import: envvar-global.cwl
+  - class: DockerRequirement
+    dockerPull: quay.io/jeremiahsavage/picard_tool:4
+
+class: CommandLineTool
+
+inputs:
+  - id: "#input_bam"
+    type: File
+    inputBinding:
+      prefix: --bam_path
+
+  - id: "#uuid"
+    type: string
+    inputBinding:
+      prefix: --uuid
+
+  - id: "#db_cred_s3url"
+    type: ["null", string]
+    inputBinding:
+      prefix: --db_cred_s3url
+
+  - id: "#s3cfg_path"
+    type: ["null", File]
+    inputBinding:
+      prefix: --s3cfg_path
+
+outputs:
+  - id: "#output_fastq"
+    type:
+      type: array
+      items: File
+      description: "The readgroups pairs split into compressed fastq"
+      outputBinding:
+        glob: *_1.fq.gz
+        secondaryFiles:
+          engine: node-engine.cwl
+          script: |
+            {
+            return {"path": $self.path.slice(0,-7)+"2.fq.gz", "class": "File"}
+            }
+
+  - id: "#log"
+    type: File
+    description: "python log file"
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return $job['uuid']+"_biobambam2_bamtofastq.log"
+          }
+
+          
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/biobambam_tool/main.py", "--tool_name", "bamtofastq"]
