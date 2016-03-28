@@ -42,7 +42,7 @@ outputs:
       items: File
     description: "The readgroups pairs split into compressed fastq"
     outputBinding:
-      glob: "fastq/*1.gz.tar"
+      glob: "fastq/*1.fq.gz"
       secondaryFiles:
         engine: node-engine.cwl
         script: |
