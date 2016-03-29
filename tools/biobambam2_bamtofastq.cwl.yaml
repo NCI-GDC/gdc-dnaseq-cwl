@@ -47,7 +47,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return {"path": $self.path.slice(0,-7)+"2.fq.gz", "class": "File"}
+          return {"path": $self[0].path.slice(0,-7)+"2.fq.gz", "class": "File"}
           }
 
   - id: "#log"
@@ -63,3 +63,4 @@ outputs:
 
           
 baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/biobambam_tool/main.py", "--tool_name", "bamtofastq"]
+ #  .slice(0,-7)+"2.fq.gz", "class": "File"}
