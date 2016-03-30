@@ -2,7 +2,11 @@
 
 description: |
   Usage:  cwl-runner <this-file-path> <options>
-  Options:
+  Options:  - id: "#known_snp_vcf_path"
+    type: File
+  - id: "#reference_fasta_path"
+    type: File
+
     --uuid           UUID for log file and sqlite db file
 
 requirements:
@@ -29,6 +33,11 @@ inputs:
     inputBinding:
       prefix: --reference_fasta_path
 
+  - id: "#readgroup_json_path"
+    type: File
+    inputBinding:
+      prefix: --readgroup_json_path
+      
   - id: "#thread_count"
     type: File
     inputBinding:
