@@ -75,7 +75,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return $job[fastq1_path].path.slice(0,-8)+".bam"
+          return $job['readgroup_json_path'].path.split('/').slice(-1)[0].slice(0,-5)+".bam"
           }
 
   - id: "#log"
