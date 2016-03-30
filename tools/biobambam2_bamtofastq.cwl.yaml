@@ -15,7 +15,7 @@ requirements:
 class: CommandLineTool
 
 inputs:
-  - id: "#input_bam"
+  - id: "#bam_path"
     type: File
     inputBinding:
       prefix: --bam_path
