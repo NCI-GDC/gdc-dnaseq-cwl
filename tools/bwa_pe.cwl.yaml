@@ -39,7 +39,7 @@ inputs:
       prefix: --readgroup_json_path
       
   - id: "#thread_count"
-    type: File
+    type: string
     inputBinding:
       prefix: --thread_count
 
