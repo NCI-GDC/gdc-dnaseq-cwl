@@ -42,7 +42,7 @@ outputs:
       items: File
     description: "The readgroups pairs split into compressed fastq"
     outputBinding:
-      glob: *.json
+      glob: "./*.json"
 
   - id: "#log"
     type: File
