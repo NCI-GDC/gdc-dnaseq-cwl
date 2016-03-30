@@ -32,6 +32,12 @@ inputs:
     type: File
     inputBinding:
       prefix: --reference_fasta_path
+    secondaryFiles:
+      - ".amb"
+      - ".ann"
+      - ".bwt"
+      - ".pac"
+      - ".sa"
 
   - id: "#readgroup_json_path"
     type: File
