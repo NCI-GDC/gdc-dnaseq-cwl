@@ -1,0 +1,69 @@
+#!/usr/bin/env cwl-runner
+
+description: |
+  Usage:  cwl-runner <this-file-path> [ --bam_path <bam-path> ] --uuid <uuid-string>
+  Options:
+    --bam_path       BAM file
+    --uuid           UUID for log file and sqlite db file
+
+requirements:
+  - import: node-engine.cwl
+  - import: envvar-global.cwl
+  - class: DockerRequirement
+    dockerPull: quay.io/jeremiahsavage/picard_tool
+
+class: CommandLineTool
+
+inputs:
+  - id: "#bam_path"
+    type:
+      type: array
+      items: File
+      inputBinding:
+        prefix: --bam_path
+
+  - id: "#uuid"
+    type: string
+    inputBinding:
+      prefix: --uuid
+
+  - id: "#outbam_name"
+    type: string
+    inputBinding:
+      prefix: --outbam_name
+
+  - id: "#db_cred_s3url"
+    type: ["null", string]
+    inputBinding:
+      prefix: --db_cred_s3url
+
+  - id: "#s3cfg_path"
+    type: ["null", File]
+    inputBinding:
+      prefix: --s3cfg_path
+
+outputs:
+  - id: "#output_bam"
+    type: File
+    description: "The merged BAM"
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+            return $job['outbam_name']
+          }
+
+  - id: "#log"
+    type: File
+    description: "python log file"
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return $job['uuid']+"_picard_MergeSamFiles.log"
+          }
+
+          
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/picard_tool/main.py", "--tool_name", "MergeSamFiles"]
