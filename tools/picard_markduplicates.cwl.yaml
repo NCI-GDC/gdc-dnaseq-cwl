@@ -44,7 +44,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return "md/" + $job['input_bam'].path.split('/').slice(-1)[0];
+          return $job['input_bam'].path.split('/').slice(-1)[0];
           }
 
   - id: "#output_bai"
@@ -55,7 +55,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return "md/" + $job['input_bam'].path.split('/').slice(-1)[0].slice(0,-4)+".bai";
+          return $job['input_bam'].path.split('/').slice(-1)[0].slice(0,-4)+".bai";
           }
           
   - id: "#log"
