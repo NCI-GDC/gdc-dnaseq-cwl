@@ -3,14 +3,14 @@
 description: |
   Usage:  cwl-runner <this-file-path> --bam_path <bam-path> --uuid <uuid-string>
   Options:
-    --bam_path       Generate BAI-format index from BAM file
+    --bam_path       Generate reheadered BAM from a BAM input
     --uuid           UUID for log file and sqlite db file
 
 requirements:
   - import: node-engine.cwl
   - import: envvar-global.cwl
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/picard_tool:4
+    dockerPull: quay.io/jeremiahsavage/bam_reheader
 
 class: CommandLineTool
 
@@ -36,7 +36,7 @@ inputs:
       prefix: --s3cfg_path
 
 outputs:
-  - id: "#output_bai"
+  - id: "#output_bam"
     type: File
     description: "The index file"
     outputBinding:
@@ -44,7 +44,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-            return $job['input_bam'].path.split('/').slice(-1)[0].slice(0,-4)+".bai";
+            return $job['input_bam'].path.split('/').slice(-1)[0];
           }
 
   - id: "#log"
@@ -59,4 +59,4 @@ outputs:
           }
 
           
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/picard_tool/main.py", "--tool_name", "BuildBamIndex"]
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/bam_reheader/main.py"]
