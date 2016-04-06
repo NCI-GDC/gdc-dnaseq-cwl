@@ -20,10 +20,10 @@ inputs:
     inputBinding:
       prefix: --bam_path
 
-  - id: "#uuid"
+  - id: "#case_id"
     type: string
     inputBinding:
-      prefix: --uuid
+      prefix: --case_id
 
   - id: "#db_cred_s3url"
     type: ["null", string]
@@ -38,7 +38,7 @@ inputs:
 outputs:
   - id: "#output_bam"
     type: File
-    description: "The index file"
+    description: "The BAM file reheadered"
     outputBinding:
       glob:
         engine: node-engine.cwl
@@ -55,7 +55,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return $job['uuid']+"_picard_BuildBamIndex.log"
+          return $job['case_id']+"_picard_BuildBamIndex.log"
           }
 
           
