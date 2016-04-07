@@ -3,13 +3,17 @@
 class: Workflow
 
 inputs:
-  - id: "#bam_path"
-    type: File
   - id: "#fastq1_path" # temp for testing
     type: File
   - id: "#fastq2_path" # temp for testing
     type: File
   - id: "#readgroup_json_path" # temp for testing
+    type: File
+  - id: "#input_bam" # temp for testing
+    type:
+      type: array
+      items: File
+  - id: "#bam_path"
     type: File
   - id: "#reference_fasta_path"
     type: File
@@ -21,10 +25,6 @@ inputs:
     type: ["null", string]
   - id: "#s3cfg_path"
     type: ["null", File]
-  - id: "#input_bam" # temp for testing
-    type:
-      type: array
-      items: File
     
 outputs:
   - id: "#output_bam"
@@ -33,9 +33,11 @@ outputs:
       items: File
     source: "#bwa_pe.output_bam"
 
+
 requirements:
   - class: ScatterFeatureRequirement
-    
+
+
 steps:
     - id: "#bwa_pe"
       run: {import: ../../tools/bwa_pe.cwl.yaml}
@@ -54,72 +56,4 @@ steps:
           source: "#uuid"
       outputs:
         - id: "#bwa_pe.output_bam"
-
-#  - id: "#picard_sortsam"
-#    run: {import: ../../tools/picard_sortsam.cwl.yaml}
-#    scatter: "#picard_sortsam.bam_path"
-#    inputs:
-#      - id: "#picard_sortsam.bam_path"
-#        source: "#input_bam"
-#      - id: "#uuid"
-#        source: "#uuid"
-#    outputs:
-#      - id: "#picard_sortsam.output_bam"
-
-  # - id: "#biobambam2_bamtofastq"
-  #   run: {import: ../../tools/biobambam2_bamtofastq.cwl.yaml}
-  #   inputs:
-  #     - id: "#biobambam2_bamtofastq.bam_path"
-  #       source: "#bam_path"
-  #     - id: "#biobambam2_bamtofastq.uuid"
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: "#biobambam2_bamtofastq.output_fastq"
-
-  # - id: "#bam_readgroup_to_json"
-  #   run: {import: ../../tools/bam_readgroup_to_json.cwl.yaml}
-  #   inputs:
-  #     - id: "#bam_readgroup_to_json.bam_path"
-  #       source: "#bam_path"
-  #     - id: "#bam_readgroup_to_json.uuid"
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: "#bam_readgroup_to_json.output_json"
-
-
-  # - id: "#picard_merge"
-  #   run: {import: ../../tools/gatk_printreads.cwl.yaml}
-  #   inputs:
-  #     - id: "#picard_merge.bam_path"
-  #       source: "#picard_sortsam.output_bam"
-  #     - id: "#picard_merge.uuid"
-  #       source: "#uuid"
-  #     - id: "#picard_merge.outbam_name"
-  #       source:
-  #         engine: node-engine.cwl
-  #         script: |
-  #           {
-  #           return $job['bam_path'].path.split('/').slice(-1)[0];
-  #           }
-  #   outputs:
-  #     - id: "#picard_merge.output_bam"
-
-  # - id: "#bam_reheader"
-  #   run: {import: ../../tools/bam_reheader.cwl.yaml}
-  #   inputs:
-  #     - id: "#bam_reheader.bam_path"
-  #       source: "#picard_merge.output_bam"
-  #     - id: "#bam_reheader.uuid"
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: "#bam_reheader.output_bam"
-
-  # - id: "#picard_markduplicates"
-  #   run: {import: ../../tools/picard_markduplicates.cwl.yaml}
-  #   inputs:
-  #     - id: "#picard_markduplicates.bam_path"
-  #       source: "#bam_reheader.output_bam"
-  #     - id: "#picard_markduplicates.uuid"
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: "#picard_markduplicates.output_bam"
+        - id: "#bwa_pe.log"
