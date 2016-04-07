@@ -1,0 +1,52 @@
+
+    - id: "#bwa_pe"
+      run: { import: ../../tools/bwa_pe.cwl.yaml }
+      inputs:
+        - id: "#bwa_pe.fastq1_path"
+          source: "#fastq1_path"
+        - id: "#bwa_pe.fastq2_path"
+          source: "#fastq2_path"
+        - id: "#bwa_pe.reference_fasta_path"
+          source: "#reference_fasta_path"
+        - id: "#bwa_pe.readgroup_json_path"
+          source: "#readgroup_json_path"
+        - id: "#bwa_pe.thread_count"
+          source: "#thread_count"
+        - id: "#bwa_pe.uuid"
+          source: "#uuid"
+      outputs:
+        - id: "#bwa_pe.output_bam"
+        - id: "#bwa_pe.log"
+
+  - id: "#biobambam2_bamtofastq"
+    run: {import: ../../tools/biobambam2_bamtofastq.cwl.yaml}
+    inputs:
+      - id: "#biobambam2_bamtofastq.bam_path"
+        source: "#bam_path"
+      - id: "#biobambam2_bamtofastq.uuid"
+        source: "#uuid"
+    outputs:
+      - id: "#biobambam2_bamtofastq.output_fastq"
+
+
+
+
+  - id: "#bam_reheader"
+    run: {import: ../../tools/bam_reheader.cwl.yaml}
+    inputs:
+      - id: "#bam_reheader.bam_path"
+        source: "#picard_merge.output_bam"
+      - id: "#bam_reheader.uuid"
+        source: "#uuid"
+    outputs:
+      - id: "#bam_reheader.output_bam"
+
+  - id: "#picard_markduplicates"
+    run: {import: ../../tools/picard_markduplicates.cwl.yaml}
+    inputs:
+      - id: "#picard_markduplicates.bam_path"
+        source: "#bam_reheader.output_bam"
+      - id: "#picard_markduplicates.uuid"
+        source: "#uuid"
+    outputs:
+      - id: "#picard_markduplicates.output_bam"

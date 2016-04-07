@@ -65,19 +65,20 @@ steps:
       - id: "#picard_sortsam.log"
 
           
-  - id: "#picard_merge"
+  - id: "#picard_mergesamfiles"
     run: {import: ../../tools/picard_mergesamfiles.cwl.yaml}
     inputs:
-      - id: "#picard_merge.bam_path"
+      - id: "#picard_mergesamfiles.bam_path"
         source: "#picard_sortsam.output_bam"
-      - id: "#picard_merge.uuid"
+      - id: "#picard_mergesamfiles.uuid"
         source: "#uuid"
-      - id: "#picard_merge.outbam_name"
-        source:
-          engine: node-engine.cwl
-          script: |
-            {
-            return $job['bam_path'].path.split('/').slice(-1)[0];
-            }
+      - id: "#picard_mergesamfiles.outbam_name"
+        inputBinding:
+          valueFrom:
+            engine: node-engine.cwl
+            script: |
+              {
+              return $job['bam_path'].path.split('/').slice(-1)[0];
+              }
     outputs:
-      - id: "#picard_merge.output_bam"
+      - id: "#picard_mergesamfiles.output_bam"
