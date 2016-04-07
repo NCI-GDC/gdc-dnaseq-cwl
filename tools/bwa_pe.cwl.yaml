@@ -2,12 +2,6 @@
 
 description: |
   Usage:  cwl-runner <this-file-path> <options>
-  Options:  - id: "#known_snp_vcf_path"
-    type: File
-  - id: "#reference_fasta_path"
-    type: File
-
-    --uuid           UUID for log file and sqlite db file
 
 requirements:
   - import: node-engine.cwl
