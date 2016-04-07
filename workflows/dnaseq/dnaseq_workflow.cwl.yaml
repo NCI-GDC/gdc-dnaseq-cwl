@@ -123,5 +123,3 @@ steps:
   #       source: "#uuid"
   #   outputs:
   #     - id: "#picard_markduplicates.output_bam"
-
-  baseCommand: []
