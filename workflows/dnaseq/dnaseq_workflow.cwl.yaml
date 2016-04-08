@@ -33,7 +33,9 @@ outputs:
       items: File
     source: "#picard_sortsam.output_bam"
   - id: "#output_json"
-    type: File
+    type:
+      type: array
+      items: File
     source: "#bam_readgroup_to_json.output_json"
 
 
@@ -68,11 +70,12 @@ steps:
   - id: "#picard_mergesamfiles"
     run: {import: ../../tools/picard_mergesamfiles.cwl.yaml}
     inputs:
-      - id: "#picard_mergesamfiles.bam_path"
+      - id: "#picard_mergesamfiles"
         source: "#picard_sortsam.output_bam"
       - id: "#picard_mergesamfiles.uuid"
         source: "#uuid"
       - id: "#picard_mergesamfiles.outbam_name"
+        type: string
         inputBinding:
           valueFrom:
             engine: node-engine.cwl
