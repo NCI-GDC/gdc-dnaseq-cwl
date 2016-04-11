@@ -1,6 +1,11 @@
 #!/usr/bin/env cwl-runner
 
 class: Workflow
+requirements:
+  - class: ScatterFeatureRequirement
+  - class: StepInputExpressionRequirement
+  - class: InlineJavascriptRequirement
+
 
 inputs:
   - id: "#fastq1_path" # temp for testing
@@ -27,20 +32,19 @@ inputs:
     type: ["null", File]
 
 outputs:
-  - id: "#output_bam"
+  - id: "#picard_sortsam_output_bam"
     type:
       type: array
       items: File
     source: "#picard_sortsam.output_bam"
-  - id: "#output_json"
+  - id: "#bam_readgroup_to_json_output_json"
     type:
       type: array
       items: File
     source: "#bam_readgroup_to_json.output_json"
-
-
-requirements:
-  - class: ScatterFeatureRequirement
+  - id: "#picard_mergesamfiles_output_bam"
+    type: File
+    source: "#picard_mergesamfiles.output_bam"
 
 
 steps:
@@ -70,18 +74,13 @@ steps:
   - id: "#picard_mergesamfiles"
     run: {import: ../../tools/picard_mergesamfiles.cwl.yaml}
     inputs:
-      - id: "#picard_mergesamfiles"
+      - id: "#picard_mergesamfiles.bam_path"
         source: "#picard_sortsam.output_bam"
       - id: "#picard_mergesamfiles.uuid"
         source: "#uuid"
       - id: "#picard_mergesamfiles.outbam_name"
-        type: string
-        inputBinding:
-          valueFrom:
-            engine: node-engine.cwl
-            script: |
-              {
-              return $job['bam_path'].path.split('/').slice(-1)[0];
-              }
+        source: "#bam_path"
+        valueFrom: $(self.path.split('/').slice(-1)[0])
     outputs:
       - id: "#picard_mergesamfiles.output_bam"
+      - id: "#picard_mergesamfiles.log"
