@@ -42,9 +42,9 @@ outputs:
       type: array
       items: File
     source: "#bam_readgroup_to_json.output_json"
-  - id: "#picard_mergesamfiles_output_bam"
+  - id: "#picard_markduplicates_output_bam"
     type: File
-    source: "#picard_mergesamfiles.output_bam"
+    source: "#picard_markduplicates.output_bam"
 
 
 steps:
@@ -59,7 +59,7 @@ steps:
       - id: "#bam_readgroup_to_json.output_json"
 
   - id: "#picard_sortsam"
-    run: { import: ../../tools/picard_sortsam.cwl.yaml }
+    run: {import: ../../tools/picard_sortsam.cwl.yaml}
     scatter: "#picard_sortsam.bam_path"
     inputs:
       - id: "#picard_sortsam.bam_path"
@@ -84,3 +84,26 @@ steps:
     outputs:
       - id: "#picard_mergesamfiles.output_bam"
       - id: "#picard_mergesamfiles.log"
+
+  - id: "#bam_reheader"
+    run: {import: ../../tools/bam_reheader.cwl.yaml}
+    inputs:
+      - id: "#bam_reheader.bam_path"
+        source: "#picard_mergesamfiles.output_bam"
+      - id: "#bam_reheader.uuid"
+        source: "#uuid"
+    outputs:
+      - id: "#bam_reheader.output_bam"
+      - id: "#bam_reheader.log"
+
+  - id: "#picard_markduplicates"
+    run: {import: ../../tools/picard_markduplicates.cwl.yaml}
+    inputs:
+      - id: "#picard_markduplicates.bam_path"
+        source: "#bam_reheader.output_bam"
+      - id: "##picard_markduplicates.uuid"
+        source: "#uuid"
+    outputs:
+      - id: "#picard_markduplicates.output_bam"
+      - id: "#picard_markduplicates.output_bai"
+      - id: "#picard_markduplicates.log"
