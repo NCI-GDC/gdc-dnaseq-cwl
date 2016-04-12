@@ -36,20 +36,21 @@ inputs:
       prefix: --s3cfg_path
 
 outputs:
-  - id: "#output_fastq"
+  - id: "#output_fastq1"
     type:
       type: array
       items: File
     description: "The readgroups pairs split into compressed fastq"
     outputBinding:
       glob: fastq/*1.fq.gz
-      outputEval: |
-        ${
-          for (var i = 0; i < self.length; i++) {
-             self[i].secondaryFiles = [{"path": self[i].path.slice(0,-7)+"2.fq.gz", "class":"File"}];
-          }
-          return self;
-        }
+
+  - id: "#output_fastq2"
+    type:
+      type: array
+      items: File
+    description: "Read 2 of PE"
+    outputBinding:
+      glob: fastq/*2.fq.gz
 
   - id: "#log"
     type: File
@@ -64,4 +65,3 @@ outputs:
 
           
 baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/biobambam_tool/main.py", "--tool_name", "bamtofastq"]
- #  .slice(0,-7)+"2.fq.gz", "class": "File"}    "fastq/" +  .split('/').slice(-1)[0].
