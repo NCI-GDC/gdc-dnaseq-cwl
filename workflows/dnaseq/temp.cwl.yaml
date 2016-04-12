@@ -31,22 +31,4 @@
 
 
 
-  - id: "#bam_reheader"
-    run: {import: ../../tools/bam_reheader.cwl.yaml}
-    inputs:
-      - id: "#bam_reheader.bam_path"
-        source: "#picard_merge.output_bam"
-      - id: "#bam_reheader.uuid"
-        source: "#uuid"
-    outputs:
-      - id: "#bam_reheader.output_bam"
-
-  - id: "#picard_markduplicates"
-    run: {import: ../../tools/picard_markduplicates.cwl.yaml}
-    inputs:
-      - id: "#picard_markduplicates.bam_path"
-        source: "#bam_reheader.output_bam"
-      - id: "#picard_markduplicates.uuid"
-        source: "#uuid"
-    outputs:
-      - id: "#picard_markduplicates.output_bam"
+# cwltool --debug ~/cocleaning-cwl/workflows/dnaseq/dnaseq_workflow.cwl.yaml --bam_path ~/SCRATCH/47b42e81-2500-4ebc-a0c2-acd3187cc2f0_513/C440.TCGA-IN-8462-01A-11D-2340-08.1.bam --fastq1_path ../fastq/D1K4L.4_1.fq.gz --fastq2_path ../fastq/D1K4L.4_2.fq.gz --readgroup_json_path ../json/D1K4L.4.json --reference_fasta_path ../../grch38/GRCh38.d1.vd1.fa --thread_count 8 --uuid test_w --input_bam ../two/bwa/D1K4L.4.bam
