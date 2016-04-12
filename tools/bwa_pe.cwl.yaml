@@ -60,9 +60,7 @@ inputs:
 
 outputs:
   - id: "#output_bam"
-    type:
-      type: array
-      items: File
+    type: File
     description: "The readgroups pairs split into compressed fastq"
     outputBinding:
       glob:
