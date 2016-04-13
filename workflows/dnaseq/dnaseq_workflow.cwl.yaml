@@ -60,7 +60,7 @@ steps:
         source: "#biobambam2_bamtofastq.output_fastq1"
       - id: "#bwa_pe.fastq2_path"
         source: "#biobambam2_bamtofastq.output_fastq2"
-        #valueFrom: $(inputs.fastq1_path.path) #.slice(0,-7)+"2.fq.gz")
+        valueFrom: $(inputs.fastq1_path.path) #.slice(0,-7)+"2.fq.gz")
       - id: "#bwa_pe.reference_fasta_path"
         source: "#reference_fasta_path"
       - id: "#bwa_pe.readgroup_json_path"
@@ -73,51 +73,51 @@ steps:
       - id: "#bwa_pe.output_bam"
       - id: "#bwa_pe.log"
 
-  - id: "#picard_sortsam"
-    run: {import: ../../tools/picard_sortsam.cwl.yaml}
-    scatter: "#picard_sortsam.bam_path"
-    inputs:
-      - id: "#picard_sortsam.bam_path"
-        source: "#bwa_pe.output_bam"
-      - id: "#picard_sortsam.uuid"
-        source: "#uuid"
-    outputs:
-      - id: "#picard_sortsam.output_bam"
-      - id: "#picard_sortsam.log"
+  # - id: "#picard_sortsam"
+  #   run: {import: ../../tools/picard_sortsam.cwl.yaml}
+  #   scatter: "#picard_sortsam.bam_path"
+  #   inputs:
+  #     - id: "#picard_sortsam.bam_path"
+  #       source: "#bwa_pe.output_bam"
+  #     - id: "#picard_sortsam.uuid"
+  #       source: "#uuid"
+  #   outputs:
+  #     - id: "#picard_sortsam.output_bam"
+  #     - id: "#picard_sortsam.log"
           
-  - id: "#picard_mergesamfiles"
-    run: {import: ../../tools/picard_mergesamfiles.cwl.yaml}
-    inputs:
-      - id: "#picard_mergesamfiles.bam_path"
-        source: "#picard_sortsam.output_bam"
-      - id: "#picard_mergesamfiles.uuid"
-        source: "#uuid"
-      - id: "#picard_mergesamfiles.outbam_name"
-        source: "#bam_path"
-        valueFrom: $(self.path.split('/').slice(-1)[0])
-    outputs:
-      - id: "#picard_mergesamfiles.output_bam"
-      - id: "#picard_mergesamfiles.log"
+  # - id: "#picard_mergesamfiles"
+  #   run: {import: ../../tools/picard_mergesamfiles.cwl.yaml}
+  #   inputs:
+  #     - id: "#picard_mergesamfiles.bam_path"
+  #       source: "#picard_sortsam.output_bam"
+  #     - id: "#picard_mergesamfiles.uuid"
+  #       source: "#uuid"
+  #     - id: "#picard_mergesamfiles.outbam_name"
+  #       source: "#bam_path"
+  #       valueFrom: $(self.path.split('/').slice(-1)[0])
+  #   outputs:
+  #     - id: "#picard_mergesamfiles.output_bam"
+  #     - id: "#picard_mergesamfiles.log"
 
-  - id: "#bam_reheader"
-    run: {import: ../../tools/bam_reheader.cwl.yaml}
-    inputs:
-      - id: "#bam_reheader.bam_path"
-        source: "#picard_mergesamfiles.output_bam"
-      - id: "#bam_reheader.uuid"
-        source: "#uuid"
-    outputs:
-      - id: "#bam_reheader.output_bam"
-      - id: "#bam_reheader.log"
+  # - id: "#bam_reheader"
+  #   run: {import: ../../tools/bam_reheader.cwl.yaml}
+  #   inputs:
+  #     - id: "#bam_reheader.bam_path"
+  #       source: "#picard_mergesamfiles.output_bam"
+  #     - id: "#bam_reheader.uuid"
+  #       source: "#uuid"
+  #   outputs:
+  #     - id: "#bam_reheader.output_bam"
+  #     - id: "#bam_reheader.log"
 
-  - id: "#picard_markduplicates"
-    run: {import: ../../tools/picard_markduplicates.cwl.yaml}
-    inputs:
-      - id: "#picard_markduplicates.bam_path"
-        source: "#bam_reheader.output_bam"
-      - id: "##picard_markduplicates.uuid"
-        source: "#uuid"
-    outputs:
-      - id: "#picard_markduplicates.output_bam"
-      - id: "#picard_markduplicates.output_bai"
-      - id: "#picard_markduplicates.log"
+  # - id: "#picard_markduplicates"
+  #   run: {import: ../../tools/picard_markduplicates.cwl.yaml}
+  #   inputs:
+  #     - id: "#picard_markduplicates.bam_path"
+  #       source: "#bam_reheader.output_bam"
+  #     - id: "##picard_markduplicates.uuid"
+  #       source: "#uuid"
+  #   outputs:
+  #     - id: "#picard_markduplicates.output_bam"
+  #     - id: "#picard_markduplicates.output_bai"
+  #     - id: "#picard_markduplicates.log"
