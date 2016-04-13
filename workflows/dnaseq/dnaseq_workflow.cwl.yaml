@@ -5,7 +5,8 @@ requirements:
   - class: ScatterFeatureRequirement
   - class: StepInputExpressionRequirement
   - class: InlineJavascriptRequirement
-
+  - import: ../../tools/node-engine.cwl
+  - import: ../../tools/envvar-global.cwl
 
 inputs:
   - id: "#bam_path"
@@ -59,8 +60,13 @@ steps:
       - id: "#bwa_pe.fastq1_path"
         source: "#biobambam2_bamtofastq.output_fastq1"
       - id: "#bwa_pe.fastq2_path"
-        source: "#biobambam2_bamtofastq.output_fastq2"
-        valueFrom: $(inputs.fastq1_path.path) #.slice(0,-7)+"2.fq.gz")
+        source: "#biobambam2_bamtofastq.output_fastq1"
+        valueFrom:
+          engine: "node-engine.cwl"
+          script: |
+            {
+            return {"path": $self.path.slice(0,-7)+"2.fq.gz", "class": "File"};
+            }
       - id: "#bwa_pe.reference_fasta_path"
         source: "#reference_fasta_path"
       - id: "#bwa_pe.readgroup_json_path"
@@ -121,3 +127,6 @@ steps:
   #     - id: "#picard_markduplicates.output_bam"
   #     - id: "#picard_markduplicates.output_bai"
   #     - id: "#picard_markduplicates.log"
+
+   # {"path": $inputs['fastq1_path'].path), "class": "File"} #.slice(0,-7)+"2.fq.gz")
+            #return {"path": $self.path, "class": "File"}; #.slice(0,-7)+"2.fq.gz")
