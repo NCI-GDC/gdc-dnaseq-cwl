@@ -71,6 +71,24 @@ steps:
         source: "#reference_fasta_path"
       - id: "#bwa_pe.readgroup_json_path"
         source: "#bam_readgroup_to_json.output_json"
+        valueFrom:
+          engine: "node-engine.cwl"
+          script: |
+            {
+            var is_dict = $self.path;
+            if (is_dict != null) {
+              return {"path": $self.path, "class": "File"};
+            }
+            else {
+              var readgroup_basename = $(inputs.fastq1_path);
+              var readgroup_jsonname = readgroup_basename + ".json";
+              for (var i = 0; i < self.length; i++) {
+                if (self[i].indexOf(readgroup_jsonname) > -1) {
+                  return {"path": $self[i].path, "class": "File"};
+                }
+              }
+            }
+            }
       - id: "#bwa_pe.thread_count"
         source: "#thread_count"
       - id: "#bwa_pe.uuid"
@@ -78,7 +96,8 @@ steps:
     outputs:
       - id: "#bwa_pe.output_bam"
       - id: "#bwa_pe.log"
-
+ #.path.split('/')[-1].slice(0,-8));
+ 
   # - id: "#picard_sortsam"
   #   run: {import: ../../tools/picard_sortsam.cwl.yaml}
   #   scatter: "#picard_sortsam.bam_path"
@@ -130,3 +149,4 @@ steps:
 
    # {"path": $inputs['fastq1_path'].path), "class": "File"} #.slice(0,-7)+"2.fq.gz")
             #return {"path": $self.path, "class": "File"}; #.slice(0,-7)+"2.fq.gz")
+
