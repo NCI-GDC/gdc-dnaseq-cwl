@@ -14,7 +14,7 @@ inputs:
   - id: "#reference_fasta_path"
     type: File
   - id: "#thread_count"
-    type: string
+    type: int
   - id: "#uuid"
     type: string
   - id: "#db_cred_s3url"
@@ -23,11 +23,11 @@ inputs:
     type: ["null", File]
 
 outputs:
-  - id: "#bwa_pe_output_bam"
-    type:
-      type: array
-      items: File
-    source: "#bwa_pe.output_bam"
+  - id: "#picard_markduplicates_output_bam"
+    type: File
+#      type: array
+#      items: File
+    source: "#picard_markduplicates.output_bam"
 
 steps:
   - id: "#bam_readgroup_to_json"
@@ -73,7 +73,7 @@ steps:
         source: "#bam_readgroup_to_json.output_json"
         valueFrom:
           engine: "node-engine.cwl"
-          script: |
+          script: |            
             {
             var is_dict = $self.path;
             if (is_dict != null) {
@@ -98,55 +98,66 @@ steps:
       - id: "#bwa_pe.log"
  #.path.split('/')[-1].slice(0,-8));
  
-  # - id: "#picard_sortsam"
-  #   run: {import: ../../tools/picard_sortsam.cwl.yaml}
-  #   scatter: "#picard_sortsam.bam_path"
-  #   inputs:
-  #     - id: "#picard_sortsam.bam_path"
-  #       source: "#bwa_pe.output_bam"
-  #     - id: "#picard_sortsam.uuid"
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: "#picard_sortsam.output_bam"
-  #     - id: "#picard_sortsam.log"
+  - id: "#picard_sortsam"
+    run: {import: ../../tools/picard_sortsam.cwl.yaml}
+    scatter: "#picard_sortsam.bam_path"
+    inputs:
+      - id: "#picard_sortsam.bam_path"
+        source: "#bwa_pe.output_bam"
+      - id: "#picard_sortsam.uuid"
+        source: "#uuid"
+    outputs:
+      - id: "#picard_sortsam.output_bam"
+      - id: "#picard_sortsam.log"
           
-  # - id: "#picard_mergesamfiles"
-  #   run: {import: ../../tools/picard_mergesamfiles.cwl.yaml}
-  #   inputs:
-  #     - id: "#picard_mergesamfiles.bam_path"
-  #       source: "#picard_sortsam.output_bam"
-  #     - id: "#picard_mergesamfiles.uuid"
-  #       source: "#uuid"
-  #     - id: "#picard_mergesamfiles.outbam_name"
-  #       source: "#bam_path"
-  #       valueFrom: $(self.path.split('/').slice(-1)[0])
-  #   outputs:
-  #     - id: "#picard_mergesamfiles.output_bam"
-  #     - id: "#picard_mergesamfiles.log"
+  - id: "#picard_mergesamfiles"
+    run: {import: ../../tools/picard_mergesamfiles.cwl.yaml}
+    inputs:
+      - id: "#picard_mergesamfiles.bam_path"
+        source: "#picard_sortsam.output_bam"
+      - id: "#picard_mergesamfiles.uuid"
+        source: "#uuid"
+      - id: "#picard_mergesamfiles.outbam_name"
+        source: "#bam_path"
+        valueFrom: $(self.path.split('/').slice(-1)[0])
+    outputs:
+      - id: "#picard_mergesamfiles.output_bam"
+      - id: "#picard_mergesamfiles.log"
 
-  # - id: "#bam_reheader"
-  #   run: {import: ../../tools/bam_reheader.cwl.yaml}
-  #   inputs:
-  #     - id: "#bam_reheader.bam_path"
-  #       source: "#picard_mergesamfiles.output_bam"
-  #     - id: "#bam_reheader.uuid"
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: "#bam_reheader.output_bam"
-  #     - id: "#bam_reheader.log"
+  - id: "#bam_reheader"
+    run: {import: ../../tools/bam_reheader.cwl.yaml}
+    inputs:
+      - id: "#bam_reheader.bam_path"
+        source: "#picard_mergesamfiles.output_bam"
+      - id: "#bam_reheader.uuid"
+        source: "#uuid"
+    outputs:
+      - id: "#bam_reheader.output_bam"
+      - id: "#bam_reheader.log"
 
-  # - id: "#picard_markduplicates"
-  #   run: {import: ../../tools/picard_markduplicates.cwl.yaml}
-  #   inputs:
-  #     - id: "#picard_markduplicates.bam_path"
-  #       source: "#bam_reheader.output_bam"
-  #     - id: "##picard_markduplicates.uuid"
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: "#picard_markduplicates.output_bam"
-  #     - id: "#picard_markduplicates.output_bai"
-  #     - id: "#picard_markduplicates.log"
+  - id: "#picard_markduplicates"
+    run: {import: ../../tools/picard_markduplicates.cwl.yaml}
+    inputs:
+      - id: "#picard_markduplicates.bam_path"
+        source: "#bam_reheader.output_bam"
+      - id: "##picard_markduplicates.uuid"
+        source: "#uuid"
+    outputs:
+      - id: "#picard_markduplicates.output_bam"
+      - id: "#picard_markduplicates.output_bai"
+      - id: "#picard_markduplicates.log"
 
    # {"path": $inputs['fastq1_path'].path), "class": "File"} #.slice(0,-7)+"2.fq.gz")
             #return {"path": $self.path, "class": "File"}; #.slice(0,-7)+"2.fq.gz")
 
+
+
+            # {
+            #   var readgroup_basename = $(inputs.fastq1_path.path);
+            #   var readgroup_jsonname = readgroup_basename + ".json";
+            #   for (var i = 0; i < self.length; i++) {
+            #     if (self[i].path.indexOf(readgroup_jsonname) >= 0) {
+            #       return {"path": $self[i].path, "class": "File"};
+            #     }
+            #   }
+            # }
