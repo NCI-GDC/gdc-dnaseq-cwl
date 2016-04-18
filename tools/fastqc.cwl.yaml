@@ -25,6 +25,11 @@ inputs:
     inputBinding:
       prefix: --uuid
 
+  - id: "thread_count"
+    type: int
+    inputBinding:
+      prefix: --thread_count
+      
   - id: "#db_cred_s3url"
     type: ["null", string]
     inputBinding:
