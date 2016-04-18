@@ -18,7 +18,7 @@ inputs:
   - id: "#fastq_path"
     type: File
     inputBinding:
-      prefix: --bam_path
+      prefix: --fastq_path
 
   - id: "#uuid"
     type: string
