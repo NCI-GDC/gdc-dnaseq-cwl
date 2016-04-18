@@ -41,26 +41,15 @@ inputs:
       prefix: --s3cfg_path
 
 outputs:
-  - id: "#summary_path"
+  - id: "#fastqc_zip"
     type: File
-    description: "fastqc summary"
+    description: "fastqc compressed report"
     outputBinding:
       glob:
         engine: node-engine.cwl
         script: |
           {
-            return $job['input_bam'].path.split('/').slice(-1)[0].slice(0,-4)+".bai";
-          }
-
-  - id: "#data_path"
-    type: File
-    description: "fastqc summary"
-    outputBinding:
-      glob:
-        engine: node-engine.cwl
-        script: |
-          {
-            return $job['input_bam'].path.split('/').slice(-1)[0].slice(0,-4)+".bai";
+            return $job['fastq_path'].path.split('/').slice(-1)[0].slice(0,-6)+"_fastqc.zip";
           }
 
   - id: "#log"
@@ -71,7 +60,18 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return $job['case_id']+"_picard_BuildBamIndex.log"
+          return $job['uuid']+"_fastqc.log"
+          }
+
+  - id: "#sqlite"
+    type: File
+    description: "python log file"
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return $job['uuid']+"_fastqc.db"
           }
 
           
