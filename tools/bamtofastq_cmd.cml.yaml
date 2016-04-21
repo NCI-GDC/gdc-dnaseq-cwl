@@ -1,0 +1,48 @@
+#!/usr/bin/env cwl-runner
+
+description: |
+  Usage:
+  Options:
+
+requirements:
+  - class: ScatterFeatureRequirement
+  - class: StepInputExpressionRequirement
+  - class: InlineJavascriptRequirement
+  - import: node-engine.cwl
+  - import: envvar-global.cwl
+
+
+class: CommandLineTool
+
+inputs:
+  - id: "#bam_path"
+    type: File
+    inputBinding:
+      position: 2
+outputs:
+  - id: "#output_fastq1"
+    type:
+      type: array
+      items: File
+    outputBinding:
+      glob: "*_1.fq"
+  - id: "#output_fastq2"
+    type:
+      type: array
+      items: File
+    outputBinding:
+      glob: "*_2.fq"
+arguments:
+  - valueFrom:
+    position: 1
+    prefix: ".fq"
+  - valueFrom:
+    position: 4
+    prefix: "|"
+  - valueFrom:
+    position: 5
+    prefix: "xargs"
+  - valueFrom:
+    position: 6
+    prefix: "touch"
+baseCommand: grep
