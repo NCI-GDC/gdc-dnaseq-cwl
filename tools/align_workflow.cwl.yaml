@@ -32,6 +32,7 @@
   baseCommand: grep
 
 
+
 - id: bamtofastq_cmd
   class: CommandLineTool
   requirements:
@@ -70,6 +71,7 @@
   baseCommand: grep
 
 
+
 - id: align_cmd
   class: CommandLineTool
   requirements:
@@ -77,15 +79,15 @@
     - import: node-engine.cwl
     - import: envvar-global.cwl
   inputs:
-    - id: "#fastq1_path"
+    - id: "#fastq1"
       type: string
       inputBinding:
         position: 1
-    - id: "#fastq2_path"
+    - id: "#fastq2"
       type: string
       inputBinding:
         position: 6
-    - id: "#json_path"
+    - id: "#json"
       type: string
       inputBinding:
         position: 11
@@ -149,8 +151,6 @@
 
 
 
-  
-
 - id: main
   class: Workflow
   requirements:
@@ -168,6 +168,11 @@
         type: array
         items: File
       source: "#bamtojson.output_json"
+    - id: "#bamtofastq_output_fastq1"
+      type:
+        type: array
+        items: File
+      source: "#bamtofastq.output_fastq2"
   steps:
     - id: "#bamtojson"
       run: "#bamtojson_cmd"
@@ -183,35 +188,34 @@
           source: "#bam_path"
       outputs:
         - id: "#bamtofastq.output_fastq1"
-        - id: "#bamtofastq.output_fastq2"
-          
-    # - id: "#align"
-    #   run: "#align_cmd"
-    #   scatter:
-    #     scatterMethod: "dotproduct"
-    #     inputs:
-    #       - id: "#align.fastq1_path"
-    #         source: "#bamtofastq.output_fastq1"
-    #       - id: "#align.fastq2_path"
-    #         source: "#bamtofastq.output_fastq1"
-    #         valueFrom:
-    #           engine: "node-engine.cwl"
-    #           script: |
-    #             {
-    #             return  {"path": $self.path.slice(0,-4)+"2.fq", "class": "File"};
-    #             }
-    #     outputs:
-    #       - id: "#align.output_bam"
-
-          # - id: "#align.json"
-          #   source: "#bamtojson.output_json"
-          #   valueFrom:
-          #     engine: "node-engine.cwl"
-          #     script: |
-          #       {
-          #       var readgroup_basename = inputs.fastq1_path.path.split('/')[-1];
-          #       var json_dir = self.path.split('/').slice(0,-1).join('/');
-          #       var readgroup_jsonname = readgroup_basename + ".json";
-          #       var json_path = json_dir + "/" + readgroup_jsonname;
-          #       return {"path": json_path, "class": "File"};
-          #       }
+        - id: "#bamtofastq.output_fastq2"          
+    - id: "#align"
+      run: "#align_cmd"
+      scatter: ["#align.fastq1", "#align.fastq2", "#align.json"]
+      scatterMethod: "dotproduct"
+      inputs:
+        - id: "#align.fastq1"
+          source: "#bamtofastq.output_fastq1"
+        - id: "#align.fastq2"
+          source: "#bamtofastq.output_fastq1"
+          valueFrom:
+            engine: "node-engine.cwl"
+            script: |
+              {
+              return $self.slice(0,-4)+"2.fq"}
+              }
+        - id: "#align.json"
+          #source: "#bamtojson.output_json"
+          valueFrom: pair1.json
+      outputs:
+        - id: "#align.output_bam"
+            # engine: "node-engine.cwl"
+            # script: |
+            #   {
+            #   var readgroup_basename = inputs.fastq1_path.path.split('/')[-1];
+            #   var json_dir = self.path.split('/').slice(0,-1).join('/');
+            #   var readgroup_jsonname = readgroup_basename + ".json";
+            #   var json_path = json_dir + "/" + readgroup_jsonname;
+            #   return {"path": json_path, "class": "File"};
+            #   }
+        
