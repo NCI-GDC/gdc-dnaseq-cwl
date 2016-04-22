@@ -220,20 +220,19 @@
             engine: node-engine.cwl
             script: |
               {
-              return {"path": $self.path.slice(0,-4)+"2.fq"}, "class": "File"};
+              return {"path": $self.path.slice(0,-4)+"2.fq", "class": "File"};
               }
         - id: "#align.json_path"
           source: "#bamtojson.output_json"
-          valueFrom: pair1.json
+          valueFrom:
+            engine: node-engine.cwl
+            script: |
+              {
+              var readgroup_basename = inputs.fastq1_path.split('/').slice(-1);
+              var json_dir = self[0].path.split('/').slice(0,-1).join('/');
+              var readgroup_jsonname = readgroup_basename + ".json";
+              var json_path = json_dir + "/" + readgroup_jsonname;
+              return {"path": json_path, "class": "File"};
+              }
       outputs:
         - id: "#align.output_bam"
-            # engine: node-engine.cwl
-            # script: |
-            #   {
-            #   var readgroup_basename = inputs.fastq1_path.path.split('/')[-1];
-            #   var json_dir = self.path.split('/').slice(0,-1).join('/');
-            #   var readgroup_jsonname = readgroup_basename + ".json";
-            #   var json_path = json_dir + "/" + readgroup_jsonname;
-            #   return {"path": json_path, "class": "File"};
-            #   }
-        
