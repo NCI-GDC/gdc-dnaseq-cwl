@@ -93,7 +93,7 @@
           engine: node-engine.cwl
           script: |
             {
-            return inputs.readgroup_path.path.split('/').slice(-1)[0].slice(0,-5)+"_realign.bam"
+            return inputs.readgroup_path.path.split('/').slice(-1)[0].slice(0,-10)+"_realign.bam"
             }
   arguments:
     - valueFrom:
@@ -111,7 +111,7 @@
         engine: node-engine.cwl
         script: |
           {
-          return inputs.readgroup_path.path.slice(0,-5)+"_realign.bam";
+          return inputs.readgroup_path.path.slice(0,-10)+"_realign.bam";
           }
       position: 3
       shellQuote: false
@@ -136,7 +136,7 @@
         engine: node-engine.cwl
         script: |
           {
-          return inputs.readgroup_path.path.slice(0,-5)+"_realign.bam";
+          return inputs.readgroup_path.path.slice(0,-10)+"_realign.bam";
           }
       position: 8
       shellQuote: false
@@ -161,7 +161,7 @@
         engine: node-engine.cwl
         script: |
           {
-          return $job['readgroup_path'].path.slice(0,-5)+"_realign.bam"
+          return $job['readgroup_path'].path.slice(0,-10)+"_realign.bam"
           }
       position: 13
       shellQuote: false
@@ -191,6 +191,11 @@
         type: array
         items: File
       source: "#bamtofastq.output_fastq2"
+    - id: "align_output_bam"
+      type:
+        type: array
+        items: File
+      source: "#align.output_bam"
   steps:
     - id: "#bamtoreadgroup"
       run: "#bamtoreadgroup_cmd"
