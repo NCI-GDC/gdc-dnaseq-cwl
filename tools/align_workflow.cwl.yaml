@@ -1,6 +1,6 @@
 #!/usr/bin/env cwl-runner
 
-- id: bamtojson_cmd
+- id: bamtoreadgroup_cmd
   class: CommandLineTool
   requirements:
     - class: ShellCommandRequirement
@@ -10,14 +10,14 @@
       inputBinding:
         position: 3
   outputs:
-    - id: "#output_json"
+    - id: "#output_readgroup"
       type:
         type: array
         items: File
       outputBinding:
-        glob: "*.json"
+        glob: "*.readgroup"
   arguments:
-    - valueFrom: ".json"
+    - valueFrom: ".readgroup"
       position: 1
       shellQuote: false
     - valueFrom: "|"
@@ -83,7 +83,7 @@
       type: File
     - id: "#fastq2_path"
       type: File
-    - id: "#json_path"
+    - id: "#readgroup_path"
       type: File
   outputs:
     - id: "#output_bam"
@@ -93,7 +93,7 @@
           engine: node-engine.cwl
           script: |
             {
-            return inputs.json_path.path.split('/').slice(-1)[0].slice(0,-5)+"_realign.bam"
+            return inputs.readgroup_path.path.split('/').slice(-1)[0].slice(0,-5)+"_realign.bam"
             }
   arguments:
     - valueFrom:
@@ -111,7 +111,7 @@
         engine: node-engine.cwl
         script: |
           {
-          return inputs.json_path.path.slice(0,-5)+"_realign.bam";
+          return inputs.readgroup_path.path.slice(0,-5)+"_realign.bam";
           }
       position: 3
       shellQuote: false
@@ -136,7 +136,7 @@
         engine: node-engine.cwl
         script: |
           {
-          return inputs.json_path.path.slice(0,-5)+"_realign.bam";
+          return inputs.readgroup_path.path.slice(0,-5)+"_realign.bam";
           }
       position: 8
       shellQuote: false
@@ -150,7 +150,7 @@
         engine: node-engine.cwl
         script: |
           {
-          return inputs.json_path.path.split('/').slice(-1)[0];
+          return inputs.readgroup_path.path.split('/').slice(-1)[0];
           }
       position: 11
       shellQuote: false
@@ -161,7 +161,7 @@
         engine: node-engine.cwl
         script: |
           {
-          return $job['json_path'].path.slice(0,-5)+"_realign.bam"
+          return $job['readgroup_path'].path.slice(0,-5)+"_realign.bam"
           }
       position: 13
       shellQuote: false
@@ -181,24 +181,24 @@
     - id: "#bam_path"
       type: File
   outputs:
-    - id: "#bamtojson_output_json"
+    - id: "#bamtoreadgroup_output_readgroup"
       type:
         type: array
         items: File
-      source: "#bamtojson.output_json"
+      source: "#bamtoreadgroup.output_readgroup"
     - id: "#bamtofastq_output_fastq1"
       type:
         type: array
         items: File
       source: "#bamtofastq.output_fastq2"
   steps:
-    - id: "#bamtojson"
-      run: "#bamtojson_cmd"
+    - id: "#bamtoreadgroup"
+      run: "#bamtoreadgroup_cmd"
       inputs:
-        - id: "#bamtojson.bam_path"
+        - id: "#bamtoreadgroup.bam_path"
           source: "#bam_path"
       outputs:
-        - id: "#bamtojson.output_json"
+        - id: "#bamtoreadgroup.output_readgroup"
     - id: "#bamtofastq"
       run: "#bamtofastq_cmd"
       inputs:
@@ -209,7 +209,7 @@
         - id: "#bamtofastq.output_fastq2"          
     - id: "#align"
       run: "#align_cmd"
-      scatter: ["#align.fastq1_path", "#align.fastq2_path", "#align.json_path"]
+      scatter: ["#align.fastq1_path", "#align.fastq2_path", "#align.readgroup_path"]
       scatterMethod: "dotproduct"
       inputs:
         - id: "#align.fastq1_path"
@@ -222,17 +222,17 @@
               {
               return {"path": $self.path.slice(0,-4)+"2.fq", "class": "File"};
               }
-        - id: "#align.json_path"
-          source: "#bamtojson.output_json"
+        - id: "#align.readgroup_path"
+          source: "#bamtoreadgroup.output_readgroup"
           valueFrom:
             engine: node-engine.cwl
             script: |
               {
               var readgroup_basename = inputs.fastq1_path.split('/').slice(-1);
-              var json_dir = self.path.split('/').slice(0,-1).join('/');
-              var readgroup_jsonname = readgroup_basename + ".json";
-              var json_path = json_dir + "/" + readgroup_jsonname;
-              return {"path": "json_path", "class": "File"};
+              var readgroup_dir = self.path.split('/').slice(0,-1).join('/');
+              var readgroup_readgroupname = readgroup_basename + ".readgroup";
+              var readgroup_path = readgroup_dir + "/" + readgroup_readgroupname;
+              return {"path": "readgroup_path", "class": "File"};
               }
       outputs:
         - id: "#align.output_bam"
