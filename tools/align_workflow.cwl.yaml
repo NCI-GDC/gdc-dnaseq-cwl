@@ -209,12 +209,12 @@
         - id: "#bamtofastq.output_fastq2"          
     - id: "#align"
       run: "#align_cmd"
-      scatter: ["#align.fastq1", "#align.fastq2", "#align.json"]
+      scatter: ["#align.fastq1_path", "#align.fastq2_path", "#align.json_path"]
       scatterMethod: "dotproduct"
       inputs:
-        - id: "#align.fastq1"
+        - id: "#align.fastq1_path"
           source: "#bamtofastq.output_fastq1"
-        - id: "#align.fastq2"
+        - id: "#align.fastq2_path"
           source: "#bamtofastq.output_fastq1"
           valueFrom:
             engine: node-engine.cwl
@@ -222,7 +222,7 @@
               {
               return {"path": $self.path.slice(0,-4)+"2.fq"}, "class": "File"};
               }
-        - id: "#align.json"
+        - id: "#align.json_path"
           source: "#bamtojson.output_json"
           valueFrom: pair1.json
       outputs:
