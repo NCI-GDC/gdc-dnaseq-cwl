@@ -71,11 +71,11 @@
   baseCommand: grep
 
 
-
 - id: align_cmd
   class: CommandLineTool
   requirements:
     - class: ShellCommandRequirement
+    - class: InlineJavascriptRequirement
     - import: node-engine.cwl
     - import: envvar-global.cwl
   inputs:
@@ -93,10 +93,15 @@
           engine: node-engine.cwl
           script: |
             {
-            return $job['json'].slice(0,-5)+"_realign.bam"
+            return inputs.json_path.path.split('/').slice(-1)[0].slice(0,-5)+"_realign.bam"
             }
   arguments:
-    - valueFrom: "`basename #fastq1_path`"
+    - valueFrom:
+        engine: node-engine.cwl
+        script: |
+          {
+          return inputs.fastq1_path.path.split('/').slice(-1)[0];
+          }
       position: 1
       shellQuote: false
     - valueFrom: ">"
@@ -106,7 +111,7 @@
         engine: node-engine.cwl
         script: |
           {
-          return $job['json'].slice(0,-5)+"_realign.bam"
+          return inputs.json_path.path.slice(0,-5)+"_realign.bam";
           }
       position: 3
       shellQuote: false
@@ -116,7 +121,12 @@
     - valueFrom: echo
       position: 5
       shellQuote: false
-    - valueFrom: "`basename #fastq2_path`"
+    - valueFrom:
+        engine: node-engine.cwl
+        script: |
+          {
+          return inputs.fastq2_path.path.split('/').slice(-1)[0];
+          }
       position: 6
       shellQuote: false
     - valueFrom: ">>"
@@ -126,7 +136,7 @@
         engine: node-engine.cwl
         script: |
           {
-          return $job['json'].slice(0,-5)+"_realign.bam"
+          return inputs.json_path.path.slice(0,-5)+"_realign.bam";
           }
       position: 8
       shellQuote: false
@@ -136,7 +146,12 @@
     - valueFrom: echo
       position: 10
       shellQuote: false
-    - valueFrom: "`basename #json_path`"
+    - valueFrom:
+        engine: node-engine.cwl
+        script: |
+          {
+          return inputs.json_path.path.split('/').slice(-1)[0];
+          }
       position: 11
       shellQuote: false
     - valueFrom: ">>"
@@ -146,7 +161,7 @@
         engine: node-engine.cwl
         script: |
           {
-          return $job['json'].slice(0,-5)+"_realign.bam"
+          return $job['json_path'].path.slice(0,-5)+"_realign.bam"
           }
       position: 13
       shellQuote: false
@@ -199,8 +214,6 @@
       inputs:
         - id: "#align.fastq1"
           source: "#bamtofastq.output_fastq1"
-          valueFrom:
-            engine: node-engine.cwl
         - id: "#align.fastq2"
           source: "#bamtofastq.output_fastq1"
           valueFrom:
@@ -210,7 +223,7 @@
               return {"path": $self.path.slice(0,-4)+"2.fq"}, "class": "File"};
               }
         - id: "#align.json"
-          #source: "#bamtojson.output_json"
+          source: "#bamtojson.output_json"
           valueFrom: pair1.json
       outputs:
         - id: "#align.output_bam"
