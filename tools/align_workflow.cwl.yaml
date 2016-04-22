@@ -229,10 +229,10 @@
             script: |
               {
               var readgroup_basename = inputs.fastq1_path.split('/').slice(-1);
-              var json_dir = self[0].path.split('/').slice(0,-1).join('/');
+              var json_dir = self.path.split('/').slice(0,-1).join('/');
               var readgroup_jsonname = readgroup_basename + ".json";
               var json_path = json_dir + "/" + readgroup_jsonname;
-              return {"path": json_path, "class": "File"};
+              return {"path": "json_path", "class": "File"};
               }
       outputs:
         - id: "#align.output_bam"
