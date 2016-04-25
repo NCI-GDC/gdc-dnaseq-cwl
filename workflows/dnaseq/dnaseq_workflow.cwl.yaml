@@ -75,19 +75,12 @@ steps:
           engine: "node-engine.cwl"
           script: |            
             {
-            var is_dict = $self.path;
-            if (is_dict != null) {
-              return {"path": $self.path, "class": "File"};
-            }
-            else {
-              var readgroup_basename = $(inputs.fastq1_path);
+              var readgroup_basename = inputs.fastq1_path.path.split('/')[-1];
+              var json_dir = self.path.split('/').slice(0,-1).join('/');
               var readgroup_jsonname = readgroup_basename + ".json";
-              for (var i = 0; i < self.length; i++) {
-                if (self[i].indexOf(readgroup_jsonname) > -1) {
-                  return {"path": $self[i].path, "class": "File"};
-                }
-              }
-            }
+              var json_path = json_dir + "/" + readgroup_jsonname;
+              return {"path": json_path, "class": "File"};
+
             }
       - id: "#bwa_pe.thread_count"
         source: "#thread_count"
@@ -97,7 +90,7 @@ steps:
       - id: "#bwa_pe.output_bam"
       - id: "#bwa_pe.log"
  #.path.split('/')[-1].slice(0,-8));
- 
+
   - id: "#picard_sortsam"
     run: {import: ../../tools/picard_sortsam.cwl.yaml}
     scatter: "#picard_sortsam.bam_path"
@@ -157,6 +150,25 @@ steps:
             #   var readgroup_jsonname = readgroup_basename + ".json";
             #   for (var i = 0; i < self.length; i++) {
             #     if (self[i].path.indexOf(readgroup_jsonname) >= 0) {
+            #       return {"path": $self[i].path, "class": "File"};
+            #     }
+            #   }
+            # }
+
+
+            # var is_dict = $self.path;
+            # if (is_dict != null) {
+            #   var readgroup_basename = $(inputs.fastq1_path);
+            #   var readgroup_jsonname = readgroup_basename + ".json";
+            #   json_dir = $self.path.match(/.*//);
+            #   json_path = json_dir + readgroup_jsonname;
+            #   return {"path": $self.json_path, "class": "File"};
+            # }
+            # else {
+            #   var readgroup_basename = $(inputs.fastq1_path);
+            #   var readgroup_jsonname = readgroup_basename + ".json";
+            #   for (var i = 0; i < self.length; i++) {
+            #     if (self[i].indexOf(readgroup_jsonname) > -1)) {
             #       return {"path": $self[i].path, "class": "File"};
             #     }
             #   }

@@ -1,18 +1,9 @@
 #!/usr/bin/env cwl-runner
 
-description: |
-  Usage:
-  Options:
+class: CommandLineTool
 
 requirements:
-  - class: ScatterFeatureRequirement
-  - class: StepInputExpressionRequirement
-  - class: InlineJavascriptRequirement
-  - import: node-engine.cwl
-  - import: envvar-global.cwl
-
-
-class: CommandLineTool
+  - class: ShellCommandRequirement
 
 inputs:
   - id: "#bam_path"
@@ -33,16 +24,16 @@ outputs:
     outputBinding:
       glob: "*_2.fq"
 arguments:
-  - valueFrom:
+  - valueFrom: ".fq"
     position: 1
-    prefix: ".fq"
-  - valueFrom:
+    shellQuote: false
+  - valueFrom: "|"
     position: 4
-    prefix: "|"
-  - valueFrom:
+    shellQuote: false
+  - valueFrom: "xargs"
     position: 5
-    prefix: "xargs"
-  - valueFrom:
+    shellQuote: false
+  - valueFrom: "touch"
     position: 6
-    prefix: "touch"
+    shellQuote: false
 baseCommand: grep
