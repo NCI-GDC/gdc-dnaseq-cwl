@@ -15,7 +15,7 @@ function to_db()
 function main()
 {
     aws --endpoint-url http://gdc-accessor1.osdc.io s3 ls s3://target_rnaseq_alignment_meta_3/ > rnaseq_target_ids.txt
-    rnaseq_ids=(`cat rnaseq_ids.txt | awk '{ print $2}'`)
+    rnaseq_ids=(`cat rnaseq_target_ids.txt | awk '{ print $2}'`)
     for i in "${rnaseq_ids[@]}"
     do
         aws_zip=`aws --recursive --endpoint-url http://gdc-accessor1.osdc.io s3 ls s3://target_rnaseq_alignment_meta_3/${i} | grep -i fastq | grep -i zip`
