@@ -1,0 +1,85 @@
+#!/usr/bin/env cwl-runner
+
+description: |
+  Usage:  cwl-runner <this-file-path> <options>
+
+requirements:
+  - import: node-engine.cwl
+  - import: envvar-global.cwl
+  - class: DockerRequirement
+    dockerPull: quay.io/jeremiahsavage/bwa_tool
+
+class: CommandLineTool
+
+inputs:
+  - id: "#fastq1_path"
+    type: File
+    inputBinding:
+      prefix: --fastq1_path
+
+  - id: "#fastq2_path"
+    type: File
+    inputBinding:
+      prefix: --fastq2_path
+
+  - id: "#reference_fasta_path"
+    type: File
+    inputBinding:
+      prefix: --reference_fasta_path
+    secondaryFiles:
+      - ".amb"
+      - ".ann"
+      - ".bwt"
+      - ".pac"
+      - ".sa"
+
+  - id: "#readgroup_json_path"
+    type: File
+    inputBinding:
+      prefix: --readgroup_json_path
+      
+  - id: "#thread_count"
+    type: int
+    inputBinding:
+      prefix: --thread_count
+
+  - id: "#uuid"
+    type: string
+    inputBinding:
+      prefix: --uuid
+
+  - id: "#db_cred_s3url"
+    type: ["null", string]
+    inputBinding:
+      prefix: --db_cred_s3url
+
+  - id: "#s3cfg_path"
+    type: ["null", File]
+    inputBinding:
+      prefix: --s3cfg_path
+
+outputs:
+  - id: "#output_bam"
+    type: File
+    description: "The readgroups pairs split into compressed fastq"
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return $job['readgroup_json_path'].path.split('/').slice(-1)[0].slice(0,-5)+".bam"
+          }
+
+  - id: "#log"
+    type: File
+    description: "python log file"
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return $job['uuid']+"_bwa_mem.log"
+          }
+
+          
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/bwa_tool/main.py"]

@@ -1,29 +1,36 @@
 #!/usr/bin/env cwl-runner
 
 description: |
-  Usage:  cwl-runner <this-file-path> --bam_path <bam-path> --uuid <uuid-string>
+  Usage:  cwl-runner <this-file-path> [ --bam_path <bam-path> ] --uuid <uuid-string>
   Options:
-    --bam_path       Generate BAI-format index from BAM file
+    --bam_path       BAM file
     --uuid           UUID for log file and sqlite db file
 
 requirements:
   - import: node-engine.cwl
   - import: envvar-global.cwl
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/picard_tool:4
+    dockerPull: quay.io/jeremiahsavage/picard_tool
 
 class: CommandLineTool
 
 inputs:
   - id: "#bam_path"
-    type: File
-    inputBinding:
-      prefix: --bam_path
+    type:
+      type: array
+      items: File
+      inputBinding:
+        prefix: --bam_path
 
-  - id: "#case_id"
+  - id: "#uuid"
     type: string
     inputBinding:
-      prefix: --case_id
+      prefix: --uuid
+
+  - id: "#outbam_name"
+    type: string
+    inputBinding:
+      prefix: --outbam_name
 
   - id: "#db_cred_s3url"
     type: ["null", string]
@@ -36,15 +43,15 @@ inputs:
       prefix: --s3cfg_path
 
 outputs:
-  - id: "#output_bai"
+  - id: "#output_bam"
     type: File
-    description: "The index file"
+    description: "The merged BAM"
     outputBinding:
       glob:
         engine: node-engine.cwl
         script: |
           {
-            return $job['input_bam'].path.split('/').slice(-1)[0].slice(0,-4)+".bai";
+            return $job['outbam_name']
           }
 
   - id: "#log"
@@ -55,8 +62,8 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return $job['case_id']+"_picard_BuildBamIndex.log"
+          return $job['uuid']+"_picard_MergeSamFiles.log"
           }
 
           
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/picard_tool/main.py", "--tool_name", "BuildBamIndex"]
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/picard_tool/main.py", "--tool_name", "MergeSamFiles"]

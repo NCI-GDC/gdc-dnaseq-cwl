@@ -1,0 +1,175 @@
+#!/usr/bin/env cwl-runner
+
+class: Workflow
+requirements:
+  - class: ScatterFeatureRequirement
+  - class: StepInputExpressionRequirement
+  - class: InlineJavascriptRequirement
+  - import: ../../tools/node-engine.cwl
+  - import: ../../tools/envvar-global.cwl
+
+inputs:
+  - id: "#bam_path"
+    type: File
+  - id: "#reference_fasta_path"
+    type: File
+  - id: "#thread_count"
+    type: int
+  - id: "#uuid"
+    type: string
+  - id: "#db_cred_s3url"
+    type: ["null", string]
+  - id: "#s3cfg_path"
+    type: ["null", File]
+
+outputs:
+  - id: "#picard_markduplicates_output_bam"
+    type: File
+#      type: array
+#      items: File
+    source: "#picard_markduplicates.output_bam"
+
+steps:
+  - id: "#bam_readgroup_to_json"
+    run: {import: ../../tools/bam_readgroup_to_json.cwl.yaml}
+    inputs:
+      - id: "#bam_readgroup_to_json.bam_path"
+        source: "#bam_path"
+      - id: "#bam_readgroup_to_json.uuid"
+        source: "#uuid"
+    outputs:
+      - id: "#bam_readgroup_to_json.output_json"
+  
+  - id: "#biobambam2_bamtofastq"
+    run: {import: ../../tools/biobambam2_bamtofastq.cwl.yaml}
+    inputs:
+      - id: "#biobambam2_bamtofastq.bam_path"
+        source: "#bam_path"
+      - id: "#biobambam2_bamtofastq.uuid"
+        source: "#uuid"
+    outputs:
+      - id: "#biobambam2_bamtofastq.output_fastq1"
+      - id: "#biobambam2_bamtofastq.output_fastq2"
+      - id: "#biobambam2_bamtofastq.log"
+  
+  - id: "#bwa_pe"
+    run: { import: ../../tools/bwa_pe.cwl.yaml }
+    scatter: ["#bwa_pe.fastq1_path", "#bwa_pe.fastq2_path", "#bwa_pe.readgroup_json_path"]
+    scatterMethod: "dotproduct"
+    inputs:
+      - id: "#bwa_pe.fastq1_path"
+        source: "#biobambam2_bamtofastq.output_fastq1"
+      - id: "#bwa_pe.fastq2_path"
+        source: "#biobambam2_bamtofastq.output_fastq1"
+        valueFrom:
+          engine: "node-engine.cwl"
+          script: |
+            {
+            return {"path": $self.path.slice(0,-7)+"2.fq.gz", "class": "File"};
+            }
+      - id: "#bwa_pe.reference_fasta_path"
+        source: "#reference_fasta_path"
+      - id: "#bwa_pe.readgroup_json_path"
+        source: "#bam_readgroup_to_json.output_json"
+        valueFrom:
+          engine: "node-engine.cwl"
+          script: |            
+            {
+              var readgroup_basename = inputs.fastq1_path.path.split('/')[-1];
+              var json_dir = self.path.split('/').slice(0,-1).join('/');
+              var readgroup_jsonname = readgroup_basename + ".json";
+              var json_path = json_dir + "/" + readgroup_jsonname;
+              return {"path": json_path, "class": "File"};
+
+            }
+      - id: "#bwa_pe.thread_count"
+        source: "#thread_count"
+      - id: "#bwa_pe.uuid"
+        source: "#uuid"
+    outputs:
+      - id: "#bwa_pe.output_bam"
+      - id: "#bwa_pe.log"
+ #.path.split('/')[-1].slice(0,-8));
+
+  - id: "#picard_sortsam"
+    run: {import: ../../tools/picard_sortsam.cwl.yaml}
+    scatter: "#picard_sortsam.bam_path"
+    inputs:
+      - id: "#picard_sortsam.bam_path"
+        source: "#bwa_pe.output_bam"
+      - id: "#picard_sortsam.uuid"
+        source: "#uuid"
+    outputs:
+      - id: "#picard_sortsam.output_bam"
+      - id: "#picard_sortsam.log"
+          
+  - id: "#picard_mergesamfiles"
+    run: {import: ../../tools/picard_mergesamfiles.cwl.yaml}
+    inputs:
+      - id: "#picard_mergesamfiles.bam_path"
+        source: "#picard_sortsam.output_bam"
+      - id: "#picard_mergesamfiles.uuid"
+        source: "#uuid"
+      - id: "#picard_mergesamfiles.outbam_name"
+        source: "#bam_path"
+        valueFrom: $(self.path.split('/').slice(-1)[0])
+    outputs:
+      - id: "#picard_mergesamfiles.output_bam"
+      - id: "#picard_mergesamfiles.log"
+
+  - id: "#bam_reheader"
+    run: {import: ../../tools/bam_reheader.cwl.yaml}
+    inputs:
+      - id: "#bam_reheader.bam_path"
+        source: "#picard_mergesamfiles.output_bam"
+      - id: "#bam_reheader.uuid"
+        source: "#uuid"
+    outputs:
+      - id: "#bam_reheader.output_bam"
+      - id: "#bam_reheader.log"
+
+  - id: "#picard_markduplicates"
+    run: {import: ../../tools/picard_markduplicates.cwl.yaml}
+    inputs:
+      - id: "#picard_markduplicates.bam_path"
+        source: "#bam_reheader.output_bam"
+      - id: "##picard_markduplicates.uuid"
+        source: "#uuid"
+    outputs:
+      - id: "#picard_markduplicates.output_bam"
+      - id: "#picard_markduplicates.output_bai"
+      - id: "#picard_markduplicates.log"
+
+   # {"path": $inputs['fastq1_path'].path), "class": "File"} #.slice(0,-7)+"2.fq.gz")
+            #return {"path": $self.path, "class": "File"}; #.slice(0,-7)+"2.fq.gz")
+
+
+
+            # {
+            #   var readgroup_basename = $(inputs.fastq1_path.path);
+            #   var readgroup_jsonname = readgroup_basename + ".json";
+            #   for (var i = 0; i < self.length; i++) {
+            #     if (self[i].path.indexOf(readgroup_jsonname) >= 0) {
+            #       return {"path": $self[i].path, "class": "File"};
+            #     }
+            #   }
+            # }
+
+
+            # var is_dict = $self.path;
+            # if (is_dict != null) {
+            #   var readgroup_basename = $(inputs.fastq1_path);
+            #   var readgroup_jsonname = readgroup_basename + ".json";
+            #   json_dir = $self.path.match(/.*//);
+            #   json_path = json_dir + readgroup_jsonname;
+            #   return {"path": $self.json_path, "class": "File"};
+            # }
+            # else {
+            #   var readgroup_basename = $(inputs.fastq1_path);
+            #   var readgroup_jsonname = readgroup_basename + ".json";
+            #   for (var i = 0; i < self.length; i++) {
+            #     if (self[i].indexOf(readgroup_jsonname) > -1)) {
+            #       return {"path": $self[i].path, "class": "File"};
+            #     }
+            #   }
+            # }

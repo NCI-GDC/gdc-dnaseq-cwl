@@ -3,14 +3,14 @@
 description: |
   Usage:  cwl-runner <this-file-path> --bam_path <bam-path> --uuid <uuid-string>
   Options:
-    --bam_path       Generate BAI-format index from BAM file
+    --bam_path       Write an arbitrary number of compressed readgroups
     --uuid           UUID for log file and sqlite db file
 
 requirements:
   - import: node-engine.cwl
   - import: envvar-global.cwl
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/picard_tool:4
+    dockerPull:  quay.io/jeremiahsavage/bam_readgroup_to_json
 
 class: CommandLineTool
 
@@ -20,10 +20,10 @@ inputs:
     inputBinding:
       prefix: --bam_path
 
-  - id: "#case_id"
+  - id: "#uuid"
     type: string
     inputBinding:
-      prefix: --case_id
+      prefix: --uuid
 
   - id: "#db_cred_s3url"
     type: ["null", string]
@@ -36,16 +36,13 @@ inputs:
       prefix: --s3cfg_path
 
 outputs:
-  - id: "#output_bai"
-    type: File
-    description: "The index file"
+  - id: "#output_json"
+    type:
+      type: array
+      items: File
+    description: "The readgroups pairs split into compressed fastq"
     outputBinding:
-      glob:
-        engine: node-engine.cwl
-        script: |
-          {
-            return $job['input_bam'].path.split('/').slice(-1)[0].slice(0,-4)+".bai";
-          }
+      glob: "*.json"
 
   - id: "#log"
     type: File
@@ -55,8 +52,8 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return $job['case_id']+"_picard_BuildBamIndex.log"
+          return $job['uuid']+"_bam_readgroup_to_json.log"
           }
 
           
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/picard_tool/main.py", "--tool_name", "BuildBamIndex"]
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/bam_readgroup_to_json/main.py"]
