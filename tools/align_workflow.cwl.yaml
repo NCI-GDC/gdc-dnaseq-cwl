@@ -236,15 +236,3 @@
           source: "#bamtoreadgroup.output_readgroup"
       outputs:
         - id: "#align.output_bam"
-
-
-            # var path_holding = [];
-            # for (var i = 0; i < self.length; i++) {
-            #    path_holding.push(self[i]);
-            # }
-            # var sorted_path = path_holding.sort();
-            # var output_list = [];
-            # for (var i = 0; i < sorted_path.length; i++) {
-            #   output_list.push({"path": sorted_path[i], "class": "File"});
-            # }
-            # return output_list;
