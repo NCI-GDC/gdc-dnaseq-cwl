@@ -43,6 +43,14 @@ outputs:
     description: "The readgroups pairs split into compressed fastq"
     outputBinding:
       glob: "*.json"
+      outputEval:
+        engine: node-engine.cwl
+        script: |
+            {
+            self.sort(function(a,b) { return a.path > b.path });
+            return self;
+            }
+         
 
   - id: "#log"
     type: File
