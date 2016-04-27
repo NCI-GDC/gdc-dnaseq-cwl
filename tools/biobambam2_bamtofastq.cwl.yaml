@@ -43,7 +43,14 @@ outputs:
     description: "The readgroups pairs split into compressed fastq"
     outputBinding:
       glob: fastq/*1.fq.gz
-
+      outputEval:
+        engine: node-engine.cwl
+        script: |
+          {
+          self.sort(function(a,b) { return a.path > b.path });
+          return self;
+          }
+ 
   - id: "#output_fastq2"
     type:
       type: array
@@ -51,6 +58,13 @@ outputs:
     description: "Read 2 of PE"
     outputBinding:
       glob: fastq/*2.fq.gz
+      outputEval:
+        engine: node-engine.cwl
+        script: |
+          {
+          self.sort(function(a,b) { return a.path > b.path });
+          return self;
+          }
 
   - id: "#log"
     type: File
