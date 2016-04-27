@@ -100,7 +100,7 @@
         engine: node-engine.cwl
         script: |
           {
-          return inputs.fastq1_path.path.split('/').slice(-1)[0];
+          return '"' + inputs.fastq1_path.path.split('/').slice(-1)[0] + '"';
           }
       position: 1
       shellQuote: false
@@ -111,7 +111,7 @@
         engine: node-engine.cwl
         script: |
           {
-          return inputs.readgroup_path.path.slice(0,-10)+"_realign.bam";
+          return inputs.readgroup_path.path.split('/').slice(-1)[0].slice(0,-10)+"_realign.bam";
           }
       position: 3
       shellQuote: false
@@ -125,7 +125,7 @@
         engine: node-engine.cwl
         script: |
           {
-          return inputs.fastq2_path.path.split('/').slice(-1)[0];
+          return '"' + inputs.fastq2_path.path.split('/').slice(-1)[0] + '"';
           }
       position: 6
       shellQuote: false
@@ -136,7 +136,7 @@
         engine: node-engine.cwl
         script: |
           {
-          return inputs.readgroup_path.path.slice(0,-10)+"_realign.bam";
+          return inputs.readgroup_path.path.split('/').slice(-1)[0].slice(0,-10)+"_realign.bam";
           }
       position: 8
       shellQuote: false
@@ -150,7 +150,7 @@
         engine: node-engine.cwl
         script: |
           {
-          return inputs.readgroup_path.path.split('/').slice(-1)[0];
+          return '"' + inputs.readgroup_path.path.split('/').slice(-1)[0] + '"';
           }
       position: 11
       shellQuote: false
