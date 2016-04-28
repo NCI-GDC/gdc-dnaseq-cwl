@@ -65,7 +65,7 @@ outputs:
 
   - id: "#sqlite"
     type: File
-    description: "python log file"
+    description: "time/mem stats in sqlite"
     outputBinding:
       glob:
         engine: node-engine.cwl
