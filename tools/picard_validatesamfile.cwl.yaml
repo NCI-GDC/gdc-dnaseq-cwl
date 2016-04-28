@@ -44,7 +44,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-            return $job['input_bam'].path.split('/').slice(-1)[0].slice(0,-4)+".sqlite";
+            return inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".sqlite";
           }
 
   - id: "#log"
@@ -55,7 +55,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return $job['case_id']+"_picard_ValidateSamFile.log"
+          return inputs.uuid+"_picard_ValidateSamFile.log"
           }
 
           
