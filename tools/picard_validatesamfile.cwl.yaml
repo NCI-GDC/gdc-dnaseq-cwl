@@ -36,15 +36,15 @@ inputs:
       prefix: --s3cfg_path
 
 outputs:
-  - id: "#output_sqlite"
+  - id: "#output_validate"
     type: File
-    description: "The sqlite file"
+    description: "The validation file"
     outputBinding:
       glob:
         engine: node-engine.cwl
         script: |
           {
-            return inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".sqlite";
+            return inputs.bam_path.path.split('/').slice(-1)[0]+".validate";
           }
 
   - id: "#log"
@@ -56,6 +56,17 @@ outputs:
         script: |
           {
           return inputs.uuid+"_picard_ValidateSamFile.log"
+          }
+
+  - id: "#sqlite"
+    type: File
+    description: "python log file"
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return inputs.uuid+".db"
           }
 
           
