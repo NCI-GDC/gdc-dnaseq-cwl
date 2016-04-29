@@ -1,0 +1,75 @@
+#!/usr/bin/env cwl-runner
+
+description: |
+  Usage:  cwl-runner <this-file-path> --input_bam <bam-path> --reference_fasta_path <reference-fasta-path> --uuid <uuid-string>
+  Options:
+    --input_bam       Generate metrics from BAM file
+    --uuid           UUID for log file and sqlite db file
+
+requirements:
+  - import: node-engine.cwl
+  - import: envvar-global.cwl
+  - class: DockerRequirement
+    dockerPull: quay.io/jeremiahsavage/picard_tool
+
+class: CommandLineTool
+
+inputs:
+  - id: "#bam_path"
+    type: File
+    inputBinding:
+      prefix: --bam_path
+
+  - id: "reference_fasta_path"
+    type: File
+    inputBinding:
+      prefix: --reference_fasta_path
+
+  - id: "#uuid"
+    type: string
+    inputBinding:
+      prefix: --uuid
+
+  - id: "#db_cred_s3url"
+    type: ["null", string]
+    inputBinding:
+      prefix: --db_cred_s3url
+
+  - id: "#s3cfg_path"
+    type: ["null", string]
+    inputBinding:
+      prefix: --s3cfg_path
+      
+outputs:
+  - id: "#log"
+    type: File
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return inputs.uuid+"_picard_CollectMultipleMetrics.log";
+          }
+
+  - id: "#output_sqlite"
+    type: File
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return inputs.uuid + ".db";
+          }
+  
+  - id: "#alignment_summary_metrics"
+    type: File
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return "picard_CollectAlignmentSummaryMetrics_"+ inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4);
+          }
+
+
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python", "/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/picard_tool/main.py", "--tool_name", "CollectAlignmentSummaryMetrics"]
