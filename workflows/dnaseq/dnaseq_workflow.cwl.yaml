@@ -215,7 +215,7 @@ steps:
         source: "#uuid"
     outputs:
       - id: "#picard_collectalignmentsummarymetrics_post.sqlite"
-        
+
   - id: "#readgroup_json_db" # to implement
     run: {import ../../tools/readgroup_json_db.cwl.yaml}
     scatter: "#readgroup_json_db.json_path"
