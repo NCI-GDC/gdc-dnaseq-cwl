@@ -15,12 +15,12 @@ requirements:
 class: CommandLineTool
 
 inputs:
-  - id: "#input_bam"
+  - id: "#bam_path"
     type: File
     inputBinding:
       prefix: --bam_path
 
-  - id: "reference"
+  - id: "reference_fasta_path"
     type: File
     inputBinding:
       prefix: --reference_fasta_path
@@ -48,7 +48,17 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return $job['uuid']+"_picard_CollectMultipleMetrics.log"
+          return inputs.uuid+"_picard_CollectMultipleMetrics.log"
+          }
+
+  - id: "#output_sqlite"?
+    type: File
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return inputs.uuid + ".db"
           }
   
   - id: "#alignment_summary_metrics"
@@ -58,7 +68,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return "picard_CollectMultipleMetrics_"+$job['input_bam'].path.split('/').slice(-1)[0].slice(0,-4)+".alignment_summary_metrics" ;
+          return "picard_CollectMultipleMetrics_"+ inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".alignment_summary_metrics" ;
           }
 
   - id: "#base_distribution_by_cycle_metrics"
@@ -68,7 +78,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return "picard_CollectMultipleMetrics_"+$job['input_bam'].path.split('/').slice(-1)[0].slice(0,-4)+".base_distribution_by_cycle_metrics";
+          return "picard_CollectMultipleMetrics_"+ inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".base_distribution_by_cycle_metrics";
           }
 
   - id: "#base_distribution_by_cycle_pdf"
@@ -78,7 +88,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return "picard_CollectMultipleMetrics_"+$job['input_bam'].path.split('/').slice(-1)[0].slice(0,-4)+".base_distribution_by_cycle.pdf";
+          return "picard_CollectMultipleMetrics_"+ inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".base_distribution_by_cycle.pdf";
           }
 
   - id: "#gc_bias_detail_metrics"
@@ -88,7 +98,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return "picard_CollectMultipleMetrics_"+$job['input_bam'].path.split('/').slice(-1)[0].slice(0,-4)+".gc_bias.detail_metrics";
+          return "picard_CollectMultipleMetrics_"+ inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".gc_bias.detail_metrics";
           }
 
   - id: "#gc_bias_pdf"
@@ -98,7 +108,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {          
-          return "picard_CollectMultipleMetrics_"+$job['input_bam'].path.split('/').slice(-1)[0].slice(0,-4)+".gc_bias.pdf";
+          return "picard_CollectMultipleMetrics_"+ inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".gc_bias.pdf";
           }
 
   - id: "#gc_bias_summary_metrics"
@@ -108,7 +118,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return "picard_CollectMultipleMetrics_"+$job['input_bam'].path.split('/').slice(-1)[0].slice(0,-4)+".gc_bias.summary_metrics";
+          return "picard_CollectMultipleMetrics_"+inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".gc_bias.summary_metrics";
           }
 
   - id: "#insert_size_histogram_pdf"
@@ -118,7 +128,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return "picard_CollectMultipleMetrics_"+$job['input_bam'].path.split('/').slice(-1)[0].slice(0,-4)+".insert_size_histogram.pdf";
+          return "picard_CollectMultipleMetrics_"+inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".insert_size_histogram.pdf";
           }
 
   - id: "#insert_size_metrics"
@@ -128,7 +138,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return "picard_CollectMultipleMetrics_"+$job['input_bam'].path.split('/').slice(-1)[0].slice(0,-4)+".insert_size_metrics";
+          return "picard_CollectMultipleMetrics_"+inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".insert_size_metrics";
           }
 
   - id: "#quality_by_cycle_metrics"
@@ -138,7 +148,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return "picard_CollectMultipleMetrics_"+$job['input_bam'].path.split('/').slice(-1)[0].slice(0,-4)+".quality_by_cycle_metrics";
+          return "picard_CollectMultipleMetrics_"+inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".quality_by_cycle_metrics";
           }
 
   - id: "#quality_by_cycle_pdf"
@@ -148,7 +158,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return "picard_CollectMultipleMetrics_"+$job['input_bam'].path.split('/').slice(-1)[0].slice(0,-4)+".quality_by_cycle.pdf";
+          return "picard_CollectMultipleMetrics_"+inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".quality_by_cycle.pdf";
           }
 
   - id: "#quality_distribution_metrics"
@@ -158,7 +168,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return "picard_CollectMultipleMetrics_"+$job['input_bam'].path.split('/').slice(-1)[0].slice(0,-4)+".quality_distribution_metrics";
+          return "picard_CollectMultipleMetrics_"+inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".quality_distribution_metrics";
           }
 
   - id: "#quality_distribution_pdf"
@@ -168,7 +178,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return "picard_CollectMultipleMetrics_"+$job['input_bam'].path.split('/').slice(-1)[0].slice(0,-4)+".quality_distribution.pdf";
+          return "picard_CollectMultipleMetrics_"+inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".quality_distribution.pdf";
           }
 
 baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python", "/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/picard_tool/main.py", "--tool_name", "CollectMultipleMetrics"]
