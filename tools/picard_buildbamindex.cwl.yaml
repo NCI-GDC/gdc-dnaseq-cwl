@@ -20,10 +20,10 @@ inputs:
     inputBinding:
       prefix: --bam_path
 
-  - id: "#case_id"
+  - id: "#uuid"
     type: string
     inputBinding:
-      prefix: --case_id
+      prefix: --uuid
 
   - id: "#db_cred_s3url"
     type: ["null", string]
