@@ -21,7 +21,7 @@ inputs:
     inputBinding:
       prefix: --bam_path
 
-  - id: "reference"
+  - id: "reference_fasta_path"
     type: File
     inputBinding:
       prefix: --reference_fasta_path
@@ -32,12 +32,12 @@ inputs:
       prefix: --uuid
 
   - id: "#db_cred_s3url"
-    type: string
+    type: ["null", string]
     inputBinding:
       prefix: --db_cred_s3url
 
   - id: "#s3cfg_path"
-    type: string
+    type: ["null", string]
     inputBinding:
       prefix: --s3cfg_path
       
