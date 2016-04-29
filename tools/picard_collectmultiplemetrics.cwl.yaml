@@ -48,17 +48,17 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return inputs.uuid+"_picard_CollectMultipleMetrics.log"
+          return inputs.uuid+"_picard_CollectMultipleMetrics.log";
           }
 
-  - id: "#output_sqlite"?
+  - id: "#output_sqlite"
     type: File
     outputBinding:
       glob:
         engine: node-engine.cwl
         script: |
           {
-          return inputs.uuid + ".db"
+          return inputs.uuid + ".db";
           }
   
   - id: "#alignment_summary_metrics"
