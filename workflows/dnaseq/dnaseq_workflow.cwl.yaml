@@ -138,7 +138,7 @@ steps:
       - id: "#fastqc1.sqlite"
 
   - id: "#fastqc_db1"
-    run: {import: ../../tools/fastq_db.cwl.yaml}
+    run: {import: ../../tools/fastqc_db.cwl.yaml}
     inputs:
       - id: "#fastqc_db1.fastqc_zip_path"
         source: "#fastqc1.fastqc_zip"
@@ -164,7 +164,7 @@ steps:
       - id: "#fastqc2.sqlite"
 
   - id: "#fastqc_db2"
-    run: {import: ../../tools/fastq_db.cwl.yaml}
+    run: {import: ../../tools/fastqc_db.cwl.yaml}
     inputs:
       - id: "#fastqc_db2.fastqc_zip_path"
         source: "#fastqc2.fastqc_zip"
