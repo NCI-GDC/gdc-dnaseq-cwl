@@ -120,8 +120,6 @@ steps:
       - id: "#picard_markduplicates.output_bai"
       - id: "#picard_markduplicates.log"
 
-#METRICS
-  #FASTQC
   - id: "#fastqc1"
     run: {import: ../../tools/fastqc.cwl.yaml}
     scatter: "#fastqc1.fastq_path"
@@ -189,7 +187,7 @@ steps:
     run: {import: ../../tools/picard_validatesamfile.cwl.yaml}
     inputs:
       - id: "#picard_validatesamfile.bam_path"
-        source: "#bam_path"
+        source: "#picard_markduplicates.output_bam"
       - id: "#picard_validatesamfile.uuid"
         source: "#uuid"
     outputs:
@@ -197,27 +195,31 @@ steps:
       - id: "#picard_validatesamfile.log"
         
   - id: "#picard_collectalignmentsummarymetrics_pre"
-    run: {import ../../tools/picard_collectalignmentsummarymetrics.cwl.yaml}
+    run: {import: ../../tools/picard_collectalignmentsummarymetrics.cwl.yaml}
     inputs:
       - id: "#picard_collectalignmentsummarymetrics_pre.bam_path"
         source: "#bam_path"
+      - id: "#picard_collectalignmentsummarymetrics_pre.reference_fasta_path"
+        source: "#reference_fasta_path"
       - id: "#picard_collectalignmentsummarymetrics_pre.uuid"
         source: "#uuid"
     outputs:
-      - id: "#picard_collectalignmentsummarymetrics_pre.sqlite"
+      - id: "#picard_collectalignmentsummarymetrics_pre.output_sqlite"
 
   - id: "#picard_collectalignmentsummarymetrics_post"
-    run: {import ../../tools/picard_collectalignmentsummarymetrics.cwl.yaml}
+    run: {import: ../../tools/picard_collectalignmentsummarymetrics.cwl.yaml}
     inputs:
       - id: "#picard_collectalignmentsummarymetrics_post.bam_path"
         source: "#picard_markduplicates.output_bam"
+      - id: "#picard_collectalignmentsummarymetrics_post.reference_fasta_path"
+        source: "#reference_fasta_path"
       - id: "#picard_collectalignmentsummarymetrics_post.uuid"
         source: "#uuid"
     outputs:
-      - id: "#picard_collectalignmentsummarymetrics_post.sqlite"
+      - id: "#picard_collectalignmentsummarymetrics_post.output_sqlite"
 
   - id: "#readgroup_json_db" # to implement
-    run: {import ../../tools/readgroup_json_db.cwl.yaml}
+    run: {import: ../../tools/readgroup_json_db.cwl.yaml}
     scatter: "#readgroup_json_db.json_path"
     inputs:
       - id: "#readgroup_json_db.json_path"
@@ -229,7 +231,7 @@ steps:
       - id: "#readgroup_json_db.log"
 
   - id: "#samtools_idxstats"
-    run: {import ../../tools/samtools_idxstats.cwl.yaml}
+    run: {import: ../../tools/samtools_idxstats.cwl.yaml}
     scatter: "#samtools_idxstats.bam_path"
     inputs:
       - id: "#samtools_idxstats.bam_path"
@@ -241,7 +243,7 @@ steps:
       - id: "#samtools_idxstats.log"
 
   - id: "#samtools_flagstat"
-    run: {import ../../tools/samtools_flagstat.cwl.yaml}
+    run: {import: ../../tools/samtools_flagstat.cwl.yaml}
     scatter: "#samtools_flagstat.bam_path"
     inputs:
       - id: "#samtools_flagstat.bam_path"
@@ -253,8 +255,8 @@ steps:
       - id: "#samtools_flagstat.log"
 
   - id: "#samtools_stats"
-    run: {import ../../tools/samtools_stats.cwl.yaml}
-    scatter: "#samtools_stats"
+    run: {import: ../../tools/samtools_stats.cwl.yaml}
+    scatter: "#samtools_stats.bam_path"
     inputs:
       - id: "#samtools_stats.bam_path"
         source: "#picard_sortsam.output_bam"
@@ -265,7 +267,7 @@ steps:
       - id: "#samtools_stats.log"
 
   - id: "#picard_collectmultiplemetrics"
-    run: {import ../../tools/picard_collectmultiplemetrics.cwl.yaml}
+    run: {import: ../../tools/picard_collectmultiplemetrics.cwl.yaml}
     scatter: "#picard_collectmultiplemetrics.bam_path"
     inputs:
       - id: "#picard_collectmultiplemetrics.bam_path"
