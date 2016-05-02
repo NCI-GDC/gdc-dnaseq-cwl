@@ -218,7 +218,7 @@ steps:
     outputs:
       - id: "#picard_collectalignmentsummarymetrics_post.output_sqlite"
 
-  - id: "#readgroup_json_db" # to implement
+  - id: "#readgroup_json_db"
     run: {import: ../../tools/readgroup_json_db.cwl.yaml}
     scatter: "#readgroup_json_db.json_path"
     inputs:
