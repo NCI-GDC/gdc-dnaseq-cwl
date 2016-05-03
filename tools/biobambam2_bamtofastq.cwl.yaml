@@ -85,7 +85,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return inputs.uuid + ".db"
+          return "bamtofastq_" + inputs.uuid + ".db"
           }
 
           
