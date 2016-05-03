@@ -137,6 +137,7 @@ steps:
 
   - id: "#fastqc_db1"
     run: {import: ../../tools/fastqc_db.cwl.yaml}
+    scatter: "#fastqc_db1.fastqc_zip_path"
     inputs:
       - id: "#fastqc_db1.fastqc_zip_path"
         source: "#fastqc1.fastqc_zip"
@@ -163,6 +164,7 @@ steps:
 
   - id: "#fastqc_db2"
     run: {import: ../../tools/fastqc_db.cwl.yaml}
+    scatter: "#fastqc_db2.fastqc_zip_path"
     inputs:
       - id: "#fastqc_db2.fastqc_zip_path"
         source: "#fastqc2.fastqc_zip"
