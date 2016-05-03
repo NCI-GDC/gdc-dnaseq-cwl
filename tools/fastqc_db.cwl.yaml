@@ -47,7 +47,7 @@ outputs:
           return $job['uuid']+"_fastqc_db.log"
           }
 
-  - id: "#sqlite"
+  - id: "#output_sqlite"
     type: File
     description: "python log file"
     outputBinding:
