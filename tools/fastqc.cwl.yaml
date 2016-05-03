@@ -63,7 +63,7 @@ outputs:
           return $job['uuid']+"_fastqc.log"
           }
 
-  - id: "#sqlite"
+  - id: "#output_sqlite"
     type: File
     description: "time/mem stats in sqlite"
     outputBinding:
