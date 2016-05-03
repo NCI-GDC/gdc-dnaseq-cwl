@@ -81,5 +81,16 @@ outputs:
           return $job['uuid']+"_bwa_mem.log"
           }
 
+  - id: "#output_sqlite"
+    type: File
+    description: "output sqlite"
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return inputs.uuid + ".db"
+          }
+
           
 baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/bwa_tool/main.py"]
