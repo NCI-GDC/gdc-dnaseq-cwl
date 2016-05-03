@@ -74,7 +74,18 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return $job['uuid']+"_biobambam2_bamtofastq.log"
+          return inputs.uuid + "_biobambam2_bamtofastq.log"
+          }
+
+  - id: "#output_sqlite"
+    type: File
+    description: "output sqlite"
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return inputs.uuid + ".db"
           }
 
           
