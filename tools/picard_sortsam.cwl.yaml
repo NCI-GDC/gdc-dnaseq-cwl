@@ -58,5 +58,15 @@ outputs:
           return $job['uuid']+"_picard_SortSam.log"
           }
 
+  - id: "#output_sqlite"
+    type: File
+    description: "output sqlite"
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return inputs.uuid + ".db"
+          }
           
 baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/picard_tool/main.py", "--tool_name", "SortSam"]
