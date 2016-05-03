@@ -56,7 +56,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return inputs.uuid +"_bam_readgroup_to_json.log"
+          return inputs.uuid +"_readgroup_json_db.log"
           }
 
           
