@@ -55,7 +55,18 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return $job['uuid']+"_picard_BuildBamIndex.log"
+          return inputs.uuid + "_picard_BuildBamIndex.log"
+          }
+
+  - id: "#output_sqlite"
+    type: ["null", File]
+    description: "sqlite file"
+    outputBinding:
+      glob:
+        engine: node-engine.cwl
+        script: |
+          {
+          return inputs.uuid + ".db"
           }
 
           
