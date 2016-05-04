@@ -58,7 +58,7 @@ outputs:
           return inputs.uuid+"_samtools_flagstat.log"
           }
 
-  - id: "#sqlite"
+  - id: "#output_sqlite"
     type: File
     description: "python log file"
     outputBinding:
