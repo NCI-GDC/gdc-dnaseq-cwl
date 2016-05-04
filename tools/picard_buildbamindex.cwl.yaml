@@ -59,7 +59,7 @@ outputs:
           }
 
   - id: "#output_sqlite"
-    type: ["null", File]
+    type: File
     description: "sqlite file"
     outputBinding:
       glob:
