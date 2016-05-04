@@ -64,7 +64,7 @@ outputs:
           return inputs.uuid+"_samtools_idxstats.log"
           }
 
-  - id: "#sqlite"
+  - id: "#output_sqlite"
     type: File
     description: "sqlite file"
     outputBinding:
