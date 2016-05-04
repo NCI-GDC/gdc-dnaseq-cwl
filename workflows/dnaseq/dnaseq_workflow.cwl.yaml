@@ -403,6 +403,8 @@ steps:
         source: "#picard_sortsam.output_bam"
       - id: "#picard_collectmultiplemetrics.uuid"
         source: "#uuid"
+      - id: "#picard_collectmultiplemetrics.reference_fasta_path"
+        source: "#reference_fasta_path"
     outputs:
       - id: "#picard_collectmultiplemetrics.output_sqlite"
       - id: "#picard_collectmultiplemetrics.log"
