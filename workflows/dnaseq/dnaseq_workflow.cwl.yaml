@@ -25,7 +25,9 @@ outputs:
   - id: "#picard_markduplicates_output_bam"
     type: File
     source: "#picard_markduplicates.output_bam"
-
+  - id: "#merge_all_sqlite_destination_sqlite"
+    type: File
+    source: "#merge_all_sqlite.destination_sqlite"
 steps:
   - id: "#bam_readgroup_to_json"
     run: {import: ../../tools/bam_readgroup_to_json.cwl.yaml}
@@ -445,3 +447,13 @@ steps:
         source: "#uuid"
     outputs:
       - id: "#merge_picard_collectmultiplemetrics_sqlite.destination_sqlite"
+
+  - id: "#merge_all_sqlite"
+    run: {import: ../../tools/merge_sqlite.cwl.yaml}
+    inputs:
+      - id: "#merge_all_sqlite.source_sqlite"
+        source: [ "#merge_bwa_pe_sqlite.destination_sqlite", "#merge_picard_sortsam_sqlite.destination_sqlite", "#merge_picard_buildbamindex_sqlite.destination_sqlite", "#merge_fastqc1_sqlite.destination_sqlite", "#merge_fastqc_db1_sqlite.destination_sqlite", "#merge_fastqc2_sqlite.destination_sqlite", "#merge_fastqc_db2_sqlite.destination_sqlite", "#merge_readgroup_json_db_sqlite.destination_sqlite", "#merge_samtools_flagstat_sqlite.destination_sqlite", "#merge_samtools_stats_sqlite.destination_sqlite", "#merge_picard_collectmultiplemetrics_sqlite.destination_sqlite"]
+      - id: "#merge_all_sqlite.uuid"
+        source: "#uuid"
+    outputs:
+      - id: "#merge_all_sqlite.destination_sqlite"
