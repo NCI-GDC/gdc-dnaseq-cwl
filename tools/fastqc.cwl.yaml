@@ -49,7 +49,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-            return $job['fastq_path'].path.split('/').slice(-1)[0].slice(0,-6)+"_fastqc.zip";
+            return inputs.fastq_path.path.split('/').slice(-1)[0].slice(0,-6)+"_fastqc.zip";
           }
 
   - id: "#log"
@@ -60,7 +60,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return $job['uuid']+"_fastqc.log"
+          return inputs.uuid + "_fastqc.log"
           }
 
   - id: "#output_sqlite"
@@ -71,7 +71,7 @@ outputs:
         engine: node-engine.cwl
         script: |
           {
-          return $job['uuid']+"_fastqc.db"
+          return inputs.uuid + "_fastqc.db"
           }
 
           
