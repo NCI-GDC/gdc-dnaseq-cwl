@@ -35,7 +35,7 @@ inputs:
   - id: "#input_state"
     type: string
     inputBinding:
-      prefix: --input_string
+      prefix: --input_state
 
   - id: "#db_cred_s3url"
     type: ["null", string]
