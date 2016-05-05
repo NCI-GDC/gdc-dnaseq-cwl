@@ -32,6 +32,11 @@ inputs:
     inputBinding:
       prefix: --outbam_name
 
+  - id: "#input_state"
+    type: string
+    inputBinding:
+      prefix: --input_string
+
   - id: "#db_cred_s3url"
     type: ["null", string]
     inputBinding:
