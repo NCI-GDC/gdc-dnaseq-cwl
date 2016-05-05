@@ -229,7 +229,7 @@ steps:
     scatter: "#fastqc2.fastq_path"
     inputs:
       - id: "#fastqc2.fastq_path"
-        source: "#biobambam2_bamtofastq.output_fastq1"
+        source: "#biobambam2_bamtofastq.output_fastq2"
       - id: "#fastqc2.uuid"
         source: "#uuid"
       - id: "#fastqc2.thread_count"
