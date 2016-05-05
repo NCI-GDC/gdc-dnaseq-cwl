@@ -21,7 +21,6 @@ inputs:
     type: ["null", string]
   - id: "#s3cfg_path"
     type: ["null", File]
-
 outputs:
   - id: "#picard_markduplicates_output_bam"
     type: File
@@ -45,6 +44,8 @@ steps:
         source: "#bam_path"
       - id: "#biobambam2_bamtofastq.uuid"
         source: "#uuid"
+      - id: "#biobambam2_bamtofastq.input_state"
+        default: "original"
     outputs:
       - id: "#biobambam2_bamtofastq.output_fastq1"
       - id: "#biobambam2_bamtofastq.output_fastq2"
@@ -91,6 +92,8 @@ steps:
         source: "#bwa_pe.output_bam"
       - id: "#picard_sortsam.uuid"
         source: "#uuid"
+      - id: "#picard_sortsam.input_state"
+        default: "aligned_readgroup"
     outputs:
       - id: "#picard_sortsam.output_bam"
       - id: "#picard_sortsam.log"
@@ -114,8 +117,10 @@ steps:
         source: "#picard_sortsam.output_bam"
       - id: "#picard_buildbamindex.uuid"
         source: "#uuid"
+      - id: "#picard_buildbamindex.input_state"
+        default: "sorted_readgroup"
     outputs:
-      - id: "#picard_buildbamindex.output_bam"
+      - id: "#picard_buildbamindex.output_bai"
       - id: "#picard_buildbamindex.output_sqlite"
       - id: "#picard_buildbamindex.log"
 
@@ -139,6 +144,8 @@ steps:
       - id: "#picard_mergesamfiles.outbam_name"
         source: "#bam_path"
         valueFrom: $(self.path.split('/').slice(-1)[0])
+      - id: "#picard_mergesamfiles.input_state"
+        default: "sorted_readgroup"
     outputs:
       - id: "#picard_mergesamfiles.output_bam"
       - id: "#picard_mergesamfiles.log"
@@ -150,6 +157,8 @@ steps:
         source: "#picard_mergesamfiles.output_bam"
       - id: "#bam_reheader.uuid"
         source: "#uuid"
+      - id: "#bam_reheader.input_state"
+        default: "merged_readgroups"
     outputs:
       - id: "#bam_reheader.output_bam"
       - id: "#bam_reheader.log"
@@ -161,6 +170,8 @@ steps:
         source: "#bam_reheader.output_bam"
       - id: "##picard_markduplicates.uuid"
         source: "#uuid"
+      - id: "#picard_markduplicates.input_state"
+        default: "reheadered_readgroups"
     outputs:
       - id: "#picard_markduplicates.output_bam"
       - id: "#picard_markduplicates.output_bai"
@@ -260,49 +271,57 @@ steps:
     outputs:
       - id: "#merge_fastqc_db2_sqlite.destination_sqlite"
 
-  - id: "#picard_validatesamfile" #need eof and dup QNAME detection
+  - id: "#picard_validatesamfile_original" #need eof and dup QNAME detection
     run: {import: ../../tools/picard_validatesamfile.cwl.yaml}
     inputs:
       - id: "#picard_validatesamfile.bam_path"
         source: "#bam_path"
       - id: "#picard_validatesamfile.uuid"
         source: "#uuid"
+      - id: "#picard_validatesamfile.input_state"
+        default: "original"
     outputs:
       - id: "#picard_validatesamfile.sqlite"
       - id: "#picard_validatesamfile.log"
 
-  - id: "#picard_validatesamfile" #need eof and dup QNAME detection
+  - id: "#picard_validatesamfile_markduplicates" #need eof and dup QNAME detection
     run: {import: ../../tools/picard_validatesamfile.cwl.yaml}
     inputs:
       - id: "#picard_validatesamfile.bam_path"
         source: "#picard_markduplicates.output_bam"
       - id: "#picard_validatesamfile.uuid"
         source: "#uuid"
+      - id: "#picard_validatesamfile.input_state"
+        default: "markduplicates_readgroups"
     outputs:
       - id: "#picard_validatesamfile.sqlite"
       - id: "#picard_validatesamfile.log"
         
-  - id: "#picard_collectalignmentsummarymetrics_pre"
+  - id: "#picard_collectalignmentsummarymetrics_original"
     run: {import: ../../tools/picard_collectalignmentsummarymetrics.cwl.yaml}
     inputs:
-      - id: "#picard_collectalignmentsummarymetrics_pre.bam_path"
+      - id: "#picard_collectalignmentsummarymetrics_original.bam_path"
         source: "#bam_path"
-      - id: "#picard_collectalignmentsummarymetrics_pre.reference_fasta_path"
+      - id: "#picard_collectalignmentsummarymetrics_original.reference_fasta_path"
         source: "#reference_fasta_path"
-      - id: "#picard_collectalignmentsummarymetrics_pre.uuid"
+      - id: "#picard_collectalignmentsummarymetrics_original.uuid"
         source: "#uuid"
+      - id: "#picard_collectalignmentsummarymetrics_original.input_state"
+        default: "original"
     outputs:
       - id: "#picard_collectalignmentsummarymetrics_pre.output_sqlite"
 
-  - id: "#picard_collectalignmentsummarymetrics_post"
+  - id: "#picard_collectalignmentsummarymetrics_markduplicates"
     run: {import: ../../tools/picard_collectalignmentsummarymetrics.cwl.yaml}
     inputs:
-      - id: "#picard_collectalignmentsummarymetrics_post.bam_path"
+      - id: "#picard_collectalignmentsummarymetrics_markduplicates.bam_path"
         source: "#picard_markduplicates.output_bam"
-      - id: "#picard_collectalignmentsummarymetrics_post.reference_fasta_path"
+      - id: "#picard_collectalignmentsummarymetrics_markduplicates.reference_fasta_path"
         source: "#reference_fasta_path"
-      - id: "#picard_collectalignmentsummarymetrics_post.uuid"
+      - id: "#picard_collectalignmentsummarymetrics_markduplicates.uuid"
         source: "#uuid"
+      - id: "#picard_collectalignmentsummarymetrics_markduplicates.input_state"
+        default: "markduplicates_readgroups"
     outputs:
       - id: "#picard_collectalignmentsummarymetrics_post.output_sqlite"
 
@@ -336,6 +355,8 @@ steps:
   # #       source: "#picard_buildbamindex.output_bam"
   # #     - id: "#samtools_idxstats.uuid"
   # #       source: "#uuid"
+  # #     - id: "#samtools_idxstats.input_state"
+  # #       default: "sorted_readgroup"
   # #   outputs:
   # #     - id: "#samtools_idxstats.output_sqlite"
   # #     - id: "#samtools_idxstats.log"
@@ -359,6 +380,8 @@ steps:
         source: "#picard_sortsam.output_bam"
       - id: "#samtools_flagstat.uuid"
         source: "#uuid"
+      - id: "#samtools_flagstat.input_state"
+        default: "sorted_readgroup"
     outputs:
       - id: "#samtools_flagstat.output_sqlite"
       - id: "#samtools_flagstat.log"
@@ -381,6 +404,8 @@ steps:
         source: "#picard_sortsam.output_bam"
       - id: "#samtools_stats.uuid"
         source: "#uuid"
+      - id: "#samtools_stats.input_state"
+        default: "sorted_readgroup"
     outputs:
       - id: "#samtools_stats.output_sqlite"
       - id: "#samtools_stats.log"
@@ -405,6 +430,8 @@ steps:
         source: "#uuid"
       - id: "#picard_collectmultiplemetrics.reference_fasta_path"
         source: "#reference_fasta_path"
+      - id: "#picard_collectmultiplemetrics.input_state"
+        default: "sorted_readgroup"
     outputs:
       - id: "#picard_collectmultiplemetrics.output_sqlite"
       - id: "#picard_collectmultiplemetrics.log"
