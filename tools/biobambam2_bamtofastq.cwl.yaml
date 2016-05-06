@@ -47,7 +47,7 @@ outputs:
       items: File
     description: "The readgroups pairs split into compressed fastq"
     outputBinding:
-      glob: "*1.fq.gz"
+      glob: "*_1.fq.gz"
       outputEval:
         engine: node-engine.cwl
         script: |
@@ -62,7 +62,7 @@ outputs:
       items: File
     description: "Read 2 of PE"
     outputBinding:
-      glob: "*2.fq.gz"
+      glob: "*_2.fq.gz"
       outputEval:
         engine: node-engine.cwl
         script: |
