@@ -71,6 +71,51 @@ outputs:
           return self;
           }
 
+  - id: "#output_fastq1_orphaned"
+    type:
+      type: array
+      items: File
+    description: "The readgroups pairs split into compressed fastq"
+    outputBinding:
+      glob: "*_o1.fq.gz"
+      outputEval:
+        engine: node-engine.cwl
+        script: |
+          {
+          self.sort(function(a,b) { return a.path > b.path });
+          return self;
+          }
+ 
+  - id: "#output_fastq2_orphaned"
+    type:
+      type: array
+      items: File
+    description: "Read 2 of PE"
+    outputBinding:
+      glob: "*_o2.fq.gz"
+      outputEval:
+        engine: node-engine.cwl
+        script: |
+          {
+          self.sort(function(a,b) { return a.path > b.path });
+          return self;
+          }
+
+  - id: "#output_fastq"
+    type:
+      type: array
+      items: File
+    description: "Read 2 of PE"
+    outputBinding:
+      glob: "*_s.fq.gz"
+      outputEval:
+        engine: node-engine.cwl
+        script: |
+          {
+          self.sort(function(a,b) { return a.path > b.path });
+          return self;
+          }
+          
   - id: "#log"
     type: File
     description: "python log file"
