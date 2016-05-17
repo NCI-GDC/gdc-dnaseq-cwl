@@ -1,5 +1,7 @@
 #!/usr/bin/env cwl-runner
 
+cwlVersion: "cwl:draft-3"
+
 description: |
   Usage:  cwl-runner <this-file-path> [ --bam_path <bam-path> ] --uuid <uuid-string>
   Options:
@@ -33,42 +35,29 @@ inputs:
       prefix: --outbam_name
 
   - id: "#input_state"
-    type: string
-    inputBinding:
-      prefix: --input_state
-
-  - id: "#db_cred_s3url"
     type: ["null", string]
     inputBinding:
-      prefix: --db_cred_s3url
-
-  - id: "#s3cfg_path"
-    type: ["null", File]
-    inputBinding:
-      prefix: --s3cfg_path
+      prefix: --input_state
 
 outputs:
   - id: "#output_bam"
     type: File
     description: "The merged BAM"
     outputBinding:
-      glob:
-        engine: node-engine.cwl
-        script: |
-          {
-            return $job['outbam_name']
-          }
+      glob: $(inputs.outbam_name)
 
   - id: "#log"
     type: File
     description: "python log file"
     outputBinding:
-      glob:
-        engine: node-engine.cwl
-        script: |
-          {
-          return $job['uuid']+"_picard_MergeSamFiles.log"
-          }
+      glob: $(inputs.uuid+"_picard_MergeSamFiles.log")
+
+  - id: "#output_sqlite"
+    type: File
+    description: "sqlite file"
+    outputBinding:
+      glob: $(inputs.uuid + ".db")
+
 
           
 baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/picard_tool/main.py", "--tool_name", "MergeSamFiles"]
