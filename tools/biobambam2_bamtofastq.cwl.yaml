@@ -1,5 +1,7 @@
 #!/usr/bin/env cwl-runner
 
+cwlVersion: "cwl:draft-3"
+
 description: |
   Usage:  cwl-runner <this-file-path> --bam_path <bam-path> --uuid <uuid-string>
   Options:
@@ -7,8 +9,8 @@ description: |
     --uuid           UUID for log file and sqlite db file
 
 requirements:
-  - $import: node-engine.cwl
   - $import: envvar-global.cwl
+  - class: InlineJavascriptRequirement
   - class: DockerRequirement
     dockerPull: quay.io/jeremiahsavage/biobambam_tool
 
@@ -38,13 +40,7 @@ outputs:
     description: "The readgroups pairs split into compressed fastq"
     outputBinding:
       glob: "*_1.fq.gz"
-      outputEval:
-        engine: node-engine.cwl
-        script: |
-          {
-          self.sort(function(a,b) { return a.path > b.path });
-          return self;
-          }
+      outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
  
   - id: "#output_fastq2"
     type:
@@ -53,13 +49,7 @@ outputs:
     description: "Read 2 of PE"
     outputBinding:
       glob: "*_2.fq.gz"
-      outputEval:
-        engine: node-engine.cwl
-        script: |
-          {
-          self.sort(function(a,b) { return a.path > b.path });
-          return self;
-          }
+      outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
 
   - id: "#output_fastq1_orphaned"
     type:
@@ -68,13 +58,7 @@ outputs:
     description: "The readgroups pairs split into compressed fastq"
     outputBinding:
       glob: "*_o1.fq.gz"
-      outputEval:
-        engine: node-engine.cwl
-        script: |
-          {
-          self.sort(function(a,b) { return a.path > b.path });
-          return self;
-          }
+      outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
  
   - id: "#output_fastq2_orphaned"
     type:
@@ -83,13 +67,7 @@ outputs:
     description: "Read 2 of PE"
     outputBinding:
       glob: "*_o2.fq.gz"
-      outputEval:
-        engine: node-engine.cwl
-        script: |
-          {
-          self.sort(function(a,b) { return a.path > b.path });
-          return self;
-          }
+      outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
 
   - id: "#output_fastq"
     type:
@@ -98,13 +76,7 @@ outputs:
     description: "Read 2 of PE"
     outputBinding:
       glob: "*_s.fq.gz"
-      outputEval:
-        engine: node-engine.cwl
-        script: |
-          {
-          self.sort(function(a,b) { return a.path > b.path });
-          return self;
-          }
+      outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
           
   - id: "#log"
     type: File
