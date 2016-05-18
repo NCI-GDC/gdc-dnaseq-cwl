@@ -1,5 +1,7 @@
 #!/usr/bin/env cwl-runner
 
+cwlVersion: "cwl:draft-3"
+
 description: |
   Usage:  cwl-runner <this-file-path> ...
   Options:
@@ -8,8 +10,8 @@ description: |
     --uuid           UUID for log file and sqlite db file
 
 requirements:
-  - import: node-engine.cwl
-  - import: envvar-global.cwl
+  - $import: envvar-global.cwl
+  - class: InlineJavascriptRequirement
   - class: DockerRequirement
     dockerPull: quay.io/jeremiahsavage/picard_tool
 
@@ -35,43 +37,21 @@ inputs:
     type: File
     inputBinding:
       prefix: --interval_dir
-      
+
   - id: "#uuid"
     type: string
     inputBinding:
       prefix: --uuid
-
-  - id: "#db_cred_s3url"
-    type: string
-    inputBinding:
-      prefix: --db_cred_s3url
-
-  - id: "#s3cfg_path"
-    type: string
-    inputBinding:
-      prefix: --s3cfg_path
-
       
 outputs:
   - id: "#log"
     type: File
     outputBinding:
-      glob:
-        engine: node-engine.cwl
-        script: |
-          {
-          return $job['uuid']+"_picard_CalculateHsMetrics.log"
-          }
-  
+      glob: $(inputs.uuid + "_picard_CalculateHsMetrics.log")
+
   - id: "#hs_metrics"
     type: File
     outputBinding:
-      glob:
-        engine: node-engine.cwl
-        script: |
-          {
-          return "picard_CalculateHsMetrics_"+$job['input_bam'].path.split('/').slice(-1)[0].slice(0,-4) ;
-          }
-
+      glob: $("picard_CalculateHsMetrics_"+ inputs.input_bam.path.split('/').slice(-1)[0].slice(0,-4))
 
 baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python", "/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/picard_tool/main.py", "--tool_name", "CalculateHsMetrics"]

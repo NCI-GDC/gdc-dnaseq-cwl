@@ -20,8 +20,6 @@ requirements:
 
 class: CommandLineTool
 
-
-
 inputs:
   - id: "#bam_path"
     type: File
@@ -34,19 +32,9 @@ inputs:
       prefix: --uuid
 
   - id: "#input_state"
-    type: string
-    inputBinding:
-      prefix: --input_state
-
-  - id: "#db_cred_s3url"
     type: ["null", string]
     inputBinding:
-      prefix: --db_cred_s3url
-
-  - id: "#s3cfg_path"
-    type: ["null", File]
-    inputBinding:
-      prefix: --s3cfg_path
+      prefix: --input_state
 
 outputs:
   - id: "#output_bai"

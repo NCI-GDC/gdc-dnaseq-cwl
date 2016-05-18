@@ -1,11 +1,13 @@
 #!/usr/bin/env cwl-runner
 
+cwlVersion: "cwl:draft-3"
+
 description: |
   Usage:  cwl-runner <this-file-path> <options>
 
 requirements:
-  - import: node-engine.cwl
-  - import: envvar-global.cwl
+  - $import: envvar-global.cwl
+  - class: InlineJavascriptRequirement
   - class: DockerRequirement
     dockerPull: quay.io/jeremiahsavage/bwa_tool
 
@@ -48,49 +50,23 @@ inputs:
     inputBinding:
       prefix: --uuid
 
-  - id: "#db_cred_s3url"
-    type: ["null", string]
-    inputBinding:
-      prefix: --db_cred_s3url
-
-  - id: "#s3cfg_path"
-    type: ["null", File]
-    inputBinding:
-      prefix: --s3cfg_path
-
 outputs:
   - id: "#output_bam"
     type: File
     description: "The readgroups pairs split into compressed fastq"
     outputBinding:
-      glob:
-        engine: node-engine.cwl
-        script: |
-          {
-          return $job['readgroup_json_path'].path.split('/').slice(-1)[0].slice(0,-5)+".bam"
-          }
+      glob: $(inputs.readgroup_json_path.path.split('/').slice(-1)[0].slice(0,-5)+".bam")
 
   - id: "#log"
     type: File
     description: "python log file"
     outputBinding:
-      glob:
-        engine: node-engine.cwl
-        script: |
-          {
-          return $job['uuid']+"_bwa_mem.log"
-          }
+      glob: $(inputs.uuid+"_bwa_mem.log")
 
   - id: "#output_sqlite"
     type: File
     description: "output sqlite"
     outputBinding:
-      glob:
-        engine: node-engine.cwl
-        script: |
-          {
-          return inputs.uuid + ".db"
-          }
-
+      glob: $(inputs.uuid + ".db")
           
 baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/bwa_tool/main.py"]

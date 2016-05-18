@@ -10,6 +10,7 @@ description: |
 
 requirements:
   - $import: envvar-global.cwl
+  - class: InlineJavascriptRequirement
   - class: DockerRequirement
     dockerPull: quay.io/jeremiahsavage/picard_tool
 
@@ -32,19 +33,9 @@ inputs:
       prefix: --uuid
 
   - id: "#input_state"
-    type: string
+    type: ["null", string]
     inputBinding:
       prefix: --input_state
-
-  - id: "#db_cred_s3url"
-    type: ["null", string]
-    inputBinding:
-      prefix: --db_cred_s3url
-
-  - id: "#s3cfg_path"
-    type: ["null", string]
-    inputBinding:
-      prefix: --s3cfg_path
       
 outputs:
   - id: "#log"

@@ -11,6 +11,7 @@ description: |
 
 requirements:
   - $import: envvar-global.cwl
+  - class: InlineJavascriptRequirement
   - class: DockerRequirement
     dockerPull: quay.io/jeremiahsavage/picard_tool
 
@@ -31,16 +32,6 @@ inputs:
     type: string
     inputBinding:
       prefix: --uuid
-
-  - id: "#db_cred_s3url"
-    type: ["null", string]
-    inputBinding:
-      prefix: --db_cred_s3url
-
-  - id: "#s3cfg_path"
-    type: ["null", string]
-    inputBinding:
-      prefix: --s3cfg_path
       
 outputs:
   - id: "#log"
@@ -53,5 +44,9 @@ outputs:
     outputBinding:
       glob: $("picard_CollectWgsMetrics_"+ inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4))
 
+  - id: "#output_sqlite"
+    type: File
+    outputBinding:
+      glob: $(inputs.uuid + ".db")
 
 baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python", "/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/picard_tool/main.py", "--tool_name", "CollectWgsMetrics"]
