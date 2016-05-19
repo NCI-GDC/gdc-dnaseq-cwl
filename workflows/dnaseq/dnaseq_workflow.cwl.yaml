@@ -5,10 +5,10 @@ cwlVersion: "cwl:draft-3"
 class: Workflow
 
 requirements:
+  - class: InlineJavascriptRequirement
+  - class: MultipleInputFeatureRequirement
   - class: ScatterFeatureRequirement
   - class: StepInputExpressionRequirement
-  - class: InlineJavascriptRequirement
-  - $import: ../../tools/envvar-global.cwl
 
 inputs:
   - id: bam_path
@@ -51,9 +51,9 @@ steps:
       - id: input_state
         default: "original"
     outputs:
-      - id: biobambam2_bamtofastq.output_fastq1
-      - id: biobambam2_bamtofastq.output_fastq2
-      - id: biobambam2_bamtofastq.log
+      - id: output_fastq1
+      - id: output_fastq2
+      - id: log
       - id: output_sqlite
   
   - id: bwa_pe
