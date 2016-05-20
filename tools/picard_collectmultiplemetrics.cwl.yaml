@@ -61,7 +61,7 @@ outputs:
   - id: "#base_distribution_by_cycle_pdf"
     type: File
     outputBinding:
-      glob: $("picard_CollectMultipleMetrics_"+ inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".base_distribution_by_cycle.pd"f)
+      glob: $("picard_CollectMultipleMetrics_"+ inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".base_distribution_by_cycle.pdf")
 
   - id: "#gc_bias_detail_metrics"
     type: File
