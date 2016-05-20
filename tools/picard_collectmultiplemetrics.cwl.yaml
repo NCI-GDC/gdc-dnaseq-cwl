@@ -86,7 +86,7 @@ outputs:
   - id: "#insert_size_metrics"
     type: File
     outputBinding:
-      glob: $("picard_CollectMultipleMetrics_"+inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".insert_size_metrics"
+      glob: $("picard_CollectMultipleMetrics_"+inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".insert_size_metrics")
 
   - id: "#quality_by_cycle_metrics"
     type: File
