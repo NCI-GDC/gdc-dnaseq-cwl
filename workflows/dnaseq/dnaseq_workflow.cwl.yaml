@@ -41,7 +41,7 @@ steps:
     outputs:
       - id: output_json
   
-  - id: "#biobambam2_bamtofastq"
+  - id: biobambam2_bamtofastq
     run: ../../tools/biobambam2_bamtofastq.cwl.yaml
     inputs:
       - id: bam_path
@@ -75,6 +75,8 @@ steps:
         source: "#uuid"
     outputs:
       - id: output_bam
+        # outputBinding:
+        #   outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
       - id: output_sqlite
       - id: log
 
@@ -124,7 +126,7 @@ steps:
       - id: input_state
         default: "sorted_readgroup"
     outputs:
-      - id: output_bai
+      - id: output_bam
       - id: output_sqlite
       - id: log
 

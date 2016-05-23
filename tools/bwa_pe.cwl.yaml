@@ -6,7 +6,6 @@ description: |
   Usage:  cwl-runner <this-file-path> <options>
 
 requirements:
-  - $import: envvar-global.cwl
   - class: InlineJavascriptRequirement
   - class: DockerRequirement
     dockerPull: quay.io/jeremiahsavage/bwa_tool
@@ -14,17 +13,17 @@ requirements:
 class: CommandLineTool
 
 inputs:
-  - id: "#fastq1_path"
+  - id: fastq1_path
     type: File
     inputBinding:
       prefix: --fastq1_path
 
-  - id: "#fastq2_path"
+  - id: fastq2_path
     type: File
     inputBinding:
       prefix: --fastq2_path
 
-  - id: "#reference_fasta_path"
+  - id: reference_fasta_path
     type: File
     inputBinding:
       prefix: --reference_fasta_path
@@ -35,35 +34,35 @@ inputs:
       - ".pac"
       - ".sa"
 
-  - id: "#readgroup_json_path"
+  - id: readgroup_json_path
     type: File
     inputBinding:
       prefix: --readgroup_json_path
       
-  - id: "#thread_count"
+  - id: thread_count
     type: int
     inputBinding:
       prefix: --thread_count
 
-  - id: "#uuid"
+  - id: uuid
     type: string
     inputBinding:
       prefix: --uuid
 
 outputs:
-  - id: "#output_bam"
+  - id: output_bam
     type: File
     description: "The readgroups pairs split into compressed fastq"
     outputBinding:
       glob: $(inputs.readgroup_json_path.path.split('/').slice(-1)[0].slice(0,-5)+".bam")
 
-  - id: "#log"
+  - id: log
     type: File
     description: "python log file"
     outputBinding:
       glob: $(inputs.uuid+"_bwa_mem.log")
 
-  - id: "#output_sqlite"
+  - id: output_sqlite
     type: File
     description: "output sqlite"
     outputBinding:

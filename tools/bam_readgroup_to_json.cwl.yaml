@@ -9,7 +9,6 @@ description: |
     --uuid           UUID for log file and sqlite db file
 
 requirements:
-  - $import: envvar-global.cwl
   - class: InlineJavascriptRequirement
   - class: DockerRequirement
     dockerPull:  quay.io/jeremiahsavage/bam_readgroup_to_json
@@ -17,18 +16,18 @@ requirements:
 class: CommandLineTool
 
 inputs:
-  - id: "#bam_path"
+  - id: bam_path
     type: File
     inputBinding:
       prefix: --bam_path
 
-  - id: "#uuid"
+  - id: uuid
     type: string
     inputBinding:
       prefix: --uuid
 
 outputs:
-  - id: "#output_json"
+  - id: output_json
     type:
       type: array
       items: File
@@ -37,7 +36,7 @@ outputs:
       glob: "*.json"
       outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
 
-  - id: "#log"
+  - id: log
     type: File
     description: "python log file"
     outputBinding:

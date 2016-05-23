@@ -37,11 +37,12 @@ inputs:
       prefix: --input_state
 
 outputs:
-  - id: "#output_bai"
+  - id: "#output_bam"
     type: File
-    description: "The index file"
+    description: "The indexed file"
     outputBinding:
-      glob: $(inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".bai")
+      glob: $(inputs.bam_path.path.split('/').slice(-1)[0])
+      secondaryFiles: $(inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".bai")
 
   - id: "#log"
     type: File

@@ -9,7 +9,6 @@ description: |
     --uuid           UUID for log file and sqlite db file
 
 requirements:
-  - $import: envvar-global.cwl
   - class: InlineJavascriptRequirement
   - class: DockerRequirement
     dockerPull: quay.io/jeremiahsavage/biobambam_tool
@@ -17,23 +16,23 @@ requirements:
 class: CommandLineTool
 
 inputs:
-  - id: "#bam_path"
+  - id: bam_path
     type: File
     inputBinding:
       prefix: --bam_path
 
-  - id: "#uuid"
+  - id: uuid
     type: string
     inputBinding:
       prefix: --uuid
 
-  - id: "#input_state"
+  - id: input_state
     type: ["null", string]
     inputBinding:
       prefix: --input_state
 
 outputs:
-  - id: "#output_fastq1"
+  - id: output_fastq1
     type:
       type: array
       items: File
@@ -42,7 +41,7 @@ outputs:
       glob: "*_1.fq.gz"
       outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
  
-  - id: "#output_fastq2"
+  - id: output_fastq2
     type:
       type: array
       items: File
@@ -51,7 +50,7 @@ outputs:
       glob: "*_2.fq.gz"
       outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
 
-  - id: "#output_fastq1_orphaned"
+  - id: output_fastq1_orphaned
     type:
       type: array
       items: File
@@ -60,7 +59,7 @@ outputs:
       glob: "*_o1.fq.gz"
       outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
  
-  - id: "#output_fastq2_orphaned"
+  - id: output_fastq2_orphaned
     type:
       type: array
       items: File
@@ -69,7 +68,7 @@ outputs:
       glob: "*_o2.fq.gz"
       outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
 
-  - id: "#output_fastq"
+  - id: output_fastq
     type:
       type: array
       items: File
@@ -78,17 +77,16 @@ outputs:
       glob: "*_s.fq.gz"
       outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
           
-  - id: "#log"
+  - id: log
     type: File
     description: "python log file"
     outputBinding:
       glob: $(inputs.uuid + "_biobambam2_bamtofastq.log")
 
-  - id: "#output_sqlite"
+  - id: output_sqlite
     type: File
     description: "output sqlite"
     outputBinding:
       glob: $("bamtofastq_" + inputs.uuid + ".db")
-
           
 baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/biobambam_tool/main.py", "--tool_name", "bamtofastq"]
