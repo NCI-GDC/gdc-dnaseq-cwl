@@ -37,7 +37,7 @@ inputs:
     inputBinding:
       prefix: --outbam_name
 
-  - id: reference_fast_path
+  - id: reference_fasta_path
     type: File
     inputBinding:
       prefix: --reference_fasta_path
@@ -65,4 +65,4 @@ outputs:
       glob: $(inputs.uuid + ".db")
 
 
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python", "/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/picard_tool/main.py", "--tool_name", "CalculateHsMetrics"]
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python", "/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/picard_tool/main.py", "--tool_name", "CalculateHsMetrics_gdc"]
