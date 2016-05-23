@@ -17,48 +17,48 @@ requirements:
 class: CommandLineTool
 
 inputs:
-  - id: "#bam_path"
+  - id: bam_path
     type: File
     inputBinding:
       prefix: --bam_path
 
-  - id: "#readgroup_json_path"
+  - id: readgroup_json_path
     type: File
     inputBinding:
       prefix: --readgroup_json_path
 
-  - id: "#bam_library_kit_json_path"
+  - id: bam_library_kit_json_path
     type: File
     inputBinding:
       prefix: --bam_library_kit_json_path
 
-  - id: "#orig_bam_name"
+  - id: orig_bam_name
     type: string
     inputBinding:
       prefix: --outbam_name
 
-  - id: "reference"
+  - id: reference_fast_path
     type: File
     inputBinding:
       prefix: --reference_fasta_path
 
-  - id: "#uuid"
+  - id: uuid
     type: string
     inputBinding:
       prefix: --uuid
       
 outputs:
-  - id: "#log"
+  - id: log
     type: File
     outputBinding:
       glob: $(inputs.uuid + "_picard_CalculateHsMetrics.log")
 
-  - id: "#hs_metrics"
+  - id: hs_metrics
     type: File
     outputBinding:
       glob: $("picard_CalculateHsMetrics_"+ inputs.input_bam.path.split('/').slice(-1)[0].slice(0,-4))
 
-  - id: "#output_sqlite"
+  - id: output_sqlite
     type: File
     description: "sqlite file"
     outputBinding:
