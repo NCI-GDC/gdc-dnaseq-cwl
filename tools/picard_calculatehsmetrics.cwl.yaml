@@ -51,7 +51,7 @@ outputs:
   - id: log
     type: File
     outputBinding:
-      glob: $(inputs.uuid + "_picard_CalculateHsMetrics.log")
+      glob: $(inputs.uuid + "_picard_CalculateHsMetrics_gdc.log")
 
   - id: hs_metrics
     type: File
