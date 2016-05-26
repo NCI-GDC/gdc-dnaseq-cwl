@@ -23,9 +23,11 @@ inputs:
       inputBinding:
         prefix: --bam_path
       secondaryFiles: |
-          ${
-             return {"path": self.path.slice(0,-4)+".bai", "class": "File"};
-           }
+          ${ return [{"path": self.path.slice(0,-4)).bai, "class": "File"}];}
+      #glob: 
+        # ${
+        # return [{"path": self.path.slice(0,-4)+".bai", "class": "File"}];
+        # }
 
   - id: known_indel_vcf_path
     type: File
