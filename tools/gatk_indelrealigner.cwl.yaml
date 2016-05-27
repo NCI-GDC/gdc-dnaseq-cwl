@@ -16,16 +16,16 @@ requirements:
 class: CommandLineTool
 
 inputs:
-  - id: input_bam_path
+  - id: "#input_bam_path"
     type:
       type: array
       items: File
       inputBinding:
         prefix: --bam_path
-    secondaryFiles: |
-      ${
+      secondaryFiles: |
+        ${
         return {"path": self.path.slice(0,-4) + ".bai", "class": "File"};
-      }
+        }
       #glob: 
         # ${
         # return [{"path": self.path.slice(0,-4)+".bai", "class": "File"}];
