@@ -56,7 +56,7 @@ outputs:
   - id: hs_metrics
     type: File
     outputBinding:
-      glob: $("picard_CalculateHsMetrics_"+ inputs.input_bam.path.split('/').slice(-1)[0].slice(0,-4))
+      glob: $("picard_calculatehsmetrics_"+ inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4))
 
   - id: output_sqlite
     type: File
