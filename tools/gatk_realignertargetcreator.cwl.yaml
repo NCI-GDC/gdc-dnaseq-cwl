@@ -57,15 +57,6 @@ inputs:
     inputBinding:
       prefix: --uuid
 
-  - id: "#db_cred_s3url"
-    type: string
-    inputBinding:
-      prefix: --db_cred_s3url
-
-  - id: "#s3cfg_path"
-    type: File
-    inputBinding:
-      prefix: --s3cfg_path
 
 outputs:
   - id: "#output_intervals"
@@ -89,6 +80,12 @@ outputs:
           {
           return $job['uuid']+"_gatk_realignertargetcreator.log"
           }
+
+  - id: output_sqlite
+    type: File
+    description: "sqlite file"
+    outputBinding:
+      glob: $(inputs.uuid + ".db")
 
           
 baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/tools/cocleaning-tool/main.py", "--tool_name", "realignertargetcreator"]
