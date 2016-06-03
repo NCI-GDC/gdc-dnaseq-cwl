@@ -78,6 +78,5 @@ outputs:
     outputBinding:
       glob: $(inputs.uuid + ".db")
 
-          
 baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/tools/cocleaning-tool/main.py", "--tool_name", "indelrealigner"]
 #        ./*.bam
