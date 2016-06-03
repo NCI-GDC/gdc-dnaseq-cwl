@@ -56,6 +56,7 @@ outputs:
       type: array
       items: File
     outputBinding:
+      outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
       glob: |
         {
         var bam_array = [];
@@ -64,7 +65,9 @@ outputs:
         }
         return bam_array
         }
-    outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
+        
+    secondaryFiles:
+      - ^.bai
 
   - id: log
     type: File
@@ -79,4 +82,3 @@ outputs:
       glob: $(inputs.uuid + ".db")
 
 baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/tools/cocleaning-tool/main.py", "--tool_name", "indelrealigner"]
-#        ./*.bam
