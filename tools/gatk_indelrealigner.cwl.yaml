@@ -26,10 +26,6 @@ inputs:
         ${
         return {"path": self.path.slice(0,-4) + ".bai", "class": "File"};
         }
-      #glob: 
-        # ${
-        # return [{"path": self.path.slice(0,-4)+".bai", "class": "File"}];
-        # }
 
   - id: known_indel_vcf_path
     type: File
@@ -67,7 +63,15 @@ outputs:
       type: array
       items: File
     outputBinding:
-      glob: ./*.bam  #return $job['input_bam_path'].path.split('/').slice(-1)[0] need to build an array, not a file
+      glob: |
+        {
+        var bam_array = [];
+        for (var i = 0; i < inputs.bam_path.length; i++) {
+          bam_array.concact({"path": inputs.bam_path[i].path.split('/').slice(-1)[0], "class": "File"});
+        }
+        return bam_array
+        }
+    outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
 
   - id: log
     type: File
@@ -77,3 +81,4 @@ outputs:
 
           
 baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/tools/cocleaning-tool/main.py", "--tool_name", "indelrealigner"]
+#        ./*.bam
