@@ -41,12 +41,8 @@ outputs:
     description: "The indexed file"
     outputBinding:
       glob: $(inputs.bam_path.path.split('/').slice(-1)[0])
-    secondaryFiles: |
-      ${
-        return [
-          {"path": inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".bai" , "class": "File"}
-        ];
-       }
+    secondaryFiles:
+      - ^.bai
 
   - id: log
     type: File

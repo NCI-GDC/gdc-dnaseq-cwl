@@ -19,10 +19,7 @@ inputs:
     type: int
   - id: uuid
     type: string
-  - id: db_cred_s3url
-    type: ["null", string]
-  - id: s3cfg_path
-    type: ["null", File]
+
 outputs:
   - id: picard_markduplicates_output_bam
     type: File
@@ -30,6 +27,7 @@ outputs:
   - id: merge_all_sqlite_destination_sqlite
     type: File
     source: "#merge_all_sqlite/destination_sqlite"
+
 steps:
   - id: bam_readgroup_to_json
     run: ../../tools/bam_readgroup_to_json.cwl.yaml
@@ -180,7 +178,6 @@ steps:
         default: "reheadered_readgroups"
     outputs:
       - id: output_bam
-      - id: output_bai
       - id: log
 
   - id: fastqc1

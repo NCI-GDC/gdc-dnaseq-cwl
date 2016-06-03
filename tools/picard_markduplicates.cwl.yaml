@@ -38,12 +38,14 @@ outputs:
     description: "The bam with marked duplicates"
     outputBinding:
       glob: $(inputs.bam_path.path.split('/').slice(-1)[0])
+    secondaryFiles:
+      - ^.bai
 
-  - id: "#output_bai"
-    type: File
-    description: "bam index file"
-    outputBinding:
-      glob: $(inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".bai")
+  # - id: "#output_bai"
+  #   type: File
+  #   description: "bam index file"
+  #   outputBinding:
+  #     glob: $(inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".bai")
           
   - id: "#log"
     type: File
