@@ -64,8 +64,7 @@ outputs:
           bam_array.concact({"path": inputs.bam_path[i].path.split('/').slice(-1)[0], "class": "File"});
         }
         return bam_array
-        }
-        
+        }        
     secondaryFiles:
       - ^.bai
 

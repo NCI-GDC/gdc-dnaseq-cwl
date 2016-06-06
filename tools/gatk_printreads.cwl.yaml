@@ -37,7 +37,7 @@ inputs:
       - ^.dict
 
   - id: thread_count
-    type: string
+    type: int
     inputBinding:
       prefix: --thread_count
 
