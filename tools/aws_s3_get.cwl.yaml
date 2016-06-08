@@ -1,0 +1,51 @@
+#!/usr/bin/env cwl-runner
+cwlVersion: "cwl:draft-3"
+
+class: CommandLineTool
+requirements:
+  - class: ShellCommandRequirement
+  - class: InlineJavascriptRequirement
+  - class: DockerRequirement
+    dockerPull: quay.io/jeremiahsavage/awscli
+
+inputs:
+  - id: endpoint_url
+    type: ["null", string]
+    inputBinding:
+      prefix: --endpoint-url
+      position: 10
+      
+  - id: profile
+    type: ["null", string]
+    inputBinding:
+      prefix: --profile
+      position: 10
+    
+  - id: S3Uri
+    type: string
+    inputBinding:
+      position: 98
+
+outputs:
+  - id: "#output"
+    type: File
+    outputBinding:
+      glob: $(inputs.S3Uri.split('/').slice(-1)[0])
+
+arguments:
+  - valueFrom: "bin.time"
+    position: 0
+
+  - valueFrom: aws
+    position: 1
+
+  - valueFrom: s3
+    position: 2
+
+  - valueFrom: cp
+    position: 3
+
+  - valueFrom: .
+    position: 99
+
+baseCommand: [/usr/bin/time, -v, -o]
