@@ -32,6 +32,11 @@ inputs:
     inputBinding:
       prefix: --ini_section
 
+  - id: "#uuid"
+    type: string
+    inputBinding:
+      prefix: --uuid
+
 outputs:
   - id: "#log"
     type: File
