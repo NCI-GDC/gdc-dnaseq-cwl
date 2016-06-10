@@ -12,7 +12,7 @@ requirements:
   - $import: envvar-global.cwl
   - class: InlineJavascriptRequirement
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/sqlite_to_postgres_hirate
+    dockerPull: quay.io/jeremiahsavage/sqlite_to_postgres
 
 class: CommandLineTool
 
