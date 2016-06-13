@@ -51,7 +51,7 @@ def main():
 
     for s3_url in s3_list:
         print('s3_url=%s' % s3_url)
-        cmd = ['s3cmd', '-c', '/home/ubuntu/.s3cfg.cleversafe', 'get', s3_url.encode('ascii')]
+        cmd = ['s3cmd', '--force', '-c', '/home/ubuntu/.s3cfg.cleversafe', 'get', s3_url.encode('ascii')]
         print('cmd=%s' % cmd)
         output = subprocess.check_output(cmd)
         db_file = s3_url.split('/')[-1]
