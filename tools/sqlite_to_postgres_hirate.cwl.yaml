@@ -17,28 +17,28 @@ requirements:
 class: CommandLineTool
 
 inputs:
-  - id: "#source_sqlite_path"
+  - id: source_sqlite_path
     type: File
     inputBinding:
       prefix: --source_sqlite_path
 
-  - id: "#postgres_creds_path"
+  - id: postgres_creds_path
     type: File
     inputBinding:
-      prefix: --postgres_creds_s3url
+      prefix: --postgres_creds_path
 
-  - id: "#ini_section"
+  - id: ini_section
     type: string
     inputBinding:
       prefix: --ini_section
 
-  - id: "#uuid"
+  - id: uuid
     type: string
     inputBinding:
       prefix: --uuid
 
 outputs:
-  - id: "#log"
+  - id: log
     type: File
     description: "python log file"
     outputBinding:
