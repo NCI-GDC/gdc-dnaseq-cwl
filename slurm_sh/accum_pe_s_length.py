@@ -25,7 +25,7 @@ def to_postgres(db_file):
     print('output=\n%s\n\n\n' % output.decode().format())
     return
 
-def write_data(db_file, outfile_open):
+def write_data(db_file):
     if has_fastqc_data_Basic_Statistics(db_file):
         to_postgres(db_file)
     return
@@ -44,13 +44,13 @@ def main():
             print('\tfile_name=%s' % file_name)
             s3_list.append(file_name)
 
-    outfile = 'uuid_fastq_lengt.tsv'
-    outfile_open = open(outfile, 'w')
     for s3_url in s3_list:
+        print('s3_url=%s' % s3_url)
         cmd = ['s3cmd', '-c', '/home/ubuntu/.s3cfg.cleversafe', 'get', s3_url]
+        print('cmd=%s' % cmd)
         db_file = s3_url.split('/')[-1]
-        write_data(db_file, outfile_open)
-    outfile_open.close()
+        print('db_file=%s' % db_file)
+        write_data(db_file)
                        
 
 if __name__ == '__main__':
