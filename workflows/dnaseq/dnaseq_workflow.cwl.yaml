@@ -13,6 +13,8 @@ requirements:
 inputs:
   - id: bam_path
     type: File
+  - id: db_snp_path
+    type: File
   - id: reference_fasta_path
     type: File
   - id: thread_count
@@ -38,7 +40,7 @@ steps:
         source: "#uuid"
     outputs:
       - id: output_json
-  
+
   - id: biobambam2_bamtofastq
     run: ../../tools/biobambam2_bamtofastq.cwl.yaml
     inputs:
@@ -53,7 +55,7 @@ steps:
       - id: output_fastq2
       - id: log
       - id: output_sqlite
-  
+
   - id: bwa_pe
     run: ../../tools/bwa_pe.cwl.yaml
     scatter: ["#bwa_pe/fastq1_path", "#bwa_pe/fastq2_path", "#bwa_pe/readgroup_json_path"]
@@ -85,7 +87,7 @@ steps:
         source: "#uuid"
     outputs:
       - id: "#merge_bwa_pe_sqlite/destination_sqlite"
-        
+
   - id: picard_sortsam
     run: ../../tools/picard_sortsam.cwl.yaml
     scatter: "#picard_sortsam/bam_path"
@@ -110,7 +112,7 @@ steps:
         source: "#uuid"
     outputs:
       - id: destination_sqlite
-          
+
   - id: picard_buildbamindex
     run: ../../tools/picard_buildbamindex.cwl.yaml
     scatter: "#picard_buildbamindex/bam_path"
@@ -297,7 +299,7 @@ steps:
     outputs:
       - id: sqlite
       - id: log
-        
+
   - id: picard_collectalignmentsummarymetrics_original
     run: ../../tools/picard_collectalignmentsummarymetrics.cwl.yaml
     inputs:
@@ -335,8 +337,8 @@ steps:
       - id: uuid
         source: "#uuid"
     outputs:
-      - id: output_sqlite
       - id: log
+      - id: output_sqlite
 
   - id: merge_readgroup_json_db_sqlite
     run: ../../tools/merge_sqlite.cwl.yaml
@@ -348,30 +350,29 @@ steps:
     outputs:
       - id: destination_sqlite
 
-  # # - id: "#samtools_idxstats"
-  # #   run: {import: ../../tools/samtools_idxstats.cwl.yaml}
-  # #   scatter: "#samtools_idxstats.bam_path"
-  # #   inputs:
-  # #     - id: "#samtools_idxstats.bam_path"
-  # #       source: "#picard_buildbamindex.output_bam"
-  # #     - id: "#samtools_idxstats.uuid"
-  # #       source: "#uuid"
-  # #     - id: "#samtools_idxstats.input_state"
-  # #       default: "sorted_readgroup"
-  # #   outputs:
-  # #     - id: "#samtools_idxstats.output_sqlite"
-  # #     - id: "#samtools_idxstats.log"
+  - id: samtools_idxstats
+    run: ../../tools/samtools_idxstats.cwl.yaml
+    scatter: "#samtools_idxstats/bam_path"
+    inputs:
+      - id: bam_path
+        source: "#picard_buildbamindex/output_bam"
+      - id: uuid
+        source: "#uuid"
+      - id: input_state
+        default: "sorted_readgroup"
+    outputs:
+      - id: log
+      - id: output_sqlite
 
-  # # - id: "#merge_samtools_idxstats_sqlite"
-  # #   run: {import: ../../tools/merge_sqlite.cwl.yaml}
-  # #   inputs:
-  # #     - id: "#merge_samtools_idxstats_sqlite.source_sqlite"
-  # #       source: "#samtools_idxstats.output_sqlite"
-  # #     - id: "#merge_samtools_idxstats_sqlite.uuid"
-  # #       source: "#uuid"
-  # #   outputs:
-  # #     - id: "#merge_samtools_idxstats_sqlite.destination_sqlite"
-
+  - id: merge_samtools_idxstats_sqlite
+    run: ../../tools/merge_sqlite.cwl.yaml
+    inputs:
+      - id: source_sqlite
+        source: "#samtools_idxstats.output_sqlite"
+      - id: uuid
+        source: "#uuid"
+    outputs:
+      - id: destination_sqlite
 
   - id: samtools_flagstat
     run: ../../tools/samtools_flagstat.cwl.yaml
@@ -384,10 +385,10 @@ steps:
       - id: input_state
         default: "sorted_readgroup"
     outputs:
-      - id: output_sqlite
       - id: log
+      - id: output_sqlite
 
-  - id: "#merge_samtools_flagstat_sqlite"
+  - id: merge_samtools_flagstat_sqlite
     run: ../../tools/merge_sqlite.cwl.yaml
     inputs:
       - id: source_sqlite
@@ -408,8 +409,8 @@ steps:
       - id: input_state
         default: "sorted_readgroup"
     outputs:
-      - id: output_sqlite
       - id: log
+      - id: output_sqlite
 
   - id: merge_samtools_stats_sqlite
     run: ../../tools/merge_sqlite.cwl.yaml
@@ -434,8 +435,8 @@ steps:
       - id: input_state
         default: "sorted_readgroup"
     outputs:
-      - id: output_sqlite
       - id: log
+      - id: output_sqlite
 
   - id: merge_picard_collectmultiplemetrics_sqlite
     run: ../../tools/merge_sqlite.cwl.yaml
@@ -446,6 +447,24 @@ steps:
         source: "#uuid"
     outputs:
       - id: destination_sqlite
+
+  - id: picard_collectoxogmetrics
+    run: ../../tools/picard_collectoxogmetrics.cwl.yaml
+    scate: "#picard_collectoxogmetrics/bam_path"
+    inputs:
+      - id: bam_path
+        source: "#picard_sortsam/output_bam"
+      - id: db_snp_path
+        source: "#db_snp_path"
+      - id: input_state
+        source: "sorted_readgroup"
+      - id: reference_fasta_path
+        source: "#reference_fasta_path"
+      - id: uuid
+        source: "#uuid"
+    outputs:
+      - id: log
+      - id: output_sqlite
 
   - id: merge_all_sqlite
     run: ../../tools/merge_sqlite.cwl.yaml
