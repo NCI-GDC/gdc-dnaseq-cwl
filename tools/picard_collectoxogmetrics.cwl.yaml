@@ -1,0 +1,59 @@
+#!/usr/bin/env cwl-runner
+
+cwlVersion: "cwl:draft-3"
+
+description: |
+  Usage:  cwl-runner <this-file-path> --bam_path <bam-path> --uuid <uuid-string>
+  Options:
+    --bam_path       Generate CollectOxoGMetrics from BAM file
+    --uuid           UUID for log file and sqlite db file
+
+requirements:
+  - class: DockerRequirement
+    dockerPull: quay.io/jeremiahsavage/picard_tool
+  - class: InlineJavascriptRequirement
+
+class: CommandLineTool
+
+inputs:
+  - id: bam_path
+    type: File
+    inputBinding:
+      prefix: --bam_path
+
+  - id: db_snp_path
+    type: File
+    inputBinding:
+      prefix: --db_snp_path
+
+  - id: reference_fasta_path
+    type: File
+    inputBinding:
+      prefix: --reference_fasta_path
+
+  - id: input_state
+    type: ["null", string]
+    inputBinding:
+      prefix: --input_state
+
+  - id: uuid
+    type: string
+    inputBinding:
+      prefix: --uuid
+
+
+outputs:
+  - id: log
+    type: File
+    description: "python log file"
+    outputBinding:
+      glob: $(inputs.uuid + "_picard_CollectOxoGMetrics.log")
+
+  - id: output_sqlite
+    type: File
+    description: "sqlite file"
+    outputBinding:
+      glob: $(inputs.uuid + ".db")
+
+          
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/picard_tool/main.py", "--tool_name", "CollectOxoGMetrics"]
