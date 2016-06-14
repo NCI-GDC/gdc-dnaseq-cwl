@@ -10,12 +10,12 @@ def has_fastqc_data_Basic_Statistics(db_file):
     #print('shell_cmd=%s' % shell_cmd)
     output = subprocess.check_output(shell_cmd, shell=True)
     output_split = output.decode().split('\n')
-    print('output_split=%s' % output_split)
+    #print('output_split=%s' % output_split)
     for table in output_split:
         if 'fastqc_data_Basic_Statistics' in table.encode('ascii').strip():
-            print('db_file %s has fastqc_data_Basic_Statistic' % db_file)
+            print('db_file %s has fastqc_data_Basic_Statistics' % db_file)
             return True
-    print('db_file %s Does Not have fastqc_data_Basic_Statistic' % db_file)
+    print('db_file %s Does Not have fastqc_data_Basic_Statistics' % db_file)
     return False
 
 def to_postgres(db_file):
@@ -26,7 +26,6 @@ def to_postgres(db_file):
            '--postgres_creds_path', '/home/ubuntu/connect_jhsavage_test.ini', '--ini_section', 'test', '--uuid', 'stop']
     #print('cmd=\n%s' % cmd)
     output = subprocess.check_output(cmd)
-    os.remove(db_file)
     return
 
 def write_data(db_file):
@@ -51,11 +50,13 @@ def main():
     for s3_url in s3_list:
         #print('s3_url=%s' % s3_url)
         cmd = ['s3cmd', '--force', '-c', '/home/ubuntu/.s3cfg.cleversafe', 'get', s3_url.encode('ascii')]
-        #print('cmd=%s' % cmd)
+        print('\ncmd=%s' % cmd)
         output = subprocess.check_output(cmd)
         db_file = s3_url.split('/')[-1]
         #print('db_file=%s' % db_file)
         write_data(db_file)
+        os.remove(db_file)
+        os.remove('have_stop_stop')
                        
 
 if __name__ == '__main__':
