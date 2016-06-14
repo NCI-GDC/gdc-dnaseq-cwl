@@ -56,8 +56,17 @@ def main():
         #print('db_file=%s' % db_file)
         write_data(db_file)
         os.remove(db_file)
-        os.remove('have_stop_stop')
-                       
+        try:
+            os.remove('have_stop_stop')
+        except OSError:
+            pass
+        db_base, db_ext = os.path.splitext(db_file)
+        sql_file = db_base + '.sql'
+        try:
+            os.remove(sql_file)
+        except OSError:
+            pass
+            
 
 if __name__ == '__main__':
     main()
