@@ -73,8 +73,6 @@ steps:
         source: "#uuid"
     outputs:
       - id: output_bam
-        # outputBinding:
-        #   outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
       - id: output_sqlite
       - id: log
 
