@@ -9,9 +9,9 @@ description: |
     --uuid           UUID for log file and sqlite db file
 
 requirements:
-  - class: InlineJavascriptRequirement
   - class: DockerRequirement
     dockerPull:  quay.io/jeremiahsavage/bam_readgroup_to_json
+  - class: InlineJavascriptRequirement
 
 class: CommandLineTool
 
@@ -42,5 +42,4 @@ outputs:
     outputBinding:
       glob: $(inputs.uuid + "_bam_readgroup_to_json.log")
 
-          
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/bam_readgroup_to_json/main.py"]
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/bam_readgroup_to_json/main.py"]
