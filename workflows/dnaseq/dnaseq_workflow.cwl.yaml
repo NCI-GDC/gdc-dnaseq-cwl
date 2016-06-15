@@ -284,7 +284,7 @@ steps:
       - id: input_state
         default: "original"
     outputs:
-      - id: sqlite
+      - id: output_sqlite
       - id: log
 
   - id: picard_validatesamfile_markduplicates #need eof and dup QNAME detection
@@ -297,7 +297,7 @@ steps:
       - id: input_state
         default: "markduplicates_readgroups"
     outputs:
-      - id: sqlite
+      - id: output_sqlite
       - id: log
 
   - id: picard_collectalignmentsummarymetrics_original
