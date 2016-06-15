@@ -21,13 +21,13 @@ inputs:
       prefix: --profile
       position: 10
     
-  - id: S3Uri
+  - id: s3uri
     type: string
     inputBinding:
       position: 98
 
 outputs:
-  - id: "#output"
+  - id: output
     type: File
     outputBinding:
       glob: $(inputs.S3Uri.split('/').slice(-1)[0])
