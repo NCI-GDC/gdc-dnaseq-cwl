@@ -41,7 +41,6 @@ inputs:
     inputBinding:
       prefix: --uuid
 
-
 outputs:
   - id: log
     type: File
