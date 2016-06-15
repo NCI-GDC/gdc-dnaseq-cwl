@@ -457,7 +457,7 @@ steps:
       - id: db_snp_path
         source: "#db_snp_path"
       - id: input_state
-        source: "sorted_readgroup"
+        default: "sorted_readgroup"
       - id: reference_fasta_path
         source: "#reference_fasta_path"
       - id: uuid
