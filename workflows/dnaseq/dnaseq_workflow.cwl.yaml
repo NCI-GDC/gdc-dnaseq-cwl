@@ -368,7 +368,7 @@ steps:
     run: ../../tools/merge_sqlite.cwl.yaml
     inputs:
       - id: source_sqlite
-        source: "#samtools_idxstats.output_sqlite"
+        source: "#samtools_idxstats/output_sqlite"
       - id: uuid
         source: "#uuid"
     outputs:
