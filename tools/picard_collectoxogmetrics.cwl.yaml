@@ -32,7 +32,7 @@ inputs:
       prefix: --reference_fasta_path
 
   - id: input_state
-    type: ["null", string]
+    type: string
     inputBinding:
       prefix: --input_state
 
