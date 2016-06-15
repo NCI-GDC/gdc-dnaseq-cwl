@@ -5,6 +5,8 @@ cwlVersion: "cwl:draft-3"
 requirements:
   - class: ShellCommandRequirement
   - class: InlineJavascriptRequirement
+  - class: DockerRequirement
+    dockerPull: alpine
 
 class: CommandLineTool
 
@@ -17,18 +19,18 @@ inputs:
         - ^.bai
 
 outputs:
-  - id: bam_list
+  - id: bai_list
     type: File
     outputBinding:
-      glob: "bam.list"
+      glob: "bai.list"
 
 arguments:
   - valueFrom: ${
-        var bam_list = "";
+        var bai_list = "";
         for (var i = 0; i < inputs.bam_path.length; i ++) {
-          bam_list += " echo " + inputs.bam_path[i].path.split('/').slice(-1)[0] + " >> bam.list &&"
+          bai_list += " cat " + inputs.bam_path[i].path.slice(0,-4)+".bai" + " >> bai.list && "
         }
-        return bam_list.slice(0,-2)
+        return bai_list.slice(0,-3)
         }
     position: 1
     shellQuote: false
