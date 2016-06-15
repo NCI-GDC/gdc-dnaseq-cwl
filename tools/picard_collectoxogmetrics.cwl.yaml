@@ -54,5 +54,4 @@ outputs:
     outputBinding:
       glob: $(inputs.uuid + ".db")
 
-          
 baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/picard_tool/main.py", "--tool_name", "CollectOxoGMetrics"]
