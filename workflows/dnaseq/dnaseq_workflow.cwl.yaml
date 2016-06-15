@@ -450,7 +450,7 @@ steps:
 
   - id: picard_collectoxogmetrics
     run: ../../tools/picard_collectoxogmetrics.cwl.yaml
-    scate: "#picard_collectoxogmetrics/bam_path"
+    scatter: "#picard_collectoxogmetrics/bam_path"
     inputs:
       - id: bam_path
         source: "#picard_sortsam/output_bam"
