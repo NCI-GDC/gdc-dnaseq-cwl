@@ -9,47 +9,45 @@ description: |
     --uuid           UUID for log file and sqlite db file
 
 requirements:
-  - $import: envvar-global.cwl
-  - class: InlineJavascriptRequirement
   - class: DockerRequirement
     dockerPull: quay.io/jeremiahsavage/bam_reheader
+  - class: InlineJavascriptRequirement
 
 class: CommandLineTool
 
 inputs:
-  - id: "#bam_path"
+  - id: bam_path
     type: File
     inputBinding:
       prefix: --bam_path
 
-  - id: "#uuid"
+  - id: uuid
     type: string
     inputBinding:
       prefix: --uuid
 
-  - id: "#input_state"
+  - id: input_state
     type: ["null", string]
     inputBinding:
       prefix: --input_state
 
 outputs:
-  - id: "#output_bam"
+  - id: output_bam
     type: File
     description: "The BAM file reheadered"
     outputBinding:
       glob: $(inputs.bam_path.path.split('/').slice(-1)[0])
 
-  - id: "#log"
+  - id: log
     type: File
     description: "python log file"
     outputBinding:
       glob: $(inputs.bam_path.path.split('/').slice(-1)[0]+"_bam_reheader.log")
 
-  - id: "#output_sqlite"
+  - id: output_sqlite
     type: File
     description: "sqlite file"
     outputBinding:
       glob: $(inputs.uuid + ".db")
 
-          
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/bam_reheader/main.py"]
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/bam_reheader/main.py"]
