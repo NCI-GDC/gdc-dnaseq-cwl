@@ -32,6 +32,11 @@ outputs:
     outputBinding:
       glob: $(inputs.S3Uri.split('/').slice(-1)[0])
 
+  - id: bin_time
+    type: File
+    outputBinding:
+      glob: "bin.time"
+
 arguments:
   - valueFrom: "bin.time"
     position: 0
