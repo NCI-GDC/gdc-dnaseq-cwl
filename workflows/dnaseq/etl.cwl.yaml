@@ -1,0 +1,174 @@
+#!/usr/bin/env cwl-runner
+
+cwlVersion: "cwl:draft-3"
+
+class: Workflow
+
+requirements:
+  - class: InlineJavascriptRequirement
+
+inputs:
+  - id: bam_path
+    type: File
+  - id: db_snp_path
+    type: File
+  - id: reference_fasta_path
+    type: File
+  - id: thread_count
+    type: int
+  - id: uuid
+    type: string
+  - id: extract_s3cfg_path
+    type: File
+  - id: extract_s3cfg_section
+    type: string
+  - id: db_cred_s3url
+    type: string
+  - id: load_s3cfg_path
+    type: File
+  - id: load_s3cfg_section
+    type: string
+  - id: bam_s3url
+    type: string
+  - id: db_snp_s3url
+    type: string
+  - id: reference_fasta_s3url
+    type: string
+
+outputs:
+  - id: picard_markduplicates_output_bam
+    type: File
+    source: "#picard_markduplicates/output_bam"
+  - id: merge_all_sqlite_destination_sqlite
+    type: File
+    source: "#merge_all_sqlite/destination_sqlite"
+
+steps:
+  - id: extract_bam
+    run: ../../tools/aws_s3_get.cwl.yaml
+    inputs:
+      - id: s3uri
+        source: "#bam_s3url"
+      - id: profile
+        source: "#extract_s3cfg_section"
+      - id: endpoint_url
+        default: "http://gdc-accessors.osdc.io"
+    outputs:
+      - id: output
+      - id: bin_time
+
+  - id: extract_db_snp
+    run: ../../tools/aws_s3_get.cwl.yaml
+    inputs:
+      - id: s3uri
+        source: "#db_snp_s3url"
+      - id: profile
+        source: "#extract_s3cfg_section"
+      - id: endpoint_url
+        default: "http://gdc-accessors.osdc.io"
+    outputs:
+      - id: output
+      - id: bin_time
+
+  - id: extract_fasta_fa
+    run: ../../tools/aws_s3_get.cwl.yaml
+    inputs:
+      - id: s3uri
+        source: "#reference_fasta_s3url"
+      - id: profile
+        source: "#extract_s3cfg_section"
+      - id: endpoint_url
+        default: "http://gdc-accessors.osdc.io"
+    outputs:
+      - id: output
+      - id: bin_time
+
+  - id: extract_fasta_amb
+    run: ../../tools/aws_s3_get.cwl.yaml
+    inputs:
+      - id: s3uri
+        source: "#reference_fasta_s3url"+".amb"
+      - id: profile
+        source: "#extract_s3cfg_section"
+      - id: endpoint_url
+        default: "http://gdc-accessors.osdc.io"
+    outputs:
+      - id: output
+      - id: bin_time
+
+  - id: extract_fasta_ann
+    run: ../../tools/aws_s3_get.cwl.yaml
+    inputs:
+      - id: s3uri
+        source: "#reference_fasta_s3url" + ".ann"
+      - id: profile
+        source: "#extract_s3cfg_section"
+      - id: endpoint_url
+        default: "http://gdc-accessors.osdc.io"
+    outputs:
+      - id: output
+      - id: bin_time
+
+  - id: extract_fasta_bwt
+    run: ../../tools/aws_s3_get.cwl.yaml
+    inputs:
+      - id: s3uri
+        source: "#reference_fasta_s3url" + ".bwt"
+      - id: profile
+        source: "#extract_s3cfg_section"
+      - id: endpoint_url
+        default: "http://gdc-accessors.osdc.io"
+    outputs:
+      - id: output
+      - id: bin_time
+
+  - id: extract_fasta_fai
+    run: ../../tools/aws_s3_get.cwl.yaml
+    inputs:
+      - id: s3uri
+        source: "#reference_fasta_s3url" + ".fai"
+      - id: profile
+        source: "#extract_s3cfg_section"
+      - id: endpoint_url
+        default: "http://gdc-accessors.osdc.io"
+    outputs:
+      - id: output
+      - id: bin_time
+
+  - id: extract_fasta_pac
+    run: ../../tools/aws_s3_get.cwl.yaml
+    inputs:
+      - id: s3uri
+        source: "#reference_fasta_s3url" + ".pac"
+      - id: profile
+        source: "#extract_s3cfg_section"
+      - id: endpoint_url
+        default: "http://gdc-accessors.osdc.io"
+    outputs:
+      - id: output
+      - id: bin_time
+
+  - id: extract_fasta_sa
+    run: ../../tools/aws_s3_get.cwl.yaml
+    inputs:
+      - id: s3uri
+        source: "#reference_fasta_s3url" + ".sa"
+      - id: profile
+        source: "#extract_s3cfg_section"
+      - id: endpoint_url
+        default: "http://gdc-accessors.osdc.io"
+    outputs:
+      - id: output
+      - id: bin_time
+
+  - id: root_fasta_files
+        
+  - id: bam_readgroup_to_json
+    run: ../../tools/bam_readgroup_to_json.cwl.yaml
+    inputs:
+      - id: bam_path
+        source: "#bam_path"
+      - id: uuid
+        source: "#uuid"
+    outputs:
+      - id: output_json
