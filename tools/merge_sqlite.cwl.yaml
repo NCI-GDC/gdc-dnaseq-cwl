@@ -34,9 +34,9 @@ outputs:
     outputBinding:
       glob: $(inputs.uuid + ".db")
 
-  - id: log_sqlite
+  - id: log
     type: File
     outputBinding:
-      glob: $(inputs.uuid + "_log.db")
+      glob: $(inputs.uuid + "_merge_sqlite.log")
 
 baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/merge_sqlite/main.py"]
