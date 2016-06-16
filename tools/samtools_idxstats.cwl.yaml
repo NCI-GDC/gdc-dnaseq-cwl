@@ -9,48 +9,47 @@ description: |
     --uuid           UUID for log file and sqlite db file
 
 requirements:
-  - $import: envvar-global.cwl
-  - class: InlineJavascriptRequirement
   - class: DockerRequirement
     dockerPull: quay.io/jeremiahsavage/samtools_tool
+  - class: InlineJavascriptRequirement
 
 class: CommandLineTool
 
 inputs:
-  - id: "#bam_path"
+  - id: bam_path
     type: File
     inputBinding:
       prefix: --bam_path
       secondaryFiles:
         - $(inputs.bam_path.path.slice(0,-4)+".bai")
 
-  - id: "#uuid"
+  - id: uuid
     type: string
     inputBinding:
       prefix: --uuid
 
-  - id: "#input_state"
+  - id: input_state
     type: ["null", string]
     inputBinding:
       prefix: --input_state
 
 outputs:
-  - id: "#output_idxstats"
+  - id: output_idxstats
     type: File
     description: "The idxstats file"
     outputBinding:
       glob: $("samtools_idxstats_" + inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".txt")
 
-  - id: "#log"
+  - id: log
     type: File
     description: "python log file"
     outputBinding:
       glob: $(inputs.uuid+"_samtools_idxstats.log")
 
-  - id: "#output_sqlite"
+  - id: output_sqlite
     type: File
     description: "sqlite file"
     outputBinding:
       glob: $(inputs.uuid+".db")
           
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/samtools_tool/main.py", "--tool_name", "idxstats"]
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/samtools_tool/main.py", "--tool_name", "idxstats"]
