@@ -9,10 +9,9 @@ description: |
     --uuid           UUID for log file and sqlite db file
 
 requirements:
-  - $import: envvar-global.cwl
-  - class: InlineJavascriptRequirement
   - class: DockerRequirement
     dockerPull: quay.io/jeremiahsavage/fastqc_tool
+  - class: InlineJavascriptRequirement
 
 class: CommandLineTool
 
