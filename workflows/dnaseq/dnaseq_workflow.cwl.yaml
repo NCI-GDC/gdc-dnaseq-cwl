@@ -86,7 +86,8 @@ steps:
       - id: uuid
         source: "#uuid"
     outputs:
-      - id: "#merge_bwa_pe_sqlite/destination_sqlite"
+      - id: destination_sqlite
+      - id: log
 
   - id: picard_sortsam
     run: ../../tools/picard_sortsam.cwl.yaml
@@ -112,6 +113,7 @@ steps:
         source: "#uuid"
     outputs:
       - id: destination_sqlite
+      - id: log
 
   - id: picard_buildbamindex
     run: ../../tools/picard_buildbamindex.cwl.yaml
@@ -137,6 +139,7 @@ steps:
         source: "#uuid"
     outputs:
       - id: destination_sqlite
+      - id: log
 
   - id: picard_mergesamfiles
     run: ../../tools/picard_mergesamfiles.cwl.yaml
@@ -204,6 +207,7 @@ steps:
         source: "#uuid"
     outputs:
       - id: destination_sqlite
+      - id: log
 
   - id: fastqc_db1
     run: ../../tools/fastqc_db.cwl.yaml
@@ -226,6 +230,7 @@ steps:
         source: "#uuid"
     outputs:
       - id: destination_sqlite
+      - id: log
 
   - id: fastqc2
     run: ../../tools/fastqc.cwl.yaml
@@ -251,6 +256,7 @@ steps:
         source: "#uuid"
     outputs:
       - id: destination_sqlite
+      - id: log
 
   - id: fastqc_db2
     run: ../../tools/fastqc_db.cwl.yaml
@@ -273,6 +279,7 @@ steps:
         source: "#uuid"
     outputs:
       - id: destination_sqlite
+      - id: log
 
   - id: picard_validatesamfile_original #need eof and dup QNAME detection
     run: ../../tools/picard_validatesamfile.cwl.yaml
@@ -349,6 +356,7 @@ steps:
         source: "#uuid"
     outputs:
       - id: destination_sqlite
+      - id: log
 
   - id: samtools_idxstats
     run: ../../tools/samtools_idxstats.cwl.yaml
@@ -373,6 +381,7 @@ steps:
         source: "#uuid"
     outputs:
       - id: destination_sqlite
+      - id: log
 
   - id: samtools_flagstat
     run: ../../tools/samtools_flagstat.cwl.yaml
@@ -397,6 +406,7 @@ steps:
         source: "#uuid"
     outputs:
       - id: destination_sqlite
+      - id: log
 
   - id: samtools_stats
     run: ../../tools/samtools_stats.cwl.yaml
@@ -421,6 +431,7 @@ steps:
         source: "#uuid"
     outputs:
       - id: destination_sqlite
+      - id: log
 
   - id: picard_collectmultiplemetrics
     run: ../../tools/picard_collectmultiplemetrics.cwl.yaml
@@ -447,6 +458,7 @@ steps:
         source: "#uuid"
     outputs:
       - id: destination_sqlite
+      - id: log
 
   - id: picard_collectoxogmetrics
     run: ../../tools/picard_collectoxogmetrics.cwl.yaml
@@ -475,6 +487,7 @@ steps:
         source: "#uuid"
     outputs:
       - id: destination_sqlite
+      - id: log
         
   - id: merge_all_sqlite
     run: ../../tools/merge_sqlite.cwl.yaml
@@ -485,3 +498,4 @@ steps:
         source: "#uuid"
     outputs:
       - id: destination_sqlite
+      - id: log
