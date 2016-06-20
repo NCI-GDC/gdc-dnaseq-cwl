@@ -1,0 +1,43 @@
+#!/usr/bin/env cwl-runner
+
+cwlVersion: "cwl:draft-3"
+
+description: |
+  Usage:  cwl-runner <this-file-path> --bam_path <bam-path> --uuid <uuid-string>
+  Options:
+    --bam_path       Generate BAI-format index from BAM file
+    --uuid           UUID for log file and sqlite db file
+
+requirements:
+  - class: DockerRequirement
+    dockerPull: quay.io/jeremiahsavage/fastqc_db
+  - class: InlineJavascriptRequirement
+
+class: CommandLineTool
+
+inputs:
+  - id: fastqc_zip_path
+    type: File
+    inputBinding:
+      prefix: --fastqc_zip_path
+
+  - id: uuid
+    type: string
+    inputBinding:
+      prefix: --uuid
+
+outputs:
+  - id: log
+    type: File
+    description: "python log file"
+    outputBinding:
+      glob: $(inputs.uuid + "_fastqc_db.log")
+
+  - id: output_sqlite
+    type: File
+    description: "python log file"
+    outputBinding:
+      glob: $(inputs.uuid + "_fastqc_db.db")
+
+          
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/fastqc_db/main.py"]

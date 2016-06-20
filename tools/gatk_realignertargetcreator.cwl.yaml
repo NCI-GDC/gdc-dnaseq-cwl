@@ -1,5 +1,7 @@
 #!/usr/bin/env cwl-runner
 
+cwlVersion: "cwl:draft-3"
+
 description: |
   Usage:  cwl-runner <this-file-path> XXXX
   Options:
@@ -7,89 +9,70 @@ description: |
     --uuid           uuid
 
 requirements:
-  - import: node-engine.cwl
-  - import: envvar-global.cwl
+  - class: InlineJavascriptRequirement
   - class: DockerRequirement
     dockerPull: quay.io/ncigdc/cocleaning-tool
 
 class: CommandLineTool
 
 inputs:
-  - id: "#input_bam_path"
+  - id: bam_path
     type:
       type: array
       items: File
       inputBinding:
         prefix: --bam_path
-        secondaryFiles:
-          - engine: node-engine.cwl
-            script: |
-              {
-              return {"path": $self.path.slice(0,-4)+".bai", "class": "File"};
-              }
+      secondaryFiles:
+        - ^.bai
 
-  - id: "#known_indel_vcf_path"
+  - id: known_indel_vcf_path
     type: File
     inputBinding:
       prefix: --known_indel_vcf_path
-      secondaryFiles:
-        - ".idx"
+    secondaryFiles:
+      - .tbi
 
-  - id: "#reference_fasta_path"
+  - id: reference_fasta_path
     type: File
     inputBinding:
       prefix: --reference_fasta_path
-      secondaryFiles:
-        - ".fai"
-        - engine: node-engine.cwl
-          script: |
-            {
-            return {"path": $job['reference_fasta_path'].path.slice(0,-3)+".dict", "class": "File"};
-            }
+    secondaryFiles:
+      - .fai
+      - ^.dict
 
-  - id: "#thread_count"
-    type: string
+  - id: thread_count
+    type: int
     inputBinding:
       prefix: --thread_count
 
-  - id: "#uuid"
+  - id: uuid
     type: string
     inputBinding:
       prefix: --uuid
 
+  - id: "#db_cred_s3url"
+    type: string
+
+  - id: "#s3cfg_path"
+    type: File
+
 outputs:
-  - id: "#output_intervals"
+  - id: output_intervals
     type: File
     description: "The index file"
     outputBinding:
-      glob:
-        engine: node-engine.cwl
-        script: |
-          {
-            return $job['uuid']+".intervals";
-          }
+      glob: $(inputs.uuid + ".intervals")
 
-  - id: "#output_sqlite"
-    type: File
-    description: "sqlite file"
-    outputBinding:
-      glob:
-        engine: node-engine.cwl
-        script : |
-          {
-          return $job['uuid']+".db"
-          }
-
-  - id: "#log"
+  - id: log
     type: File
     description: "python log file"
     outputBinding:
-      glob:
-        engine: node-engine.cwl
-        script: |
-          {
-          return $job['uuid']+"_gatk_realignertargetcreator.log"
-          }
+      glob: $(inputs.uuid + "_gatk_realignertargetcreator.log")
 
-          
+  - id: output_sqlite
+    type: File
+    description: "sqlite file"
+    outputBinding:
+      glob: $(inputs.uuid + ".db")
+
 baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/tools/cocleaning-tool/main.py", "--tool_name", "realignertargetcreator"]

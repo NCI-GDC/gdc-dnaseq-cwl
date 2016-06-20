@@ -3,39 +3,42 @@
 cwlVersion: "cwl:draft-3"
 
 description: |
-  Usage:  cwl-runner <this-file-path> XXXX
-  Options:
-    --bam_path       XXXX
-    --uuid           XXXX
+  Usage:  cwl-runner <this-file-path> <options>
 
 requirements:
   - class: InlineJavascriptRequirement
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/cocleaning-tool
+    dockerPull: quay.io/jeremiahsavage/bwa_tool
 
 class: CommandLineTool
 
 inputs:
-  - id: bam_path
+  - id: fastq1_path
     type: File
     inputBinding:
-      prefix: --bam_path
-    secondaryFiles:
-      - ^.bai
+      prefix: --fastq1_path
 
-  - id: bqsr_grp_path
+  - id: fastq2_path
     type: File
     inputBinding:
-      prefix: --bqsr_table_path
+      prefix: --fastq2_path
 
   - id: reference_fasta_path
     type: File
     inputBinding:
       prefix: --reference_fasta_path
     secondaryFiles:
-      - .fai
-      - ^.dict
+      - .amb
+      - .ann
+      - .bwt
+      - .pac
+      - .sa
 
+  - id: readgroup_json_path
+    type: File
+    inputBinding:
+      prefix: --readgroup_json_path
+      
   - id: thread_count
     type: int
     inputBinding:
@@ -49,22 +52,20 @@ inputs:
 outputs:
   - id: output_bam
     type: File
-    description: "The BAM file"
+    description: "The readgroups pairs split into compressed fastq"
     outputBinding:
-      glob: $(inputs.bam_path.path.split('/').slice(-1)[0])
-    secondaryFiles:
-      - ^.bai
-          
+      glob: $(inputs.readgroup_json_path.path.split('/').slice(-1)[0].slice(0,-5)+".bam")
+
   - id: log
     type: File
     description: "python log file"
     outputBinding:
-      glob: $(inputs.uuid + "_gatk_printreads.log")
+      glob: $(inputs.uuid+"_bwa_mem.log")
 
   - id: output_sqlite
     type: File
-    description: "sqlite file"
+    description: "output sqlite"
     outputBinding:
       glob: $(inputs.uuid + ".db")
           
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/tools/cocleaning-tool/main.py", "--tool_name", "printreads"]
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/bwa_tool/main.py"]

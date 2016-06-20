@@ -1,0 +1,72 @@
+#!/usr/bin/env cwl-runner
+
+cwlVersion: "cwl:draft-3"
+
+description: |
+  Usage:  cwl-runner <this-file-path> --bam_path <bam-path> --uuid <uuid-string>
+  Options:
+    --bam_path       Generate BAI-format index from BAM file
+    --uuid           UUID for log file and sqlite db file
+
+requirements:
+  - $import: envvar-global.cwl
+  - class: InlineJavascriptRequirement
+  - class: DockerRequirement
+    dockerPull: quay.io/jeremiahsavage/queue_status:3
+
+class: CommandLineTool
+
+inputs:
+  - id: "#case_id"
+    type: string
+    inputBinding:
+      prefix: --case_id
+
+  - id: "#db_cred_s3url"
+    type: string
+    inputBinding:
+      prefix: --db_cred_s3url
+
+  - id: "#uuid"
+    type: string
+    inputBinding:
+      prefix: --gdc_id
+      
+  - id: "#repo"
+    type: string
+    inputBinding:
+      prefix: --repo
+
+  - id: "#repo_hash"
+    type: string
+    inputBinding:
+      prefix: --repo_hash
+
+  - id: "#s3cfg_path"
+    type: File
+    inputBinding:
+      prefix: --s3cfg_path
+
+  - id: "#s3_url"
+    type: ["null", string]
+    inputBinding:
+      prefix: --s3_url
+
+  - id: "#status"
+    type: string
+    inputBinding:
+      prefix: --status
+
+  - id: "#table_name"
+    type: string
+    inputBinding:
+      prefix: --table_name
+
+outputs:
+  - id: "#log"
+    type: File
+    description: "python log file"
+    outputBinding:
+      glob: $(inputs.uuid+"_queue_status.log")
+
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/queue_status/main.py"]

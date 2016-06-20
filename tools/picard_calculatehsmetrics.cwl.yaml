@@ -1,5 +1,7 @@
 #!/usr/bin/env cwl-runner
 
+cwlVersion: "cwl:draft-3"
+
 description: |
   Usage:  cwl-runner <this-file-path> ...
   Options:
@@ -8,69 +10,59 @@ description: |
     --uuid           UUID for log file and sqlite db file
 
 requirements:
-  - import: node-engine.cwl
-  - import: envvar-global.cwl
+  - class: InlineJavascriptRequirement
   - class: DockerRequirement
     dockerPull: quay.io/jeremiahsavage/picard_tool
 
 class: CommandLineTool
 
 inputs:
-  - id: "#input_bam"
+  - id: bam_path
     type: File
     inputBinding:
       prefix: --bam_path
 
-  - id: "reference"
+  - id: readgroup_json_path
+    type: File
+    inputBinding:
+      prefix: --readgroup_json_path
+
+  - id: bam_library_kit_json_path
+    type: File
+    inputBinding:
+      prefix: --bam_library_kit_json_path
+
+  - id: orig_bam_name
+    type: string
+    inputBinding:
+      prefix: --outbam_name
+
+  - id: reference_fasta_path
     type: File
     inputBinding:
       prefix: --reference_fasta_path
 
-  - id: "#readgroup_interval_json"
-    type: File
-    inputBinding:
-      prefix: --readgroup_intervals_json
-
-  - id: "#interval_dir"
-    type: File
-    inputBinding:
-      prefix: --interval_dir
-      
-  - id: "#uuid"
+  - id: uuid
     type: string
     inputBinding:
       prefix: --uuid
       
 outputs:
-  - id: "#output_sqlite"
+  - id: log
     type: File
     outputBinding:
-      glob:
-        engine: node-engine.cwl
-        script: |
-          {
-          return $job['uuid']+".db"
-          }
+      glob: $(inputs.uuid + "_picard_CalculateHsMetrics_gdc.log")
 
-  - id: "#log"
+  - id: hs_metrics
     type: File
     outputBinding:
-      glob:
-        engine: node-engine.cwl
-        script: |
-          {
-          return $job['uuid']+"_picard_CalculateHsMetrics.log"
-          }
-  
-  - id: "#hs_metrics"
+      glob: $("picard_calculatehsmetrics_"+ inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4))
+
+  - id: output_sqlite
     type: File
+    description: "sqlite file"
     outputBinding:
-      glob:
-        engine: node-engine.cwl
-        script: |
-          {
-          return "picard_CalculateHsMetrics_"+$job['input_bam'].path.split('/').slice(-1)[0].slice(0,-4) ;
-          }
+      glob: $(inputs.uuid + ".db")
 
 
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python", "/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/picard_tool/main.py", "--tool_name", "CalculateHsMetrics"]
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python", "/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/picard_tool/main.py", "--tool_name", "CalculateHsMetrics_gdc"]

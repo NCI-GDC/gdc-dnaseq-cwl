@@ -5,8 +5,7 @@ cwlVersion: "cwl:draft-3"
 description: |
   Usage:  cwl-runner <this-file-path> --input_bam <bam-path> --reference_fasta_path <reference-fasta-path> --uuid <uuid-string>
   Options:
-    --input_bam      Generate metrics from BAM file
-    --reference      Genome for metrics
+    --input_bam       Generate metrics from BAM file
     --uuid           UUID for log file and sqlite db file
 
 requirements:
@@ -17,40 +16,40 @@ requirements:
 class: CommandLineTool
 
 inputs:
-  - id: bam_path
+  - id: "#bam_path"
     type: File
     inputBinding:
       prefix: --bam_path
 
-  - id: input_state
-    type: string
-    inputBinding:
-      prefix: --input_state
-
-  - id: reference_fasta_path
+  - id: "reference_fasta_path"
     type: File
     inputBinding:
       prefix: --reference_fasta_path
 
-  - id: uuid
+  - id: "#uuid"
     type: string
     inputBinding:
       prefix: --uuid
 
+  - id: "#input_state"
+    type: ["null", string]
+    inputBinding:
+      prefix: --input_state
+      
 outputs:
-  - id: log
+  - id: "#log"
     type: File
     outputBinding:
-      glob: $(inputs.uuid + "_picard_CollectWgsMetrics.log")
-  
-  - id: wgs_metrics
-    type: File
-    outputBinding:
-      glob: $("picard_CollectWgsMetrics_"+ inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4))
+      glob: $(inputs.uuid+"_picard_CollectAlignmentSummaryMetrics.log")
 
-  - id: output_sqlite
+  - id: "#output_sqlite"
     type: File
     outputBinding:
       glob: $(inputs.uuid + ".db")
+  
+  - id: "#alignment_summary_metrics"
+    type: File
+    outputBinding:
+      glob: $("picard_CollectAlignmentSummaryMetrics_"+ inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4))
 
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python", "/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/picard_tool/main.py", "--tool_name", "CollectWgsMetrics"]
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python", "/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/picard_tool/main.py", "--tool_name", "CollectAlignmentSummaryMetrics"]

@@ -3,32 +3,35 @@
 cwlVersion: "cwl:draft-3"
 
 description: |
-  Usage:  cwl-runner <this-file-path> --bam_path <bam-path> --uuid <uuid-string>
+  Usage:  cwl-runner <this-file-path> [ --bam_path <bam-path> ] --uuid <uuid-string>
   Options:
-    --bam_path       Generate BAI-format index from BAM file
+    --bam_path       BAM file
     --uuid           UUID for log file and sqlite db file
 
 requirements:
   - class: DockerRequirement
     dockerPull: quay.io/jeremiahsavage/picard_tool
   - class: InlineJavascriptRequirement
-  - class: CreateFileRequirement
-    fileDef:
-      - filename: $(inputs.bam_path.path.split('/').slice(-1)[0])
-        fileContent: $(inputs.bam_path)
 
 class: CommandLineTool
 
 inputs:
   - id: bam_path
-    type: File
-    inputBinding:
-      prefix: --bam_path
+    type:
+      type: array
+      items: File
+      inputBinding:
+        prefix: --bam_path
 
   - id: uuid
     type: string
     inputBinding:
       prefix: --uuid
+
+  - id: outbam_name
+    type: string
+    inputBinding:
+      prefix: --outbam_name
 
   - id: input_state
     type: ["null", string]
@@ -38,17 +41,15 @@ inputs:
 outputs:
   - id: output_bam
     type: File
-    description: "The indexed file"
+    description: "The merged BAM"
     outputBinding:
-      glob: $(inputs.bam_path.path.split('/').slice(-1)[0])
-    secondaryFiles:
-      - ^.bai
+      glob: $(inputs.outbam_name)
 
   - id: log
     type: File
     description: "python log file"
     outputBinding:
-      glob: $(inputs.uuid + "_picard_BuildBamIndex.log")
+      glob: $(inputs.uuid+"_picard_MergeSamFiles.log")
 
   - id: output_sqlite
     type: File
@@ -56,5 +57,4 @@ outputs:
     outputBinding:
       glob: $(inputs.uuid + ".db")
 
-          
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/picard_tool/main.py", "--tool_name", "BuildBamIndex"]
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/picard_tool/main.py", "--tool_name", "MergeSamFiles"]

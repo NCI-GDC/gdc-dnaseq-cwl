@@ -1,0 +1,92 @@
+#!/usr/bin/env cwl-runner
+
+cwlVersion: "cwl:draft-3"
+
+description: |
+  Usage:  cwl-runner <this-file-path> --bam_path <bam-path> --uuid <uuid-string>
+  Options:
+    --bam_path       Write an arbitrary number of compressed readgroups
+    --uuid           UUID for log file and sqlite db file
+
+requirements:
+  - class: DockerRequirement
+    dockerPull: quay.io/jeremiahsavage/biobambam_tool
+  - class: InlineJavascriptRequirement
+
+class: CommandLineTool
+
+inputs:
+  - id: bam_path
+    type: File
+    inputBinding:
+      prefix: --bam_path
+
+  - id: uuid
+    type: string
+    inputBinding:
+      prefix: --uuid
+
+  - id: input_state
+    type: ["null", string]
+    inputBinding:
+      prefix: --input_state
+
+outputs:
+  - id: output_fastq1
+    type:
+      type: array
+      items: File
+    description: "The readgroups pairs split into compressed fastq"
+    outputBinding:
+      glob: "*_1.fq.gz"
+      outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
+ 
+  - id: output_fastq2
+    type:
+      type: array
+      items: File
+    description: "Read 2 of PE"
+    outputBinding:
+      glob: "*_2.fq.gz"
+      outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
+
+  - id: output_fastq1_orphaned
+    type:
+      type: array
+      items: File
+    description: "The readgroups pairs split into compressed fastq"
+    outputBinding:
+      glob: "*_o1.fq.gz"
+      outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
+ 
+  - id: output_fastq2_orphaned
+    type:
+      type: array
+      items: File
+    description: "Read 2 of PE"
+    outputBinding:
+      glob: "*_o2.fq.gz"
+      outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
+
+  - id: output_fastq
+    type:
+      type: array
+      items: File
+    description: "Read 2 of PE"
+    outputBinding:
+      glob: "*_s.fq.gz"
+      outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
+          
+  - id: log
+    type: File
+    description: "python log file"
+    outputBinding:
+      glob: $(inputs.uuid + "_biobambam2_bamtofastq.log")
+
+  - id: output_sqlite
+    type: File
+    description: "output sqlite"
+    outputBinding:
+      glob: $("bamtofastq_" + inputs.uuid + ".db")
+          
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/biobambam_tool/main.py", "--tool_name", "bamtofastq"]

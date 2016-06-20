@@ -1,5 +1,7 @@
 #!/usr/bin/env cwl-runner
 
+cwlVersion: "cwl:draft-3"
+
 description: |
   Usage:  cwl-runner <this-file-path> --bam_path <bam-path> --uuid <uuid-string>
   Options:
@@ -7,68 +9,46 @@ description: |
     --uuid           UUID for log file and sqlite db file
 
 requirements:
-  - import: node-engine.cwl
-  - import: envvar-global.cwl
   - class: DockerRequirement
     dockerPull: quay.io/jeremiahsavage/picard_tool
+  - class: InlineJavascriptRequirement
 
 class: CommandLineTool
 
 inputs:
-  - id: "#input_bam"
+  - id: bam_path
     type: File
     inputBinding:
       prefix: --bam_path
 
-  - id: "#uuid"
+  - id: uuid
     type: string
     inputBinding:
       prefix: --uuid
 
+  - id: input_state
+    type: ["null", string]
+    inputBinding:
+      prefix: --input_state
+
 outputs:
-  - id: "#output_bam"
+  - id: output_bam
     type: File
     description: "The bam with marked duplicates"
     outputBinding:
-      glob:
-        engine: node-engine.cwl
-        script: |
-          {
-          return "md/" + $job['input_bam'].path.split('/').slice(-1)[0];
-          }
-
-  - id: "#output_bai"
-    type: File
-    description: "bam index file"
-    outputBinding:
-      glob:
-        engine: node-engine.cwl
-        script: |
-          {
-          return "md/" + $job['input_bam'].path.split('/').slice(-1)[0].slice(0,-4)+".bai";
-          }
+      glob: $(inputs.bam_path.path.split('/').slice(-1)[0])
+    secondaryFiles:
+      - ^.bai
           
-  - id: "#output_sqlite"
-    type: File
-    description: "sqlite file"
-    outputBinding:
-      glob:
-        engine: node-engine.cwl
-        script: |
-          {
-          return $job['uuid']+".db"
-          }
-
-  - id: "#log"
+  - id: log
     type: File
     description: "python log file"
     outputBinding:
-      glob:
-        engine: node-engine.cwl
-        script: |
-          {
-          return $job['uuid']+"_picard_MarkDuplicates.log"
-          }
+      glob: $(inputs.uuid + "_picard_MarkDuplicates.log")
 
+  - id: output_sqlite
+    type: File
+    outputBinding:
+      glob: $(inputs.uuid + ".db")
 
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/picard_tool/main.py", "--tool_name", "MarkDuplicates"]
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/picard_tool/main.py", "--tool_name", "MarkDuplicates"]

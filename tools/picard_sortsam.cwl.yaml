@@ -5,17 +5,13 @@ cwlVersion: "cwl:draft-3"
 description: |
   Usage:  cwl-runner <this-file-path> --bam_path <bam-path> --uuid <uuid-string>
   Options:
-    --bam_path       Generate BAI-format index from BAM file
+    --bam_path       BAM file
     --uuid           UUID for log file and sqlite db file
 
 requirements:
   - class: DockerRequirement
     dockerPull: quay.io/jeremiahsavage/picard_tool
   - class: InlineJavascriptRequirement
-  - class: CreateFileRequirement
-    fileDef:
-      - filename: $(inputs.bam_path.path.split('/').slice(-1)[0])
-        fileContent: $(inputs.bam_path)
 
 class: CommandLineTool
 
@@ -38,23 +34,20 @@ inputs:
 outputs:
   - id: output_bam
     type: File
-    description: "The indexed file"
+    description: "The sorted BAM"
     outputBinding:
       glob: $(inputs.bam_path.path.split('/').slice(-1)[0])
-    secondaryFiles:
-      - ^.bai
 
   - id: log
     type: File
     description: "python log file"
     outputBinding:
-      glob: $(inputs.uuid + "_picard_BuildBamIndex.log")
+      glob: $(inputs.uuid+"_picard_SortSam.log")
 
   - id: output_sqlite
     type: File
-    description: "sqlite file"
+    description: "output sqlite"
     outputBinding:
       glob: $(inputs.uuid + ".db")
-
           
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/picard_tool/main.py", "--tool_name", "BuildBamIndex"]
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/picard_tool/main.py", "--tool_name", "SortSam"]
