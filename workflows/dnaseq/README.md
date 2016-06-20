@@ -9,7 +9,9 @@ To run DNASeq harmonization workflow
 2. configure `virtualenvwrapper`
 
         $ grep virtualenvwrapper.sh ~/.bashrc
-if there is no result:
+
+  * if there is no result:
+
         $ echo "source /usr/share/virtualenvwrapper/virtualenvwrapper.sh" >> ~/.bashrc
         $ exit
 
@@ -21,7 +23,7 @@ if there is no result:
 
         $ workon cwl
 
-To deactive a virtualenv:
+  * To deactive a virtualenv:
 
         $ deactivate
 
