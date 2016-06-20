@@ -1,5 +1,12 @@
 To run DNASeq harmonization workflow
 ------------------------------------
+TL;DR
+        $ workon cwl
+        $ cd /mnt/SCRATCH/genoMel_harmon
+        $ cwltool --tmpdir-prefix /mnt/SCRATCH/tmp/ --tmp-outdir-prefix /mnt/SCRATCH/tmp/  --debug ~/cocleaning-cwl/workflows/dnaseq/dnaseq_workflow.cwl.yaml  ~/cocleaning-cwl/workflows/dnaseq/genoMel.json
+
+---
+
 1. On VM, ensure `virtualenvwrapper` is installed:
 
         $ sudo su -
@@ -17,11 +24,15 @@ To run DNASeq harmonization workflow
         $ exit
   ```
 
-3. create a virtualenv for cwltool
+3. enable proxy to access pypi.org
+
+        $ export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128;
+
+4. create a virtualenv for cwltool
 
         $ mkvirtualenv --python /usr/bin/python2 cwl
 
-4. When virtualenv is first created (3), the vitualenv will be activated. To activate virtualenv on late login sessions:
+5. When virtualenv is first created (3), the vitualenv will be activated. To activate virtualenv on later login sessions:
 
         $ workon cwl
 
@@ -30,10 +41,6 @@ To run DNASeq harmonization workflow
   ```
         $ deactivate
   ```
-
-5. enable proxy to access pypi.org
-
-        $ export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128;
 
 6. upgrade pip
 
@@ -49,12 +56,14 @@ To run DNASeq harmonization workflow
 
 9. get the DNASeq CWL Workflow
 
-        $ git clone https://github.com/NCI-GDC/cocleaning-cwl.git
+        $ cd ${HOME}
+        $ git clone git@github.com:NCI-GDC/cocleaning-cwl.git
+        $ cd cocleaning-cwl/
         $ git checkout feat/dnaseq_workflow
 
 10. Make dir to store harmonized data
 
-        $ mkdir /mnt/SCRATCH/genoMel_harmon
+        $ mkdir -p /mnt/SCRATCH/genoMel_harmon
         $ cd /mnt/SCRATCH/genoMel_harmon
 
 11. Run workflow
