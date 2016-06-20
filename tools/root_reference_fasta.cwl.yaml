@@ -1,0 +1,61 @@
+#!/usr/bin/env cwl-runner
+
+cwlVersion: "cwl:draft-3"
+
+requirements:
+  - class: InlineJavascriptRequirement
+  - class: CreateFileRequirement
+    fileDef:
+      - filename: $(inputs.fasta_path.path.split('/').slice(-1)[0])
+        fileContent: $(inputs.fasta_path)
+      - filename: $(inputs.fasta_amb_path.path.split('/').slice(-1)[0])
+        fileContent: $(inputs.fasta_amb_path)
+      - filename: $(inputs.fasta_ann_path.path.split('/').slice(-1)[0])
+        fileContent: $(inputs.fasta_ann_path)
+      - filename: $(inputs.fasta_bwt_path.path.split('/').slice(-1)[0])
+        fileContent: $(inputs.fasta_bwt_path)
+      - filename: $(inputs.fasta_fai_path.path.split('/').slice(-1)[0])
+        fileContent: $(inputs.fasta_fai_path)
+      - filename: $(inputs.fasta_pac_path.path.split('/').slice(-1)[0])
+        fileContent: $(inputs.fasta_pac_path)
+      - filename: $(inputs.fasta_sa_path.path.split('/').slice(-1)[0])
+        fileContent: $(inputs.fasta_sa_path)
+
+class: CommandLineTool
+
+inputs:
+  - id: fasta_path
+    type: File
+
+  - id: fasta_amb_path
+    type: File
+
+  - id: fasta_ann_path
+    type: File
+
+  - id: fasta_bwt_path
+    type: File
+
+  - id: fasta_fai_path
+    type: File
+
+  - id: fasta_pac_path
+    type: File
+
+  - id: fasta_sa_path
+    type: File
+
+outputs:
+  - id: ouput_fasta
+    type: File
+    outputBinding:
+      glob: $(inputs.fasta_path.path.split('/').slice(-1)[0])
+    secondaryFiles:
+      - .amb
+      - .ann
+      - .bwt
+      - .fai
+      - .pac
+      - .sa
+
+baseCommand: ["true"]
