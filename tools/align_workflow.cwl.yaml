@@ -8,7 +8,7 @@
     - id: "#bam_path"
       type: File
       inputBinding:
-        position: 3
+        position: 2
   outputs:
     - id: "#output_readgroup"
       type:
@@ -16,18 +16,25 @@
         items: File
       outputBinding:
         glob: "*.readgroup"
+        outputEval:
+          engine: node-engine.cwl
+          script: |
+            {
+            self.sort(function(a,b) { return a.path > b.path });
+            return self;
+            }
   arguments:
     - valueFrom: ".readgroup"
       position: 1
       shellQuote: false
     - valueFrom: "|"
-      position: 4
+      position: 3
       shellQuote: false
     - valueFrom: "xargs"
-      position: 5
+      position: 4
       shellQuote: false
     - valueFrom: "touch"
-      position: 6
+      position: 5
       shellQuote: false
   baseCommand: grep
 
@@ -49,24 +56,38 @@
         items: File
       outputBinding:
         glob: "*_1.fq"
+        outputEval:
+          engine: node-engine.cwl
+          script: |
+            {
+            self.sort(function(a,b) { return a.path > b.path });
+            return self;
+            }
     - id: "#output_fastq2"
       type:
         type: array
         items: File
       outputBinding:
         glob: "*_2.fq"
+        outputEval:
+          engine: node-engine.cwl
+          script: |
+            {
+            self.sort(function(a,b) { return a.path > b.path });
+            return self;
+            }
   arguments:
     - valueFrom: ".fq"
       position: 1
       shellQuote: false
     - valueFrom: "|"
-      position: 4
+      position: 3
       shellQuote: false
     - valueFrom: "xargs"
-      position: 5
+      position: 4
       shellQuote: false
     - valueFrom: "touch"
-      position: 6
+      position: 5
       shellQuote: false
   baseCommand: grep
 
@@ -93,14 +114,14 @@
           engine: node-engine.cwl
           script: |
             {
-            return inputs.readgroup_path.path.split('/').slice(-1)[0].slice(0,-10)+"_realign.bam"
+            return inputs.readgroup_path.path.split('/').slice(-1)[0].slice(0,-10)+"_realign.bam";
             }
   arguments:
     - valueFrom:
         engine: node-engine.cwl
         script: |
           {
-          return inputs.fastq1_path.path.split('/').slice(-1)[0];
+          return '"' + inputs.fastq1_path.path.split('/').slice(-1)[0] + '"';
           }
       position: 1
       shellQuote: false
@@ -111,7 +132,7 @@
         engine: node-engine.cwl
         script: |
           {
-          return inputs.readgroup_path.path.slice(0,-10)+"_realign.bam";
+          return inputs.readgroup_path.path.split('/').slice(-1)[0].slice(0,-10)+"_realign.bam";
           }
       position: 3
       shellQuote: false
@@ -125,7 +146,7 @@
         engine: node-engine.cwl
         script: |
           {
-          return inputs.fastq2_path.path.split('/').slice(-1)[0];
+          return '"' + inputs.fastq2_path.path.split('/').slice(-1)[0] + '"';
           }
       position: 6
       shellQuote: false
@@ -136,7 +157,7 @@
         engine: node-engine.cwl
         script: |
           {
-          return inputs.readgroup_path.path.slice(0,-10)+"_realign.bam";
+          return inputs.readgroup_path.path.split('/').slice(-1)[0].slice(0,-10)+"_realign.bam";
           }
       position: 8
       shellQuote: false
@@ -150,7 +171,7 @@
         engine: node-engine.cwl
         script: |
           {
-          return inputs.readgroup_path.path.split('/').slice(-1)[0];
+          return '"' + inputs.readgroup_path.path.split('/').slice(-1)[0] + '"';
           }
       position: 11
       shellQuote: false
@@ -161,7 +182,7 @@
         engine: node-engine.cwl
         script: |
           {
-          return $job['readgroup_path'].path.slice(0,-10)+"_realign.bam"
+          return inputs.readgroup_path.path.split('/').slice(-1)[0].slice(0,-10)+"_realign.bam";
           }
       position: 13
       shellQuote: false
@@ -181,16 +202,6 @@
     - id: "#bam_path"
       type: File
   outputs:
-    - id: "#bamtoreadgroup_output_readgroup"
-      type:
-        type: array
-        items: File
-      source: "#bamtoreadgroup.output_readgroup"
-    - id: "#bamtofastq_output_fastq1"
-      type:
-        type: array
-        items: File
-      source: "#bamtofastq.output_fastq2"
     - id: "align_output_bam"
       type:
         type: array
@@ -220,24 +231,8 @@
         - id: "#align.fastq1_path"
           source: "#bamtofastq.output_fastq1"
         - id: "#align.fastq2_path"
-          source: "#bamtofastq.output_fastq1"
-          valueFrom:
-            engine: node-engine.cwl
-            script: |
-              {
-              return {"path": $self.path.slice(0,-4)+"2.fq", "class": "File"};
-              }
+          source: "#bamtofastq.output_fastq2"
         - id: "#align.readgroup_path"
           source: "#bamtoreadgroup.output_readgroup"
-          valueFrom:
-            engine: node-engine.cwl
-            script: |
-              {
-              var readgroup_basename = inputs.fastq1_path.split('/').slice(-1);
-              var readgroup_dir = self.path.split('/').slice(0,-1).join('/');
-              var readgroup_readgroupname = readgroup_basename + ".readgroup";
-              var readgroup_path = readgroup_dir + "/" + readgroup_readgroupname;
-              return {"path": "readgroup_path", "class": "File"};
-              }
       outputs:
         - id: "#align.output_bam"

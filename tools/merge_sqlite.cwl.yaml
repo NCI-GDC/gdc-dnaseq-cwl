@@ -1,5 +1,7 @@
 #!/usr/bin/env cwl-runner
 
+cwlVersion: "cwl:draft-3"
+
 description: |
   Usage:  cwl-runner <this-file-path> --source_sqlite file1.db --source_sqlite file2.db ... --uuid <uuid-string>
   Options:
@@ -7,45 +9,34 @@ description: |
     --uuid           UUID for log file and sqlite db file
 
 requirements:
-  - import: node-engine.cwl
-  - import: envvar-global.cwl
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/merge_sqlite:1
+    dockerPull: quay.io/jeremiahsavage/merge_sqlite
+  - class: InlineJavascriptRequirement
 
 class: CommandLineTool
 
 inputs:
-  - id: "#source_sqlite"
+  - id: source_sqlite
     type:
       type: array
       items: File
       inputBinding:
         prefix: "--source_sqlite"
 
-  - id: "#uuid"
+  - id: uuid
     type: string
     inputBinding:
       prefix: "--uuid"
 
 outputs:
-  - id: "#destination_sqlite"
+  - id: destination_sqlite
     type: File
     outputBinding:
-      glob:
-        engine: "node-engine.cwl"
-        script: |
-          {
-          return $job['uuid']+".db"
-          }
+      glob: $(inputs.uuid + ".db")
 
-  - id: "#log_sqlite"
+  - id: log
     type: File
     outputBinding:
-      glob:
-        engine: "node-engine.cwl"
-        script: |
-          {
-          return $job['uuid']+"_log.db"
-          }
+      glob: $(inputs.uuid + "_merge_sqlite.log")
 
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/merge_sqlite/main.py"]
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/merge_sqlite/main.py"]

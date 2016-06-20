@@ -3,10 +3,9 @@
 cwlVersion: "cwl:draft-3"
 
 description: |
-  Usage:  cwl-runner <this-file-path> --input_bam <bam-path> --reference_fasta_path <reference-fasta-path> --uuid <uuid-string>
+  Usage:  cwl-runner <this-file-path> --bam_path <bam-path> --uuid <uuid-string>
   Options:
-    --input_bam      Generate metrics from BAM file
-    --reference      Genome for metrics
+    --bam_path       Generate CollectOxoGMetrics from BAM file
     --uuid           UUID for log file and sqlite db file
 
 requirements:
@@ -22,15 +21,20 @@ inputs:
     inputBinding:
       prefix: --bam_path
 
-  - id: input_state
-    type: string
+  - id: db_snp_path
+    type: File
     inputBinding:
-      prefix: --input_state
+      prefix: --db_snp_path
 
   - id: reference_fasta_path
     type: File
     inputBinding:
       prefix: --reference_fasta_path
+
+  - id: input_state
+    type: string
+    inputBinding:
+      prefix: --input_state
 
   - id: uuid
     type: string
@@ -40,17 +44,14 @@ inputs:
 outputs:
   - id: log
     type: File
+    description: "python log file"
     outputBinding:
-      glob: $(inputs.uuid + "_picard_CollectWgsMetrics.log")
-  
-  - id: wgs_metrics
-    type: File
-    outputBinding:
-      glob: $("picard_CollectWgsMetrics_"+ inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4))
+      glob: $(inputs.uuid + "_picard_CollectOxoGMetrics.log")
 
   - id: output_sqlite
     type: File
+    description: "sqlite file"
     outputBinding:
       glob: $(inputs.uuid + ".db")
 
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python", "/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/picard_tool/main.py", "--tool_name", "CollectWgsMetrics"]
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/picard_tool/main.py", "--tool_name", "CollectOxoGMetrics"]

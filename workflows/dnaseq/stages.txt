@@ -1,0 +1,6 @@
+original
+aligned_readgroup
+sorted_readgroup
+merged_readgroups
+reheadered_readgroups
+markduplicates_readgroups

@@ -1,5 +1,7 @@
 #!/usr/bin/env cwl-runner
 
+cwlVersion: "cwl:draft-3"
+
 description: |
   Usage:  cwl-runner <this-file-path> --bam_path <bam-path> --uuid <uuid-string>
   Options:
@@ -7,61 +9,84 @@ description: |
     --uuid           UUID for log file and sqlite db file
 
 requirements:
-  - import: node-engine.cwl
-  - import: envvar-global.cwl
   - class: DockerRequirement
     dockerPull: quay.io/jeremiahsavage/biobambam_tool
+  - class: InlineJavascriptRequirement
 
 class: CommandLineTool
 
 inputs:
-  - id: "#bam_path"
+  - id: bam_path
     type: File
     inputBinding:
       prefix: --bam_path
 
-  - id: "#uuid"
+  - id: uuid
     type: string
     inputBinding:
       prefix: --uuid
 
-  - id: "#db_cred_s3url"
+  - id: input_state
     type: ["null", string]
     inputBinding:
-      prefix: --db_cred_s3url
-
-  - id: "#s3cfg_path"
-    type: ["null", File]
-    inputBinding:
-      prefix: --s3cfg_path
+      prefix: --input_state
 
 outputs:
-  - id: "#output_fastq1"
+  - id: output_fastq1
     type:
       type: array
       items: File
     description: "The readgroups pairs split into compressed fastq"
     outputBinding:
-      glob: fastq/*1.fq.gz
-
-  - id: "#output_fastq2"
+      glob: "*_1.fq.gz"
+      outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
+ 
+  - id: output_fastq2
     type:
       type: array
       items: File
     description: "Read 2 of PE"
     outputBinding:
-      glob: fastq/*2.fq.gz
+      glob: "*_2.fq.gz"
+      outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
 
-  - id: "#log"
+  - id: output_fastq1_orphaned
+    type:
+      type: array
+      items: File
+    description: "The readgroups pairs split into compressed fastq"
+    outputBinding:
+      glob: "*_o1.fq.gz"
+      outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
+ 
+  - id: output_fastq2_orphaned
+    type:
+      type: array
+      items: File
+    description: "Read 2 of PE"
+    outputBinding:
+      glob: "*_o2.fq.gz"
+      outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
+
+  - id: output_fastq
+    type:
+      type: array
+      items: File
+    description: "Read 2 of PE"
+    outputBinding:
+      glob: "*_s.fq.gz"
+      outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
+          
+  - id: log
     type: File
     description: "python log file"
     outputBinding:
-      glob:
-        engine: node-engine.cwl
-        script: |
-          {
-          return $job['uuid']+"_biobambam2_bamtofastq.log"
-          }
+      glob: $(inputs.uuid + "_biobambam2_bamtofastq.log")
 
+  - id: output_sqlite
+    type: File
+    description: "output sqlite"
+    outputBinding:
+      glob: $("bamtofastq_" + inputs.uuid + ".db")
           
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.4/site-packages/biobambam_tool/main.py", "--tool_name", "bamtofastq"]
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/biobambam_tool/main.py", "--tool_name", "bamtofastq"]

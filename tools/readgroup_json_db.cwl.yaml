@@ -10,16 +10,16 @@ description: |
 
 requirements:
   - class: DockerRequirement
-    dockerPull:  quay.io/jeremiahsavage/bam_readgroup_to_json
+    dockerPull:  quay.io/jeremiahsavage/readgroup_json_db
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
 
 inputs:
-  - id: bam_path
+  - id: json_path
     type: File
     inputBinding:
-      prefix: --bam_path
+      prefix: --json_path
 
   - id: uuid
     type: string
@@ -27,19 +27,16 @@ inputs:
       prefix: --uuid
 
 outputs:
-  - id: output_json
-    type:
-      type: array
-      items: File
-    description: "The readgroups pairs split into compressed fastq"
-    outputBinding:
-      glob: "*.json"
-      outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
-
   - id: log
     type: File
     description: "python log file"
     outputBinding:
-      glob: $(inputs.uuid + "_bam_readgroup_to_json.log")
+      glob: $(inputs.uuid +"_readgroup_json_db.log")
 
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/bam_readgroup_to_json/main.py"]
+  - id: output_sqlite
+    type: File
+    description: "sqlite with readgroup data"
+    outputBinding:
+      glob: $(inputs.uuid + ".db")         
+          
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/readgroup_json_db/main.py"]
