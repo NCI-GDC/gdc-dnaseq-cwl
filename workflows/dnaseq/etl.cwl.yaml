@@ -6,53 +6,77 @@ class: Workflow
 
 requirements:
   - class: InlineJavascriptRequirement
+  - class: StepInputExpressionRequirement
 
 inputs:
-  - id: bam_path
-    type: File
-  - id: db_snp_path
-    type: File
-  - id: reference_fasta_path
-    type: File
-  - id: thread_count
-    type: int
-  - id: uuid
-    type: string
-  - id: extract_s3cfg_path
-    type: File
-  - id: extract_s3cfg_section
-    type: string
-  - id: db_cred_s3url
-    type: string
-  - id: load_s3cfg_path
-    type: File
-  - id: load_s3cfg_section
-    type: string
   - id: bam_s3url
     type: string
   - id: db_snp_s3url
     type: string
   - id: reference_fasta_s3url
     type: string
+  - id: db_cred_s3url
+    type: string
+  - id: thread_count
+    type: int
+  - id: uuid
+    type: string
+  - id: aws_config_file
+    type: File
+  - id: aws_shared_credentials_file
+    type: File
+  - id: extract_s3cfg_section
+    type: string
+  - id: extract_endpoint_url
+    type: string
+  - id: load_s3cfg_section
+    type: string
+  - id: load_endpoint_url
+    type: string
 
 outputs:
-  - id: picard_markduplicates_output_bam
+  - id: extract_bam_output
     type: File
-    source: "#picard_markduplicates/output_bam"
-  - id: merge_all_sqlite_destination_sqlite
+    source: "#extract_bam/output"
+  - id: extract_db_snp_output
     type: File
-    source: "#merge_all_sqlite/destination_sqlite"
+    source: "#extract_db_snp/output"
+  - id: extract_fasta_fa_output
+    type: File
+    source: "#extract_fasta_fa/output"
+  - id: extract_fasta_amb_output
+    type: File
+    source: "#extract_fasta_amb/output"
+  - id: extract_fasta_ann_output
+    type: File
+    source: "#extract_fasta_ann/output"
+  - id: extract_fasta_bwt_output
+    type: File
+    source: "#extract_fasta_bwt/output"
+  - id: extract_fasta_fai_output
+    type: File
+    source: "#extract_fasta_fai/output"
+  - id: extract_fasta_pac_output
+    type: File
+    source: "#extract_fasta_pac/output"
+  - id: extract_fasta_sa_output
+    type: File
+    source: "#extract_fasta_sa/output"
 
 steps:
   - id: extract_bam
     run: ../../tools/aws_s3_get.cwl.yaml
     inputs:
+      - id: aws_config_file
+        source: "#aws_config_file"
+      - id: aws_shared_credentials_file
+        source: "#aws_shared_credentials_file"
       - id: s3uri
         source: "#bam_s3url"
-      - id: profile
+      - id: s3cfg_section
         source: "#extract_s3cfg_section"
       - id: endpoint_url
-        default: "http://gdc-accessors.osdc.io"
+        source: "#extract_endpoint_url"
     outputs:
       - id: output
       - id: bin_time
@@ -60,12 +84,16 @@ steps:
   - id: extract_db_snp
     run: ../../tools/aws_s3_get.cwl.yaml
     inputs:
+      - id: aws_config_file
+        source: "#aws_config_file"
+      - id: aws_shared_credentials_file
+        source: "#aws_shared_credentials_file"
       - id: s3uri
         source: "#db_snp_s3url"
-      - id: profile
+      - id: s3cfg_section
         source: "#extract_s3cfg_section"
       - id: endpoint_url
-        default: "http://gdc-accessors.osdc.io"
+        source: "#extract_endpoint_url"
     outputs:
       - id: output
       - id: bin_time
@@ -73,12 +101,16 @@ steps:
   - id: extract_fasta_fa
     run: ../../tools/aws_s3_get.cwl.yaml
     inputs:
+      - id: aws_config_file
+        source: "#aws_config_file"
+      - id: aws_shared_credentials_file
+        source: "#aws_shared_credentials_file"
       - id: s3uri
         source: "#reference_fasta_s3url"
-      - id: profile
+      - id: s3cfg_section
         source: "#extract_s3cfg_section"
       - id: endpoint_url
-        default: "http://gdc-accessors.osdc.io"
+        source: "#extract_endpoint_url"
     outputs:
       - id: output
       - id: bin_time
@@ -86,12 +118,17 @@ steps:
   - id: extract_fasta_amb
     run: ../../tools/aws_s3_get.cwl.yaml
     inputs:
+      - id: aws_config_file
+        source: "#aws_config_file"
+      - id: aws_shared_credentials_file
+        source: "#aws_shared_credentials_file"
       - id: s3uri
-        source: "#reference_fasta_s3url"+".amb"
-      - id: profile
+        source: "#reference_fasta_s3url"
+        valueFrom: $(self + ".amb")
+      - id: s3cfg_section
         source: "#extract_s3cfg_section"
       - id: endpoint_url
-        default: "http://gdc-accessors.osdc.io"
+        source: "#extract_endpoint_url"
     outputs:
       - id: output
       - id: bin_time
@@ -99,12 +136,17 @@ steps:
   - id: extract_fasta_ann
     run: ../../tools/aws_s3_get.cwl.yaml
     inputs:
+      - id: aws_config_file
+        source: "#aws_config_file"
+      - id: aws_shared_credentials_file
+        source: "#aws_shared_credentials_file"
       - id: s3uri
-        source: "#reference_fasta_s3url" + ".ann"
-      - id: profile
+        source: "#reference_fasta_s3url"
+        valueFrom: $(self + ".ann")
+      - id: s3cfg_section
         source: "#extract_s3cfg_section"
       - id: endpoint_url
-        default: "http://gdc-accessors.osdc.io"
+        source: "#extract_endpoint_url"
     outputs:
       - id: output
       - id: bin_time
@@ -112,12 +154,17 @@ steps:
   - id: extract_fasta_bwt
     run: ../../tools/aws_s3_get.cwl.yaml
     inputs:
+      - id: aws_config_file
+        source: "#aws_config_file"
+      - id: aws_shared_credentials_file
+        source: "#aws_shared_credentials_file"
       - id: s3uri
-        source: "#reference_fasta_s3url" + ".bwt"
-      - id: profile
+        source: "#reference_fasta_s3url"
+        valueFrom: $(self + ".bwt")
+      - id: s3cfg_section
         source: "#extract_s3cfg_section"
       - id: endpoint_url
-        default: "http://gdc-accessors.osdc.io"
+        source: "#extract_endpoint_url"
     outputs:
       - id: output
       - id: bin_time
@@ -125,12 +172,17 @@ steps:
   - id: extract_fasta_fai
     run: ../../tools/aws_s3_get.cwl.yaml
     inputs:
+      - id: aws_config_file
+        source: "#aws_config_file"
+      - id: aws_shared_credentials_file
+        source: "#aws_shared_credentials_file"
       - id: s3uri
-        source: "#reference_fasta_s3url" + ".fai"
-      - id: profile
+        source: "#reference_fasta_s3url"
+        valueFrom: $(self + ".fai")
+      - id: s3cfg_section
         source: "#extract_s3cfg_section"
       - id: endpoint_url
-        default: "http://gdc-accessors.osdc.io"
+        source: "#extract_endpoint_url"
     outputs:
       - id: output
       - id: bin_time
@@ -138,12 +190,17 @@ steps:
   - id: extract_fasta_pac
     run: ../../tools/aws_s3_get.cwl.yaml
     inputs:
+      - id: aws_config_file
+        source: "#aws_config_file"
+      - id: aws_shared_credentials_file
+        source: "#aws_shared_credentials_file"
       - id: s3uri
-        source: "#reference_fasta_s3url" + ".pac"
-      - id: profile
+        source: "#reference_fasta_s3url"
+        valueFrom: $(self + ".pac")
+      - id: s3cfg_section
         source: "#extract_s3cfg_section"
       - id: endpoint_url
-        default: "http://gdc-accessors.osdc.io"
+        source: "#extract_endpoint_url"
     outputs:
       - id: output
       - id: bin_time
@@ -151,24 +208,29 @@ steps:
   - id: extract_fasta_sa
     run: ../../tools/aws_s3_get.cwl.yaml
     inputs:
+      - id: aws_config_file
+        source: "#aws_config_file"
+      - id: aws_shared_credentials_file
+        source: "#aws_shared_credentials_file"
       - id: s3uri
-        source: "#reference_fasta_s3url" + ".sa"
-      - id: profile
+        source: "#reference_fasta_s3url"
+        valueFrom: $(self + ".sa")
+      - id: s3cfg_section
         source: "#extract_s3cfg_section"
       - id: endpoint_url
-        default: "http://gdc-accessors.osdc.io"
+        source: "#extract_endpoint_url"
     outputs:
       - id: output
       - id: bin_time
 
-  - id: root_fasta_files
+  # - id: root_fasta_files
         
-  - id: bam_readgroup_to_json
-    run: ../../tools/bam_readgroup_to_json.cwl.yaml
-    inputs:
-      - id: bam_path
-        source: "#bam_path"
-      - id: uuid
-        source: "#uuid"
-    outputs:
-      - id: output_json
+  # - id: bam_readgroup_to_json
+  #   run: ../../tools/bam_readgroup_to_json.cwl.yaml
+  #   inputs:
+  #     - id: bam_path
+  #       source: "#bam_path"
+  #     - id: uuid
+  #       source: "#uuid"
+  #   outputs:
+  #     - id: output_json
