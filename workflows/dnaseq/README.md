@@ -12,6 +12,7 @@ To run DNASeq harmonization workflow
 
   * if there is no result:
 
+
         $ echo "source /usr/share/virtualenvwrapper/virtualenvwrapper.sh" >> ~/.bashrc
         $ exit
 
