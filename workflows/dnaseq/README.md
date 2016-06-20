@@ -50,3 +50,13 @@ To run DNASeq harmonization workflow
 9. get the DNASeq CWL Workflow
 
         $ git clone https://github.com/NCI-GDC/cocleaning-cwl.git
+        $ git checkout feat/dnaseq_workflow
+
+10. Make dir to store harmonized data
+
+        $ mkdir /mnt/SCRATCH/genoMel_harmon
+        $ cd /mnt/SCRATCH/genoMel_harmon
+
+11. Run workflow
+
+        $  cwltool --tmpdir-prefix /mnt/SCRATCH/tmp/ --tmp-outdir-prefix /mnt/SCRATCH/tmp/  --debug ~/cocleaning-cwl/workflows/dnaseq/dnaseq_workflow.cwl.yaml  ~/cocleaning-cwl/workflows/dnaseq/genoMel.json
