@@ -1,0 +1,21 @@
+#!/usr/bin/env cwl-runner
+{
+    "bam_s3url": "s3://tcga_cghub_protected/47b42e81-2500-4ebc-a0c2-acd3187cc2f0/C440.TCGA-IN-8462-01A-11D-2340-08.1.bam",
+    "db_snp_s3url": "s3://bioinformatics_scratch/coclean/dbsnp_144.hg38.vcf.gz",
+    "reference_fasta_s3url": "s3://bioinformatics_scratch/grch38_for_bwa/GRCh38.d1.vd1.fa",
+    "db_cred_s3url": "s3://bioinformatics_scratch/coclean/dbsnp_144.hg38.vcf.gz",
+    "thread_count": 8,
+    "uuid": "atest",
+    "aws_config_file": {
+        "class": "File",
+        "path": "/home/ubuntu/.aws/config"
+    },
+    "aws_shared_credentials_file": {
+        "class": "File",
+        "path": "/home/ubuntu/.aws/credentials"
+    },
+    "extract_s3cfg_section" : "cleversafe",
+    "extract_endpoint_url": "http://gdc-accessors.osdc.io",
+    "load_s3cfg_section": "ceph",
+    "load_endpoint_url": "http://gdc-cephb-objstore.osdc.io"
+}
