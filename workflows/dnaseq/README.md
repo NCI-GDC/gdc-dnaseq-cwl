@@ -26,8 +26,10 @@ To run DNASeq harmonization workflow
         $ workon cwl
 
   * To deactive a virtualenv:
-
+  
+  ```
         $ deactivate
+  ```
 
 5. enable proxy to access pypi.org
 
