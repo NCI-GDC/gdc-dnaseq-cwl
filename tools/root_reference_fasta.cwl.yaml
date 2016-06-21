@@ -26,22 +26,16 @@ class: CommandLineTool
 inputs:
   - id: fasta_path
     type: File
-
   - id: fasta_amb_path
     type: File
-
   - id: fasta_ann_path
     type: File
-
   - id: fasta_bwt_path
     type: File
-
   - id: fasta_fai_path
     type: File
-
   - id: fasta_pac_path
     type: File
-
   - id: fasta_sa_path
     type: File
 
