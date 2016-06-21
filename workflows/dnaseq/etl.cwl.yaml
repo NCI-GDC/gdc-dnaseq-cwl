@@ -34,6 +34,8 @@ inputs:
     type: string
   - id: load_endpoint_url
     type: string
+  - id: load_bucket
+    type: string
 
 outputs:
   - id: dnaseq_workflow_output_bam
@@ -239,3 +241,41 @@ steps:
     outputs:
       - id: picard_markduplicates_output_bam
       - id: merge_all_sqlite_destination_sqlite
+
+  - id: load_bam
+    run: ../../tools/aws_s3_put.cwl.yaml
+    inputs:
+      - id: aws_config_file
+        source: "#aws_config_file"
+      - id: aws_shared_credentials_file
+        source: "#aws_shared_credentials_file"
+      - id: s3cfg_section
+        source: "#load_s3cfg_section"
+      - id: endpoint_url
+        source: "#load_endpoint_url"
+      - id: input_path
+        source: "#dnaseq_workflow/picard_markduplicates_output_bam"
+      - id: s3uri
+        source: "#load_bucket"
+        valueFrom: $(self + inputs.input_path.path.split('/').slice(-1)[0] )
+    outputs:
+      - id: bin_time
+
+  - id: load_sqlite
+    run: ../../tools/aws_s3_put.cwl.yaml
+    inputs:
+      - id: aws_config_file
+        source: "#aws_config_file"
+      - id: aws_shared_credentials_file
+        source: "#aws_shared_credentials_file"
+      - id: s3cfg_section
+        source: "#load_s3cfg_section"
+      - id: endpoint_url
+        source: "#load_endpoint_url"
+      - id: input_path
+        source: "#dnaseq_workflow/merge_all_sqlite_destination_sqlite"
+      - id: s3uri
+        source: "#load_bucket"
+        valueFrom: $(self + inputs.input_path.path.split('/').slice(-1)[0] )
+    outputs:
+      - id: bin_time
