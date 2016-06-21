@@ -40,7 +40,7 @@ inputs:
     type: File
 
 outputs:
-  - id: ouput_fasta
+  - id: output_fasta
     type: File
     outputBinding:
       glob: $(inputs.fasta_path.path.split('/').slice(-1)[0])
