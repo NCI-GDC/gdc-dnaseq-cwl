@@ -8,6 +8,7 @@ TL;DR
 
 ---
 0. Fix up Docker
+
         $ sudo su
         # mkdir /mnt/SCRATCH/docker
         # chown ubuntu /home/ubuntu/.dockercfg
