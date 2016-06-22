@@ -3,10 +3,9 @@
 cwlVersion: "cwl:draft-3"
 
 requirements:
-  - $import: envvar-global.cwl
-  - class: InlineJavascriptRequirement
   - class: DockerRequirement
     dockerPull: quay.io/jeremiahsavage/queue_status
+  - class: InlineJavascriptRequirement
 
 class: CommandLineTool
 
