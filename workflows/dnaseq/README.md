@@ -7,6 +7,17 @@ TL;DR
         $ nohup cwltool --tmpdir-prefix /mnt/SCRATCH/tmp/ --tmp-outdir-prefix /mnt/SCRATCH/tmp/  --debug ~/cocleaning-cwl/workflows/dnaseq/dnaseq_workflow.cwl.yaml  ~/cocleaning-cwl/workflows/dnaseq/genoMel.json &
 
 ---
+0. Fix up Docker
+
+        $ sudo su
+        # mkdir /mnt/SCRATCH/docker
+        # chown ubuntu /home/ubuntu/.dockercfg
+        # gpasswd -a ubuntu docker
+        # echo "DOCKER_OPTS=\"--dns 8.8.8.8 --dns 8.8.4.4 -g /mnt/SCRATCH/docker/\"" >> /etc/default/docker
+        # echo "export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128" >> /etc/default/docker
+        # service docker restart
+        # exit
+        $ exit (only gain group access to docker when exit/login)
 
 1. On VM, ensure `virtualenvwrapper` is installed:
 

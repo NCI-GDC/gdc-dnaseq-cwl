@@ -7,6 +7,7 @@ class: Workflow
 requirements:
   - class: InlineJavascriptRequirement
   - class: StepInputExpressionRequirement
+  - class: SubworkflowFeatureRequirement
 
 inputs:
   - id: bam_s3url
@@ -33,35 +34,16 @@ inputs:
     type: string
   - id: load_endpoint_url
     type: string
+  - id: load_bucket
+    type: string
 
 outputs:
-  - id: extract_bam_output
+  - id: dnaseq_workflow_output_bam
     type: File
-    source: "#extract_bam/output"
-  - id: extract_db_snp_output
+    source: "#dnaseq_workflow/picard_markduplicates_output_bam"
+  - id: dnaseq_workflow_output_sqlite
     type: File
-    source: "#extract_db_snp/output"
-  - id: extract_fasta_fa_output
-    type: File
-    source: "#extract_fasta_fa/output"
-  - id: extract_fasta_amb_output
-    type: File
-    source: "#extract_fasta_amb/output"
-  - id: extract_fasta_ann_output
-    type: File
-    source: "#extract_fasta_ann/output"
-  - id: extract_fasta_bwt_output
-    type: File
-    source: "#extract_fasta_bwt/output"
-  - id: extract_fasta_fai_output
-    type: File
-    source: "#extract_fasta_fai/output"
-  - id: extract_fasta_pac_output
-    type: File
-    source: "#extract_fasta_pac/output"
-  - id: extract_fasta_sa_output
-    type: File
-    source: "#extract_fasta_sa/output"
+    source: "#dnaseq_workflow/merge_all_sqlite_destination_sqlite"
 
 steps:
   - id: extract_bam
@@ -98,7 +80,7 @@ steps:
       - id: output
       - id: bin_time
 
-  - id: extract_fasta_fa
+  - id: extract_fasta
     run: ../../tools/aws_s3_get.cwl.yaml
     inputs:
       - id: aws_config_file
@@ -223,14 +205,77 @@ steps:
       - id: output
       - id: bin_time
 
-  # - id: root_fasta_files
-        
-  # - id: bam_readgroup_to_json
-  #   run: ../../tools/bam_readgroup_to_json.cwl.yaml
-  #   inputs:
-  #     - id: bam_path
-  #       source: "#bam_path"
-  #     - id: uuid
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: output_json
+  - id: root_fasta_files
+    run: ../../tools/root_reference_fasta.cwl.yaml
+    inputs:
+      - id: fasta_path
+        source: "#extract_fasta/output"
+      - id: fasta_amb_path
+        source: "#extract_fasta_amb/output"
+      - id: fasta_ann_path
+        source: "#extract_fasta_ann/output"
+      - id: fasta_bwt_path
+        source: "#extract_fasta_bwt/output"
+      - id: fasta_fai_path
+        source: "#extract_fasta_fai/output"
+      - id: fasta_pac_path
+        source: "#extract_fasta_pac/output"
+      - id: fasta_sa_path
+        source: "#extract_fasta_sa/output"
+    outputs:
+      - id: output_fasta
+
+  - id: dnaseq_workflow
+    run: dnaseq_workflow.cwl.yaml
+    inputs:
+      - id: bam_path
+        source: "#extract_bam/output"
+      - id: db_snp_path
+        source: "#extract_db_snp/output"
+      - id: reference_fasta_path
+        source: "#root_fasta_files/output_fasta"
+      - id: thread_count
+        source: "#thread_count"
+      - id: uuid
+        source: "#uuid"
+    outputs:
+      - id: picard_markduplicates_output_bam
+      - id: merge_all_sqlite_destination_sqlite
+
+  - id: load_bam
+    run: ../../tools/aws_s3_put.cwl.yaml
+    inputs:
+      - id: aws_config_file
+        source: "#aws_config_file"
+      - id: aws_shared_credentials_file
+        source: "#aws_shared_credentials_file"
+      - id: s3cfg_section
+        source: "#load_s3cfg_section"
+      - id: endpoint_url
+        source: "#load_endpoint_url"
+      - id: input_path
+        source: "#dnaseq_workflow/picard_markduplicates_output_bam"
+      - id: s3uri
+        source: "#load_bucket"
+        valueFrom: $(self + inputs.input_path.path.split('/').slice(-1)[0] )
+    outputs:
+      - id: bin_time
+
+  - id: load_sqlite
+    run: ../../tools/aws_s3_put.cwl.yaml
+    inputs:
+      - id: aws_config_file
+        source: "#aws_config_file"
+      - id: aws_shared_credentials_file
+        source: "#aws_shared_credentials_file"
+      - id: s3cfg_section
+        source: "#load_s3cfg_section"
+      - id: endpoint_url
+        source: "#load_endpoint_url"
+      - id: input_path
+        source: "#dnaseq_workflow/merge_all_sqlite_destination_sqlite"
+      - id: s3uri
+        source: "#load_bucket"
+        valueFrom: $(self + inputs.input_path.path.split('/').slice(-1)[0] )
+    outputs:
+      - id: bin_time
