@@ -30,7 +30,7 @@ outputs:
     type: File
     description: "python log file"
     outputBinding:
-      glob: $(inputs.uuid + "_remove_duplicate_fastq_matepair.log")
+      glob: $(inputs.uuid + "_remove_duplicate_fastq_matepair_main.log")
 
   - id: output_sqlite
     type: File
