@@ -36,7 +36,7 @@ outputs:
     type:
       type: array
       items: File
-    description: "The readgroups pairs split into compressed fastq"
+    description: "Read 1 of PE"
     outputBinding:
       glob: "*_1.fq.gz"
       outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
@@ -54,7 +54,7 @@ outputs:
     type:
       type: array
       items: File
-    description: "The readgroups pairs split into compressed fastq"
+    description: "Orphaned Read 1 of PE"
     outputBinding:
       glob: "*_o1.fq.gz"
       outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
@@ -63,7 +63,7 @@ outputs:
     type:
       type: array
       items: File
-    description: "Read 2 of PE"
+    description: "Orphaned Read 2 of PE"
     outputBinding:
       glob: "*_o2.fq.gz"
       outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
@@ -72,7 +72,7 @@ outputs:
     type:
       type: array
       items: File
-    description: "Read 2 of PE"
+    description: "SE"
     outputBinding:
       glob: "*_s.fq.gz"
       outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
