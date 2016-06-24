@@ -19,10 +19,10 @@ TL;DR
         # exit
         $ exit (only gain group access to docker when exit/login)
 
-1. On VM, ensure `virtualenvwrapper` is installed:
+1. On VM, ensure `virtualenvwrapper` and `nodejs` are installed:
 
         $ sudo su -
-        # apt-get update && apt-get install virtualenvwrapper -y
+        # apt-get update && apt-get install virtualenvwrapper nodejs -y
         # exit
 
 2. configure `virtualenvwrapper`
