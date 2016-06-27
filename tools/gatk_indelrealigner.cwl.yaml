@@ -61,7 +61,7 @@ outputs:
         {
         var bam_array = [];
         for (var i = 0; i < inputs.bam_path.length; i++) {
-          bam_array.concact({"path": inputs.bam_path[i].path.split('/').slice(-1)[0], "class": "File"});
+          bam_array.concat({"path": inputs.bam_path[i].path.split('/').slice(-1)[0], "class": "File"});
         }
         return bam_array
         }        
