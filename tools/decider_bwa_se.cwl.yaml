@@ -10,7 +10,8 @@ requirements:
           ${
             var fq_se_array = [];
             for (var i = 0; i < inputs.fastq_se_path.length; i++) {
-              fq_se_array.concat(inputs.fastq_se_path[i].path.split('/').slice(-1)[0]);
+              var file_name = inputs.fastq_se_path[i].path.split('/').slice(-1)[0];
+              fq_se_array.concat(file_name);
            }
           return fq_se_array
           }
@@ -19,19 +20,19 @@ requirements:
           ${
             var file_array = [];
             for (var i = 0; i < inputs.fastq_se_path.length; i++) {
-              json_name = inputs.fastq_se_path[i].path.split('/').slice(-1)[0].slice(0,-8) + ".json";
-              file_array.concat(json_name);
+              readgroup_name = inputs.fastq_se_path[i].path.split('/').slice(-1)[0].slice(0,-8) + ".json";
+              file_array.concat(readgroup_name);
             }
             return file_array
            }
         fileContent: |
           ${
             var path_array = [];
-            var array_dirname = inputs.json_path[0].path.match( /.*// );
+            var array_dirname = inputs.readgroup_path[0].path.match( /.*// );
             for (var i = 0; i < inputs.fastq_se_path.length; i++) {
-              json_name = inputs.fastq_se_path[i].path.split('/').slice(-1)[0].slice(0,-8) + ".json";
-              json_path = array_dirname + '/' + json_name;
-              path_array.concat(json_path);
+              readgroup_name = inputs.fastq_se_path[i].path.split('/').slice(-1)[0].slice(0,-8) + ".json";
+              readgroup_path = array_dirname + '/' + readgroup_name;
+              path_array.concat(readgroup_path);
             }
             return path_array
           }
@@ -44,7 +45,7 @@ inputs:
       type: array
       items: File
 
-  - id: json_path
+  - id: readgroup_path
     type:
       type: array
       items: File
