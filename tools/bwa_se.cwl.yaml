@@ -1,0 +1,66 @@
+#!/usr/bin/env cwl-runner
+
+cwlVersion: "cwl:draft-3"
+
+description: |
+  Usage:  cwl-runner <this-file-path> <options>
+
+requirements:
+  - class: InlineJavascriptRequirement
+  - class: DockerRequirement
+    dockerPull: quay.io/jeremiahsavage/bwa_tool
+
+class: CommandLineTool
+
+inputs:
+  - id: fastq_path
+    type: File
+    inputBinding:
+      prefix: --fastq_path
+
+  - id: reference_fasta_path
+    type: File
+    inputBinding:
+      prefix: --reference_fasta_path
+    secondaryFiles:
+      - .amb
+      - .ann
+      - .bwt
+      - .pac
+      - .sa
+
+  - id: readgroup_json_path
+    type: File
+    inputBinding:
+      prefix: --readgroup_json_path
+      
+  - id: thread_count
+    type: int
+    inputBinding:
+      prefix: --thread_count
+
+  - id: uuid
+    type: string
+    inputBinding:
+      prefix: --uuid
+
+outputs:
+  - id: output_bam
+    type: File
+    description: "Aligned BAM"
+    outputBinding:
+      glob: $(inputs.readgroup_json_path.path.split('/').slice(-1)[0].slice(0,-5)+".bam")
+
+  - id: log
+    type: File
+    description: "python log file"
+    outputBinding:
+      glob: $(inputs.uuid+"_bwa_mem.log")
+
+  - id: output_sqlite
+    type: File
+    description: "output sqlite"
+    outputBinding:
+      glob: $(inputs.uuid + ".db")
+          
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/bwa_se_tool/main.py"]
