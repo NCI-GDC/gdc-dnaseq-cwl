@@ -8,7 +8,7 @@ description: |
 requirements:
   - class: InlineJavascriptRequirement
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/bwa_tool
+    dockerPull: quay.io/jeremiahsavage/bwa_se_tool
 
 class: CommandLineTool
 
