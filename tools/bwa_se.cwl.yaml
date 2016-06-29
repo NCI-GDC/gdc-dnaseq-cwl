@@ -33,6 +33,11 @@ inputs:
     type: File
     inputBinding:
       prefix: --readgroup_json_path
+
+  - id: fastqc_db_path
+    type: File
+    inputBinding:
+      prefix: --fastqc_db_path
       
   - id: thread_count
     type: int
