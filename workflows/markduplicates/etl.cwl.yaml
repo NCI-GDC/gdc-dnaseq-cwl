@@ -1,0 +1,281 @@
+#!/usr/bin/env cwl-runner
+
+cwlVersion: "cwl:draft-3"
+
+class: Workflow
+
+requirements:
+  - class: InlineJavascriptRequirement
+  - class: StepInputExpressionRequirement
+  - class: SubworkflowFeatureRequirement
+
+inputs:
+  - id: bam_s3url
+    type: string
+  - id: db_snp_s3url
+    type: string
+  - id: reference_fasta_s3url
+    type: string
+  - id: db_cred_s3url
+    type: string
+  - id: thread_count
+    type: int
+  - id: uuid
+    type: string
+  - id: aws_config_file
+    type: File
+  - id: aws_shared_credentials_file
+    type: File
+  - id: extract_s3cfg_section
+    type: string
+  - id: extract_endpoint_url
+    type: string
+  - id: load_s3cfg_section
+    type: string
+  - id: load_endpoint_url
+    type: string
+  - id: load_bucket
+    type: string
+
+outputs:
+  - id: dnaseq_workflow_output_bam
+    type: File
+    source: "#dnaseq_workflow/picard_markduplicates_output_bam"
+  - id: dnaseq_workflow_output_sqlite
+    type: File
+    source: "#dnaseq_workflow/merge_all_sqlite_destination_sqlite"
+
+steps:
+  - id: extract_bam
+    run: ../../tools/aws_s3_get.cwl.yaml
+    inputs:
+      - id: aws_config_file
+        source: "#aws_config_file"
+      - id: aws_shared_credentials_file
+        source: "#aws_shared_credentials_file"
+      - id: s3uri
+        source: "#bam_s3url"
+      - id: s3cfg_section
+        source: "#extract_s3cfg_section"
+      - id: endpoint_url
+        source: "#extract_endpoint_url"
+    outputs:
+      - id: output
+      - id: bin_time
+
+  - id: extract_db_snp
+    run: ../../tools/aws_s3_get.cwl.yaml
+    inputs:
+      - id: aws_config_file
+        source: "#aws_config_file"
+      - id: aws_shared_credentials_file
+        source: "#aws_shared_credentials_file"
+      - id: s3uri
+        source: "#db_snp_s3url"
+      - id: s3cfg_section
+        source: "#extract_s3cfg_section"
+      - id: endpoint_url
+        source: "#extract_endpoint_url"
+    outputs:
+      - id: output
+      - id: bin_time
+
+  - id: extract_fasta
+    run: ../../tools/aws_s3_get.cwl.yaml
+    inputs:
+      - id: aws_config_file
+        source: "#aws_config_file"
+      - id: aws_shared_credentials_file
+        source: "#aws_shared_credentials_file"
+      - id: s3uri
+        source: "#reference_fasta_s3url"
+      - id: s3cfg_section
+        source: "#extract_s3cfg_section"
+      - id: endpoint_url
+        source: "#extract_endpoint_url"
+    outputs:
+      - id: output
+      - id: bin_time
+
+  - id: extract_fasta_amb
+    run: ../../tools/aws_s3_get.cwl.yaml
+    inputs:
+      - id: aws_config_file
+        source: "#aws_config_file"
+      - id: aws_shared_credentials_file
+        source: "#aws_shared_credentials_file"
+      - id: s3uri
+        source: "#reference_fasta_s3url"
+        valueFrom: $(self + ".amb")
+      - id: s3cfg_section
+        source: "#extract_s3cfg_section"
+      - id: endpoint_url
+        source: "#extract_endpoint_url"
+    outputs:
+      - id: output
+      - id: bin_time
+
+  - id: extract_fasta_ann
+    run: ../../tools/aws_s3_get.cwl.yaml
+    inputs:
+      - id: aws_config_file
+        source: "#aws_config_file"
+      - id: aws_shared_credentials_file
+        source: "#aws_shared_credentials_file"
+      - id: s3uri
+        source: "#reference_fasta_s3url"
+        valueFrom: $(self + ".ann")
+      - id: s3cfg_section
+        source: "#extract_s3cfg_section"
+      - id: endpoint_url
+        source: "#extract_endpoint_url"
+    outputs:
+      - id: output
+      - id: bin_time
+
+  - id: extract_fasta_bwt
+    run: ../../tools/aws_s3_get.cwl.yaml
+    inputs:
+      - id: aws_config_file
+        source: "#aws_config_file"
+      - id: aws_shared_credentials_file
+        source: "#aws_shared_credentials_file"
+      - id: s3uri
+        source: "#reference_fasta_s3url"
+        valueFrom: $(self + ".bwt")
+      - id: s3cfg_section
+        source: "#extract_s3cfg_section"
+      - id: endpoint_url
+        source: "#extract_endpoint_url"
+    outputs:
+      - id: output
+      - id: bin_time
+
+  - id: extract_fasta_fai
+    run: ../../tools/aws_s3_get.cwl.yaml
+    inputs:
+      - id: aws_config_file
+        source: "#aws_config_file"
+      - id: aws_shared_credentials_file
+        source: "#aws_shared_credentials_file"
+      - id: s3uri
+        source: "#reference_fasta_s3url"
+        valueFrom: $(self + ".fai")
+      - id: s3cfg_section
+        source: "#extract_s3cfg_section"
+      - id: endpoint_url
+        source: "#extract_endpoint_url"
+    outputs:
+      - id: output
+      - id: bin_time
+
+  - id: extract_fasta_pac
+    run: ../../tools/aws_s3_get.cwl.yaml
+    inputs:
+      - id: aws_config_file
+        source: "#aws_config_file"
+      - id: aws_shared_credentials_file
+        source: "#aws_shared_credentials_file"
+      - id: s3uri
+        source: "#reference_fasta_s3url"
+        valueFrom: $(self + ".pac")
+      - id: s3cfg_section
+        source: "#extract_s3cfg_section"
+      - id: endpoint_url
+        source: "#extract_endpoint_url"
+    outputs:
+      - id: output
+      - id: bin_time
+
+  - id: extract_fasta_sa
+    run: ../../tools/aws_s3_get.cwl.yaml
+    inputs:
+      - id: aws_config_file
+        source: "#aws_config_file"
+      - id: aws_shared_credentials_file
+        source: "#aws_shared_credentials_file"
+      - id: s3uri
+        source: "#reference_fasta_s3url"
+        valueFrom: $(self + ".sa")
+      - id: s3cfg_section
+        source: "#extract_s3cfg_section"
+      - id: endpoint_url
+        source: "#extract_endpoint_url"
+    outputs:
+      - id: output
+      - id: bin_time
+
+  - id: root_fasta_files
+    run: ../../tools/root_reference_fasta.cwl.yaml
+    inputs:
+      - id: fasta_path
+        source: "#extract_fasta/output"
+      - id: fasta_amb_path
+        source: "#extract_fasta_amb/output"
+      - id: fasta_ann_path
+        source: "#extract_fasta_ann/output"
+      - id: fasta_bwt_path
+        source: "#extract_fasta_bwt/output"
+      - id: fasta_fai_path
+        source: "#extract_fasta_fai/output"
+      - id: fasta_pac_path
+        source: "#extract_fasta_pac/output"
+      - id: fasta_sa_path
+        source: "#extract_fasta_sa/output"
+    outputs:
+      - id: output_fasta
+
+  - id: dnaseq_workflow
+    run: dnaseq_workflow.cwl.yaml
+    inputs:
+      - id: bam_path
+        source: "#extract_bam/output"
+      - id: db_snp_path
+        source: "#extract_db_snp/output"
+      - id: reference_fasta_path
+        source: "#root_fasta_files/output_fasta"
+      - id: thread_count
+        source: "#thread_count"
+      - id: uuid
+        source: "#uuid"
+    outputs:
+      - id: picard_markduplicates_output_bam
+      - id: merge_all_sqlite_destination_sqlite
+
+  - id: load_bam
+    run: ../../tools/aws_s3_put.cwl.yaml
+    inputs:
+      - id: aws_config_file
+        source: "#aws_config_file"
+      - id: aws_shared_credentials_file
+        source: "#aws_shared_credentials_file"
+      - id: s3cfg_section
+        source: "#load_s3cfg_section"
+      - id: endpoint_url
+        source: "#load_endpoint_url"
+      - id: input_path
+        source: "#dnaseq_workflow/picard_markduplicates_output_bam"
+      - id: s3uri
+        source: "#load_bucket"
+        valueFrom: $(self + inputs.input_path.path.split('/').slice(-1)[0] )
+    outputs:
+      - id: bin_time
+
+  - id: load_sqlite
+    run: ../../tools/aws_s3_put.cwl.yaml
+    inputs:
+      - id: aws_config_file
+        source: "#aws_config_file"
+      - id: aws_shared_credentials_file
+        source: "#aws_shared_credentials_file"
+      - id: s3cfg_section
+        source: "#load_s3cfg_section"
+      - id: endpoint_url
+        source: "#load_endpoint_url"
+      - id: input_path
+        source: "#dnaseq_workflow/merge_all_sqlite_destination_sqlite"
+      - id: s3uri
+        source: "#load_bucket"
+        valueFrom: $(self + inputs.input_path.path.split('/').slice(-1)[0] )
+    outputs:
+      - id: bin_time
