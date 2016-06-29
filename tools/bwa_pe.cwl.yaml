@@ -8,7 +8,7 @@ description: |
 requirements:
   - class: InlineJavascriptRequirement
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/bwa_tool
+    dockerPull: quay.io/jeremiahsavage/bwa_pe_tool
 
 class: CommandLineTool
 
@@ -39,6 +39,11 @@ inputs:
     inputBinding:
       prefix: --readgroup_json_path
       
+  - id: fastqc_db_path
+    type: File
+    inputBinding:
+      prefix: --fastqc_db_path
+      
   - id: thread_count
     type: int
     inputBinding:
@@ -68,4 +73,4 @@ outputs:
     outputBinding:
       glob: $(inputs.uuid + ".db")
           
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/bwa_tool/main.py"]
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/bwa_pe_tool/main.py"]
