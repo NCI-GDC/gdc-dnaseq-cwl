@@ -21,6 +21,8 @@ inputs:
     type: int
   - id: uuid
     type: string
+  - id: input_state
+    type: string
 
 outputs:
   - id: picard_markduplicates_output_bam
@@ -54,7 +56,7 @@ steps:
       - id: uuid
         source: "#uuid"
       - id: input_state
-        default: "reheadered_readgroups"
+        source: "#input_state"
     outputs:
       - id: output_bam
       - id: log
