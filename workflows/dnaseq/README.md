@@ -10,7 +10,7 @@ TL;DR
 0. Fix up Docker
 
         $ sudo su
-        ## ensure following lines in /etc/apt/apt.conf.d:
+        ## ensure following lines in /etc/apt/apt.conf.d/01Proxy:
                   Acquire::http::Proxy "http://cloud-proxy:3128";
                   Acquire::https::Proxy "http://cloud-proxy:3128";
         # mkdir /mnt/SCRATCH
