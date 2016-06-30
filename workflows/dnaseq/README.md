@@ -10,6 +10,16 @@ TL;DR
 0. Fix up Docker
 
         $ sudo su
+        ## ensure following lines in /etc/apt/apt.conf.d:
+                  Acquire::http::Proxy "http://cloud-proxy:3128";
+                  Acquire::https::Proxy "http://cloud-proxy:3128";
+        # mkdir /mnt/SCRATCH
+        # chown 777 /mnt/SCRATCH
+        # aptitude install apt-transport-https ca-certificates
+        # export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128
+        # apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+        # echo "deb https://apt.dockerproject.org/repo ubuntu-trusty main" > /etc/apt/sources.list.d/docker.list
+        # aptitude update && aptitude install docker-engine -y
         # mkdir /mnt/SCRATCH/docker
         # chown ubuntu /home/ubuntu/.dockercfg
         # gpasswd -a ubuntu docker
