@@ -1,0 +1,97 @@
+#!/usr/bin/env cwl-runner
+cwlVersion: "cwl:draft-3"
+
+class: CommandLineTool
+requirements:
+  - class: DockerRequirement
+    dockerPull: quay.io/jeremiahsavage/awscli
+  - class: EnvVarRequirement
+    envDef:
+      - envName: "AWS_CONFIG_FILE"
+        envValue: $(inputs.aws_config_file.path)
+      - envName: "AWS_SHARED_CREDENTIALS_FILE"
+        envValue: $(inputs.aws_shared_credentials_file.path)
+  - class: InlineJavascriptRequirement
+  - class: ShellCommandRequirement
+
+inputs:
+  - id: aws_config
+    type: File
+
+  - id: aws_shared_credentials
+    type: File
+  
+  - id: endpoint_json
+    type: File
+    inputBinding:
+      loadContents: true
+    
+  - id: signpost_json
+    type: File
+    inputBinding:
+      loadContents: true
+
+outputs:
+  - id: output
+    type: File
+    outputBinding:
+      glob: $(inputs.s3uri.split('/').slice(-1)[0])
+
+  - id: bin_time
+    type: File
+    outputBinding:
+      glob: "bin.time"
+
+arguments:
+  - valueFrom: "bin.time"
+    position: 0
+
+  - valueFrom: aws
+    position: 1
+
+  - valueFrom: s3
+    position: 2
+
+  - valueFrom: cp
+    position: 3
+
+  - valueFrom: |
+      ${
+      var consul_signpost_json = JSON.parse(inputs.signpost_json.contents)
+      var consul_signpost_url = consul_signpost_json.urls[0]
+      var consul_signpost_root = consul_signpost_url.substring(5).split('/')[0]
+      var profile = consul_signpost_root.split('.')[0]
+
+      var endpoint_json = JSON.parse(inputs.endpoint_json.contents)
+      var endpoint_url = endpoint_json[profile]
+      return endpoint_url
+      }
+    prefix: --endpoint-url
+    position: 10
+
+    
+  - valueFrom: |
+      ${
+      var consul_signpost_json = JSON.parse(inputs.signpost_json.contents)
+      var consul_signpost_url = consul_signpost_json.urls[0]
+      var consul_signpost_root = consul_signpost_url.substring(5).split('/')[0]
+      var profile = consul_signpost_root.split('.')[0]
+      return profile
+      }
+    prefix: --profile
+    position: 11
+
+  - valueFrom: |
+      ${
+      var consul_signpost_json = JSON.parse(inputs.signpost_json.contents).urls[0]
+      var consul_signpost_url = consul_signpost_json.urls[0]
+      var consul_signpost_path = consul_signpost_url.substring(5).split('/').slice(1).join('/')
+      var s3_url = "s3://" + consul_signpost_path
+      return s3_url
+      }
+    position: 98
+
+  - valueFrom: .
+    position: 99
+
+baseCommand: [/usr/bin/time, -v, -o]
