@@ -8,9 +8,9 @@ requirements:
   - class: EnvVarRequirement
     envDef:
       - envName: "AWS_CONFIG_FILE"
-        envValue: $(inputs.aws_config_file.path)
+        envValue: $(inputs.aws_config.path)
       - envName: "AWS_SHARED_CREDENTIALS_FILE"
-        envValue: $(inputs.aws_shared_credentials_file.path)
+        envValue: $(inputs.aws_shared_credentials.path)
   - class: InlineJavascriptRequirement
   - class: ShellCommandRequirement
 
@@ -35,7 +35,13 @@ outputs:
   - id: output
     type: File
     outputBinding:
-      glob: $(inputs.s3uri.split('/').slice(-1)[0])
+      glob: |
+        ${
+        var signpost_json = JSON.parse(inputs.signpost_json.contents);
+        var signpost_url = String(signpost_json.urls.slice(0));
+        var file_name = signpost_url.split('/').slice(-1)[0]
+        return file_name
+        }
 
   - id: bin_time
     type: File
@@ -43,27 +49,17 @@ outputs:
       glob: "bin.time"
 
 arguments:
-  - valueFrom: "bin.time"
-    position: 0
-
-  - valueFrom: aws
-    position: 1
-
-  - valueFrom: s3
-    position: 2
-
-  - valueFrom: cp
-    position: 3
-
   - valueFrom: |
       ${
-      var consul_signpost_json = JSON.parse(inputs.signpost_json.contents)
-      var consul_signpost_url = consul_signpost_json.urls[0]
-      var consul_signpost_root = consul_signpost_url.substring(5).split('/')[0]
-      var profile = consul_signpost_root.split('.')[0]
+      var signpost_json = JSON.parse(inputs.signpost_json.contents);
+      var signpost_url = String(signpost_json.urls.slice(0));
+      var signpost_path = signpost_url.slice(5);
+      var signpost_array = signpost_path.split('/');
+      var signpost_root = signpost_array[0];
+      var profile = signpost_root.split('.')[0];
 
       var endpoint_json = JSON.parse(inputs.endpoint_json.contents)
-      var endpoint_url = endpoint_json[profile]
+      var endpoint_url = String(endpoint_json[profile])
       return endpoint_url
       }
     prefix: --endpoint-url
@@ -72,10 +68,12 @@ arguments:
     
   - valueFrom: |
       ${
-      var consul_signpost_json = JSON.parse(inputs.signpost_json.contents)
-      var consul_signpost_url = consul_signpost_json.urls[0]
-      var consul_signpost_root = consul_signpost_url.substring(5).split('/')[0]
-      var profile = consul_signpost_root.split('.')[0]
+      var signpost_json = JSON.parse(inputs.signpost_json.contents);
+      var signpost_url = String(signpost_json.urls.slice(0));
+      var signpost_path = signpost_url.slice(5);
+      var signpost_array = signpost_path.split('/');
+      var signpost_root = signpost_array[0];
+      var profile = signpost_root.split('.')[0];
       return profile
       }
     prefix: --profile
@@ -83,10 +81,10 @@ arguments:
 
   - valueFrom: |
       ${
-      var consul_signpost_json = JSON.parse(inputs.signpost_json.contents).urls[0]
-      var consul_signpost_url = consul_signpost_json.urls[0]
-      var consul_signpost_path = consul_signpost_url.substring(5).split('/').slice(1).join('/')
-      var s3_url = "s3://" + consul_signpost_path
+      var signpost_json = JSON.parse(inputs.signpost_json.contents);
+      var signpost_url = String(signpost_json.urls.slice(0));
+      var signpost_path = signpost_url.substring(5).split('/').slice(1).join('/');
+      var s3_url = "s3://" + signpost_path;
       return s3_url
       }
     position: 98
@@ -94,4 +92,4 @@ arguments:
   - valueFrom: .
     position: 99
 
-baseCommand: [/usr/bin/time, -v, -o]
+baseCommand: [/usr/bin/time, -v, -o, bin.time, aws, s3, cp]
