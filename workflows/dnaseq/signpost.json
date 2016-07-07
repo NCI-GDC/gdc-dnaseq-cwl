@@ -1,0 +1,24 @@
+#!/usr/bin/env cwl-runner
+{
+    "bam_signpost_id": "113819e6-e59f-423c-ba00-2128b0e8f3e5",
+    "db_snp_signpost_id": "s3://bioinformatics_scratch/coclean/dbsnp_144.hg38.vcf.gz",
+    "reference_fasta_signpost_id": "s3://bioinformatics_scratch/grch38_for_bwa/GRCh38.d1.vd1.fa",
+    "db_cred_s3url": "s3://bioinformatics_scratch/coclean/dbsnp_144.hg38.vcf.gz",
+    "thread_count": 8,
+    "uuid": "atest",
+    "aws_config_file": {
+        "class": "File",
+        "path": "/home/ubuntu/.aws/config"
+    },
+    "aws_shared_credentials_file": {
+        "class": "File",
+        "path": "/home/ubuntu/.aws/credentials"
+    },
+    "endpoint_config_file": {
+        "class": "File",
+        "path": "/home/ubuntu/.endpoint_url.json"
+    },
+    "extract_s3cfg_section" : "cleversafe",
+    "load_s3cfg_section": "ceph",
+    "load_bucket": "s3://bioinformatics_scratch/maydeletetest/"
+}
