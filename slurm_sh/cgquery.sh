@@ -70,6 +70,13 @@ cgquery --all-states -a "study=phs000515&library_strategy=WGS&platform=ILLUMINA&
 cgquery --all-states -a "study=(phs000218 OR phs0004* OR phs000515)&library_strategy=WGS&state=live" -o "phs000218_phs0004*_phs000515_wgs_live_all_states.xml" > "phs000218_phs0004*_phs000515_wgs_live_all_states.out"
 cgquery --all-states -a "study=(phs000218 OR phs0004* OR phs000515)&library_strategy=WGS&platform=ILLUMINA&state=live" -o "phs000218_phs0004*_phs000515_wgs_illumina_live_all_states.xml" > "phs000218_phs0004*_phs000515_wgs_illumina_live_all_states.out"
 
+
+cgquery --all-states -a "study=(phs000218 OR phs0004* OR phs000515)&state=live" -o "phs000218_phs0004*_phs000515_live_all_states.xml" > "phs000218_phs0004*_phs000515_live_all_states.out"
+cgquery --all-states -a "study=(phs000218 OR phs0004* OR phs000515)&state=redacted" -o "phs000218_phs0004*_phs000515_redacted_all_states.xml" > "phs000218_phs0004*_phs000515_redacted_all_states.out"
+cgquery --all-states -a "study=(phs000218 OR phs0004* OR phs000515)&state=supressed" -o "phs000218_phs0004*_phs000515_supressed_all_states.xml" > "phs000218_phs0004*_phs000515_supressed_all_states.out"
+cgquery --all-states -a "study=(phs000218 OR phs0004* OR phs000515)&state=bad_data" -o "phs000218_phs0004*_phs000515_bad_data_all_states.xml" > "phs000218_phs0004*_phs000515_bad_data_all_states.out"
+cgquery --all-states -a "study=(phs000218 OR phs0004* OR phs000515)&state=submitted" -o "phs000218_phs0004*_phs000515_submitted_all_states.xml" > "phs000218_phs0004*_phs000515_submitted_all_states.out"
+
 ####
 #TCGA
 cgquery --all-states -a "study=phs000178" -o phs000178_all_states.xml > phs000178_all_states.out
@@ -79,6 +86,15 @@ cgquery --all-states -a "study=phs000178&library_strategy=WGS&platform=ILLUMINA"
 cgquery --all-states -a "study=phs000178&library_strategy=WXS&platform=ILLUMINA" -o phs000178_wxs_illumina_all_states.xml > phs000178_wxs_illumina_all_states.out
 cgquery --all-states -a "study=phs000178&library_strategy=WGS&platform=ILLUMINA&state=live" -o phs000178_wgs_illumina_live_all_states.xml > phs000178_wgs_illumina_live_all_states.out
 cgquery --all-states -a "study=phs000178&library_strategy=WXS&platform=ILLUMINA&state=live" -o phs000178_wxs_illumina_live_all_states.xml > phs000178_wxs_illumina_live_all_states.out
+
+cgquery --all-states -a "study=phs000178&state=live" -o phs000178_live_all_states.xml > phs000178_live_all_states.out
+cgquery --all-states -a "study=phs000178&state=redacted" -o phs000178_redacted_all_states.xml > phs000178_redacted_all_states.out
+cgquery --all-states -a "study=phs000178&state=suppressed" -o phs000178_suppressed_all_states.xml > phs000178_supressed_all_states.out
+cgquery --all-states -a "study=phs000178&state=bad_data" -o phs000178_bad_data_all_states.xml > phs000178_bad_data_all_states.out
+cgquery --all-states -a "study=phs000178&state=submitted" -o phs000178_submitted_all_states.xml > phs000178_submitted_all_states.out
+cgquery --all-states -a "study=phs000178&state=uploading" -o phs000178_uploading_all_states.xml > phs000178_uploading_all_states.out
+cgquery --all-states -a "study=phs000178&state=validating_sample" -o phs000178_validating_sample_all_states.xml > phs000178_validating_sample_all_states.out
+
 
 cgquery -a "library_strategy=WXS&platform=ILLUMINA&state=live&study=phs000178&center_name=BCM" -o wxs_illumnia_live_phs000178_BCM.xml > wxs_illumnia_live_phs000178_BCM.out
 cgquery -a "library_strategy=WXS&platform=ILLUMINA&state=live&study=phs000178&center_name=BCCAGSC" -o wxs_illumnia_live_phs000178_BCCAGSC.xml > wxs_illumnia_live_phs000178_BCCAGSC.out

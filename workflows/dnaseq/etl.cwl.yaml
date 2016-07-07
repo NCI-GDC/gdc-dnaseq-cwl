@@ -10,7 +10,7 @@ requirements:
   - class: SubworkflowFeatureRequirement
 
 inputs:
-  - id: bam_s3url
+  - id: bam_node_id
     type: string
   - id: db_snp_s3url
     type: string
@@ -46,15 +46,23 @@ outputs:
     source: "#dnaseq_workflow/merge_all_sqlite_destination_sqlite"
 
 steps:
+  - id: extract_signpost_bam
+    run: ../../tools/curl_signpost_json.cwl.yaml
+    inputs:
+      - id: node_id
+        source: "#bam_node_id"
+    outputs:
+      - id: output_json
+
   - id: extract_bam
-    run: ../../tools/aws_s3_get.cwl.yaml
+    run: ../../tools/aws_s3_get_signpost.cwl.yaml
     inputs:
       - id: aws_config_file
         source: "#aws_config_file"
       - id: aws_shared_credentials_file
         source: "#aws_shared_credentials_file"
-      - id: s3uri
-        source: "#bam_s3url"
+      - id: signpost_json
+        source: "#extract_signpost_bam"
       - id: s3cfg_section
         source: "#extract_s3cfg_section"
       - id: endpoint_url
