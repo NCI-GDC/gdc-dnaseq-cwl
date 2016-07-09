@@ -4,7 +4,7 @@ cwlVersion: "cwl:draft-3"
 class: CommandLineTool
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/cdis_base
+    dockerPull: quay.io/jeremiahsavage/curl
   - class: InlineJavascriptRequirement
 
 inputs:
@@ -28,7 +28,7 @@ outputs:
       glob: bin.time
 
 arguments:
-  - valueFrom: $(inputs.url_base + "/" + inputs.signpost_id)
+  - valueFrom: $(inputs.url_base + inputs.signpost_id)
     position: 10
 
 baseCommand: [/usr/bin/time, -v, -o, "bin.time", curl]
