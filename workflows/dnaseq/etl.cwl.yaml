@@ -12,6 +12,8 @@ requirements:
 inputs:
   - id: signpost_base_url
     type: string
+  - id: endpoint_json
+    type: File
   - id: bam_signpost_id
     type: string
   - id: db_snp_signpost_id
@@ -34,9 +36,9 @@ inputs:
     type: int
   - id: uuid
     type: string
-  - id: aws_config_file
+  - id: aws_config
     type: File
-  - id: aws_shared_credentials_file
+  - id: aws_shared_credentials
     type: File
   - id: db_cred_path
     type: File
@@ -73,12 +75,14 @@ steps:
   - id: extract_bam
     run: ../../tools/aws_s3_get_signpost.cwl.yaml
     inputs:
-      - id: aws_config_file
-        source: "#aws_config_file"
-      - id: aws_shared_credentials_file
-        source: "#aws_shared_credentials_file"
+      - id: aws_config
+        source: "#aws_config"
+      - id: aws_shared_credentials
+        source: "#aws_shared_credentials"
       - id: signpost_json
         source: "#extract_bam_signpost/output_json"
+      - id: endpoint_json
+        source: "#endpoint_json"
     outputs:
       - id: output
       - id: bin_time
@@ -97,12 +101,14 @@ steps:
   - id: extract_db_snp
     run: ../../tools/aws_s3_get_signpost.cwl.yaml
     inputs:
-      - id: aws_config_file
-        source: "#aws_config_file"
-      - id: aws_shared_credentials_file
-        source: "#aws_shared_credentials_file"
+      - id: aws_config
+        source: "#aws_config"
+      - id: aws_shared_credentials
+        source: "#aws_shared_credentials"
       - id: signpost_json
         source: "#extract_db_snp_signpost/output_json"
+      - id: endpoint_json
+        source: "#endpoint_json"
     outputs:
       - id: output
       - id: bin_time
@@ -120,12 +126,14 @@ steps:
   - id: extract_ref_fa
     run: ../../tools/aws_s3_get_signpost.cwl.yaml
     inputs:
-      - id: aws_config_file
-        source: "#aws_config_file"
-      - id: aws_shared_credentials_file
-        source: "#aws_shared_credentials_file"
+      - id: aws_config
+        source: "#aws_config"
+      - id: aws_shared_credentials
+        source: "#aws_shared_credentials"
       - id: signpost_json
         source: "#extract_ref_fa_signpost/output_json"
+      - id: endpoint_json
+        source: "#endpoint_json"
     outputs:
       - id: output
       - id: bin_time
@@ -139,16 +147,19 @@ steps:
         source: "#signpost_base_url"
     outputs:
       - id: output_json
+      - id: bin_time
 
   - id: extract_ref_fai
     run: ../../tools/aws_s3_get_signpost.cwl.yaml
     inputs:
-      - id: aws_config_file
-        source: "#aws_config_file"
-      - id: aws_shared_credentials_file
-        source: "#aws_shared_credentials_file"
+      - id: aws_config
+        source: "#aws_config"
+      - id: aws_shared_credentials
+        source: "#aws_shared_credentials"
       - id: signpost_json
         source: "#extract_ref_fai_signpost/output_json"
+      - id: endpoint_json
+        source: "#endpoint_json"
     outputs:
       - id: output
       - id: bin_time
@@ -167,12 +178,14 @@ steps:
   - id: extract_ref_amb
     run: ../../tools/aws_s3_get_signpost.cwl.yaml
     inputs:
-      - id: aws_config_file
-        source: "#aws_config_file"
-      - id: aws_shared_credentials_file
-        source: "#aws_shared_credentials_file"
+      - id: aws_config
+        source: "#aws_config"
+      - id: aws_shared_credentials
+        source: "#aws_shared_credentials"
       - id: signpost_json
         source: "#extract_ref_amb_signpost/output_json"
+      - id: endpoint_json
+        source: "#endpoint_json"
     outputs:
       - id: output
       - id: bin_time
@@ -191,12 +204,14 @@ steps:
   - id: extract_ref_ann
     run: ../../tools/aws_s3_get_signpost.cwl.yaml
     inputs:
-      - id: aws_config_file
-        source: "#aws_config_file"
-      - id: aws_shared_credentials_file
-        source: "#aws_shared_credentials_file"
+      - id: aws_config
+        source: "#aws_config"
+      - id: aws_shared_credentials
+        source: "#aws_shared_credentials"
       - id: signpost_json
         source: "#extract_ref_ann_signpost"
+      - id: endpoint_json
+        source: "#endpoint_json"
     outputs:
       - id: output
       - id: bin_time
@@ -215,12 +230,14 @@ steps:
   - id: extract_ref_bwt
     run: ../../tools/aws_s3_get_signpost.cwl.yaml
     inputs:
-      - id: aws_config_file
-        source: "#aws_config_file"
-      - id: aws_shared_credentials_file
-        source: "#aws_shared_credentials_file"
+      - id: aws_config
+        source: "#aws_config"
+      - id: aws_shared_credentials
+        source: "#aws_shared_credentials"
       - id: signpost_json
         source: "#extract_ref_bwt_signpost/output_json"
+      - id: endpoint_json
+        source: "#endpoint_json"
     outputs:
       - id: output
       - id: bin_time
@@ -239,12 +256,14 @@ steps:
   - id: extract_ref_pac
     run: ../../tools/aws_s3_get_signpost.cwl.yaml
     inputs:
-      - id: aws_config_file
-        source: "#aws_config_file"
-      - id: aws_shared_credentials_file
-        source: "#aws_shared_credentials_file"
+      - id: aws_config
+        source: "#aws_config"
+      - id: aws_shared_credentials
+        source: "#aws_shared_credentials"
       - id: signpost_json
         source: "#extract_ref_pac_signpost/output_json"
+      - id: endpoint_json
+        source: "#endpoint_json"
     outputs:
       - id: output
       - id: bin_time
@@ -263,12 +282,14 @@ steps:
   - id: extract_ref_sa
     run: ../../tools/aws_s3_get_signpost.cwl.yaml
     inputs:
-      - id: aws_config_file
-        source: "#aws_config_file"
-      - id: aws_shared_credentials_file
-        source: "#aws_shared_credentials_file"
+      - id: aws_config
+        source: "#aws_config"
+      - id: aws_shared_credentials
+        source: "#aws_shared_credentials"
       - id: signpost_json
         source: "#extract_ref_sa_signpost/output_json"
+      - id: endpoint_json
+        source: "#endpoint_json"
     outputs:
       - id: output
       - id: bin_time
@@ -313,10 +334,10 @@ steps:
   - id: load_bam
     run: ../../tools/aws_s3_put.cwl.yaml
     inputs:
-      - id: aws_config_file
-        source: "#aws_config_file"
-      - id: aws_shared_credentials_file
-        source: "#aws_shared_credentials_file"
+      - id: aws_config
+        source: "#aws_config"
+      - id: aws_shared_credentials
+        source: "#aws_shared_credentials"
       - id: s3cfg_section
         source: "#load_s3cfg_section"
       - id: endpoint_url
@@ -332,10 +353,10 @@ steps:
   - id: load_sqlite
     run: ../../tools/aws_s3_put.cwl.yaml
     inputs:
-      - id: aws_config_file
-        source: "#aws_config_file"
-      - id: aws_shared_credentials_file
-        source: "#aws_shared_credentials_file"
+      - id: aws_config
+        source: "#aws_config"
+      - id: aws_shared_credentials
+        source: "#aws_shared_credentials"
       - id: s3cfg_section
         source: "#load_s3cfg_section"
       - id: endpoint_url
