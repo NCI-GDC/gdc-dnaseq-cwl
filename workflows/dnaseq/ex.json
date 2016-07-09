@@ -1,7 +1,7 @@
 #!/usr/bin/env cwltool
 {
     "signpost_base_url": "signpost.service.consul/v0/did/",
-    "endpoint_json", {
+    "endpoint_json": {
         "class": "File",
         "path": "/home/ubuntu/endpoint.json"
     },
