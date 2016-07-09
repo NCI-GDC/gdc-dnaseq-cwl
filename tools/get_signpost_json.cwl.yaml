@@ -8,16 +8,16 @@ requirements:
   - class: InlineJavascriptRequirement
 
 inputs:
-  - id: signpost_id
+  - id: id
     type: string
 
-  - id: url_base
+  - id: base_url
     type: string
 
-stdout: signpost.json
+stdout: output.json
 
 outputs:
-  - id: signpost_json
+  - id: output_json
     type: File
     outputBinding:
       glob: signpost.json
