@@ -1,6 +1,6 @@
 #!/usr/bin/env cwltool
 {
-    "signpost_base_url": "signpost.service.consul/v0/did/"
+    "signpost_base_url": "signpost.service.consul/v0/did/",
     "bam_signpost_id": "113819e6-e59f-423c-ba00-2128b0e8f3e5",
     "db_snp_signpost_id": "4ba1c087-ec80-47c4-a9d5-e9bb9933fef4",
     "reference_fa_signpost_id": "ed96790c-3eb5-4aa2-8f46-702d503e64e4",
@@ -23,7 +23,7 @@
     "db_cred_path": {
         "class": "File",
         "path": "/home/ubuntu/connect.ini"
-    }
+    },
     "load_s3cfg_section": "ceph",
     "load_endpoint_url": "http://gdc-cephb-objstore.osdc.io",
     "load_bucket": "s3://bioinformatics_scratch/maydeletetest/"
