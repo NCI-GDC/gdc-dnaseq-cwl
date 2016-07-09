@@ -10,6 +10,8 @@ requirements:
   - class: SubworkflowFeatureRequirement
 
 inputs:
+  - id: signpost_base_url
+    type: string
   - id: bam_signpost_id
     type: string
   - id: db_snp_signpost_id
@@ -18,11 +20,9 @@ inputs:
     type: string
   - id: reference_fai_signpost_id
     type: string
-  - id: reference_dict_signpost_id
+  - id: reference_amb_signpost_id
     type: string
   - id: reference_ann_signpost_id
-    type: string
-  - id: reference_amb_signpost_id
     type: string
   - id: reference_bwt_signpost_id
     type: string
@@ -30,8 +30,6 @@ inputs:
     type: string
   - id: reference_sa_signpost_id
     type: string
-  - id: db_cred_path
-    type: File
   - id: thread_count
     type: int
   - id: uuid
@@ -39,6 +37,8 @@ inputs:
   - id: aws_config_file
     type: File
   - id: aws_shared_credentials_file
+    type: File
+  - id: db_cred_path
     type: File
   - id: load_s3cfg_section
     type: string
