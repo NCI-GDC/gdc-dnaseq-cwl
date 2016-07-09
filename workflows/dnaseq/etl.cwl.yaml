@@ -209,7 +209,7 @@ steps:
       - id: aws_shared_credentials
         source: "#aws_shared_credentials"
       - id: signpost_json
-        source: "#extract_ref_ann_signpost"
+        source: "#extract_ref_ann_signpost/output_json"
       - id: endpoint_json
         source: "#endpoint_json"
     outputs:
@@ -298,19 +298,19 @@ steps:
     run: ../../tools/root_reference_fasta.cwl.yaml
     inputs:
       - id: fasta_path
-        source: "#extract_fasta/output"
+        source: "#extract_ref_fa/output"
       - id: fasta_amb_path
-        source: "#extract_fasta_amb/output"
+        source: "#extract_ref_amb/output"
       - id: fasta_ann_path
-        source: "#extract_fasta_ann/output"
+        source: "#extract_ref_ann/output"
       - id: fasta_bwt_path
-        source: "#extract_fasta_bwt/output"
+        source: "#extract_ref_bwt/output"
       - id: fasta_fai_path
-        source: "#extract_fasta_fai/output"
+        source: "#extract_ref_fai/output"
       - id: fasta_pac_path
-        source: "#extract_fasta_pac/output"
+        source: "#extract_ref_pac/output"
       - id: fasta_sa_path
-        source: "#extract_fasta_sa/output"
+        source: "#extract_ref_sa/output"
     outputs:
       - id: output_fasta
 
