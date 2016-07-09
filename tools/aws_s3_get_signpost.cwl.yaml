@@ -25,11 +25,13 @@ inputs:
     type: File
     inputBinding:
       loadContents: true
+      valueFrom: null
     
   - id: signpost_json
     type: File
     inputBinding:
       loadContents: true
+      valueFrom: null
 
 outputs:
   - id: output
@@ -92,4 +94,4 @@ arguments:
   - valueFrom: .
     position: 99
 
-baseCommand: [/usr/bin/time, -v, -o, bin.time, aws, s3, cp]
+baseCommand: [/usr/bin/time, -v, -o, "bin.time", aws, s3, cp]
