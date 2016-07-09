@@ -59,8 +59,10 @@ steps:
   - id: extract_bam_signpost
     run: ../../tools/get_signpost_json.cwl.yaml
     inputs:
-      - id: signpost_id
+      - id: id
         source: "#bam_signpost_id"
+      - id: base_url
+        source: "#signpost_base_url"
     outputs:
       - id: output_json
       - is: bin_time
@@ -81,8 +83,10 @@ steps:
   - id: extract_db_snp_signpost
     run: ../../tools/get_signpost_json.cwl.yaml
     inputs:
-      - id: signpost_id
+      - id: id
         source: "#db_snp_signpost_id"
+      - id: base_url
+        source: "#signpost_base_url"
     outputs:
       - id: output_json
       - id: bin_time
@@ -103,8 +107,10 @@ steps:
   - id: extract_ref_fa_signpost
     run: ../../tools/get_signpost_json.cwl.yaml
     inputs:
-      - id: signpost_id
+      - id: id
         source: "#reference_fa_signpost_id"
+      - id: base_url
+        source: "#signpost_base_url"
     outputs:
       - id: output_json
 
@@ -124,8 +130,10 @@ steps:
   - id: extract_ref_fai_signpost
     run: ../../tools/get_signpost_json.cwl.yaml
     inputs:
-      - id: signpost_id
+      - id: id
         source: "#reference_fai_signpost_id"
+      - id: base_url
+        source: "#signpost_base_url"
     outputs:
       - id: output_json
 
@@ -145,8 +153,10 @@ steps:
   - id: extract_ref_amb_signpost
     run: ../../tools/get_signpost_json.cwl.yaml
     inputs:
-      - id: signpost_id
+      - id: id
         source: "#reference_amb_signpost_id"
+      - id: base_url
+        source: "#signpost_base_url"
     outputs:
       - id: output_json
       - id: bin_time
@@ -167,8 +177,10 @@ steps:
   - id: extract_ref_ann_signpost
     run: ../../tools/get_signpost_json.cwl.yaml
     inputs:
-      - id: signpost_id
+      - id: id
         source: "#reference_ann_signpost_id"
+      - id: base_url
+        source: "#signpost_base_url"
     outputs:
       - id: output_json
       - id: bin_time
@@ -189,8 +201,10 @@ steps:
   - id: extract_ref_bwt_signpost
     run: ../../tools/get_signpost_json.cwl.yaml
     inputs:
-      - id: signpost_id
+      - id: id
         source: "#reference_bwt_signpost_id"
+      - id: base_url
+        source: "#signpost_base_url"
     outputs:
       - id: output_json
       - id: bin_time
@@ -211,8 +225,10 @@ steps:
   - id: extract_ref_pac_signpost
     run: ../../tools/get_signpost_json.cwl.yaml
     inputs:
-      - id: signpost_id
+      - id: id
         source: "#refence_pac_signpost_id"
+      - id: base_url
+        source: "#signpost_base_url"
     outputs:
       - id: output_json
       - id: bin_time
@@ -233,8 +249,10 @@ steps:
   - id: extract_ref_sa_signpost
     run: ../../tools/get_signpost_json.cwl.yaml
     inputs:
-      - id: signpost_id
+      - id: id
         source: "#reference_sa_signpost_id"
+      - id: base_url
+        source: "#signpost_base_url"
     outputs:
       - id: output_json
       - id: bin_time
