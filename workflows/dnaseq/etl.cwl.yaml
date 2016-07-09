@@ -246,7 +246,7 @@ steps:
     run: ../../tools/get_signpost_json.cwl.yaml
     inputs:
       - id: uuid
-        source: "#refence_pac_signpost_id"
+        source: "#reference_pac_signpost_id"
       - id: base_url
         source: "#signpost_base_url"
     outputs:
