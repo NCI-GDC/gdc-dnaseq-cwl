@@ -12,7 +12,6 @@ requirements:
       - envName: "AWS_SHARED_CREDENTIALS_FILE"
         envValue: $(inputs.aws_shared_credentials.path)
   - class: InlineJavascriptRequirement
-  - class: ShellCommandRequirement
 
 inputs:
   - id: aws_config
@@ -48,7 +47,7 @@ outputs:
   - id: bin_time
     type: File
     outputBinding:
-      glob: "bin.time"
+      glob: bin.time
 
 arguments:
   - valueFrom: |
