@@ -1,6 +1,10 @@
 #!/usr/bin/env cwltool
 {
     "signpost_base_url": "signpost.service.consul/v0/did/",
+    "endpoint_json", {
+        "class": "File",
+        "path": "/home/ubuntu/endpoint.json"
+    }
     "bam_signpost_id": "113819e6-e59f-423c-ba00-2128b0e8f3e5",
     "db_snp_signpost_id": "4ba1c087-ec80-47c4-a9d5-e9bb9933fef4",
     "reference_fa_signpost_id": "ed96790c-3eb5-4aa2-8f46-702d503e64e4",
@@ -12,11 +16,11 @@
     "reference_sa_signpost_id": "c9d4a9ec-751f-469a-b75c-0834f8685c19",
     "thread_count": 8,
     "uuid": "atest",
-    "aws_config_file": {
+    "aws_config": {
         "class": "File",
         "path": "/home/ubuntu/.aws/config"
     },
-    "aws_shared_credentials_file": {
+    "aws_shared_credentials": {
         "class": "File",
         "path": "/home/ubuntu/.aws/credentials"
     },
