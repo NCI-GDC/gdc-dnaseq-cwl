@@ -4,7 +4,7 @@
     "endpoint_json", {
         "class": "File",
         "path": "/home/ubuntu/endpoint.json"
-    }
+    },
     "bam_signpost_id": "113819e6-e59f-423c-ba00-2128b0e8f3e5",
     "db_snp_signpost_id": "4ba1c087-ec80-47c4-a9d5-e9bb9933fef4",
     "reference_fa_signpost_id": "ed96790c-3eb5-4aa2-8f46-702d503e64e4",
