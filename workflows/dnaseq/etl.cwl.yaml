@@ -10,14 +10,28 @@ requirements:
   - class: SubworkflowFeatureRequirement
 
 inputs:
-  - id: bam_node_id
+  - id: bam_signpost_id
     type: string
-  - id: db_snp_s3url
+  - id: db_snp_signpost_id
     type: string
-  - id: reference_fasta_s3url
+  - id: reference_fa_signpost_id
     type: string
-  - id: db_cred_s3url
+  - id: reference_fai_signpost_id
     type: string
+  - id: reference_dict_signpost_id
+    type: string
+  - id: reference_ann_signpost_id
+    type: string
+  - id: reference_amb_signpost_id
+    type: string
+  - id: reference_bwt_signpost_id
+    type: string
+  - id: reference_pac_signpost_id
+    type: string
+  - id: reference_sa_signpost_id
+    type: string
+  - id: db_cred_path
+    type: File
   - id: thread_count
     type: int
   - id: uuid
@@ -26,10 +40,6 @@ inputs:
     type: File
   - id: aws_shared_credentials_file
     type: File
-  - id: extract_s3cfg_section
-    type: string
-  - id: extract_endpoint_url
-    type: string
   - id: load_s3cfg_section
     type: string
   - id: load_endpoint_url
@@ -46,13 +56,14 @@ outputs:
     source: "#dnaseq_workflow/merge_all_sqlite_destination_sqlite"
 
 steps:
-  - id: extract_signpost_bam
-    run: ../../tools/curl_signpost_json.cwl.yaml
+  - id: extract_bam_signpost
+    run: ../../tools/get_signpost_json.cwl.yaml
     inputs:
-      - id: node_id
-        source: "#bam_node_id"
+      - id: signpost_id
+        source: "#bam_signpost_id"
     outputs:
       - id: output_json
+      - is: bin_time
 
   - id: extract_bam
     run: ../../tools/aws_s3_get_signpost.cwl.yaml
@@ -62,153 +73,181 @@ steps:
       - id: aws_shared_credentials_file
         source: "#aws_shared_credentials_file"
       - id: signpost_json
-        source: "#extract_signpost_bam"
-      - id: s3cfg_section
-        source: "#extract_s3cfg_section"
-      - id: endpoint_url
-        source: "#extract_endpoint_url"
+        source: "#extract_bam_signpost/output_json"
     outputs:
       - id: output
+      - id: bin_time
+
+  - id: extract_db_snp_signpost
+    run: ../../tools/get_signpost_json.cwl.yaml
+    inputs:
+      - id: signpost_id
+        source: "#db_snp_signpost_id"
+    outputs:
+      - id: output_json
       - id: bin_time
 
   - id: extract_db_snp
-    run: ../../tools/aws_s3_get.cwl.yaml
+    run: ../../tools/aws_s3_get_signpost.cwl.yaml
     inputs:
       - id: aws_config_file
         source: "#aws_config_file"
       - id: aws_shared_credentials_file
         source: "#aws_shared_credentials_file"
-      - id: s3uri
-        source: "#db_snp_s3url"
-      - id: s3cfg_section
-        source: "#extract_s3cfg_section"
-      - id: endpoint_url
-        source: "#extract_endpoint_url"
+      - id: signpost_json
+        source: "#extract_db_snp_signpost/output_json"
     outputs:
       - id: output
       - id: bin_time
 
-  - id: extract_fasta
-    run: ../../tools/aws_s3_get.cwl.yaml
+  - id: extract_ref_fa_signpost
+    run: ../../tools/get_signpost_json.cwl.yaml
+    inputs:
+      - id: signpost_id
+        source: "#reference_fa_signpost_id"
+    outputs:
+      - id: output_json
+
+  - id: extract_ref_fa
+    run: ../../tools/aws_s3_get_signpost.cwl.yaml
     inputs:
       - id: aws_config_file
         source: "#aws_config_file"
       - id: aws_shared_credentials_file
         source: "#aws_shared_credentials_file"
-      - id: s3uri
-        source: "#reference_fasta_s3url"
-      - id: s3cfg_section
-        source: "#extract_s3cfg_section"
-      - id: endpoint_url
-        source: "#extract_endpoint_url"
+      - id: signpost_json
+        source: "#extract_ref_fa_signpost/output_json"
     outputs:
       - id: output
       - id: bin_time
 
-  - id: extract_fasta_amb
-    run: ../../tools/aws_s3_get.cwl.yaml
+  - id: extract_ref_fai_signpost
+    run: ../../tools/get_signpost_json.cwl.yaml
+    inputs:
+      - id: signpost_id
+        source: "#reference_fai_signpost_id"
+    outputs:
+      - id: output_json
+
+  - id: extract_ref_fai
+    run: ../../tools/aws_s3_get_signpost.cwl.yaml
     inputs:
       - id: aws_config_file
         source: "#aws_config_file"
       - id: aws_shared_credentials_file
         source: "#aws_shared_credentials_file"
-      - id: s3uri
-        source: "#reference_fasta_s3url"
-        valueFrom: $(self + ".amb")
-      - id: s3cfg_section
-        source: "#extract_s3cfg_section"
-      - id: endpoint_url
-        source: "#extract_endpoint_url"
+      - id: signpost_json
+        source: "#extract_ref_fai_signpost/output_json"
     outputs:
       - id: output
       - id: bin_time
 
-  - id: extract_fasta_ann
-    run: ../../tools/aws_s3_get.cwl.yaml
+  - id: extract_ref_amb_signpost
+    run: ../../tools/get_signpost_json.cwl.yaml
+    inputs:
+      - id: signpost_id
+        source: "#reference_amb_signpost_id"
+    outputs:
+      - id: output_json
+      - id: bin_time
+
+  - id: extract_ref_amb
+    run: ../../tools/aws_s3_get_signpost.cwl.yaml
     inputs:
       - id: aws_config_file
         source: "#aws_config_file"
       - id: aws_shared_credentials_file
         source: "#aws_shared_credentials_file"
-      - id: s3uri
-        source: "#reference_fasta_s3url"
-        valueFrom: $(self + ".ann")
-      - id: s3cfg_section
-        source: "#extract_s3cfg_section"
-      - id: endpoint_url
-        source: "#extract_endpoint_url"
+      - id: signpost_json
+        source: "#extract_ref_amb_signpost/output_json"
     outputs:
       - id: output
       - id: bin_time
 
-  - id: extract_fasta_bwt
-    run: ../../tools/aws_s3_get.cwl.yaml
+  - id: extract_ref_ann_signpost
+    run: ../../tools/get_signpost_json.cwl.yaml
+    inputs:
+      - id: signpost_id
+        source: "#reference_ann_signpost_id"
+    outputs:
+      - id: output_json
+      - id: bin_time
+
+  - id: extract_ref_ann
+    run: ../../tools/aws_s3_get_signpost.cwl.yaml
     inputs:
       - id: aws_config_file
         source: "#aws_config_file"
       - id: aws_shared_credentials_file
         source: "#aws_shared_credentials_file"
-      - id: s3uri
-        source: "#reference_fasta_s3url"
-        valueFrom: $(self + ".bwt")
-      - id: s3cfg_section
-        source: "#extract_s3cfg_section"
-      - id: endpoint_url
-        source: "#extract_endpoint_url"
+      - id: signpost_json
+        source: "#extract_ref_ann_signpost"
     outputs:
       - id: output
       - id: bin_time
 
-  - id: extract_fasta_fai
-    run: ../../tools/aws_s3_get.cwl.yaml
+  - id: extract_ref_bwt_signpost
+    run: ../../tools/get_signpost_json.cwl.yaml
+    inputs:
+      - id: signpost_id
+        source: "#reference_bwt_signpost_id"
+    outputs:
+      - id: output_json
+      - id: bin_time
+
+  - id: extract_ref_bwt
+    run: ../../tools/aws_s3_get_signpost.cwl.yaml
     inputs:
       - id: aws_config_file
         source: "#aws_config_file"
       - id: aws_shared_credentials_file
         source: "#aws_shared_credentials_file"
-      - id: s3uri
-        source: "#reference_fasta_s3url"
-        valueFrom: $(self + ".fai")
-      - id: s3cfg_section
-        source: "#extract_s3cfg_section"
-      - id: endpoint_url
-        source: "#extract_endpoint_url"
+      - id: signpost_json
+        source: "#extract_ref_bwt_signpost/output_json"
     outputs:
       - id: output
       - id: bin_time
 
-  - id: extract_fasta_pac
-    run: ../../tools/aws_s3_get.cwl.yaml
+  - id: extract_ref_pac_signpost
+    run: ../../tools/get_signpost_json.cwl.yaml
+    inputs:
+      - id: signpost_id
+        source: "#refence_pac_signpost_id"
+    outputs:
+      - id: output_json
+      - id: bin_time
+
+  - id: extract_ref_pac
+    run: ../../tools/aws_s3_get_signpost.cwl.yaml
     inputs:
       - id: aws_config_file
         source: "#aws_config_file"
       - id: aws_shared_credentials_file
         source: "#aws_shared_credentials_file"
-      - id: s3uri
-        source: "#reference_fasta_s3url"
-        valueFrom: $(self + ".pac")
-      - id: s3cfg_section
-        source: "#extract_s3cfg_section"
-      - id: endpoint_url
-        source: "#extract_endpoint_url"
+      - id: signpost_json
+        source: "#extract_ref_pac_signpost/output_json"
     outputs:
       - id: output
       - id: bin_time
 
-  - id: extract_fasta_sa
-    run: ../../tools/aws_s3_get.cwl.yaml
+  - id: extract_ref_sa_signpost
+    run: ../../tools/get_signpost_json.cwl.yaml
+    inputs:
+      - id: signpost_id
+        source: "#reference_sa_signpost_id"
+    outputs:
+      - id: output_json
+      - id: bin_time
+
+  - id: extract_ref_sa
+    run: ../../tools/aws_s3_get_signpost.cwl.yaml
     inputs:
       - id: aws_config_file
         source: "#aws_config_file"
       - id: aws_shared_credentials_file
         source: "#aws_shared_credentials_file"
-      - id: s3uri
-        source: "#reference_fasta_s3url"
-        valueFrom: $(self + ".sa")
-      - id: s3cfg_section
-        source: "#extract_s3cfg_section"
-      - id: endpoint_url
-        source: "#extract_endpoint_url"
+      - id: signpost_json
+        source: "#extract_ref_sa_signpost/output_json"
     outputs:
       - id: output
       - id: bin_time
