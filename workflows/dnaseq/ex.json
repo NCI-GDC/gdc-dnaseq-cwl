@@ -1,4 +1,4 @@
-#!/usr/bin/env cwltool --enable-net --custom-net host --tmpdir-prefix /mnt/SCRATCH/tmp/tmp --tmp-outdir-prefix /mnt/SCRATCH/tmp/tmp --debug
+#!/usr/bin/env cwltool
 {
     "signpost_base_url": "signpost.service.consul/v0/did/"
     "bam_signpost_id": "113819e6-e59f-423c-ba00-2128b0e8f3e5",
