@@ -1,14 +1,16 @@
 #!/usr/bin/env cwl-runner
-cwlVersion: "cwl:draft-3"
+
+cwlVersion: cwl:draft-3
 
 class: CommandLineTool
+
 requirements:
   - class: DockerRequirement
     dockerPull: quay.io/jeremiahsavage/curl
   - class: InlineJavascriptRequirement
 
 inputs:
-  - id: id
+  - id: uuid
     type: string
 
   - id: base_url
@@ -20,7 +22,7 @@ outputs:
   - id: output_json
     type: File
     outputBinding:
-      glob: signpost.json
+      glob: output.json
 
   - id: bin_time
     type: File
@@ -28,7 +30,7 @@ outputs:
       glob: bin.time
 
 arguments:
-  - valueFrom: $(inputs.url_base + inputs.signpost_id)
-    position: 10
+  - valueFrom: $(inputs.base_url + inputs.uuid)
+    position: 0
 
 baseCommand: [/usr/bin/time, -v, -o, "bin.time", curl]
