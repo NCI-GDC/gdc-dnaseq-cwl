@@ -30,7 +30,7 @@ inputs:
       prefix: --uuid
 
 outputs:
-  - id: output_fastq_path
+  - id: output_fastq_paths
     type:
       type: array
       items: File
@@ -38,7 +38,7 @@ outputs:
       glob: "*_s.fq.gz"
       outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
 
-  - id: output_readgroup_path
+  - id: output_readgroup_paths
     type:
       type: array
       items: File
