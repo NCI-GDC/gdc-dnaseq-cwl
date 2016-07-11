@@ -346,37 +346,37 @@ steps:
       - id: output_readgroup_paths
       - id: output_db_paths
 
-  - id: decider_bwa_o1
-    run: ../../tools/decider_bwa_o1_docker.cwl.yaml
-    inputs:
-      - id: fastq_o1_path
-        source: "#biobambam2_bamtofastq/output_fastq_o1"
-      - id: readgroup_path
-        source: "#bam_readgroup_to_json/output_json"
-      - id: fastqc_db_path
-        source: "#fastqc_db_o1/output_sqlite"
-      - id: uuid
-        source: "#uuid"
-    outputs:
-      - id: output_fastq_paths
-      - id: output_readgroup_paths
-      - id: output_db_paths
+  # - id: decider_bwa_o1
+  #   run: ../../tools/decider_bwa_o1_docker.cwl.yaml
+  #   inputs:
+  #     - id: fastq_o1_path
+  #       source: "#biobambam2_bamtofastq/output_fastq_o1"
+  #     - id: readgroup_path
+  #       source: "#bam_readgroup_to_json/output_json"
+  #     - id: fastqc_db_path
+  #       source: "#fastqc_db_o1/output_sqlite"
+  #     - id: uuid
+  #       source: "#uuid"
+  #   outputs:
+  #     - id: output_fastq_paths
+  #     - id: output_readgroup_paths
+  #     - id: output_db_paths
 
-  - id: decider_bwa_o2
-    run: ../../tools/decider_bwa_o2_docker.cwl.yaml
-    inputs:
-      - id: fastq_o2_path
-        source: "#biobambam2_bamtofastq/output_fastq_o1"
-      - id: readgroup_path
-        source: "#bam_readgroup_to_json/output_json"
-      - id: fastqc_db_path
-        source: "#fastqc_db_o2/output_sqlite"
-      - id: uuid
-        source: "#uuid"
-    outputs:
-      - id: output_fastq_paths
-      - id: output_readgroup_paths
-      - id: output_db_paths
+  # - id: decider_bwa_o2
+  #   run: ../../tools/decider_bwa_o2_docker.cwl.yaml
+  #   inputs:
+  #     - id: fastq_o2_path
+  #       source: "#biobambam2_bamtofastq/output_fastq_o1"
+  #     - id: readgroup_path
+  #       source: "#bam_readgroup_to_json/output_json"
+  #     - id: fastqc_db_path
+  #       source: "#fastqc_db_o2/output_sqlite"
+  #     - id: uuid
+  #       source: "#uuid"
+  #   outputs:
+  #     - id: output_fastq_paths
+  #     - id: output_readgroup_paths
+  #     - id: output_db_paths
 
   # - id: bwa_pe
   #   run: ../../tools/bwa_pe.cwl.yaml

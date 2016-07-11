@@ -40,7 +40,7 @@ outputs:
   - id: output_fastq_paths
     type:
       type: array
-      items: File
+      items: ["null", File]
     outputBinding:
       glob: "*_o2.fq.gz"
       outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
@@ -48,7 +48,7 @@ outputs:
   - id: output_readgroup_paths
     type:
       type: array
-      items: File
+      items: ["null", File]
     outputBinding:
       glob: "*.json"
       outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
@@ -56,7 +56,7 @@ outputs:
   - id: output_db_paths
     type:
       type: array
-      items: File
+      items: ["null", File]
     outputBinding:
       glob: "*.db"
       outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )

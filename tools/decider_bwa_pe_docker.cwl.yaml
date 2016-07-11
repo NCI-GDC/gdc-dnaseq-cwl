@@ -54,7 +54,7 @@ outputs:
   - id: output_fastq1_paths
     type:
       type: array
-      items: File
+      items: ["null", File]
     outputBinding:
       glob: "*_1.fq.gz"
       outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
@@ -62,7 +62,7 @@ outputs:
   - id: output_fastq2_paths
     type:
       type: array
-      items: File
+      items: ["null", File]
     outputBinding:
       glob: "*_2.fq.gz"
       outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
@@ -70,7 +70,7 @@ outputs:
   - id: output_readgroup_paths
     type:
       type: array
-      items: File
+      items: ["null", File]
     outputBinding:
       glob: "*.json"
       outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
@@ -78,7 +78,7 @@ outputs:
   - id: output_db1_paths
     type:
       type: array
-      items: File
+      items: ["null", File]
     outputBinding:
       glob: "*_1.db"
       outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
@@ -86,7 +86,7 @@ outputs:
   - id: output_db2_paths
     type:
       type: array
-      items: File
+      items: ["null", File]
     outputBinding:
       glob: "*_2.db"
       outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
