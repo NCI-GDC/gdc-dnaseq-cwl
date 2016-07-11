@@ -13,7 +13,7 @@ inputs:
   - id: fastq_path
     type:
       type: array
-      items: File
+      items: ["null", File]
       inputBinding:
         prefix: --fastq_path
 
@@ -27,7 +27,7 @@ inputs:
   - id: fastqc_db_path
     type:
       type: array
-      items: File
+      items: ["null", File]
       inputBinding:
         prefix: --fastqc_db_path
 
