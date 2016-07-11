@@ -197,115 +197,115 @@ steps:
       - id: output_sqlite
       - id: log
 
-  - id: merge_fastqc1_sqlite
-    run: ../../tools/merge_sqlite.cwl.yaml
-    inputs:
-      - id: source_sqlite
-        source: "#fastqc1/output_sqlite"
-      - id: uuid
-        source: "#uuid"
-    outputs:
-      - id: destination_sqlite
-      - id: log
+  # - id: merge_fastqc1_sqlite
+  #   run: ../../tools/merge_sqlite.cwl.yaml
+  #   inputs:
+  #     - id: source_sqlite
+  #       source: "#fastqc1/output_sqlite"
+  #     - id: uuid
+  #       source: "#uuid"
+  #   outputs:
+  #     - id: destination_sqlite
+  #     - id: log
 
-  - id: merge_fastqc2_sqlite
-    run: ../../tools/merge_sqlite.cwl.yaml
-    inputs:
-      - id: source_sqlite
-        source: "#fastqc2/output_sqlite"
-      - id: uuid
-        source: "#uuid"
-    outputs:
-      - id: destination_sqlite
-      - id: log
+  # - id: merge_fastqc2_sqlite
+  #   run: ../../tools/merge_sqlite.cwl.yaml
+  #   inputs:
+  #     - id: source_sqlite
+  #       source: "#fastqc2/output_sqlite"
+  #     - id: uuid
+  #       source: "#uuid"
+  #   outputs:
+  #     - id: destination_sqlite
+  #     - id: log
 
-  - id: merge_fastqc2_sqlite
-    run: ../../tools/merge_sqlite.cwl.yaml
-    inputs:
-      - id: source_sqlite
-        source: "#fastqc_s/output_sqlite"
-      - id: uuid
-        source: "#uuid"
-    outputs:
-      - id: destination_sqlite
-      - id: log
+  # - id: merge_fastqc2_sqlite
+  #   run: ../../tools/merge_sqlite.cwl.yaml
+  #   inputs:
+  #     - id: source_sqlite
+  #       source: "#fastqc_s/output_sqlite"
+  #     - id: uuid
+  #       source: "#uuid"
+  #   outputs:
+  #     - id: destination_sqlite
+  #     - id: log
 
-  - id: merge_fastqc_o1_sqlite
-    run: ../../tools/merge_sqlite.cwl.yaml
-    inputs:
-      - id: source_sqlite
-        source: "#fastqc_o1/output_sqlite"
-      - id: uuid
-        source: "#uuid"
-    outputs:
-      - id: destination_sqlite
-      - id: log
+  # - id: merge_fastqc_o1_sqlite
+  #   run: ../../tools/merge_sqlite.cwl.yaml
+  #   inputs:
+  #     - id: source_sqlite
+  #       source: "#fastqc_o1/output_sqlite"
+  #     - id: uuid
+  #       source: "#uuid"
+  #   outputs:
+  #     - id: destination_sqlite
+  #     - id: log
 
-  - id: merge_fastqc_o2_sqlite
-    run: ../../tools/merge_sqlite.cwl.yaml
-    inputs:
-      - id: source_sqlite
-        source: "#fastqc_o2/output_sqlite"
-      - id: uuid
-        source: "#uuid"
-    outputs:
-      - id: destination_sqlite
-      - id: log
+  # - id: merge_fastqc_o2_sqlite
+  #   run: ../../tools/merge_sqlite.cwl.yaml
+  #   inputs:
+  #     - id: source_sqlite
+  #       source: "#fastqc_o2/output_sqlite"
+  #     - id: uuid
+  #       source: "#uuid"
+  #   outputs:
+  #     - id: destination_sqlite
+  #     - id: log
 
-  - id: merge_fastqc_db1_sqlite
-    run: ../../tools/merge_sqlite.cwl.yaml
-    inputs:
-      - id: source_sqlite
-        source: "#fastqc_db1/output_sqlite"
-      - id: uuid
-        source: "#uuid"
-    outputs:
-      - id: destination_sqlite
-      - id: log
+  # - id: merge_fastqc_db1_sqlite
+  #   run: ../../tools/merge_sqlite.cwl.yaml
+  #   inputs:
+  #     - id: source_sqlite
+  #       source: "#fastqc_db1/output_sqlite"
+  #     - id: uuid
+  #       source: "#uuid"
+  #   outputs:
+  #     - id: destination_sqlite
+  #     - id: log
 
-  - id: merge_fastqc_db2_sqlite
-    run: ../../tools/merge_sqlite.cwl.yaml
-    inputs:
-      - id: source_sqlite
-        source: "#fastqc_db2/output_sqlite"
-      - id: uuid
-        source: "#uuid"
-    outputs:
-      - id: destination_sqlite
-      - id: log
+  # - id: merge_fastqc_db2_sqlite
+  #   run: ../../tools/merge_sqlite.cwl.yaml
+  #   inputs:
+  #     - id: source_sqlite
+  #       source: "#fastqc_db2/output_sqlite"
+  #     - id: uuid
+  #       source: "#uuid"
+  #   outputs:
+  #     - id: destination_sqlite
+  #     - id: log
 
-  - id: merge_fastqc_db_s_sqlite
-    run: ../../tools/merge_sqlite.cwl.yaml
-    inputs:
-      - id: source_sqlite
-        source: "#fastqc_db_s/output_sqlite"
-      - id: uuid
-        source: "#uuid"
-    outputs:
-      - id: destination_sqlite
-      - id: log
+  # - id: merge_fastqc_db_s_sqlite
+  #   run: ../../tools/merge_sqlite.cwl.yaml
+  #   inputs:
+  #     - id: source_sqlite
+  #       source: "#fastqc_db_s/output_sqlite"
+  #     - id: uuid
+  #       source: "#uuid"
+  #   outputs:
+  #     - id: destination_sqlite
+  #     - id: log
 
-  - id: merge_fastqc_db_o1_sqlite
-    run: ../../tools/merge_sqlite.cwl.yaml
-    inputs:
-      - id: source_sqlite
-        source: "#fastqc_db_o1/output_sqlite"
-      - id: uuid
-        source: "#uuid"
-    outputs:
-      - id: destination_sqlite
-      - id: log
+  # - id: merge_fastqc_db_o1_sqlite
+  #   run: ../../tools/merge_sqlite.cwl.yaml
+  #   inputs:
+  #     - id: source_sqlite
+  #       source: "#fastqc_db_o1/output_sqlite"
+  #     - id: uuid
+  #       source: "#uuid"
+  #   outputs:
+  #     - id: destination_sqlite
+  #     - id: log
 
-  - id: merge_fastqc_db_o2_sqlite
-    run: ../../tools/merge_sqlite.cwl.yaml
-    inputs:
-      - id: source_sqlite
-        source: "#fastqc_db_o2/output_sqlite"
-      - id: uuid
-        source: "#uuid"
-    outputs:
-      - id: destination_sqlite
-      - id: log
+  # - id: merge_fastqc_db_o2_sqlite
+  #   run: ../../tools/merge_sqlite.cwl.yaml
+  #   inputs:
+  #     - id: source_sqlite
+  #       source: "#fastqc_db_o2/output_sqlite"
+  #     - id: uuid
+  #       source: "#uuid"
+  #   outputs:
+  #     - id: destination_sqlite
+  #     - id: log
 
   - id: decider_bwa_pe
     run: ../../tools/decider_bwa_pe_docker.cwl.yaml
@@ -348,7 +348,7 @@ steps:
   - id: decider_bwa_o1
     run: ../../tools/decider_bwa_o1_docker.cwl.yaml
     inputs:
-      - id: fastq_o1_path
+      - id: fastq_path
         source: "#biobambam2_bamtofastq/output_fastq_o1"
       - id: readgroup_path
         source: "#bam_readgroup_to_json/output_json"
@@ -364,7 +364,7 @@ steps:
   - id: decider_bwa_o2
     run: ../../tools/decider_bwa_o2_docker.cwl.yaml
     inputs:
-      - id: fastq_o2_path
+      - id: fastq_path
         source: "#biobambam2_bamtofastq/output_fastq_o1"
       - id: readgroup_path
         source: "#bam_readgroup_to_json/output_json"
