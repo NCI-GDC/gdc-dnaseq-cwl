@@ -39,11 +39,16 @@ inputs:
     inputBinding:
       prefix: --readgroup_json_path
       
-  - id: fastqc_db_path
+  - id: fastqc_db1_path
     type: File
     inputBinding:
-      prefix: --fastqc_db_path
+      prefix: --fastqc_db1_path
       
+  - id: fastqc_db2_path
+    type: File
+    inputBinding:
+      prefix: --fastqc_db2_path
+
   - id: thread_count
     type: int
     inputBinding:
