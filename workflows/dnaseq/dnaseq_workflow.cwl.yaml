@@ -377,27 +377,31 @@ steps:
       - id: output_readgroup_paths
       - id: output_db_paths
 
-  # - id: bwa_pe
-  #   run: ../../tools/bwa_pe.cwl.yaml
-  #   scatter: ["#bwa_pe/fastq1_path", "#bwa_pe/fastq2_path", "#bwa_pe/readgroup_json_path"]
-  #   scatterMethod: "dotproduct"
-  #   inputs:
-  #     - id: fastq1_path
-  #       source: "#biobambam2_bamtofastq/output_fastq1"
-  #     - id: fastq2_path
-  #       source: "#biobambam2_bamtofastq/output_fastq2"
-  #     - id: reference_fasta_path
-  #       source: "#reference_fasta_path"
-  #     - id: readgroup_json_path
-  #       source: "#bam_readgroup_to_json/output_json"
-  #     - id: thread_count
-  #       source: "#thread_count"
-  #     - id: uuid
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: output_bam
-  #     - id: output_sqlite
-  #     - id: log
+  - id: bwa_pe
+    run: ../../tools/bwa_pe.cwl.yaml
+    scatter: ["#bwa_pe/fastq1_path", "#bwa_pe/fastq2_path", "#bwa_pe/readgroup_json_path", "#bwa_pe/fastqc_db1_path", "#bwa_pe/fastqc_db2_path"]
+    scatterMethod: "dotproduct"
+    inputs:
+      - id: fastq1_path
+        source: "#decider_bwa_pe/output_fastq1_paths"
+      - id: fastq2_path
+        source: "#decider_bwa_pe/output_fastq2_paths"
+      - id: reference_fasta_path
+        source: "#reference_fasta_path"
+      - id: readgroup_json_path
+        source: "#decider_bwa_pe/output_readgroup_paths"
+      - id: fastqc_db1_path
+        source: "#decider_bwa_pe/output_db1_paths"
+      - id: fastqc_db2_path
+        source: "#decider_bwa_pe/output_db2_paths"
+      - id: thread_count
+        source: "#thread_count"
+      - id: uuid
+        source: "#uuid"
+    outputs:
+      - id: output_bam
+      - id: output_sqlite
+      - id: log
 
   # - id: merge_bwa_pe_sqlite
   #   run: ../../tools/merge_sqlite.cwl.yaml
