@@ -70,7 +70,7 @@ outputs:
     type: File
     description: "python log file"
     outputBinding:
-      glob: $(inputs.uuid+"_bwa_mem.log")
+      glob: $(inputs.uuid+"_bwa_pe.log")
 
   - id: output_sqlite
     type: File
