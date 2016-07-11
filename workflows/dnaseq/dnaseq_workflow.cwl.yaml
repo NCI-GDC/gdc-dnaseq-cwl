@@ -342,7 +342,6 @@ steps:
         source: "#uuid"
     outputs:
       - id: output_fastq_paths
-      - id: output_fastq2_paths
       - id: output_readgroup_paths
       - id: output_db_paths
 
