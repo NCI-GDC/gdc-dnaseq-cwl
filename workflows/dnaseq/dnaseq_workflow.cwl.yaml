@@ -308,7 +308,7 @@ steps:
       - id: log
 
   - id: decider_bwa_pe
-    run: ../../tools/decider_pe_docker.cwl.yaml
+    run: ../../tools/decider_bwa_pe_docker.cwl.yaml
     inputs:
       - id: fastq1_path
         source: "#biobambam2_bamtofastq/output_fastq1"
@@ -330,7 +330,7 @@ steps:
       - id: output_db2_paths
 
   - id: decider_bwa_se
-    run: ../../tools/decider_se_docker.cwl.yaml
+    run: ../../tools/decider_bwa_se_docker.cwl.yaml
     inputs:
       - id: fastq_path
         source: "#biobambam2_bamtofastq/output_fastq_s"
@@ -347,7 +347,7 @@ steps:
       - id: output_db_paths
 
   - id: decider_bwa_o1
-    run: ../../tools/decider_o1_docker.cwl.yaml
+    run: ../../tools/decider_bwa_o1_docker.cwl.yaml
     inputs:
       - id: fastq_o1_path
         source: "#biobambam2_bamtofastq/output_fastq_o1"
@@ -363,7 +363,7 @@ steps:
       - id: output_db_paths
 
   - id: decider_bwa_o2
-    run: ../../tools/decider_o2_docker.cwl.yaml
+    run: ../../tools/decider_bwa_o2_docker.cwl.yaml
     inputs:
       - id: fastq_o2_path
         source: "#biobambam2_bamtofastq/output_fastq_o1"
