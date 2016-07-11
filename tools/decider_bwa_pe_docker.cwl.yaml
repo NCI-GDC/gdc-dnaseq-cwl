@@ -13,14 +13,14 @@ inputs:
   - id: fastq1_path
     type:
       type: array
-      items: File
+      items: ["null", File]
       inputBinding:
         prefix: --fastq1_path
 
   - id: fastq2_path
     type:
       type: array
-      items: File
+      items: ["null", File]
       inputBinding:
         prefix: --fastq2_path
 
@@ -31,12 +31,19 @@ inputs:
       inputBinding:
         prefix: --readgroup_path
 
-  - id: fastqc_db_path
+  - id: fastqc_db1_path
     type:
       type: array
-      items: File
+      items: ["null", File]
       inputBinding:
-        prefix: --fastqc_db_path
+        prefix: --fastqc_db1_path
+
+  - id: fastqc_db2_path
+    type:
+      type: array
+      items: ["null", File]
+      inputBinding:
+        prefix: --fastqc_db2_path
 
   - id: uuid
     type: string
