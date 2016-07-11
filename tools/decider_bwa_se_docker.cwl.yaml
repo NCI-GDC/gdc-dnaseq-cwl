@@ -24,6 +24,13 @@ inputs:
       inputBinding:
         prefix: --readgroup_path
 
+  - id: fastqc_db_path
+    type:
+      type: array
+      items: File
+      inputBinding:
+        prefix: --fastqc_db_path
+
   - id: uuid
     type: string
     inputBinding:
