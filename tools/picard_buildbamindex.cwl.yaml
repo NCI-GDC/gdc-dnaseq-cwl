@@ -14,7 +14,7 @@ requirements:
   - class: InlineJavascriptRequirement
   - class: CreateFileRequirement
     fileDef:
-      - filename: $(inputs.bam_path.path.split('/').slice(-1)[0])
+      - filename: $(inputs.bam_path.basename)
         fileContent: $(inputs.bam_path)
 
 class: CommandLineTool
