@@ -40,7 +40,7 @@ outputs:
     type: File
     description: "The indexed file"
     outputBinding:
-      glob: $(inputs.bam_path.path.split('/').slice(-1)[0])
+      glob: $(inputs.bam_path.basename)
     secondaryFiles:
       - ^.bai
 
