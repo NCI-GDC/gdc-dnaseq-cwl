@@ -10,6 +10,13 @@ requirements:
 class: CommandLineTool
 
 inputs:
+  - id: DB_SNP
+    type: File
+    format: "edam:format_3016"
+    inputBinding:
+      prefix: "DB_SNP="
+      separate: false
+
   - id: INPUT
     type: File
     format: "edam:format_2572"
@@ -22,13 +29,6 @@ inputs:
     format: "edam:format_1929"
     inputBinding:
       prefix: "REFERENCE_SEQUENCE="
-      separate: false
-
-  - id: DB_SNP
-    type: File
-    format: "edam:format_3016"
-    inputBinding:
-      prefix: "DB_SNP="
       separate: false
 
 outputs:
