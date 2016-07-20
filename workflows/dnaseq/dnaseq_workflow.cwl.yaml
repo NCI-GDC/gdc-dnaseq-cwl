@@ -26,12 +26,12 @@ outputs:
   - id: biobambam2_bamtofastq_output_sqlite
     type: File
     source: "#biobambam2_bamtofastq/output_sqlite"
-  # - id: picard_markduplicates_output_bam
-  #   type: File
-  #   source: "#picard_markduplicates/output_bam"
-  # - id: merge_all_sqlite_destination_sqlite
-  #   type: File
-  #   source: "#merge_all_sqlite/destination_sqlite"
+  - id: picard_markduplicates_output_bam
+    type: File
+    source: "#picard_markduplicates/output_bam"
+  - id: merge_all_sqlite_destination_sqlite
+    type: File
+    source: "#merge_all_sqlite/destination_sqlite"
 
 steps:
   - id: bam_readgroup_to_json
@@ -197,115 +197,115 @@ steps:
       - id: output_sqlite
       - id: log
 
-  # - id: merge_fastqc1_sqlite
-  #   run: ../../tools/merge_sqlite.cwl.yaml
-  #   inputs:
-  #     - id: source_sqlite
-  #       source: "#fastqc1/output_sqlite"
-  #     - id: uuid
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: destination_sqlite
-  #     - id: log
+  - id: merge_fastqc1_sqlite
+    run: ../../tools/merge_sqlite.cwl.yaml
+    inputs:
+      - id: source_sqlite
+        source: "#fastqc1/output_sqlite"
+      - id: uuid
+        source: "#uuid"
+    outputs:
+      - id: destination_sqlite
+      - id: log
 
-  # - id: merge_fastqc2_sqlite
-  #   run: ../../tools/merge_sqlite.cwl.yaml
-  #   inputs:
-  #     - id: source_sqlite
-  #       source: "#fastqc2/output_sqlite"
-  #     - id: uuid
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: destination_sqlite
-  #     - id: log
+  - id: merge_fastqc2_sqlite
+    run: ../../tools/merge_sqlite.cwl.yaml
+    inputs:
+      - id: source_sqlite
+        source: "#fastqc2/output_sqlite"
+      - id: uuid
+        source: "#uuid"
+    outputs:
+      - id: destination_sqlite
+      - id: log
 
-  # - id: merge_fastqc2_sqlite
-  #   run: ../../tools/merge_sqlite.cwl.yaml
-  #   inputs:
-  #     - id: source_sqlite
-  #       source: "#fastqc_s/output_sqlite"
-  #     - id: uuid
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: destination_sqlite
-  #     - id: log
+  - id: merge_fastqc2_sqlite
+    run: ../../tools/merge_sqlite.cwl.yaml
+    inputs:
+      - id: source_sqlite
+        source: "#fastqc_s/output_sqlite"
+      - id: uuid
+        source: "#uuid"
+    outputs:
+      - id: destination_sqlite
+      - id: log
 
-  # - id: merge_fastqc_o1_sqlite
-  #   run: ../../tools/merge_sqlite.cwl.yaml
-  #   inputs:
-  #     - id: source_sqlite
-  #       source: "#fastqc_o1/output_sqlite"
-  #     - id: uuid
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: destination_sqlite
-  #     - id: log
+  - id: merge_fastqc_o1_sqlite
+    run: ../../tools/merge_sqlite.cwl.yaml
+    inputs:
+      - id: source_sqlite
+        source: "#fastqc_o1/output_sqlite"
+      - id: uuid
+        source: "#uuid"
+    outputs:
+      - id: destination_sqlite
+      - id: log
 
-  # - id: merge_fastqc_o2_sqlite
-  #   run: ../../tools/merge_sqlite.cwl.yaml
-  #   inputs:
-  #     - id: source_sqlite
-  #       source: "#fastqc_o2/output_sqlite"
-  #     - id: uuid
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: destination_sqlite
-  #     - id: log
+  - id: merge_fastqc_o2_sqlite
+    run: ../../tools/merge_sqlite.cwl.yaml
+    inputs:
+      - id: source_sqlite
+        source: "#fastqc_o2/output_sqlite"
+      - id: uuid
+        source: "#uuid"
+    outputs:
+      - id: destination_sqlite
+      - id: log
 
-  # - id: merge_fastqc_db1_sqlite
-  #   run: ../../tools/merge_sqlite.cwl.yaml
-  #   inputs:
-  #     - id: source_sqlite
-  #       source: "#fastqc_db1/output_sqlite"
-  #     - id: uuid
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: destination_sqlite
-  #     - id: log
+  - id: merge_fastqc_db1_sqlite
+    run: ../../tools/merge_sqlite.cwl.yaml
+    inputs:
+      - id: source_sqlite
+        source: "#fastqc_db1/output_sqlite"
+      - id: uuid
+        source: "#uuid"
+    outputs:
+      - id: destination_sqlite
+      - id: log
 
-  # - id: merge_fastqc_db2_sqlite
-  #   run: ../../tools/merge_sqlite.cwl.yaml
-  #   inputs:
-  #     - id: source_sqlite
-  #       source: "#fastqc_db2/output_sqlite"
-  #     - id: uuid
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: destination_sqlite
-  #     - id: log
+  - id: merge_fastqc_db2_sqlite
+    run: ../../tools/merge_sqlite.cwl.yaml
+    inputs:
+      - id: source_sqlite
+        source: "#fastqc_db2/output_sqlite"
+      - id: uuid
+        source: "#uuid"
+    outputs:
+      - id: destination_sqlite
+      - id: log
 
-  # - id: merge_fastqc_db_s_sqlite
-  #   run: ../../tools/merge_sqlite.cwl.yaml
-  #   inputs:
-  #     - id: source_sqlite
-  #       source: "#fastqc_db_s/output_sqlite"
-  #     - id: uuid
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: destination_sqlite
-  #     - id: log
+  - id: merge_fastqc_db_s_sqlite
+    run: ../../tools/merge_sqlite.cwl.yaml
+    inputs:
+      - id: source_sqlite
+        source: "#fastqc_db_s/output_sqlite"
+      - id: uuid
+        source: "#uuid"
+    outputs:
+      - id: destination_sqlite
+      - id: log
 
-  # - id: merge_fastqc_db_o1_sqlite
-  #   run: ../../tools/merge_sqlite.cwl.yaml
-  #   inputs:
-  #     - id: source_sqlite
-  #       source: "#fastqc_db_o1/output_sqlite"
-  #     - id: uuid
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: destination_sqlite
-  #     - id: log
+  - id: merge_fastqc_db_o1_sqlite
+    run: ../../tools/merge_sqlite.cwl.yaml
+    inputs:
+      - id: source_sqlite
+        source: "#fastqc_db_o1/output_sqlite"
+      - id: uuid
+        source: "#uuid"
+    outputs:
+      - id: destination_sqlite
+      - id: log
 
-  # - id: merge_fastqc_db_o2_sqlite
-  #   run: ../../tools/merge_sqlite.cwl.yaml
-  #   inputs:
-  #     - id: source_sqlite
-  #       source: "#fastqc_db_o2/output_sqlite"
-  #     - id: uuid
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: destination_sqlite
-  #     - id: log
+  - id: merge_fastqc_db_o2_sqlite
+    run: ../../tools/merge_sqlite.cwl.yaml
+    inputs:
+      - id: source_sqlite
+        source: "#fastqc_db_o2/output_sqlite"
+      - id: uuid
+        source: "#uuid"
+    outputs:
+      - id: destination_sqlite
+      - id: log
 
   - id: decider_bwa_pe
     run: ../../tools/decider_bwa_pe_docker.cwl.yaml
@@ -403,327 +403,327 @@ steps:
       - id: output_sqlite
       - id: log
 
-  # - id: merge_bwa_pe_sqlite
-  #   run: ../../tools/merge_sqlite.cwl.yaml
-  #   inputs:
-  #     - id: source_sqlite
-  #       source: "#bwa_pe/output_sqlite"
-  #     - id: uuid
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: destination_sqlite
-  #     - id: log
+  - id: merge_bwa_pe_sqlite
+    run: ../../tools/merge_sqlite.cwl.yaml
+    inputs:
+      - id: source_sqlite
+        source: "#bwa_pe/output_sqlite"
+      - id: uuid
+        source: "#uuid"
+    outputs:
+      - id: destination_sqlite
+      - id: log
 
-  # - id: picard_sortsam
-  #   run: ../../tools/picard_sortsam.cwl.yaml
-  #   scatter: "#picard_sortsam/bam_path"
-  #   inputs:
-  #     - id: bam_path
-  #       source: "#bwa_pe/output_bam"
-  #     - id: uuid
-  #       source: "#uuid"
-  #     - id: input_state
-  #       default: "aligned_readgroup"
-  #   outputs:
-  #     - id: output_bam
-  #     - id: log
-  #     - id: output_sqlite
+  - id: picard_sortsam
+    run: ../../tools/picard_sortsam.cwl.yaml
+    scatter: "#picard_sortsam/bam_path"
+    inputs:
+      - id: bam_path
+        source: "#bwa_pe/output_bam"
+      - id: uuid
+        source: "#uuid"
+      - id: input_state
+        default: "aligned_readgroup"
+    outputs:
+      - id: output_bam
+      - id: log
+      - id: output_sqlite
 
-  # - id: merge_picard_sortsam_sqlite
-  #   run: ../../tools/merge_sqlite.cwl.yaml
-  #   inputs:
-  #     - id: source_sqlite
-  #       source: "#picard_sortsam/output_sqlite"
-  #     - id: uuid
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: destination_sqlite
-  #     - id: log
+  - id: merge_picard_sortsam_sqlite
+    run: ../../tools/merge_sqlite.cwl.yaml
+    inputs:
+      - id: source_sqlite
+        source: "#picard_sortsam/output_sqlite"
+      - id: uuid
+        source: "#uuid"
+    outputs:
+      - id: destination_sqlite
+      - id: log
 
-  # - id: picard_buildbamindex
-  #   run: ../../tools/picard_buildbamindex.cwl.yaml
-  #   scatter: "#picard_buildbamindex/bam_path"
-  #   inputs:
-  #     - id: bam_path
-  #       source: "#picard_sortsam/output_bam"
-  #     - id: uuid
-  #       source: "#uuid"
-  #     - id: input_state
-  #       default: "sorted_readgroup"
-  #   outputs:
-  #     - id: output_bam
-  #     - id: output_sqlite
-  #     - id: log
+  - id: picard_buildbamindex
+    run: ../../tools/picard_buildbamindex.cwl.yaml
+    scatter: "#picard_buildbamindex/bam_path"
+    inputs:
+      - id: bam_path
+        source: "#picard_sortsam/output_bam"
+      - id: uuid
+        source: "#uuid"
+      - id: input_state
+        default: "sorted_readgroup"
+    outputs:
+      - id: output_bam
+      - id: output_sqlite
+      - id: log
 
-  # - id: merge_picard_buildbamindex_sqlite
-  #   run: ../../tools/merge_sqlite.cwl.yaml
-  #   inputs:
-  #     - id: source_sqlite
-  #       source: "#picard_buildbamindex/output_sqlite"
-  #     - id: uuid
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: destination_sqlite
-  #     - id: log
+  - id: merge_picard_buildbamindex_sqlite
+    run: ../../tools/merge_sqlite.cwl.yaml
+    inputs:
+      - id: source_sqlite
+        source: "#picard_buildbamindex/output_sqlite"
+      - id: uuid
+        source: "#uuid"
+    outputs:
+      - id: destination_sqlite
+      - id: log
 
-  # - id: picard_mergesamfiles
-  #   run: ../../tools/picard_mergesamfiles.cwl.yaml
-  #   inputs:
-  #     - id: bam_path
-  #       source: "#picard_sortsam/output_bam"
-  #     - id: uuid
-  #       source: "#uuid"
-  #     - id: outbam_name
-  #       source: "#bam_path"
-  #       valueFrom: $(self.path.split('/').slice(-1)[0])
-  #     - id: input_state
-  #       default: "sorted_readgroup"
-  #   outputs:
-  #     - id: output_bam
-  #     - id: log
+  - id: picard_mergesamfiles
+    run: ../../tools/picard_mergesamfiles.cwl.yaml
+    inputs:
+      - id: bam_path
+        source: "#picard_sortsam/output_bam"
+      - id: uuid
+        source: "#uuid"
+      - id: outbam_name
+        source: "#bam_path"
+        valueFrom: $(self.basename)
+      - id: input_state
+        default: "sorted_readgroup"
+    outputs:
+      - id: output_bam
+      - id: log
 
-  # - id: bam_reheader
-  #   run: ../../tools/bam_reheader.cwl.yaml
-  #   inputs:
-  #     - id: bam_path
-  #       source: "#picard_mergesamfiles/output_bam"
-  #     - id: uuid
-  #       source: "#uuid"
-  #     - id: input_state
-  #       default: "merged_readgroups"
-  #   outputs:
-  #     - id: output_bam
-  #     - id: log
+  - id: bam_reheader
+    run: ../../tools/bam_reheader.cwl.yaml
+    inputs:
+      - id: bam_path
+        source: "#picard_mergesamfiles/output_bam"
+      - id: uuid
+        source: "#uuid"
+      - id: input_state
+        default: "merged_readgroups"
+    outputs:
+      - id: output_bam
+      - id: log
 
-  # - id: picard_markduplicates
-  #   run: ../../tools/picard_markduplicates.cwl.yaml
-  #   inputs:
-  #     - id: bam_path
-  #       source: "#bam_reheader/output_bam"
-  #     - id: uuid
-  #       source: "#uuid"
-  #     - id: input_state
-  #       default: "reheadered_readgroups"
-  #   outputs:
-  #     - id: output_bam
-  #     - id: log
+  - id: picard_markduplicates
+    run: ../../tools/picard_markduplicates.cwl.yaml
+    inputs:
+      - id: bam_path
+        source: "#bam_reheader/output_bam"
+      - id: uuid
+        source: "#uuid"
+      - id: input_state
+        default: "reheadered_readgroups"
+    outputs:
+      - id: output_bam
+      - id: log
 
 
-  # - id: picard_validatesamfile_original #need eof and dup QNAME detection
-  #   run: ../../tools/picard_validatesamfile.cwl.yaml
-  #   inputs:
-  #     - id: bam_path
-  #       source: "#bam_path"
-  #     - id: uuid
-  #       source: "#uuid"
-  #     - id: input_state
-  #       default: "original"
-  #   outputs:
-  #     - id: output_sqlite
-  #     - id: log
+  - id: picard_validatesamfile_original #need eof and dup QNAME detection
+    run: ../../tools/picard_validatesamfile.cwl.yaml
+    inputs:
+      - id: bam_path
+        source: "#bam_path"
+      - id: uuid
+        source: "#uuid"
+      - id: input_state
+        default: "original"
+    outputs:
+      - id: output_sqlite
+      - id: log
 
-  # - id: picard_validatesamfile_markduplicates #need eof and dup QNAME detection
-  #   run: ../../tools/picard_validatesamfile.cwl.yaml
-  #   inputs:
-  #     - id: bam_path
-  #       source: "#picard_markduplicates/output_bam"
-  #     - id: uuid
-  #       source: "#uuid"
-  #     - id: input_state
-  #       default: "markduplicates_readgroups"
-  #   outputs:
-  #     - id: output_sqlite
-  #     - id: log
+  - id: picard_validatesamfile_markduplicates #need eof and dup QNAME detection
+    run: ../../tools/picard_validatesamfile.cwl.yaml
+    inputs:
+      - id: bam_path
+        source: "#picard_markduplicates/output_bam"
+      - id: uuid
+        source: "#uuid"
+      - id: input_state
+        default: "markduplicates_readgroups"
+    outputs:
+      - id: output_sqlite
+      - id: log
 
-  # - id: picard_collectalignmentsummarymetrics_original
-  #   run: ../../tools/picard_collectalignmentsummarymetrics.cwl.yaml
-  #   inputs:
-  #     - id: bam_path
-  #       source: "#bam_path"
-  #     - id: reference_fasta_path
-  #       source: "#reference_fasta_path"
-  #     - id: uuid
-  #       source: "#uuid"
-  #     - id: input_state
-  #       default: "original"
-  #   outputs:
-  #     - id: output_sqlite
+  - id: picard_collectalignmentsummarymetrics_original
+    run: ../../tools/picard_collectalignmentsummarymetrics.cwl.yaml
+    inputs:
+      - id: bam_path
+        source: "#bam_path"
+      - id: reference_fasta_path
+        source: "#reference_fasta_path"
+      - id: uuid
+        source: "#uuid"
+      - id: input_state
+        default: "original"
+    outputs:
+      - id: output_sqlite
 
-  # - id: picard_collectalignmentsummarymetrics_markduplicates
-  #   run: ../../tools/picard_collectalignmentsummarymetrics.cwl.yaml
-  #   inputs:
-  #     - id: bam_path
-  #       source: "#picard_markduplicates/output_bam"
-  #     - id: reference_fasta_path
-  #       source: "#reference_fasta_path"
-  #     - id: uuid
-  #       source: "#uuid"
-  #     - id: input_state
-  #       default: "markduplicates_readgroups"
-  #   outputs:
-  #     - id: output_sqlite
+  - id: picard_collectalignmentsummarymetrics_markduplicates
+    run: ../../tools/picard_collectalignmentsummarymetrics.cwl.yaml
+    inputs:
+      - id: bam_path
+        source: "#picard_markduplicates/output_bam"
+      - id: reference_fasta_path
+        source: "#reference_fasta_path"
+      - id: uuid
+        source: "#uuid"
+      - id: input_state
+        default: "markduplicates_readgroups"
+    outputs:
+      - id: output_sqlite
 
-  # - id: readgroup_json_db
-  #   run: ../../tools/readgroup_json_db.cwl.yaml
-  #   scatter: "#readgroup_json_db/json_path"
-  #   inputs:
-  #     - id: json_path
-  #       source: "#bam_readgroup_to_json/output_json"
-  #     - id: uuid
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: log
-  #     - id: output_sqlite
+  - id: readgroup_json_db
+    run: ../../tools/readgroup_json_db.cwl.yaml
+    scatter: "#readgroup_json_db/json_path"
+    inputs:
+      - id: json_path
+        source: "#bam_readgroup_to_json/output_json"
+      - id: uuid
+        source: "#uuid"
+    outputs:
+      - id: log
+      - id: output_sqlite
 
-  # - id: merge_readgroup_json_db_sqlite
-  #   run: ../../tools/merge_sqlite.cwl.yaml
-  #   inputs:
-  #     - id: source_sqlite
-  #       source: "#readgroup_json_db/output_sqlite"
-  #     - id: uuid
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: destination_sqlite
-  #     - id: log
+  - id: merge_readgroup_json_db_sqlite
+    run: ../../tools/merge_sqlite.cwl.yaml
+    inputs:
+      - id: source_sqlite
+        source: "#readgroup_json_db/output_sqlite"
+      - id: uuid
+        source: "#uuid"
+    outputs:
+      - id: destination_sqlite
+      - id: log
 
-  # - id: samtools_idxstats
-  #   run: ../../tools/samtools_idxstats.cwl.yaml
-  #   scatter: "#samtools_idxstats/bam_path"
-  #   inputs:
-  #     - id: bam_path
-  #       source: "#picard_buildbamindex/output_bam"
-  #     - id: uuid
-  #       source: "#uuid"
-  #     - id: input_state
-  #       default: "sorted_readgroup"
-  #   outputs:
-  #     - id: log
-  #     - id: output_sqlite
+  - id: samtools_idxstats
+    run: ../../tools/samtools_idxstats.cwl.yaml
+    scatter: "#samtools_idxstats/bam_path"
+    inputs:
+      - id: bam_path
+        source: "#picard_buildbamindex/output_bam"
+      - id: uuid
+        source: "#uuid"
+      - id: input_state
+        default: "sorted_readgroup"
+    outputs:
+      - id: log
+      - id: output_sqlite
 
-  # - id: merge_samtools_idxstats_sqlite
-  #   run: ../../tools/merge_sqlite.cwl.yaml
-  #   inputs:
-  #     - id: source_sqlite
-  #       source: "#samtools_idxstats/output_sqlite"
-  #     - id: uuid
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: destination_sqlite
-  #     - id: log
+  - id: merge_samtools_idxstats_sqlite
+    run: ../../tools/merge_sqlite.cwl.yaml
+    inputs:
+      - id: source_sqlite
+        source: "#samtools_idxstats/output_sqlite"
+      - id: uuid
+        source: "#uuid"
+    outputs:
+      - id: destination_sqlite
+      - id: log
 
-  # - id: samtools_flagstat
-  #   run: ../../tools/samtools_flagstat.cwl.yaml
-  #   scatter: "#samtools_flagstat/bam_path"
-  #   inputs:
-  #     - id: bam_path
-  #       source: "#picard_sortsam/output_bam"
-  #     - id: uuid
-  #       source: "#uuid"
-  #     - id: input_state
-  #       default: "sorted_readgroup"
-  #   outputs:
-  #     - id: log
-  #     - id: output_sqlite
+  - id: samtools_flagstat
+    run: ../../tools/samtools_flagstat.cwl.yaml
+    scatter: "#samtools_flagstat/bam_path"
+    inputs:
+      - id: bam_path
+        source: "#picard_sortsam/output_bam"
+      - id: uuid
+        source: "#uuid"
+      - id: input_state
+        default: "sorted_readgroup"
+    outputs:
+      - id: log
+      - id: output_sqlite
 
-  # - id: merge_samtools_flagstat_sqlite
-  #   run: ../../tools/merge_sqlite.cwl.yaml
-  #   inputs:
-  #     - id: source_sqlite
-  #       source: "#samtools_flagstat/output_sqlite"
-  #     - id: uuid
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: destination_sqlite
-  #     - id: log
+  - id: merge_samtools_flagstat_sqlite
+    run: ../../tools/merge_sqlite.cwl.yaml
+    inputs:
+      - id: source_sqlite
+        source: "#samtools_flagstat/output_sqlite"
+      - id: uuid
+        source: "#uuid"
+    outputs:
+      - id: destination_sqlite
+      - id: log
 
-  # - id: samtools_stats
-  #   run: ../../tools/samtools_stats.cwl.yaml
-  #   scatter: "#samtools_stats/bam_path"
-  #   inputs:
-  #     - id: bam_path
-  #       source: "#picard_sortsam/output_bam"
-  #     - id: uuid
-  #       source: "#uuid"
-  #     - id: input_state
-  #       default: "sorted_readgroup"
-  #   outputs:
-  #     - id: log
-  #     - id: output_sqlite
+  - id: samtools_stats
+    run: ../../tools/samtools_stats.cwl.yaml
+    scatter: "#samtools_stats/bam_path"
+    inputs:
+      - id: bam_path
+        source: "#picard_sortsam/output_bam"
+      - id: uuid
+        source: "#uuid"
+      - id: input_state
+        default: "sorted_readgroup"
+    outputs:
+      - id: log
+      - id: output_sqlite
 
-  # - id: merge_samtools_stats_sqlite
-  #   run: ../../tools/merge_sqlite.cwl.yaml
-  #   inputs:
-  #     - id: source_sqlite
-  #       source: "#samtools_stats/output_sqlite"
-  #     - id: uuid
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: destination_sqlite
-  #     - id: log
+  - id: merge_samtools_stats_sqlite
+    run: ../../tools/merge_sqlite.cwl.yaml
+    inputs:
+      - id: source_sqlite
+        source: "#samtools_stats/output_sqlite"
+      - id: uuid
+        source: "#uuid"
+    outputs:
+      - id: destination_sqlite
+      - id: log
 
-  # - id: picard_collectmultiplemetrics
-  #   run: ../../tools/picard_collectmultiplemetrics.cwl.yaml
-  #   scatter: "#picard_collectmultiplemetrics/bam_path"
-  #   inputs:
-  #     - id: bam_path
-  #       source: "#picard_sortsam/output_bam"
-  #     - id: uuid
-  #       source: "#uuid"
-  #     - id: reference_fasta_path
-  #       source: "#reference_fasta_path"
-  #     - id: input_state
-  #       default: "sorted_readgroup"
-  #   outputs:
-  #     - id: log
-  #     - id: output_sqlite
+  - id: picard_collectmultiplemetrics
+    run: ../../tools/picard_collectmultiplemetrics.cwl.yaml
+    scatter: "#picard_collectmultiplemetrics/bam_path"
+    inputs:
+      - id: bam_path
+        source: "#picard_sortsam/output_bam"
+      - id: uuid
+        source: "#uuid"
+      - id: reference_fasta_path
+        source: "#reference_fasta_path"
+      - id: input_state
+        default: "sorted_readgroup"
+    outputs:
+      - id: log
+      - id: output_sqlite
 
-  # - id: merge_picard_collectmultiplemetrics_sqlite
-  #   run: ../../tools/merge_sqlite.cwl.yaml
-  #   inputs:
-  #     - id: source_sqlite
-  #       source: "#picard_collectmultiplemetrics/output_sqlite"
-  #     - id: uuid
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: destination_sqlite
-  #     - id: log
+  - id: merge_picard_collectmultiplemetrics_sqlite
+    run: ../../tools/merge_sqlite.cwl.yaml
+    inputs:
+      - id: source_sqlite
+        source: "#picard_collectmultiplemetrics/output_sqlite"
+      - id: uuid
+        source: "#uuid"
+    outputs:
+      - id: destination_sqlite
+      - id: log
 
-  # - id: picard_collectoxogmetrics
-  #   run: ../../tools/picard_collectoxogmetrics.cwl.yaml
-  #   scatter: "#picard_collectoxogmetrics/bam_path"
-  #   inputs:
-  #     - id: bam_path
-  #       source: "#picard_sortsam/output_bam"
-  #     - id: db_snp_path
-  #       source: "#db_snp_path"
-  #     - id: input_state
-  #       default: "sorted_readgroup"
-  #     - id: reference_fasta_path
-  #       source: "#reference_fasta_path"
-  #     - id: uuid
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: log
-  #     - id: output_sqlite
+  - id: picard_collectoxogmetrics
+    run: ../../tools/picard_collectoxogmetrics.cwl.yaml
+    scatter: "#picard_collectoxogmetrics/bam_path"
+    inputs:
+      - id: bam_path
+        source: "#picard_sortsam/output_bam"
+      - id: db_snp_path
+        source: "#db_snp_path"
+      - id: input_state
+        default: "sorted_readgroup"
+      - id: reference_fasta_path
+        source: "#reference_fasta_path"
+      - id: uuid
+        source: "#uuid"
+    outputs:
+      - id: log
+      - id: output_sqlite
 
-  # - id: merge_picard_collectoxogmetrics_sqlite
-  #   run: ../../tools/merge_sqlite.cwl.yaml
-  #   inputs:
-  #     - id: source_sqlite
-  #       source: "#picard_collectoxogmetrics/output_sqlite"
-  #     - id: uuid
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: destination_sqlite
-  #     - id: log
+  - id: merge_picard_collectoxogmetrics_sqlite
+    run: ../../tools/merge_sqlite.cwl.yaml
+    inputs:
+      - id: source_sqlite
+        source: "#picard_collectoxogmetrics/output_sqlite"
+      - id: uuid
+        source: "#uuid"
+    outputs:
+      - id: destination_sqlite
+      - id: log
         
-  # - id: merge_all_sqlite
-  #   run: ../../tools/merge_sqlite.cwl.yaml
-  #   inputs:
-  #     - id: source_sqlite
-  #       source: [ "#merge_bwa_pe_sqlite/destination_sqlite", "#merge_picard_sortsam_sqlite/destination_sqlite", "#merge_picard_buildbamindex_sqlite/destination_sqlite", "#merge_fastqc1_sqlite/destination_sqlite", "#merge_fastqc_db1_sqlite/destination_sqlite", "#merge_fastqc2_sqlite/destination_sqlite", "#merge_fastqc_db2_sqlite/destination_sqlite", "#merge_readgroup_json_db_sqlite/destination_sqlite", "#merge_samtools_flagstat_sqlite/destination_sqlite", "#merge_samtools_stats_sqlite/destination_sqlite", "#merge_picard_collectmultiplemetrics_sqlite/destination_sqlite", "#merge_picard_collectoxogmetrics_sqlite/destination_sqlite"]
-  #     - id: uuid
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: destination_sqlite
-  #     - id: log
+  - id: merge_all_sqlite
+    run: ../../tools/merge_sqlite.cwl.yaml
+    inputs:
+      - id: source_sqlite
+        source: [ "#merge_bwa_pe_sqlite/destination_sqlite", "#merge_picard_sortsam_sqlite/destination_sqlite", "#merge_picard_buildbamindex_sqlite/destination_sqlite", "#merge_fastqc1_sqlite/destination_sqlite", "#merge_fastqc_db1_sqlite/destination_sqlite", "#merge_fastqc2_sqlite/destination_sqlite", "#merge_fastqc_db2_sqlite/destination_sqlite", "#merge_readgroup_json_db_sqlite/destination_sqlite", "#merge_samtools_flagstat_sqlite/destination_sqlite", "#merge_samtools_stats_sqlite/destination_sqlite", "#merge_picard_collectmultiplemetrics_sqlite/destination_sqlite", "#merge_picard_collectoxogmetrics_sqlite/destination_sqlite"]
+      - id: uuid
+        source: "#uuid"
+    outputs:
+      - id: destination_sqlite
+      - id: log

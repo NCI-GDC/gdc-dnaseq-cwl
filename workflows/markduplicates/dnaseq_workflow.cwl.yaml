@@ -1,6 +1,6 @@
 #!/usr/bin/env cwl-runner
 
-cwlVersion: "cwl:draft-3"
+cwlVersion: v1.0
 
 class: Workflow
 
@@ -35,61 +35,50 @@ outputs:
 steps:
   - id: picard_buildbamindex
     run: ../../tools/picard_buildbamindex.cwl.yaml
-    scatter: "#picard_buildbamindex/bam_path"
-    inputs:
-      - id: bam_path
-        source: "#picard_sortsam/output_bam"
-      - id: uuid
-        source: "#uuid"
-      - id: input_state
-        default: "sorted_readgroup"
-    outputs:
-      - id: output_bam
-      - id: output_sqlite
-      - id: log
+    in:
+      - id: INPUT
+        source: "#bam_path"
+    out:
+      - id: OUTPUT
 
   - id: picard_markduplicates
     run: ../../tools/picard_markduplicates.cwl.yaml
-    inputs:
-      - id: bam_path
-        source: "#bam_reheader/output_bam"
-      - id: uuid
-        source: "#uuid"
-      - id: input_state
-        source: "#input_state"
-    outputs:
-      - id: output_bam
-      - id: log
+    in:
+      - id: INPUT
+        source: "#picard_buildbamindex/OUTPUT"
+    out:
+      - id: OUTPUT
+      - id: METRICS
 
   - id: picard_validatesamfile_original #need eof and dup QNAME detection
     run: ../../tools/picard_validatesamfile.cwl.yaml
-    inputs:
+    in:
       - id: bam_path
         source: "#bam_path"
       - id: uuid
         source: "#uuid"
       - id: input_state
         default: "original"
-    outputs:
+    out:
       - id: output_sqlite
       - id: log
 
   - id: picard_validatesamfile_markduplicates #need eof and dup QNAME detection
     run: ../../tools/picard_validatesamfile.cwl.yaml
-    inputs:
+    in:
       - id: bam_path
         source: "#picard_markduplicates/output_bam"
       - id: uuid
         source: "#uuid"
       - id: input_state
         default: "markduplicates_readgroups"
-    outputs:
+    out:
       - id: output_sqlite
       - id: log
 
   - id: picard_collectalignmentsummarymetrics_original
     run: ../../tools/picard_collectalignmentsummarymetrics.cwl.yaml
-    inputs:
+    in:
       - id: bam_path
         source: "#bam_path"
       - id: reference_fasta_path
@@ -98,12 +87,12 @@ steps:
         source: "#uuid"
       - id: input_state
         default: "original"
-    outputs:
+    out:
       - id: output_sqlite
 
   - id: picard_collectalignmentsummarymetrics_markduplicates
     run: ../../tools/picard_collectalignmentsummarymetrics.cwl.yaml
-    inputs:
+    in:
       - id: bam_path
         source: "#picard_markduplicates/output_bam"
       - id: reference_fasta_path
@@ -112,55 +101,55 @@ steps:
         source: "#uuid"
       - id: input_state
         default: "markduplicates_readgroups"
-    outputs:
+    out:
       - id: output_sqlite
 
   - id: samtools_idxstats
     run: ../../tools/samtools_idxstats.cwl.yaml
     scatter: "#samtools_idxstats/bam_path"
-    inputs:
+    in:
       - id: bam_path
         source: "#picard_buildbamindex/output_bam"
       - id: uuid
         source: "#uuid"
       - id: input_state
         default: "sorted_readgroup"
-    outputs:
+    out:
       - id: log
       - id: output_sqlite
 
   - id: samtools_flagstat
     run: ../../tools/samtools_flagstat.cwl.yaml
     scatter: "#samtools_flagstat/bam_path"
-    inputs:
+    in:
       - id: bam_path
         source: "#picard_sortsam/output_bam"
       - id: uuid
         source: "#uuid"
       - id: input_state
         default: "sorted_readgroup"
-    outputs:
+    out:
       - id: log
       - id: output_sqlite
 
   - id: samtools_stats
     run: ../../tools/samtools_stats.cwl.yaml
     scatter: "#samtools_stats/bam_path"
-    inputs:
+    in:
       - id: bam_path
         source: "#picard_sortsam/output_bam"
       - id: uuid
         source: "#uuid"
       - id: input_state
         default: "sorted_readgroup"
-    outputs:
+    out:
       - id: log
       - id: output_sqlite
 
   - id: picard_collectmultiplemetrics
     run: ../../tools/picard_collectmultiplemetrics.cwl.yaml
     scatter: "#picard_collectmultiplemetrics/bam_path"
-    inputs:
+    in:
       - id: bam_path
         source: "#picard_sortsam/output_bam"
       - id: uuid
@@ -169,25 +158,25 @@ steps:
         source: "#reference_fasta_path"
       - id: input_state
         default: "sorted_readgroup"
-    outputs:
+    out:
       - id: log
       - id: output_sqlite
 
   - id: merge_picard_collectmultiplemetrics_sqlite
     run: ../../tools/merge_sqlite.cwl.yaml
-    inputs:
+    in:
       - id: source_sqlite
         source: "#picard_collectmultiplemetrics/output_sqlite"
       - id: uuid
         source: "#uuid"
-    outputs:
+    out:
       - id: destination_sqlite
       - id: log
 
   - id: picard_collectoxogmetrics
     run: ../../tools/picard_collectoxogmetrics.cwl.yaml
     scatter: "#picard_collectoxogmetrics/bam_path"
-    inputs:
+    in:
       - id: bam_path
         source: "#picard_sortsam/output_bam"
       - id: db_snp_path
@@ -198,17 +187,17 @@ steps:
         source: "#reference_fasta_path"
       - id: uuid
         source: "#uuid"
-    outputs:
+    out:
       - id: log
       - id: output_sqlite
         
   - id: merge_all_sqlite
     run: ../../tools/merge_sqlite.cwl.yaml
-    inputs:
+    in:
       - id: source_sqlite
         source: ["#merge_picard_buildbamindex_sqlite/destination_sqlite", "#samtools_flagstat_sqlite/destination_sqlite", "#samtools_stats_sqlite/destination_sqlite", "#picard_collectmultiplemetrics_sqlite/destination_sqlite", "#picard_collectoxogmetrics_sqlite/destination_sqlite"]
       - id: uuid
         source: "#uuid"
-    outputs:
+    out:
       - id: destination_sqlite
       - id: log

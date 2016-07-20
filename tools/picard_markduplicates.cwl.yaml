@@ -18,7 +18,7 @@ inputs:
       separate: false
 
 outputs:
-  - id: output_bam
+  - id: OUTPUT
     type: File
     format: "edam:format_2572"
     outputBinding:
@@ -26,12 +26,24 @@ outputs:
     secondaryFiles:
       - ^.bai
 
+  - id: METRICS
+    type: File
+    outputBinding:
+      glob: $(inputs.INPUT.nameroot + ".metrics")
+
 arguments:
+  - valueFrom: "CREATE_INDEX=true"
+
+  - valueFrom: $(inputs.INPUT.nameroot + ".metrics")
+    prefix: "METRICS_FILE="
+    separate: false
+
   - valueFrom: $(inputs.INPUT.basename)
     prefix: "OUTPUT="
     separate: false
 
+  - valueFrom: "TMP_DIR=."
+
   - valueFrom: "VALIDATION_STRINGENCY=STRICT"
-    position: 99
 
 baseCommand: [java, -jar, /usr/local/bin/picard.jar, MarkDuplicates]

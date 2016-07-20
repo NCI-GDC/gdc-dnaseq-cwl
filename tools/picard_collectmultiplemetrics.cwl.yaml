@@ -1,110 +1,106 @@
 #!/usr/bin/env cwl-runner
 
-cwlVersion: "cwl:draft-3"
-
-description: |
-  Usage:  cwl-runner <this-file-path> --input_bam <bam-path> --reference_fasta_path <reference-fasta-path> --uuid <uuid-string>
-  Options:
-    --input_bam       Generate metrics from BAM file
-    --uuid           UUID for log file and sqlite db file
+cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/picard_tool
+    dockerPull: quay.io/jeremiahsavage/picard
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
 
 inputs:
-  - id: "#bam_path"
+  - id: INPUT
     type: File
+    format: "edam:format_2572"
     inputBinding:
-      prefix: --bam_path
+      prefix: "INPUT="
+      separate: false
 
-  - id: "reference_fasta_path"
+  - id: REFERENCE_SEQUENCE
     type: File
+    format: "edam:format_1929"
     inputBinding:
-      prefix: --reference_fasta_path
-
-  - id: "#uuid"
-    type: string
-    inputBinding:
-      prefix: --uuid
-
-  - id: "#input_state"
-    type: ["null", string]
-    inputBinding:
-      prefix: --input_state
-      
+      prefix: "REFERENCE_SEQUENCE="
+      separate: false
+    
 outputs:
-  - id: "#log"
+  - id: alignment_summary_metrics
     type: File
     outputBinding:
-      glob: $(inputs.uuid+"_picard_CollectMultipleMetrics.log")
+      glob: $(inputs.INPUT.nameroot + ".alignment_summary_metrics")
 
-  - id: "#output_sqlite"
+  - id: base_distribution_by_cycle_metrics
     type: File
     outputBinding:
-      glob: $(inputs.uuid + ".db")
-  
-  - id: "#alignment_summary_metrics"
-    type: File
-    outputBinding:
-      glob: $("picard_CollectMultipleMetrics_"+ inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".alignment_summary_metrics")
+      glob: $(inputs.INPUT.nameroot + ".base_distribution_by_cycle_metrics")
 
-  - id: "#base_distribution_by_cycle_metrics"
+  - id: base_distribution_by_cycle_pdf
     type: File
     outputBinding:
-      glob: $("picard_CollectMultipleMetrics_"+ inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".base_distribution_by_cycle_metrics")
+      glob: $(inputs.INPUT.nameroot + ".base_distribution_by_cycle.pdf")
 
-  - id: "#base_distribution_by_cycle_pdf"
+  - id: gc_bias_detail_metrics
     type: File
     outputBinding:
-      glob: $("picard_CollectMultipleMetrics_"+ inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".base_distribution_by_cycle.pdf")
+      glob: $(inputs.INPUT.nameroot + ".gc_bias.detail_metrics")
 
-  - id: "#gc_bias_detail_metrics"
+  - id: gc_bias_pdf
     type: File
     outputBinding:
-      glob: $("picard_CollectMultipleMetrics_"+ inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".gc_bias.detail_metrics")
+      glob: $(inputs.INPUT.nameroot + ".gc_bias.pdf")
 
-  - id: "#gc_bias_pdf"
+  - id: gc_bias_summary_metrics
     type: File
     outputBinding:
-      glob: $("picard_CollectMultipleMetrics_"+ inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".gc_bias.pdf")
+      glob: $(inputs.INPUT.nameroot + ".gc_bias.summary_metrics")
 
-  - id: "#gc_bias_summary_metrics"
+  - id: insert_size_histogram_pdf
     type: File
     outputBinding:
-      glob: $("picard_CollectMultipleMetrics_"+inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".gc_bias.summary_metrics")
+      glob: $(inputs.INPUT.nameroot + ".insert_size_histogram.pdf")
 
-  - id: "#insert_size_histogram_pdf"
+  - id: insert_size_metrics
     type: File
     outputBinding:
-      glob: $("picard_CollectMultipleMetrics_"+inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".insert_size_histogram.pdf")
+      glob: $(inputs.INPUT.nameroot + ".insert_size_metrics")
 
-  - id: "#insert_size_metrics"
+  - id: quality_by_cycle_metrics
     type: File
     outputBinding:
-      glob: $("picard_CollectMultipleMetrics_"+inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".insert_size_metrics")
+      glob: $(inputs.INPUT.nameroot + ".quality_by_cycle_metrics")
 
-  - id: "#quality_by_cycle_metrics"
+  - id: quality_by_cycle_pdf
     type: File
     outputBinding:
-      glob: $("picard_CollectMultipleMetrics_"+inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".quality_by_cycle_metrics")
+      glob: $(inputs.INPUT.nameroot + ".quality_by_cycle.pdf")
 
-  - id: "#quality_by_cycle_pdf"
+  - id: quality_distribution_metrics
     type: File
     outputBinding:
-      glob: $("picard_CollectMultipleMetrics_"+inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".quality_by_cycle.pdf")
+      glob: $(inputs.INPUT.nameroot + ".quality_distribution_metrics")
 
-  - id: "#quality_distribution_metrics"
+  - id: quality_distribution_pdf
     type: File
     outputBinding:
-      glob: $("picard_CollectMultipleMetrics_"+inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".quality_distribution_metrics")
+      glob: $(inputs.INPUT.nameroot + ".quality_distribution.pdf")
 
-  - id: "#quality_distribution_pdf"
-    type: File
-    outputBinding:
-      glob: $("picard_CollectMultipleMetrics_"+inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".quality_distribution.pdf")
+arguments:
+  - valueFrom: "METRIC_ACCUMULATION_LEVEL=ALL_READS"
 
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python", "/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/picard_tool/main.py", "--tool_name", "CollectMultipleMetrics"]
+  - valueFrom: $(inputs.INPUT.nameroot)
+    prefix: "OUTPUT="
+    separate: false
+
+  - valueFrom: "PROGRAM=CollectAlignmentSummaryMetrics"
+  - valueFrom: "PROGRAM=CollectInsertSizeMetrics"
+  - valueFrom: "PROGRAM=QualityScoreDistribution"
+  - valueFrom: "PROGRAM=MeanQualityByCycle"
+  - valueFrom: "PROGRAM=CollectBaseDistributionByCycle"
+  - valueFrom: "PROGRAM=CollectGcBiasMetrics"
+    
+  - valueFrom: "TMP_DIR=."
+
+  - valueFrom: "VALIDATION_STRINGENCY=STRICT"
+
+baseCommand: [java, -jar, /usr/local/bin/picard.jar, CollectMultipleMetrics]

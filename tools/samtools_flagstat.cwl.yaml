@@ -1,53 +1,27 @@
 #!/usr/bin/env cwl-runner
 
-cwlVersion: "cwl:draft-3"
-
-description: |
-  Usage:  cwl-runner <this-file-path> --bam_path <bam-path> --uuid <uuid-string>
-  Options:
-    --bam_path       Generate validation of BAM file
-    --uuid           UUID for log file and sqlite db file
+cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/samtools_tool
+    dockerPull: quay.io/jeremiahsavage/samtools
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
 
 inputs:
-  - id: bam_path
+  - id: INPUT
     type: File
+    format: "edam:format_2572"
     inputBinding:
-      prefix: --bam_path
-      
-  - id: uuid
-    type: string
-    inputBinding:
-      prefix: --uuid
-
-  - id: input_state
-    type: ["null", string]
-    inputBinding:
-      prefix: --input_state
+      position: 0
 
 outputs:
-  - id: output_flagstat
+  - id: OUTPUT
     type: File
-    description: "The flagstat file"
     outputBinding:
-      glob: $("samtools_flagstat_" + inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4)+".txt")
+      glob: $(inputs.INPUT.nameroot + ".flagstat")
 
-  - id: log
-    type: File
-    description: "python log file"
-    outputBinding:
-      glob: $(inputs.uuid+"_samtools_flagstat.log")
+stdout: $(inputs.INPUT.nameroot + ".flagstat")
 
-  - id: output_sqlite
-    type: File
-    description: "python log file"
-    outputBinding:
-      glob: $(inputs.uuid+".db")
-          
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/samtools_tool/main.py", "--tool_name", "flagstat"]
+baseCommand: [/usr/local/bin/samtools, flagstat]
