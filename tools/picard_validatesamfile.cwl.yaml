@@ -17,21 +17,25 @@ inputs:
       prefix: "INPUT="
       separate: false
 
+  - id: VALIDATION_STRINGENCY
+    type: string
+    inputBinding:
+      prefix: "VALIDATION_STRINGENCY="
+      separate: false
+
 outputs:
   - id: OUTPUT
     type: File
     outputBinding:
-      glob: $(inputs.INPUT.nameroot + ".validate")
+      glob: $(inputs.INPUT.nameroot + ".metrics")
 
 arguments:
   - valueFrom: "MAX_OUTPUT=2147483647"
 
   - valueFrom: "MODE=VERBOSE"
 
-  - valueFrom: $(inputs.INPUT.nameroot + ".validate")
+  - valueFrom: $(inputs.INPUT.nameroot + ".metrics")
     prefix: "OUTPUT="
     separate: false
 
-  - valueFrom: "VALIDATION_STRINGENCY=LENIENT"
-  
 baseCommand: [java, -jar, /usr/local/bin/picard.jar, ValidateSamFile]
