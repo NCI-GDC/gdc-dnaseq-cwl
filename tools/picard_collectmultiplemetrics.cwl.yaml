@@ -32,7 +32,7 @@ inputs:
       separate: false
 
 outputs:
-  - id: multiple_metrics
+  - id: OUTPUT
     type: File
     outputBinding:
       glob: $(inputs.INPUT.nameroot + ".alignment_summary_metrics")
