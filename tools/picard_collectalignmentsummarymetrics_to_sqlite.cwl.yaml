@@ -19,7 +19,7 @@ inputs:
     type: string
     inputBinding:
       prefix: --fasta
-      
+
   - id: input_state
     type: string
     inputBinding:
