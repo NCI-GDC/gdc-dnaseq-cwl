@@ -1,6 +1,6 @@
 #!/usr/bin/env cwl-runner
 
-cwlVersion: cwl:draft-3
+cwlVersion: v1.0
 
 class: CommandLineTool
 
@@ -10,7 +10,7 @@ requirements:
   - class: InlineJavascriptRequirement
 
 inputs:
-  - id: uuid
+  - id: signpost_id
     type: string
 
   - id: base_url
@@ -24,13 +24,19 @@ outputs:
     outputBinding:
       glob: output.json
 
-  - id: bin_time
-    type: File
-    outputBinding:
-      glob: bin.time
-
 arguments:
-  - valueFrom: $(inputs.base_url + inputs.uuid)
+  - valueFrom: |
+      ${
+         function endsWith(str, suffix) {
+           return str.indexOf(suffix, str.length - suffix.length) !== -1;
+         }
+         if ( endsWith(inputs.base_url, '/') ) {
+           return inputs.base_url + inputs.signpost_id;
+         }
+         else {
+           return inputs.base_url + '/' + inputs.signpost_id;
+         }
+      }
     position: 0
 
-baseCommand: [/usr/bin/time, -v, -o, "bin.time", curl]
+baseCommand: [curl]
