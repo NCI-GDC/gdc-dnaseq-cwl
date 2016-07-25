@@ -1,5 +1,6 @@
 #!/usr/bin/env cwl-runner
-cwlVersion: "cwl:draft-3"
+
+cwlVersion: v1.0
 
 class: CommandLineTool
 requirements:
@@ -44,22 +45,11 @@ inputs:
       position: 99
 
 outputs:
-  - id: bin_time
+  - id: output
     type: File
     outputBinding:
-      glob: "bin.time"
+      glob: "output"
 
-arguments:
-  - valueFrom: "bin.time"
-    position: 0
+stdout: "output"
 
-  - valueFrom: aws
-    position: 1
-
-  - valueFrom: s3
-    position: 2
-
-  - valueFrom: cp
-    position: 3
-
-baseCommand: [/usr/bin/time, -v, -o]
+baseCommand: [aws, s3, cp]
