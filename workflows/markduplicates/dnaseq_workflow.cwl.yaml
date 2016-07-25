@@ -4,10 +4,10 @@ cwlVersion: v1.0
 
 class: Workflow
 
-requirements:
-  - class: InlineJavascriptRequirement
-  - class: MultipleInputFeatureRequirement
-  - class: StepInputExpressionRequirement
+# requirements:
+#   - class: InlineJavascriptRequirement
+#   - class: MultipleInputFeatureRequirement
+#   - class: StepInputExpressionRequirement
 
 inputs:
   - id: bam_path
@@ -24,21 +24,24 @@ inputs:
     type: string
 
 outputs:
-  - id: picard_markduplicates_output_bam
+  - id: picard_validatesamfile_original_output
     type: File
-    source: "#picard_markduplicates/OUTPUT"
-  - id: merge_all_sqlite_destination_sqlite
-    type: File
-    source: "#merge_all_sqlite/destination_sqlite"
+    outputSource: picard_validatesamfile_original/OUTPUT
+  # - id: picard_markduplicates_output_bam
+  #   type: File
+  #   outputSource: "#picard_markduplicates/OUTPUT"
+  # - id: merge_all_sqlite_destination_sqlite
+  #   type: File
+  #   outputSource: "#merge_all_sqlite/destination_sqlite"
 
 steps:
   - id: picard_validatesamfile_original
     run: ../../tools/picard_validatesamfile.cwl.yaml
     in:
       - id: INPUT
-        source: "#bam_path"
+        source: bam_path
       - id: VALIDATION_STRINGENCY
-        default: "STRICT"
+        valueFrom: "STRICT"
     out:
       - id: OUTPUT
 
@@ -46,249 +49,257 @@ steps:
     run: ../../tools/picard_markduplicates.cwl.yaml
     in:
       - id: INPUT
-        source: "#bam_path"
+        source: bam_path
     out:
       - id: OUTPUT
       - id: METRICS
 
-  - id: picard_validatesamfile_markduplicates
-    run: ../../tools/picard_validatesamfile.cwl.yaml
-    in:
-      - id: INPUT
-        source: "#picard_markduplicates/OUTPUT"
-      - id: VALIDATION_STRINGENCY
-        default: "STRICT"
-    out:
-      - id: OUTPUT
+  # - id: picard_validatesamfile_markduplicates
+  #   run: ../../tools/picard_validatesamfile.cwl.yaml
+  #   in:
+  #     - id: INPUT
+  #       source: "#picard_markduplicates/OUTPUT"
+  #     - id: VALIDATION_STRINGENCY
+  #       default: "STRICT"
+  #   out:
+  #     - id: OUTPUT
 
-  - id: picard_collectmultiplemetrics
-    run: ../../tools/picard_collectmultiplemetrics.cwl.yaml
-    in:
-      - id: DB_SNP
-        source: "#vcf_path"
-      - id: INPUT
-        source: "#picard_markduplicates/OUTPUT"
-      - id: REFERENCE_SEQUENCE
-        source: "#fasta_path"
-    out:
-      - id: OUTPUT
+  # - id: picard_collectmultiplemetrics
+  #   run: ../../tools/picard_collectmultiplemetrics.cwl.yaml
+  #   in:
+  #     - id: DB_SNP
+  #       source: "#vcf_path"
+  #     - id: INPUT
+  #       source: "#picard_markduplicates/OUTPUT"
+  #     - id: REFERENCE_SEQUENCE
+  #       source: "#fasta_path"
+  #   out:
+  #     - id: OUTPUT
 
-  - id: picard_collectoxogmetrics
-    run: ../../tools/picard_collectoxogmetrics.cwl.yaml
-    in:
-      - id: DB_SNP
-        source: "#vcf_path"
-      - id: INPUT
-        source: "#picard_markduplicates/OUTPUT"
-      - id: REFERENCE_SEQUENCE
-        source: "#fasta_path"
-    out:
-      - id: OUTPUT
+  # - id: picard_collectoxogmetrics
+  #   run: ../../tools/picard_collectoxogmetrics.cwl.yaml
+  #   in:
+  #     - id: DB_SNP
+  #       source: "#vcf_path"
+  #     - id: INPUT
+  #       source: "#picard_markduplicates/OUTPUT"
+  #     - id: REFERENCE_SEQUENCE
+  #       source: "#fasta_path"
+  #   out:
+  #     - id: OUTPUT
 
-  - id: picard_collectwgsmetrics
-    run: ../../tools/picard_collectwgsmetrics.cwl.yaml
-    in:
-      - id: INPUT
-        source: "#picard_markduplicates/OUTPUT"
-      - id: REFERENCE_SEQUENCE
-        source: "#reference_fasta_path"
-    out:
-      - id: OUTPUT
+  # - id: picard_collectwgsmetrics
+  #   run: ../../tools/picard_collectwgsmetrics.cwl.yaml
+  #   in:
+  #     - id: INPUT
+  #       source: "#picard_markduplicates/OUTPUT"
+  #     - id: REFERENCE_SEQUENCE
+  #       source: "#fasta_path"
+  #   out:
+  #     - id: OUTPUT
 
-  - id: samtools_flagstat
-    run: ../../tools/samtools_flagstat.cwl.yaml
-    in:
-      - id: INPUT
-        source: "#picard_markduplicates/OUTPUT"
-    out:
-      - id: OUTPUT
+  # - id: samtools_flagstat
+  #   run: ../../tools/samtools_flagstat.cwl.yaml
+  #   in:
+  #     - id: INPUT
+  #       source: "#picard_markduplicates/OUTPUT"
+  #   out:
+  #     - id: OUTPUT
 
-  - id: samtools_idxstats
-    run: ../../tools/samtools_idxstats.cwl.yaml
-    in:
-      - id: INPUT
-        source: "#picard_markduplicates/OUTPUT"
-    out:
-      - id: OUTPUT
+  # - id: samtools_idxstats
+  #   run: ../../tools/samtools_idxstats.cwl.yaml
+  #   in:
+  #     - id: INPUT
+  #       source: "#picard_markduplicates/OUTPUT"
+  #   out:
+  #     - id: OUTPUT
 
-  - id: samtools_stats
-    run: ../../tools/samtools_stats.cwl.yaml
-    in:
-      - id: INPUT
-        source: "#picard_markduplicates/OUTPU"
-    out:
-      - id: OUTPUT
+  # - id: samtools_stats
+  #   run: ../../tools/samtools_stats.cwl.yaml
+  #   in:
+  #     - id: INPUT
+  #       source: "#picard_markduplicates/OUTPUT"
+  #   out:
+  #     - id: OUTPUT
 
-  - id: picard_validatesamfile_original_to_sqlite
-    run: ../../tools/picard_validatesamfile_to_sqlite.cwl.yaml
-    in:
-      - id: bam
-        source: "#bam_path"
-      - id: input_state
-        default: "" ####
-      - id: metric_path
-        source: "#picard_validatesamfile_original/OUTPUT"
-      - id: uuid
-        source: "#uuid"
-    out:
-      - id: log
-      - id: sqlite
+  # - id: picard_validatesamfile_original_to_sqlite
+  #   run: ../../tools/picard_validatesamfile_to_sqlite.cwl.yaml
+  #   in:
+  #     - id: bam
+  #       source: "#bam_path"
+  #       valueFrom: $(self.basename)
+  #     - id: input_state
+  #       default: "reheader" ####
+  #     - id: metric_path
+  #       source: "#picard_validatesamfile_original/OUTPUT"
+  #     - id: uuid
+  #       source: "#uuid"
+  #   out:
+  #     - id: log
+  #     - id: sqlite
 
-  - id: picard_markduplicates_to_sqlite
-    run: ../../tools/picard_markduplicates_to_sqlite.cwl.yaml
-    in:
-      - id: bam
-        source: "#bam_path"
-      - id: input_state
-        default: "markduplicates_readgroups"
-      - id: metric_path
-        source: "#picard_markduplicates/METRICS"
-      - id: uuid
-        source: "#uuid"
-    out:
-      - id: log
-      - id: sqlite
+  # - id: picard_markduplicates_to_sqlite
+  #   run: ../../tools/picard_markduplicates_to_sqlite.cwl.yaml
+  #   in:
+  #     - id: bam
+  #       source: "#bam_path"
+  #       valueFrom: $(self.basename)
+  #     - id: input_state
+  #       default: "markduplicates_readgroups"
+  #     - id: metric_path
+  #       source: "#picard_markduplicates/METRICS"
+  #     - id: uuid
+  #       source: "#uuid"
+  #   out:
+  #     - id: log
+  #     - id: sqlite
 
-  - id: picard_validatesamfile_markduplicates_to_sqlite
-    run: ../../tools/picard_validatesamfile_to_sqlite.cwl.yaml
-    in:
-      - id: bam
-        source: "#bam_path"
-      - id: input_state
-        default: "markduplicates_readgroups"
-      - id: metric_path
-        source: "#picard_validatesamfile_markduplicates/OUTPUT"
-      - id: uuid
-        source: "#uuid"
-    out:
-      - id: log
-      - id: sqlite
+  # - id: picard_validatesamfile_markduplicates_to_sqlite
+  #   run: ../../tools/picard_validatesamfile_to_sqlite.cwl.yaml
+  #   in:
+  #     - id: bam
+  #       source: "#bam_path"
+  #       valueFrom: $(self.basename)
+  #     - id: input_state
+  #       default: "markduplicates_readgroups"
+  #     - id: metric_path
+  #       source: "#picard_validatesamfile_markduplicates/OUTPUT"
+  #     - id: uuid
+  #       source: "#uuid"
+  #   out:
+  #     - id: log
+  #     - id: sqlite
 
-  - id: picard_collectmultiplemetrics_to_sqlite
-    run: ../../tools/picard_collectmultiplemetrics_to_sqlite.cwl.yaml
-    in:
-    in:
-      - id: bam
-        source: "#bam_path"
-      - id: fasta
-        source: "fasta_path"
-      - id: input_state
-        default: "markduplicates_readgroups"
-      - id: metric_path
-        source: "#picard_collectmultiplemetrics/OUTPUT"
-      - id: uuid
-        source: "#uuid"
-      - id: vcf
-        source: "#vcf"
-    out:
-      - id: log
-      - id: sqlite
+  # - id: picard_collectmultiplemetrics_to_sqlite
+  #   run: ../../tools/picard_collectmultiplemetrics_to_sqlite.cwl.yaml
+  #   in:
+  #   in:
+  #     - id: bam
+  #       source: "#bam_path"
+  #       valueFrom: $(self.basename)
+  #     - id: fasta
+  #       source: "#fasta_path"
+  #       valueFrom: $(self.basename)
+  #     - id: input_state
+  #       default: "markduplicates_readgroups"
+  #     - id: metric_path
+  #       source: "#picard_collectmultiplemetrics/OUTPUT"
+  #     - id: uuid
+  #       source: "#uuid"
+  #     - id: vcf
+  #       source: "#vcf_path"
+  #       valueFrom: $(self.basename)
+  #   out:
+  #     - id: log
+  #     - id: sqlite
 
-  - id: picard_collectoxogmetrics_to_sqlite
-    run: ../../tools/picard_collectoxogmetrics_to_sqlite.cwl.yaml
-    in:
-    in:
-      - id: bam
-        source: "#bam_path"
-      - id: fasta
-        source: "fasta_path"
-      - id: input_state
-        default: "markduplicates_readgroups"
-      - id: metric_path
-        source: "#picard_collectoxogmetrics/OUTPUT"
-      - id: uuid
-        source: "#uuid"
-      - id: vcf
-        source: "#vcf"
-    out:
-      - id: log
-      - id: sqlite
+  # - id: picard_collectoxogmetrics_to_sqlite
+  #   run: ../../tools/picard_collectoxogmetrics_to_sqlite.cwl.yaml
+  #   in:
+  #   in:
+  #     - id: bam
+  #       source: "#bam_path"
+  #       valueFrom: $(self.basename)
+  #     - id: fasta
+  #       source: "#fasta_path"
+  #       valueFrom: $(self.basename)
+  #     - id: input_state
+  #       default: "markduplicates_readgroups"
+  #     - id: metric_path
+  #       source: "#picard_collectoxogmetrics/OUTPUT"
+  #     - id: uuid
+  #       source: "#uuid"
+  #     - id: vcf
+  #       source: "#vcf_path"
+  #       valueFrom: $(self.basename)
+  #   out:
+  #     - id: log
+  #     - id: sqlite
 
-  - id: picard_collectwgsmetrics_to_sqlite
-    run: ../../tools/picard_collectwgsmetrics_to_sqlite.cwl.yaml
-    in:
-      - id: bam
-        source: "#bam_path"
-      - id: fasta
-        source: "fasta_path"
-      - id: input_state
-        default: "markduplicates_readgroups"
-      - id: metric_path
-        source: "#picard_collectwgsmetrics/OUTPUT"
-      - id: uuid
-        source: "#uuid"
-    out:
-      - id: log
-      - id: sqlite
+  # - id: picard_collectwgsmetrics_to_sqlite
+  #   run: ../../tools/picard_collectwgsmetrics_to_sqlite.cwl.yaml
+  #   in:
+  #     - id: bam
+  #       source: "#bam_path"
+  #       valueFrom: $(self.basename)
+  #     - id: fasta
+  #       source: "#fasta_path"
+  #       valueFrom: $(self.basename)
+  #     - id: input_state
+  #       default: "markduplicates_readgroups"
+  #     - id: metric_path
+  #       source: "#picard_collectwgsmetrics/OUTPUT"
+  #     - id: uuid
+  #       source: "#uuid"
+  #   out:
+  #     - id: log
+  #     - id: sqlite
 
-  - id: samtools_flagstat_to_sqlite
-    run: ../../tools/samtools_flagstat_to_sqlite.cwl.yaml
-    in:
-      - id: bam
-        source: "#bam_path"
-      - id: fasta
-        source: "fasta_path"
-      - id: input_state
-        default: "markduplicates_readgroups"
-      - id: metric_path
-        source: "#samstools_flagstat/OUTPUT"
-      - id: uuid
-        source: "#uuid"
-    out:
-      - id: log
-      - id: sqlite
+  # - id: samtools_flagstat_to_sqlite
+  #   run: ../../tools/samtools_flagstat_to_sqlite.cwl.yaml
+  #   in:
+  #     - id: bam
+  #       source: "#bam_path"
+  #       valueFrom: $(self.basename)
+  #     - id: input_state
+  #       default: "markduplicates_readgroups"
+  #     - id: metric_path
+  #       source: "#samtools_flagstat/OUTPUT"
+  #     - id: uuid
+  #       source: "#uuid"
+  #   out:
+  #     - id: log
+  #     - id: sqlite
 
-  - id: samtools_idxstats_to_sqlite
-    run: ../../tools/samtools_idxstats_to_sqlite.cwl.yaml
-    in:
-      - id: bam
-        source: "#bam_path"
-      - id: fasta
-        source: "fasta_path"
-      - id: input_state
-        default: "markduplicates_readgroups"
-      - id: metric_path
-        source: "#samstools_idxstats/OUTPUT"
-      - id: uuid
-        source: "#uuid"
-    out:
-      - id: log
-      - id: sqlite
+  # - id: samtools_idxstats_to_sqlite
+  #   run: ../../tools/samtools_idxstats_to_sqlite.cwl.yaml
+  #   in:
+  #     - id: bam
+  #       source: "#bam_path"
+  #       valueFrom: $(self.basename)
+  #     - id: input_state
+  #       default: "markduplicates_readgroups"
+  #     - id: metric_path
+  #       source: "#samtools_idxstats/OUTPUT"
+  #     - id: uuid
+  #       source: "#uuid"
+  #   out:
+  #     - id: log
+  #     - id: sqlite
 
-  - id: samtools_stats_to_sqlite
-    run: ../../tools/samtools_stats_to_sqlite.cwl.yaml
-    in:
-      - id: bam
-        source: "#bam_path"
-      - id: fasta
-        source: "fasta_path"
-      - id: input_state
-        default: "markduplicates_readgroups"
-      - id: metric_path
-        source: "#samstools_stats/OUTPUT"
-      - id: uuid
-        source: "#uuid"
-    out:
-      - id: log
-      - id: sqlite
+  # - id: samtools_stats_to_sqlite
+  #   run: ../../tools/samtools_stats_to_sqlite.cwl.yaml
+  #   in:
+  #     - id: bam
+  #       source: "#bam_path"
+  #       valueFrom: $(self.basename)
+  #     - id: input_state
+  #       default: "markduplicates_readgroups"
+  #     - id: metric_path
+  #       source: "#samtools_stats/OUTPUT"
+  #     - id: uuid
+  #       source: "#uuid"
+  #   out:
+  #     - id: log
+  #     - id: sqlite
 
-  - id: merge_all_sqlite
-    run: ../../tools/merge_sqlite.cwl.yaml
-    in:
-      - id: source_sqlite
-        source: [
-        "#picard_validatesamfile_original_to_sqlite/sqlite",
-        "picard_markduplicates_to_sqlite/sqlite",
-        "#picard_validatesamfile_markduplicates_to_sqlite/sqlite",
-        "#picard_collectmultiplemetrics_to_sqlite/sqlite",
-        "#picard_collectoxogmetrics_to_sqlite/sqlite",
-        "#picard_collectwgsmetrics_to_sqlite/sqlite",
-        "#samtools_idxstats_to_sqlite/sqlite",
-        "#samtools_flagstat_to_sqlite/sqlite",
-        "#samtools_stats_to_sqlite/sqlite"
-        ]
-      - id: uuid
-        source: "#uuid"
-    out:
-      - id: destination_sqlite
-      - id: log
+  # - id: merge_all_sqlite
+  #   run: ../../tools/merge_sqlite.cwl.yaml
+  #   in:
+  #     - id: source_sqlite
+  #       source: [
+  #       "#picard_validatesamfile_original_to_sqlite/sqlite",
+  #       "picard_markduplicates_to_sqlite/sqlite",
+  #       "#picard_validatesamfile_markduplicates_to_sqlite/sqlite",
+  #       "#picard_collectmultiplemetrics_to_sqlite/sqlite",
+  #       "#picard_collectoxogmetrics_to_sqlite/sqlite",
+  #       "#picard_collectwgsmetrics_to_sqlite/sqlite",
+  #       "#samtools_idxstats_to_sqlite/sqlite",
+  #       "#samtools_flagstat_to_sqlite/sqlite",
+  #       "#samtools_stats_to_sqlite/sqlite"
+  #       ]
+  #     - id: uuid
+  #       source: "#uuid"
+  #   out:
+  #     - id: destination_sqlite
+  #     - id: log
