@@ -95,6 +95,30 @@ steps:
     out:
       - id: OUTPUT
 
+  - id: samtools_flagstat
+    run: ../../tools/samtools_flagstat.cwl.yaml
+    in:
+      - id: INPUT
+        source: "#picard_markduplicates/OUTPUT"
+    out:
+      - id: OUTPUT
+
+  - id: samtools_idxstats
+    run: ../../tools/samtools_idxstats.cwl.yaml
+    in:
+      - id: INPUT
+        source: "#picard_markduplicates/OUTPUT"
+    out:
+      - id: OUTPUT
+
+  - id: samtools_stats
+    run: ../../tools/samtools_stats.cwl.yaml
+    in:
+      - id: INPUT
+        source: "#picard_markduplicates/OUTPU"
+    out:
+      - id: OUTPUT
+
   - id: picard_validatesamfile_original_to_sqlite
     run: ../../tools/picard_validatesamfile_to_sqlite.cwl.yaml
     in:
@@ -196,7 +220,58 @@ steps:
     out:
       - id: log
       - id: sqlite
-  
+
+  - id: samtools_flagstat_to_sqlite
+    run: ../../tools/samtools_flagstat_to_sqlite.cwl.yaml
+    in:
+      - id: bam
+        source: "#bam_path"
+      - id: fasta
+        source: "fasta_path"
+      - id: input_state
+        default: "markduplicates_readgroups"
+      - id: metric_path
+        source: "#samstools_flagstat/OUTPUT"
+      - id: uuid
+        source: "#uuid"
+    out:
+      - id: log
+      - id: sqlite
+
+  - id: samtools_idxstats_to_sqlite
+    run: ../../tools/samtools_idxstats_to_sqlite.cwl.yaml
+    in:
+      - id: bam
+        source: "#bam_path"
+      - id: fasta
+        source: "fasta_path"
+      - id: input_state
+        default: "markduplicates_readgroups"
+      - id: metric_path
+        source: "#samstools_idxstats/OUTPUT"
+      - id: uuid
+        source: "#uuid"
+    out:
+      - id: log
+      - id: sqlite
+
+  - id: samtools_stats_to_sqlite
+    run: ../../tools/samtools_stats_to_sqlite.cwl.yaml
+    in:
+      - id: bam
+        source: "#bam_path"
+      - id: fasta
+        source: "fasta_path"
+      - id: input_state
+        default: "markduplicates_readgroups"
+      - id: metric_path
+        source: "#samstools_stats/OUTPUT"
+      - id: uuid
+        source: "#uuid"
+    out:
+      - id: log
+      - id: sqlite
+
   - id: merge_all_sqlite
     run: ../../tools/merge_sqlite.cwl.yaml
     in:
