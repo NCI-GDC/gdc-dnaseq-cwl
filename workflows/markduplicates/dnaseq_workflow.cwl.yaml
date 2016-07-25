@@ -5,9 +5,8 @@ cwlVersion: v1.0
 class: Workflow
 
 requirements:
+  - class: MultipleInputFeatureRequirement
   - class: StepInputExpressionRequirement
-#   - class: InlineJavascriptRequirement
-#   - class: MultipleInputFeatureRequirement
 
 inputs:
   - id: bam_path
