@@ -21,10 +21,10 @@ inputs:
 outputs:
   - id: picard_markduplicates_output_bam
     type: File
-    outputSource: "#picard_markduplicates/OUTPUT"
+    outputSource: picard_markduplicates/OUTPUT
   - id: merge_all_sqlite_destination_sqlite
     type: File
-    outputSource: "#merge_all_sqlite/destination_sqlite"
+    outputSource: merge_all_sqlite/destination_sqlite
 
 steps:
   - id: picard_validatesamfile_original
