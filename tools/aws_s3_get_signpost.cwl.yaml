@@ -60,7 +60,7 @@ arguments:
       return endpoint_url
       }
     prefix: --endpoint-url
-    position: 10
+    position: 0
 
     
   - valueFrom: |
@@ -74,7 +74,7 @@ arguments:
       return profile
       }
     prefix: --profile
-    position: 11
+    position: 1
 
   - valueFrom: |
       ${
