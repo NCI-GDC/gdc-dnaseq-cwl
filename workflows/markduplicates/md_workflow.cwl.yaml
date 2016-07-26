@@ -9,16 +9,16 @@ requirements:
   - class: StepInputExpressionRequirement
 
 inputs:
+  - id: alignment_last_step
+    type: string
   - id: bam_path
-    type: File
-  - id: vcf_path
     type: File
   - id: fasta_path
     type: File
   - id: uuid
     type: string
-  - id: alignment_last_step
-    type: string
+  - id: vcf_path
+    type: File
 
 outputs:
   - id: picard_markduplicates_output_bam
