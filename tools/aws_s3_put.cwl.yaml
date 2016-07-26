@@ -22,11 +22,11 @@ inputs:
   - id: aws_shared_credentials_file
     type: File
   
-  - id: endpoint_url
+  - id: endpoint_json
     type: string
     inputBinding:
-      prefix: --endpoint-url
-      position: 10
+      loadContents: true
+      valueFrom: null
 
   - id: input_path
     type: File
@@ -37,7 +37,7 @@ inputs:
     type: string
     inputBinding:
       prefix: --profile
-      position: 10
+      position: 0
     
   - id: s3uri
     type: string
@@ -49,6 +49,17 @@ outputs:
     type: File
     outputBinding:
       glob: "output"
+
+arguments:
+  - valueFrom: |
+      ${
+      var endpoint_json = JSON.parse(inputs.endpoint_json.contents)
+      var endpoint_url = String(endpoint_json[s3cfg_section])
+      return endpoint_url
+      }
+    prefix: --endpoint-url
+    position: 1
+
 
 stdout: "output"
 
