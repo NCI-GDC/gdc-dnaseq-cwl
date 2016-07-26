@@ -9,6 +9,8 @@ requirements:
  - class: SubworkflowFeatureRequirement
 
 inputs:
+  - id: alignment_last_step
+    type: string
   - id: aws_config
     type: File
   - id: aws_shared_credentials
@@ -106,14 +108,16 @@ steps:
   - id: md_workflow
     run: md_workflow.cwl.yaml
     in:
+      - id: alignment_last_step
+        source: alignment_last_step
       - id: bam_path
         source: extract_bam/output
-      - id: vcf_path
-        source: extract_db_snp/output
-      - id: reference_fasta_path
+      - id: fasta_path
         source: extract_ref_fa/output
       - id: uuid
         source: uuid
+      - id: vcf_path
+        source: extract_db_snp/output
     out:
       - id: picard_markduplicates_output_bam
       - id: merge_all_sqlite_destination_sqlite
