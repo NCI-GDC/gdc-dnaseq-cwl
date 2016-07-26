@@ -122,38 +122,38 @@ steps:
       - id: picard_markduplicates_output_bam
       - id: merge_all_sqlite_destination_sqlite
 
-  # - id: load_bam
-  #   run: ../../tools/aws_s3_put.cwl.yaml
-  #   in:
-  #     - id: aws_config
-  #       source: aws_config
-  #     - id: aws_shared_credentials
-  #       source: aws_shared_credentials
-  #     - id: s3cfg_section
-  #       source: load_s3cfg_section
-  #     - id: endpoint_url
-  #       source: load_endpoint_url
-  #     - id: input_path
-  #       source: dnaseq_workflow/picard_markduplicates_output_bam
-  #     - id: s3uri
-  #       source: load_bucket
-  #   out:
-  #     - id: output
+  - id: load_bam
+    run: ../../tools/aws_s3_put.cwl.yaml
+    in:
+      - id: aws_config
+        source: aws_config
+      - id: aws_shared_credentials
+        source: aws_shared_credentials
+      - id: endpoint_json
+        source: endpoint_json
+      - id: input
+        source: md_workflow/picard_markduplicates_output_bam
+      - id: s3cfg_section
+        source: load_s3cfg_section
+      - id: s3uri
+        source: load_bucket
+    out:
+      - id: output
 
-  # - id: load_sqlite
-  #   run: ../../tools/aws_s3_put.cwl.yaml
-  #   in:
-  #     - id: aws_config
-  #       source: aws_config
-  #     - id: aws_shared_credentials
-  #       source: aws_shared_credentials
-  #     - id: endpoint_url
-  #       source: load_endpoint_url
-  #     - id: input_path
-  #       source: dnaseq_workflow/merge_all_sqlite_destination_sqlite
-  #     - id: s3cfg_section
-  #       source: load_s3cfg_section
-  #     - id: s3uri
-  #       source: load_bucket
-  #   out:
-  #     - id: output
+  - id: load_sqlite
+    run: ../../tools/aws_s3_put.cwl.yaml
+    in:
+      - id: aws_config
+        source: aws_config
+      - id: aws_shared_credentials
+        source: aws_shared_credentials
+      - id: endpoint_json
+        source: endpoint_json
+      - id: input
+        source: md_workflow/merge_all_sqlite_destination_sqlite
+      - id: s3cfg_section
+        source: load_s3cfg_section
+      - id: s3uri
+        source: load_bucket
+    out:
+      - id: output
