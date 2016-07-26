@@ -108,7 +108,7 @@ steps:
     in:
       - id: bam_path
         source: extract_bam/output
-      - id: db_snp_path
+      - id: vcf_path
         source: extract_db_snp/output
       - id: reference_fasta_path
         source: extract_ref_fa/output
