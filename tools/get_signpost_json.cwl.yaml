@@ -19,7 +19,7 @@ inputs:
 stdout: output.json
 
 outputs:
-  - id: output_json
+  - id: output
     type: File
     outputBinding:
       glob: output.json

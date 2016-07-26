@@ -28,17 +28,17 @@ inputs:
       prefix: --endpoint-url
       position: 10
 
+  - id: input_path
+    type: File
+    inputBinding:
+      position: 98
+
   - id: s3cfg_section
     type: string
     inputBinding:
       prefix: --profile
       position: 10
     
-  - id: input_path
-    type: File
-    inputBinding:
-      position: 98
-
   - id: s3uri
     type: string
     inputBinding:

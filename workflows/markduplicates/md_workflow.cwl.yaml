@@ -17,6 +17,8 @@ inputs:
     type: File
   - id: uuid
     type: string
+  - id: alignment_last_step
+    type: string
 
 outputs:
   - id: picard_markduplicates_output_bam
@@ -121,7 +123,7 @@ steps:
         source: bam_path
         valueFrom: $(self.basename)
       - id: input_state
-        valueFrom: "reheader" ####
+        valueFrom: alignment_last_step
       - id: metric_path
         source: picard_validatesamfile_original/OUTPUT
       - id: uuid
