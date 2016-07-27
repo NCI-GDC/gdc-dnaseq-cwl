@@ -140,6 +140,25 @@ steps:
     out:
       - id: output
 
+  - id: load_bai
+    run: ../../tools/aws_s3_put.cwl.yaml
+    in:
+      - id: aws_config
+        source: aws_config
+      - id: aws_shared_credentials
+        source: aws_shared_credentials
+      - id: endpoint_json
+        source: endpoint_json
+      - id: input
+        source: md_workflow/picard_markduplicates_output_bam
+        valueFrom: $(self.secondaryFiles[0])
+      - id: s3cfg_section
+        source: load_s3cfg_section
+      - id: s3uri
+        source: load_bucket
+    out:
+      - id: output
+
   - id: load_sqlite
     run: ../../tools/aws_s3_put.cwl.yaml
     in:
