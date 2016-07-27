@@ -35,12 +35,9 @@ inputs:
     type: string
 
 outputs:
-  - id: dnaseq_workflow_output_bam
+  - id: load_sqlite_output
     type: File
-    outputSource: md_workflow/picard_markduplicates_output_bam
-  - id: dnaseq_workflow_output_sqlite
-    type: File
-    outputSource: md_workflow/merge_all_sqlite_destination_sqlite
+    outputSource: load_sqlite/output
 
 steps:
   - id: extract_bam
