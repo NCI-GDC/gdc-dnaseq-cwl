@@ -5,30 +5,30 @@ cwlVersion: v1.0
 class: CommandLineTool
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/awscli
+    dockerPull: quay.io/jeremiahsavage/awscli:1
   - class: EnvVarRequirement
     envDef:
       - envName: "AWS_CONFIG_FILE"
-        envValue: $(inputs.aws_config_file.path)
+        envValue: $(inputs.aws_config.path)
       - envName: "AWS_SHARED_CREDENTIALS_FILE"
-        envValue: $(inputs.aws_shared_credentials_file.path)
+        envValue: $(inputs.aws_shared_credentials.path)
   - class: InlineJavascriptRequirement
   - class: ShellCommandRequirement
 
 inputs:
-  - id: aws_config_file
+  - id: aws_config
     type: File
 
-  - id: aws_shared_credentials_file
+  - id: aws_shared_credentials
     type: File
   
   - id: endpoint_json
-    type: string
+    type: File
     inputBinding:
       loadContents: true
       valueFrom: null
 
-  - id: input_path
+  - id: input
     type: File
     inputBinding:
       position: 98
@@ -54,7 +54,7 @@ arguments:
   - valueFrom: |
       ${
       var endpoint_json = JSON.parse(inputs.endpoint_json.contents)
-      var endpoint_url = String(endpoint_json[s3cfg_section])
+      var endpoint_url = String(endpoint_json[inputs.s3cfg_section])
       return endpoint_url
       }
     prefix: --endpoint-url
