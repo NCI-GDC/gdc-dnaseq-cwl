@@ -5,21 +5,40 @@
 #SBATCH --cpus-per-task=XX_THREAD_COUNT_XX
 #SBATCH --mem=18000
 
+##ENV VARIABLE
+DB_CRED_PATH="XX_DB_CRED_URL_XX"
+VIRTUALENV_NAME="XX_VIRTUALENV_NAME_XX
+"
+##WORKFLOW
+GIT_CWL_REPO="git@github.com:NCI-GDC/cocleaning-cwl.git"
+GIT_CWL_HASH="XX_GIT_CWL_HASH_XX"
+ETL_JSON="XX_ETL_JSON_XX"
 
-UUID=
-BAM_NAME=
-#output buckets
-S3_OUT_BUCKET="s3://ceph_qcpass_tcga_exome_blca_coclean"
-S3_LOG_BUCKET="s3://ceph_qcpass_tcga_exome_blca_coclean_log"
+
+##JOB VARIABLES
+UUID="XX_UUID_XX"
+BAM_NAME="XX_BAM_NAME_XX"
+S3_OUT_BUCKET="s3://ceph_markduplicates"
 
 
+
+function activate_virtualenv()
+{
+    local virtualenv_name="${1}"
+
+    source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
+    if [ $? -ne 0]; then exit 1 ; fi
+    source ${HOME}/.virtualenvs/${virtualenv_name}/bin/activate
+    if [ $? -ne 0]; then exit 1 ; fi
+    
+
+}
 
 function queue_status_update()
 {
     echo ""
     echo "queue_status_update()"
 
-    local data_dir="${1}"
     local cwl_tool="${2}"
     local git_cwl_repo="${3}"
     local git_cwl_hash="${4}"
@@ -63,13 +82,24 @@ function queue_status_update()
 }
 
 
+function run_md()
+{
+    cwltool --debug --cachedir /mnt/SCRATCH/cache/  --tmpdir-prefix /mnt/SCRATCH/tmp/tmp/ --enable-net --custom-net host ~/cocleaning-cwl/workflows/markduplicates/etl.cwl.yaml ~/cocleaning-cwl/workflows/markduplicates/ex.json
+}
+
 function main()
 {
+    local db_status_table="markduplicates_status"
+    local s3_out_bucket=${S3_OUT_BUCKET}
+    local uuid=${UUID}
+    local bam_name=${BAM_NAME}
+    local s3_out_object=${s3_out_bucket}/${uuid}/${bam_name}
+    
     activate_virtualenv
-    queue_status_update "${data_dir}" "${QUEUE_STATUS_TOOL}" "${GIT_CWL_REPO}" "${GIT_CWL_HASH}" "${CASE_ID}" "${BAM_URL_ARRAY}" "RUNNING" "coclean_caseid_queue" "${S3_CFG_PULL_PATH}" "${DB_CRED_URL}" "${S3_OUT_BUCKET}"
+    queue_status_update "${data_dir}" "${QUEUE_STATUS_TOOL}" "${GIT_CWL_REPO}" "${GIT_CWL_HASH}" "${CASE_ID}" "${BAM_URL_ARRAY}" "RUNNING" "${db_status_table}" "${DB_CRED_URL}" "${S3_OUT_BUCKET}"
 
     
-    queue_status_update "${data_dir}" "${QUEUE_STATUS_TOOL}" "${GIT_CWL_REPO}" "${GIT_CWL_HASH}" "${CASE_ID}" "${BAM_URL_ARRAY}" "COMPLETE" "coclean_caseid_queue" "${S3_CFG_PULL_PATH}" "${DB_CRED_URL}" "${S3_OUT_BUCKET}"
+    queue_status_update "${data_dir}" "${QUEUE_STATUS_TOOL}" "${GIT_CWL_REPO}" "${GIT_CWL_HASH}" "${CASE_ID}" "${BAM_URL_ARRAY}" "COMPLETE" "${db_status_table}" "${DB_CRED_URL}" "${s3_out_object}"
 
 }
 
