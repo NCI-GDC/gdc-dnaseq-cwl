@@ -1,12 +1,14 @@
 #!/usr/bin/env cwl-runner
-cwlVersion: "cwl:draft-3"
+cwlVersion: v1.0
 
 class: CommandLineTool
 requirements:
+  - class: DockerRequirement
+    dockerPull: alpine
   - class: ShellCommandRequirement
   - class: InlineJavascriptRequirement
 inputs:
-  - id: bam_path
+  - id: bam
     type: File
     inputBinding:
       position: 2
@@ -17,14 +19,14 @@ outputs:
       items: File
     outputBinding:
       glob: "*_1.fq"
-      outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
+      outputEval: $( self.sort(function(a,b) { return a.path < b.path }) )
   - id: output_fastq2
     type:
       type: array
       items: File
     outputBinding:
       glob: "*_2.fq"
-      outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
+      outputEval: $( self.sort(function(a,b) { return a.path < b.path }) )
 arguments:
   - valueFrom: ".fq"
     position: 1

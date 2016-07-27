@@ -37,7 +37,7 @@ outputs:
     type: File
     description: "python log file"
     outputBinding:
-      glob: $(inputs.uuid + "_fastqc_db.db")
+      glob: $(inputs.fastqc_zip_path.path.split('/').slice(-1)[0].slice(0,-3) + "db")
 
           
 baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/fastqc_db/main.py"]

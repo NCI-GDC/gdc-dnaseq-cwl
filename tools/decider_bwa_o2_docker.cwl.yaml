@@ -1,0 +1,64 @@
+#!/usr/bin/env cwl-runner
+
+cwlVersion: cwl:draft-3
+
+requirements:
+  - class: InlineJavascriptRequirement
+  - class: DockerRequirement
+    dockerPull: quay.io/jeremiahsavage/decider_bwa_se
+
+class: CommandLineTool
+
+inputs:
+  - id: fastq_path
+    type:
+      type: array
+      items: ["null", File]
+      inputBinding:
+        prefix: --fastq_path
+
+  - id: readgroup_path
+    type:
+      type: array
+      items: File
+      inputBinding:
+        prefix: --readgroup_path
+
+  - id: fastqc_db_path
+    type:
+      type: array
+      items: ["null", File]
+      inputBinding:
+        prefix: --fastqc_db_path
+
+  - id: uuid
+    type: string
+    inputBinding:
+      prefix: --uuid
+
+outputs:
+  - id: output_fastq_paths
+    type:
+      type: array
+      items: ["null", File]
+    outputBinding:
+      glob: "*_o2.fq.gz"
+      outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
+
+  - id: output_readgroup_paths
+    type:
+      type: array
+      items: ["null", File]
+    outputBinding:
+      glob: "*.json"
+      outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
+      
+  - id: output_db_paths
+    type:
+      type: array
+      items: ["null", File]
+    outputBinding:
+      glob: "*.db"
+      outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
+
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/decider_bwa_se/main.py"]
