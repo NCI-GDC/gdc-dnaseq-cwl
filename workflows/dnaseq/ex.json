@@ -1,21 +1,33 @@
-#!/usr/bin/env cwl-runner
+#!/usr/bin/env cwltool
 {
-    "bam_s3url": "s3://tcga_cghub_protected/47b42e81-2500-4ebc-a0c2-acd3187cc2f0/C440.TCGA-IN-8462-01A-11D-2340-08.1.bam",
-    "db_snp_s3url": "s3://bioinformatics_scratch/coclean/dbsnp_144.hg38.vcf.gz",
-    "reference_fasta_s3url": "s3://bioinformatics_scratch/grch38_for_bwa/GRCh38.d1.vd1.fa",
-    "db_cred_s3url": "s3://bioinformatics_scratch/coclean/dbsnp_144.hg38.vcf.gz",
+    "signpost_base_url": "signpost.service.consul/v0/did/",
+    "endpoint_json": {
+        "class": "File",
+        "path": "/home/ubuntu/endpoint.json"
+    },
+    "bam_signpost_id": "113819e6-e59f-423c-ba00-2128b0e8f3e5",
+    "db_snp_signpost_id": "4ba1c087-ec80-47c4-a9d5-e9bb9933fef4",
+    "reference_fa_signpost_id": "ed96790c-3eb5-4aa2-8f46-702d503e64e4",
+    "reference_fai_signpost_id": "10283433-bcec-46bc-bfd5-5215428853ea",
+    "reference_amb_signpost_id": "2fbc4427-5681-4d78-89d1-bc9e6b674a60",
+    "reference_ann_signpost_id": "c34d79ec-c34a-4312-8fd1-7e7dd9509bfb",
+    "reference_bwt_signpost_id": "80fae032-cf85-466e-b5f7-098b9670c4d8",
+    "reference_pac_signpost_id": "274875c3-922f-4a18-9333-29195189999b",
+    "reference_sa_signpost_id": "c9d4a9ec-751f-469a-b75c-0834f8685c19",
     "thread_count": 8,
     "uuid": "atest",
-    "aws_config_file": {
+    "aws_config": {
         "class": "File",
         "path": "/home/ubuntu/.aws/config"
     },
-    "aws_shared_credentials_file": {
+    "aws_shared_credentials": {
         "class": "File",
         "path": "/home/ubuntu/.aws/credentials"
     },
-    "extract_s3cfg_section" : "cleversafe",
-    "extract_endpoint_url": "http://gdc-accessors.osdc.io",
+    "db_cred_path": {
+        "class": "File",
+        "path": "/home/ubuntu/connect.ini"
+    },
     "load_s3cfg_section": "ceph",
     "load_endpoint_url": "http://gdc-cephb-objstore.osdc.io",
     "load_bucket": "s3://bioinformatics_scratch/maydeletetest/"

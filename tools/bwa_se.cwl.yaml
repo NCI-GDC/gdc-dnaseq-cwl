@@ -8,20 +8,15 @@ description: |
 requirements:
   - class: InlineJavascriptRequirement
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/bwa_pe_tool
+    dockerPull: quay.io/jeremiahsavage/bwa_se_tool
 
 class: CommandLineTool
 
 inputs:
-  - id: fastq1_path
+  - id: fastq_path
     type: File
     inputBinding:
-      prefix: --fastq1_path
-
-  - id: fastq2_path
-    type: File
-    inputBinding:
-      prefix: --fastq2_path
+      prefix: --fastq_path
 
   - id: reference_fasta_path
     type: File
@@ -38,17 +33,12 @@ inputs:
     type: File
     inputBinding:
       prefix: --readgroup_json_path
-      
-  - id: fastqc_db1_path
-    type: File
-    inputBinding:
-      prefix: --fastqc_db1_path
-      
-  - id: fastqc_db2_path
-    type: File
-    inputBinding:
-      prefix: --fastqc_db2_path
 
+  - id: fastqc_db_path
+    type: File
+    inputBinding:
+      prefix: --fastqc_db_path
+      
   - id: thread_count
     type: int
     inputBinding:
@@ -62,7 +52,7 @@ inputs:
 outputs:
   - id: output_bam
     type: File
-    description: "The readgroups pairs split into compressed fastq"
+    description: "Aligned BAM"
     outputBinding:
       glob: $(inputs.readgroup_json_path.path.split('/').slice(-1)[0].slice(0,-5)+".bam")
 
@@ -70,7 +60,7 @@ outputs:
     type: File
     description: "python log file"
     outputBinding:
-      glob: $(inputs.uuid+"_bwa_pe.log")
+      glob: $(inputs.uuid+"_bwa_mem.log")
 
   - id: output_sqlite
     type: File
@@ -78,4 +68,4 @@ outputs:
     outputBinding:
       glob: $(inputs.uuid + ".db")
           
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/bwa_pe_tool/main.py"]
+baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/bwa_se_tool/main.py"]

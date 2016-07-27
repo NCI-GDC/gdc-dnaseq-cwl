@@ -1,65 +1,66 @@
 #!/usr/bin/env cwl-runner
-cwlVersion: "cwl:draft-3"
+
+cwlVersion: v1.0
 
 class: CommandLineTool
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/awscli
+    dockerPull: quay.io/jeremiahsavage/awscli:1
   - class: EnvVarRequirement
     envDef:
       - envName: "AWS_CONFIG_FILE"
-        envValue: $(inputs.aws_config_file.path)
+        envValue: $(inputs.aws_config.path)
       - envName: "AWS_SHARED_CREDENTIALS_FILE"
-        envValue: $(inputs.aws_shared_credentials_file.path)
+        envValue: $(inputs.aws_shared_credentials.path)
   - class: InlineJavascriptRequirement
   - class: ShellCommandRequirement
 
 inputs:
-  - id: aws_config_file
+  - id: aws_config
     type: File
 
-  - id: aws_shared_credentials_file
+  - id: aws_shared_credentials
     type: File
   
-  - id: endpoint_url
-    type: string
+  - id: endpoint_json
+    type: File
     inputBinding:
-      prefix: --endpoint-url
-      position: 10
+      loadContents: true
+      valueFrom: null
+
+  - id: input
+    type: File
+    inputBinding:
+      position: 98
 
   - id: s3cfg_section
     type: string
     inputBinding:
       prefix: --profile
-      position: 10
+      position: 0
     
-  - id: input_path
-    type: File
-    inputBinding:
-      position: 98
-
   - id: s3uri
     type: string
     inputBinding:
       position: 99
 
 outputs:
-  - id: bin_time
+  - id: output
     type: File
     outputBinding:
-      glob: "bin.time"
+      glob: "output"
 
 arguments:
-  - valueFrom: "bin.time"
-    position: 0
-
-  - valueFrom: aws
+  - valueFrom: |
+      ${
+      var endpoint_json = JSON.parse(inputs.endpoint_json.contents)
+      var endpoint_url = String(endpoint_json[inputs.s3cfg_section])
+      return endpoint_url
+      }
+    prefix: --endpoint-url
     position: 1
 
-  - valueFrom: s3
-    position: 2
 
-  - valueFrom: cp
-    position: 3
+stdout: "output"
 
-baseCommand: [/usr/bin/time, -v, -o]
+baseCommand: [aws, s3, cp]

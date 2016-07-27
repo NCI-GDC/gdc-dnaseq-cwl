@@ -1,0 +1,8 @@
+{
+  "acl": [],
+  "did": "113819e6-e59f-423c-ba00-2128b0e8f3e5",
+  "rev": "a9ff2689-634e-4193-bc94-5997c3a41edc",
+  "urls": [
+    "s3://cleversafe.service.consul/tcga_cghub_protected_3/0f73fa63-5eed-422f-8cb2-b9f748d2aa9f/C1872.TCGA-IB-7889-01A-11D-2153-01.1.bam"
+  ]
+}

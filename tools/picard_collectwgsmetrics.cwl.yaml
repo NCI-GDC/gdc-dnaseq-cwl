@@ -1,56 +1,40 @@
 #!/usr/bin/env cwl-runner
 
-cwlVersion: "cwl:draft-3"
-
-description: |
-  Usage:  cwl-runner <this-file-path> --input_bam <bam-path> --reference_fasta_path <reference-fasta-path> --uuid <uuid-string>
-  Options:
-    --input_bam      Generate metrics from BAM file
-    --reference      Genome for metrics
-    --uuid           UUID for log file and sqlite db file
+cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/picard_tool
+    dockerPull: quay.io/jeremiahsavage/picard:1
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
 
 inputs:
-  - id: bam_path
+  - id: INPUT
     type: File
+    format: "edam:format_2572"
     inputBinding:
-      prefix: --bam_path
+      prefix: "INPUT="
+      separate: false
 
-  - id: input_state
-    type: string
-    inputBinding:
-      prefix: --input_state
-
-  - id: reference_fasta_path
+  - id: REFERENCE_SEQUENCE
     type: File
+    format: "edam:format_1929"
     inputBinding:
-      prefix: --reference_fasta_path
-
-  - id: uuid
-    type: string
-    inputBinding:
-      prefix: --uuid
+      prefix: "REFERENCE_SEQUENCE="
+      separate: false
 
 outputs:
-  - id: log
+  - id: OUTPUT
     type: File
     outputBinding:
-      glob: $(inputs.uuid + "_picard_CollectWgsMetrics.log")
-  
-  - id: wgs_metrics
-    type: File
-    outputBinding:
-      glob: $("picard_CollectWgsMetrics_"+ inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4))
+      glob: $(inputs.INPUT.nameroot + ".metrics")
 
-  - id: output_sqlite
-    type: File
-    outputBinding:
-      glob: $(inputs.uuid + ".db")
+arguments:
+  - valueFrom: $(inputs.INPUT.nameroot + ".metrics")
+    prefix: "OUTPUT="
+    separate: false
 
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python", "/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/picard_tool/main.py", "--tool_name", "CollectWgsMetrics"]
+  - valueFrom: "VALIDATION_STRINGENCY=STRICT"
+
+baseCommand: [java, -jar, /usr/local/bin/picard.jar, CollectWgsMetrics]

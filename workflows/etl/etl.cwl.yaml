@@ -1,0 +1,66 @@
+#!/usr/bin/env cwl-runner
+
+cwlVersion: "cwl:draft-3"
+
+class: Workflow
+
+requirements:
+  - class: InlineJavascriptRequirement
+  - class: StepInputExpressionRequirement
+
+inputs:
+  - id: fastq_s3url
+    type: string
+  - id: fasta_s3url
+    type: string
+
+outputs:
+  - id: align_output_bam
+    type: File
+    source: "#align/output_bam"
+
+steps:
+  - id: extract_fastq
+    run: obj_store_get.cwl.yaml
+    inputs:
+      - id: s3_url
+        source: "#fastq_s3url"
+    outputs:
+      - id: output
+
+  - id: extract_fasta
+    run: obj_store_get.cwl.yaml
+    inputs:
+      - id: s3_url
+        source: "#fasta_s3url"
+    outputs:
+      - id: output
+
+  - id: extract_fasta_fai
+    run: obj_store_get.cwl.yaml
+    inputs:
+      - id: s3_url
+        source: "#fasta_s3url"
+        valueFrom: $(self + ".fai")
+    outputs:
+      - id: output
+
+  - id: root_fasta_files
+    run: root_fasta.cwl.yaml
+    inputs:
+      - id: fasta_path
+        source: "#extract_fasta/output"
+      - id: fasta_fai_path
+        source: "#extract_fasta_fai/output"
+    outputs:
+      - id: output_fasta
+
+  - id: align
+    run: align.cwl.yaml
+    inputs:
+      - id: fastq_path
+        source: "#extract_fastq/output"
+      - id: fasta_path
+        source: "#root_fasta_files/output_fasta"
+    outputs:
+      - id: output_bam

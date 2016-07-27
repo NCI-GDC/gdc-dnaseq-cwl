@@ -1,16 +1,10 @@
 #!/usr/bin/env cwl-runner
 
-cwlVersion: "cwl:draft-3"
-
-description: |
-  Usage:  cwl-runner <this-file-path> --source_sqlite file1.db --source_sqlite file2.db ... --uuid <uuid-string>
-  Options:
-    --source_sqlite   any number of input files to merge
-    --uuid           UUID for log file and sqlite db file
+cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/merge_sqlite
+    dockerPull: quay.io/jeremiahsavage/merge_sqlite:2
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
