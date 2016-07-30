@@ -1,6 +1,6 @@
 #!/usr/bin/env cwl-runner
 
-cwlVersion: "cwl:draft-3"
+cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
@@ -10,16 +10,21 @@ requirements:
 class: CommandLineTool
 
 inputs:
-  - id: case_id
-    type: string
+  - id: cwl_sha1
+    type: ["null", string]
     inputBinding:
-      prefix: --case_id
+      prefix: --cwl_sha1
 
-  - id: uuid
-    type: string
+  - id: cwl_size
+    type: ["null", string]
     inputBinding:
-      prefix: --gdc_id
-      
+      prefix: --cwl_size
+
+  - id: md5
+    type: ["null", string]
+    inputBinding:
+      prefix: --md5
+
   - id: repo
     type: string
     inputBinding:
@@ -45,11 +50,20 @@ inputs:
     inputBinding:
       prefix: --table_name
 
+  - id: uuid
+    type: string
+    inputBinding:
+      prefix: --uuid
+
 outputs:
   - id: log
     type: File
-    description: "python log file"
     outputBinding:
-      glob: $(inputs.uuid+"_queue_status.log")
+      glob: $(inputs.uuid+".log")
 
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/queue_status/main.py"]
+  - id: sqlite
+    type: File
+    outputBinding:
+      glob: $(inputs.uuid+".db")
+
+baseCommand: [/usr/local/bin/queue_status]
