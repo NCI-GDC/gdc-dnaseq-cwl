@@ -6,20 +6,24 @@
 #SBATCH --mem=18000
 
 ##ENV VARIABLE
-DB_CRED_PATH="XX_DB_CRED_URL_XX"
-VIRTUALENV_NAME="XX_VIRTUALENV_NAME_XX
-"
+DB_CRED_PATH="XX_DB_CRED_PATH_XX"
+SCRATCH_DIR="/mnt/SCRATCH"
+CACHE_DIR="${SCRATCH_DIR}/cache"
+TMP_DIR="${SCRATCH_DIR}/tmp/tmp"
+VIRTUALENV_NAME="cwl"
+
 ##WORKFLOW
 GIT_CWL_REPO="git@github.com:NCI-GDC/cocleaning-cwl.git"
 GIT_CWL_HASH="XX_GIT_CWL_HASH_XX"
-ETL_JSON="XX_ETL_JSON_XX"
+QUEUE_STATUS_TOOL="tools/queue_status.cwl.yaml"
+WORKFLOW="workflows/markduplicates/md_workflow.cwl.yaml"
 
 
 ##JOB VARIABLES
+DB_TABLE_NAME="markduplicates_wgs_status"
+ETL_JSON="XX_ETL_JSON_XX"
+S3_OUT_BUCKET="s3://ceph_markduplicates_wgs"
 UUID="XX_UUID_XX"
-BAM_NAME="XX_BAM_NAME_XX"
-S3_OUT_BUCKET="s3://ceph_markduplicates"
-
 
 
 function activate_virtualenv()
@@ -27,79 +31,103 @@ function activate_virtualenv()
     local virtualenv_name="${1}"
 
     source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
-    if [ $? -ne 0]; then exit 1 ; fi
     source ${HOME}/.virtualenvs/${virtualenv_name}/bin/activate
-    if [ $? -ne 0]; then exit 1 ; fi
-    
-
 }
 
 function queue_status_update()
 {
-    echo ""
-    echo "queue_status_update()"
-
-    local cwl_tool="${2}"
-    local git_cwl_repo="${3}"
-    local git_cwl_hash="${4}"
-    local case_id="${5}"
-    local bam_url_array="${6}"
-    local status="${7}"
-    local table_name="${8}"
-    local s3cfg_path="${9}"
-    local db_cred_s3url="${10}"
+    local bam_name="${1}"
+    local cache_dir="${2}"
+    local cwl_dir="${3}"
+    local cwl_tool="${4}"
+    local db_cred_path="${5}"
+    local db_table_name="${13}"
+    local git_cwl_hash="${6}"
+    local git_cwl_repo="${7}"
+    local job_dir="${8}"
     local s3_out_bucket="${11}"
-
-    echo "status=${status}"
-    echo "table_name=${table_name}"
+    local status="${12}"
+    local uuid="${14}"
     
-    get_git_name "${git_cwl_repo}"
-    echo "git_name=${git_name}"
-    local cwl_dir=${data_dir}/${git_name}
     local cwl_tool_path=${cwl_dir}/${cwl_tool}
 
 
-    local this_virtenv_dir="${HOME}/.virtualenvs/cwl"
-    local cwlrunner_path="${this_virtenv_dir}/bin/cwltool"
-    for bam_url in ${bam_url_array}
-    do
-        local gdc_id=$(basename $(dirname ${bam_url}))
-
-        if [ ${db_cred_s3url} == "XX_DB_CRED_S3URL_XX" ]
-        then
-            local cwl_command="--debug --cachedir /mnt/SCRATCH/cache/ --tmpdir-prefix /mnt/SCRATCH/tmp/tmp/ --enable-net --custom-net host --outdir ${data_dir} ${cwl_tool_path} --uuid ${uuid} --repo ${git_cwl_repo} --repo_hash ${git_cwl_hash} --table_name ${table_name} --status ${status}"
-        elif [[ "${status}" == "COMPLETE" ]]
-        then
-            local bam_file=$(basename ${bam_url})
-            local s3_url=${s3_out_bucket}/${gdc_id}/${bam_file}
-            local cwl_command="--debug --outdir ${data_dir} ${cwl_tool_path} --case_id ${case_id} --db_cred_s3url ${db_cred_s3url} --gdc_id ${gdc_id} --repo ${git_cwl_repo} --repo_hash ${git_cwl_hash} --s3cfg_path ${s3cfg_path} --table_name ${table_name} --status ${status} --s3_url ${s3_url}"
-        else
-            local cwl_command="--debug --outdir ${data_dir} ${cwl_tool_path} --case_id ${case_id} --db_cred_s3url ${db_cred_s3url} --gdc_id ${gdc_id} --repo ${git_cwl_repo} --repo_hash ${git_cwl_hash} --s3cfg_path ${s3cfg_path} --table_name ${table_name} --status ${status}"
-        fi
-        echo "${cwlrunner_path} ${cwl_command}"
-        ${cwlrunner_path} ${cwl_command}
-    done
+    #local this_virtenv_dir="${HOME}/.virtualenvs/cwl"
+    #local cwlrunner_path="${this_virtenv_dir}/bin/cwltool"
+    local cwl_base_command="cwltool --debug --cachedir ${cache_dir} --tmpdir-prefix ${tmp_dir} --enable-net --custom-net host --outdir ${job_dir} ${cwl_tool_path} "
+    if [[ "${status}" == "COMPLETE" ]]
+    then
+        local job_file="${job_dir}/${uuid}.out"
+        local output_json=`tac ${job_file} | sed '/^{/q' | tac`
+        local load_sha1=`echo ${output_json} | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["dnaseq_workflow_output_sqlite"]["checksum"])'`
+        local load_size=`echo ${output_json} | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["dnaseq_workflow_output_sqlite"]["size"])'`
+        local s3_url=${s3_out_bucket}/${uuid}/${bam_name}
+        local cwl_command="${cwl_base_command} --cwl_sha1 ${load_sha1} --cwl_size ${load_size} --repo ${git_cwl_repo}  --repo_hash ${git_cwl_hash} --s3_url ${s3_url} --status ${status} --table_name ${db_table_name} --uuid ${uuid}"
+    else
+        local cwl_command="${cwl_base_command} --repo ${git_cwl_repo}  --repo_hash ${git_cwl_hash} --status ${status} --table_name ${db_table_name} --uuid ${uuid}"
+    fi
+    echo "${cwlrunner_path} ${cwl_command}"
+    ${cwl_command}
+done
 }
 
 
 function run_md()
 {
-    cwltool --debug --cachedir /mnt/SCRATCH/cache/  --tmpdir-prefix /mnt/SCRATCH/tmp/tmp/ --enable-net --custom-net host ~/cocleaning-cwl/workflows/markduplicates/etl.cwl.yaml ~/cocleaning-cwl/workflows/markduplicates/ex.json
+    local cache_dir="${1}"
+    local etl_cwl_path="${2}"
+    local etl_json_path="${3}"
+    local job_dir="${4}"
+    local tmp_dir="${5}"
+    local uuid="${6}"
+
+    local cwl_command="cwltool --debug --cachedir ${cache_dir} --tmpdir-prefix ${tmp_dir} --enable-net --custom-net host --outdir ${job_dir} ${etl_cwl_path} ${etwl_json_path} > ${job_dir}/${uuid}.out"
+    ${cwl_command}
 }
 
 function main()
 {
-    local db_status_table="markduplicates_status"
+    local cache_dir=${CACHE_DIR}
+    local db_cred_path=${DB_CRED_PATH}
+    local db_table_name=${DB_TABLE_NAME}
+    local etl_json_path=${ETL_JSON_PATH}
+    local git_cwl_hash=${GIT_CWL_HASH}
+    local git_cwl_repo=${GIT_CWL_REPO}
+    local queue_status_tool=${QUEUE_STATUS_TOOL}
     local s3_out_bucket=${S3_OUT_BUCKET}
+    local scratch_dir=${SCRATCH_DIR}
+    local tmp_dir=${TMP_DIR}
     local uuid=${UUID}
-    local bam_name=${BAM_NAME}
-    local s3_out_object=${s3_out_bucket}/${uuid}/${bam_name}
-    
-    activate_virtualenv
-    queue_status_update "${data_dir}" "${QUEUE_STATUS_TOOL}" "${GIT_CWL_REPO}" "${GIT_CWL_HASH}" "${CASE_ID}" "${BAM_URL_ARRAY}" "RUNNING" "${db_status_table}" "${DB_CRED_URL}" "${S3_OUT_BUCKET}"
+    local virtualenv_name=${VIRTUALENV_NAME}
+    local workflow=${WORKFLOW}
 
+    local bam_signpost_json=`cat ${etl_json_path} | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["bam_signpost_json"]["path"])'`
+    local input_s3_url=`cat ${bam_signpost_json} | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["urls"][0])'`
+    local bam_name=$(basename ${input_s3_url})
+    local s3_out_object="${s3_out_bucket}/${uuid}/${bam_name}"
+    local job_dir="${scratch_dir}/${db_table_name}/${uuid}"
     
-    queue_status_update "${data_dir}" "${QUEUE_STATUS_TOOL}" "${GIT_CWL_REPO}" "${GIT_CWL_HASH}" "${CASE_ID}" "${BAM_URL_ARRAY}" "COMPLETE" "${db_status_table}" "${DB_CRED_URL}" "${s3_out_object}"
+    mkdir -p ${cache_dir}
+    mkdir -p ${job_dir}
+    mkdir -p ${tmp_dir}
+
+    activate_virtualenv "${virtualenv_name}"
+
+    local status="RUNNING"
+    queue_status_update "${bam_name}" "${cache_dir}" "${cwl_dir}" "${queue_status_tool}" "${db_cred_path}" "${db_table_name}" \
+                        "${git_cwl_hash}" "${git_cwl_repo}" "${job_dir}" "${s3_out_bucket}" "${status}" "${uuid}"
+
+    exit_status=run_md "${cache_dir}" "${etl_json_path}" "${job_dir}" "${tmp_dir}" "${uuid}"
+    if [ ${exit_status} -ne 0]
+    then
+        local status="FAIL"
+        queue_status_update "${bam_name}" "${cache_dir}" "${cwl_dir}" "${queue_status_tool}" "${db_cred_path}" "${db_table_name}" \
+                            "${git_cwl_hash}" "${git_cwl_repo}" "${job_dir}" "${s3_out_bucket}" "${status}" "${uuid}"
+    else
+        local status="COMPLETE"
+        queue_status_update "${bam_name}" "${cache_dir}" "${cwl_dir}" "${queue_status_tool}" "${db_cred_path}" "${db_table_name}" \
+                            "${git_cwl_hash}" "${git_cwl_repo}" "${job_dir}" "${s3_out_bucket}" "${status}" "${uuid}"
+    fi
 
 }
 
