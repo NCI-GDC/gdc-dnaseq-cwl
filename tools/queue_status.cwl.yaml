@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/queue_status
+    dockerPull: quay.io/jeremiahsavage/queue_status:4
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
