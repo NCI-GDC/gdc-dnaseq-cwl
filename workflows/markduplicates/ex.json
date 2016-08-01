@@ -1,17 +1,5 @@
 {
-    "signpost_base_url": "signpost.service.consul/v0/did/",
-    "endpoint_json": {
-        "class": "File",
-        "path": "/home/ubuntu/md_json/endpoint.json"
-    },
-    "bam_signpost_json": {
-        "class": "File",
-        "path": "/home/ubuntu/md_json/cea7bb1e-0145-4464-ab48-82449775cedc.json"
-    },
-    "db_snp_signpost_id": "4ba1c087-ec80-47c4-a9d5-e9bb9933fef4",
-    "reference_fa_signpost_id": "ed96790c-3eb5-4aa2-8f46-702d503e64e4",
-    "alignment_last_step": "fixmate",
-    "uuid": "dc9d5762-9abf-4b8d-8fd4-5b4edaf510fa",
+    "alignment_last_step": "XX_LAST_STEP_XX",
     "aws_config": {
         "class": "File",
         "path": "/home/ubuntu/.aws/config"
@@ -20,10 +8,22 @@
         "class": "File",
         "path": "/home/ubuntu/.aws/credentials"
     },
+    "bam_signpost_json": {
+        "class": "File",
+        "path": "XX_BAM_SIGNPOST_JSON_XX"
+    },
     "db_cred_path": {
         "class": "File",
         "path": "/home/ubuntu/connect.ini"
     },
+    "db_snp_signpost_id": "4ba1c087-ec80-47c4-a9d5-e9bb9933fef4",
+    "endpoint_json": {
+        "class": "File",
+        "path": "/home/ubuntu/endpoint.json"
+    },
+    "load_bucket": "XX_LOAD_BUCKET_XX"
     "load_s3cfg_section": "ceph",
-    "load_bucket": "s3://bioinformatics_scratch/maydeletetest/"
+    "reference_fa_signpost_id": "ed96790c-3eb5-4aa2-8f46-702d503e64e4",
+    "signpost_base_url": "signpost.service.consul/v0/did/",
+    "uuid": "XX_UUID_XX",
 }
