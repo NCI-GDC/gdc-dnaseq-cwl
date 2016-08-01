@@ -86,7 +86,7 @@ def generate_slurm(uuid, slurm_template_path, db_cred_path, scratch_dir, git_cwl
 
 def setup_job(db_cred_path, etl_json_template_path, git_cwl_hash, node_json_dir, s3_load_bucket, scratch_dir,
               slurm_template_path, thread_count, alignment_last_step, cghub_id, gdc_id, gdc_src_id, location):
-    job_uuid = uuid.uuid4()
+    job_uuid = str(uuid.uuid4())
 
     job_etl_json = job_uuid + '_etl.json'
     job_signpost_json = job_uuid + '_signpost.json'
