@@ -46,21 +46,15 @@ def generate_etl(job_uuid, etl_json_template_path, alignment_last_step, s3_load_
     return
 
 def generate_slurm(job_uuid, slurm_template_path, db_cred_path, scratch_dir, git_cwl_hash, s3_load_bucket, job_etl_json, node_json_dir,
-                   cghub_id, gdc_id, gdc_src_id, write_path):
+                   cghub_id, gdc_id, gdc_src_id, thread_count, write_path):
     f_open = open(write_path, 'w')
     with open(slurm_template_path, 'r') as read_open:
         for line in read_open:
-            if 'XX_DB_CRED_PATH_XX' in line:
-                newline = line.replace('XX_DB_CRED_PATH_XX', db_cred_path)
-                f_open.write(newline)
-            elif 'XX_SCRATCH_DIR_XX' in line:
-                newline = line.replace('XX_SCRATCH_DIR_XX', scratch_dir)
-                f_open.write(newline)
-            elif 'XX_GIT_CWL_HASH_XX' in line:
-                newline = line.replace('XX_GIT_CWL_HASH_XX', git_cwl_hash)
-                f_open.write(newline)
-            elif 'XX_CGHUB_ID_XX' in line:
+            if 'XX_CGHUB_ID_XX' in line:
                 newline = line.replace('XX_CGHUB_ID_XX', cghub_id)
+                f_open.write(newline)
+            elif 'XX_DB_CRED_PATH_XX' in line:
+                newline = line.replace('XX_DB_CRED_PATH_XX', db_cred_path)
                 f_open.write(newline)
             elif 'XX_ETL_JSON_PATH_XX' in line:
                 etl_json_path = os.path.join(node_json_dir, job_etl_json)
@@ -72,8 +66,17 @@ def generate_slurm(job_uuid, slurm_template_path, db_cred_path, scratch_dir, git
             elif 'XX_GDC_SRC_ID_XX' in line:
                 newline = line.replace('XX_GDC_SRC_ID_XX', gdc_src_id)
                 f_open.write(newline)
+            elif 'XX_GIT_CWL_HASH_XX' in line:
+                newline = line.replace('XX_GIT_CWL_HASH_XX', git_cwl_hash)
+                f_open.write(newline)
             elif 'XX_S3_LOAD_BUCKET_XX' in line:
                 newline = line.replace('XX_S3_LOAD_BUCKET_XX', s3_load_bucket)
+                f_open.write(newline)
+            elif 'XX_SCRATCH_DIR_XX' in line:
+                newline = line.replace('XX_SCRATCH_DIR_XX', scratch_dir)
+                f_open.write(newline)
+            elif 'XX_THREAD_COUNT_XX' in line:
+                newline = line.replace('XX_THREAD_COUNT_XX', thread_count)
                 f_open.write(newline)
             elif 'XX_UUID_XX' in line:
                 newline = line.replace('XX_UUID_XX', job_uuid)
@@ -96,7 +99,7 @@ def setup_job(db_cred_path, etl_json_template_path, git_cwl_hash, node_json_dir,
     generate_etl(job_uuid, etl_json_template_path, alignment_last_step, s3_load_bucket, node_json_dir,
                  job_signpost_json, job_etl_json)
     generate_slurm(job_uuid, slurm_template_path, db_cred_path, scratch_dir, git_cwl_hash, s3_load_bucket, job_etl_json, node_json_dir,
-                   cghub_id, gdc_id, gdc_src_id, job_slurm)
+                   cghub_id, gdc_id, gdc_src_id, thread_count, job_slurm)
     return
 
 
