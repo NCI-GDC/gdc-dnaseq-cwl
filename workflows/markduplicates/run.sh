@@ -21,8 +21,11 @@ WORKFLOW="workflows/markduplicates/etl.cwl.yaml"
 
 
 ##JOB VARIABLES
+CGHUB_ID="XX_CGHUB_ID_XX"
 DB_TABLE_NAME="markduplicates_wgs_status"
 ETL_JSON_PATH="XX_ETL_JSON_PATH_XX"
+GDC_ID="XX_GDC_ID_XX"
+GDC_SRC_ID="XX_GDC_SRC_ID_XX"
 #"s3://ceph_markduplicates_wgs" "s3://bioinformatics_scratch/maydeletetest/"
 S3_LOAD_BUCKET="XX_S3_LOAD_BUCKET_XX"
 UUID="XX_UUID_XX"
@@ -90,10 +93,13 @@ function run_md()
 function main()
 {
     local cache_dir=${CACHE_DIR}
+    local cghub_id=${CGHUB_ID}
     local cwl_dir=${CWL_DIR}
     local db_cred_path=${DB_CRED_PATH}
     local db_table_name=${DB_TABLE_NAME}
     local etl_json_path=${ETL_JSON_PATH}
+    local gdc_id=${GDC_ID}
+    local gdc_src_id=${GDC_SRC_ID}
     local git_cwl_hash=${GIT_CWL_HASH}
     local git_cwl_repo=${GIT_CWL_REPO}
     local queue_status_tool=${QUEUE_STATUS_TOOL}
@@ -117,19 +123,22 @@ function main()
     activate_virtualenv "${virtualenv_name}"
 
     local status="RUNNING"
-    queue_status_update "${bam_name}" "${cache_dir}" "${cwl_dir}" "${queue_status_tool}" "${db_cred_path}" "${db_table_name}" \
-                        "${git_cwl_hash}" "${git_cwl_repo}" "${job_dir}" "${s3_load_bucket}" "${status}" "${uuid}"
+    queue_status_update "${bam_name}" "${cache_dir}" "${cghub_id}" "${cwl_dir}" "${queue_status_tool}" "${db_cred_path}" \
+                        "${db_table_name}" "${gdc_id}" "${gdc_src_id}" "${git_cwl_hash}" "${git_cwl_repo}" "${job_dir}" \
+                        "${s3_load_bucket}" "${status}" "${uuid}"
 
     exit_status=run_md "${cache_dir}" "${etl_json_path}" "${job_dir}" "${tmp_dir}" "${uuid}"
     if [ ${exit_status} -ne 0]
     then
         local status="FAIL"
-        queue_status_update "${bam_name}" "${cache_dir}" "${cwl_dir}" "${queue_status_tool}" "${db_cred_path}" "${db_table_name}" \
-                            "${git_cwl_hash}" "${git_cwl_repo}" "${job_dir}" "${s3_load_bucket}" "${status}" "${uuid}"
+        queue_status_update "${bam_name}" "${cache_dir}" "${cghub_id}" "${cwl_dir}" "${queue_status_tool}" "${db_cred_path}" \
+                            "${db_table_name}" "${gdc_id}" "${gdc_src_id}" "${git_cwl_hash}" "${git_cwl_repo}" "${job_dir}" \
+                            "${s3_load_bucket}" "${status}" "${uuid}"
     else
         local status="COMPLETE"
-        queue_status_update "${bam_name}" "${cache_dir}" "${cwl_dir}" "${queue_status_tool}" "${db_cred_path}" "${db_table_name}" \
-                            "${git_cwl_hash}" "${git_cwl_repo}" "${job_dir}" "${s3_load_bucket}" "${status}" "${uuid}"
+        queue_status_update "${bam_name}" "${cache_dir}" "${cghub_id}" "${cwl_dir}" "${queue_status_tool}" "${db_cred_path}" \
+                            "${db_table_name}" "${gdc_id}" "${gdc_src_id}" "${git_cwl_hash}" "${git_cwl_repo}" "${job_dir}" \
+                            "${s3_load_bucket}" "${status}" "${uuid}"
     fi
 
 }
