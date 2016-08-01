@@ -73,7 +73,6 @@ function queue_status_update()
     fi
     echo "${cwlrunner_path} ${cwl_command}"
     ${cwl_command}
-done
 }
 
 
