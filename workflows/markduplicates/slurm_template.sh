@@ -117,6 +117,8 @@ function main()
     local bam_name=$(basename ${input_s3_url})
     local s3_out_object="${s3_load_bucket}/${uuid}/${bam_name}"
     local job_dir="${scratch_dir}/${db_table_name}/${uuid}"
+    local etl_cwl_path="${cwl_dir}/${workflow}"
+    
     
     mkdir -p ${cache_dir}
     mkdir -p ${job_dir}
@@ -129,8 +131,8 @@ function main()
                         "${db_table_name}" "${gdc_id}" "${gdc_src_id}" "${git_cwl_hash}" "${git_cwl_repo}" "${job_dir}" \
                         "${s3_load_bucket}" "${status}" "${uuid}"
 
-    exit_status=run_md "${cache_dir}" "${etl_json_path}" "${job_dir}" "${tmp_dir}" "${uuid}"
-    if [ ${exit_status} -ne 0]
+    run_md "${cache_dir}" "${etl_cwl_path}" "${etl_json_path}" "${job_dir}" "${tmp_dir}" "${uuid}"
+    if [ $? -ne 0 ]
     then
         local status="FAIL"
         queue_status_update "${bam_name}" "${cache_dir}" "${cghub_id}" "${cwl_dir}" "${queue_status_tool}" "${db_cred_path}" \
