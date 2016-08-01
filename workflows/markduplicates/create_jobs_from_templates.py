@@ -67,7 +67,7 @@ def generate_slurm(job_uuid, slurm_template_path, db_cred_path, scratch_dir, git
                 newline = line.replace('XX_ETL_JSON_PATH_XX', etl_json_path)
                 f_open.write(newline)
             elif 'XX_GDC_ID_XX' in line:
-                newline = line.replace('XX_GDC_ID_XX', )
+                newline = line.replace('XX_GDC_ID_XX', gdc_id)
                 f_open.write(newline)
             elif 'XX_GDC_SRC_ID_XX' in line:
                 newline = line.replace('XX_GDC_SRC_ID_XX', gdc_src_id)
