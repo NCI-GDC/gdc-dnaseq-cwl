@@ -7,7 +7,7 @@ import sys
 import uuid
 
 
-def header_key(header_line):
+def read_header(header_line):
     header_split = header_line.strip().split('\t')
     header_key_dict = dict()
     for i, header_column in enumerate(header_split):
