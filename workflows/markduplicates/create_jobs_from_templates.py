@@ -17,7 +17,7 @@ def read_header(header_line):
 
 def generate_bam_extract(uuid, location, write_path):
     f_open = open(write_path,'w')
-    f_open.write('{\n  "urls": [\n    "' + s3 + '"\n  ]\n}')
+    f_open.write('{\n  "urls": [\n    "' + location + '"\n  ]\n}')
     f_open.close()
     return
 
@@ -92,9 +92,9 @@ def setup_job(db_cred_path, etl_json_template_path, git_cwl_hash, node_json_dir,
     job_signpost_json = job_uuid + '_signpost.json'
     job_slurm = job_uuid + '.sh'
 
-    generate_bam_extract(uuid, location, job_signpost_json_path)
+    generate_bam_extract(uuid, location, job_signpost_json)
     generate_etl(uuid, slurm_template_path, etl_json_template_path, alignment_last_step, s3_load_bucket, node_json_dir,
-                 job_signpost_json, job_etl_json_path)
+                 job_signpost_json, job_etl_json)
     generate_slurm(uuid, slurm_template_path, db_cred_path, scratch_dir, git_cwl_hash, s3_load_bucket, job_etl_json, node_json_dir,
                    cghub_id, gdc_id, gdc_src_id, job_slurm)
     return
