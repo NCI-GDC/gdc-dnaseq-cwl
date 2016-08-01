@@ -15,6 +15,7 @@ VIRTUALENV_NAME="cwl"
 ##WORKFLOW
 GIT_CWL_REPO="git@github.com:NCI-GDC/cocleaning-cwl.git"
 GIT_CWL_HASH="XX_GIT_CWL_HASH_XX"
+CWL_DIR="${HOME}/cocleaning-cwl"
 QUEUE_STATUS_TOOL="tools/queue_status.cwl.yaml"
 WORKFLOW="workflows/markduplicates/md_workflow.cwl.yaml"
 
@@ -22,7 +23,8 @@ WORKFLOW="workflows/markduplicates/md_workflow.cwl.yaml"
 ##JOB VARIABLES
 DB_TABLE_NAME="markduplicates_wgs_status"
 ETL_JSON="XX_ETL_JSON_XX"
-S3_LOAD_BUCKET="s3://ceph_markduplicates_wgs"
+#"s3://ceph_markduplicates_wgs" "s3://bioinformatics_scratch/maydeletetest/"
+S3_LOAD_BUCKET="XX_S3_LOAD_BUCKET_XX"
 UUID="XX_UUID_XX"
 
 
@@ -88,6 +90,7 @@ function run_md()
 function main()
 {
     local cache_dir=${CACHE_DIR}
+    local cwl_dir=${CWL_DIR}
     local db_cred_path=${DB_CRED_PATH}
     local db_table_name=${DB_TABLE_NAME}
     local etl_json_path=${ETL_JSON_PATH}
