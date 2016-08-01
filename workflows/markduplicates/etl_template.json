@@ -21,9 +21,9 @@
         "class": "File",
         "path": "/home/ubuntu/endpoint.json"
     },
-    "load_bucket": "XX_LOAD_BUCKET_XX"
+    "load_bucket": "XX_LOAD_BUCKET_XX",
     "load_s3cfg_section": "ceph",
     "reference_fa_signpost_id": "ed96790c-3eb5-4aa2-8f46-702d503e64e4",
     "signpost_base_url": "signpost.service.consul/v0/did/",
-    "uuid": "XX_UUID_XX",
+    "uuid": "XX_UUID_XX"
 }
