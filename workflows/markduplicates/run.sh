@@ -22,7 +22,7 @@ WORKFLOW="workflows/markduplicates/md_workflow.cwl.yaml"
 ##JOB VARIABLES
 DB_TABLE_NAME="markduplicates_wgs_status"
 ETL_JSON="XX_ETL_JSON_XX"
-S3_OUT_BUCKET="s3://ceph_markduplicates_wgs"
+S3_LOAD_BUCKET="s3://ceph_markduplicates_wgs"
 UUID="XX_UUID_XX"
 
 
@@ -45,7 +45,7 @@ function queue_status_update()
     local git_cwl_hash="${6}"
     local git_cwl_repo="${7}"
     local job_dir="${8}"
-    local s3_out_bucket="${11}"
+    local s3_load_bucket="${11}"
     local status="${12}"
     local uuid="${14}"
     
@@ -61,7 +61,7 @@ function queue_status_update()
         local output_json=`tac ${job_file} | sed '/^{/q' | tac`
         local load_sha1=`echo ${output_json} | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["dnaseq_workflow_output_sqlite"]["checksum"])'`
         local load_size=`echo ${output_json} | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["dnaseq_workflow_output_sqlite"]["size"])'`
-        local s3_url=${s3_out_bucket}/${uuid}/${bam_name}
+        local s3_url=${s3_load_bucket}/${uuid}/${bam_name}
         local cwl_command="${cwl_base_command} --cwl_sha1 ${load_sha1} --cwl_size ${load_size} --repo ${git_cwl_repo}  --repo_hash ${git_cwl_hash} --s3_url ${s3_url} --status ${status} --table_name ${db_table_name} --uuid ${uuid}"
     else
         local cwl_command="${cwl_base_command} --repo ${git_cwl_repo}  --repo_hash ${git_cwl_hash} --status ${status} --table_name ${db_table_name} --uuid ${uuid}"
@@ -94,7 +94,7 @@ function main()
     local git_cwl_hash=${GIT_CWL_HASH}
     local git_cwl_repo=${GIT_CWL_REPO}
     local queue_status_tool=${QUEUE_STATUS_TOOL}
-    local s3_out_bucket=${S3_OUT_BUCKET}
+    local s3_load_bucket=${S3_LOAD_BUCKET}
     local scratch_dir=${SCRATCH_DIR}
     local tmp_dir=${TMP_DIR}
     local uuid=${UUID}
@@ -104,7 +104,7 @@ function main()
     local bam_signpost_json=`cat ${etl_json_path} | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["bam_signpost_json"]["path"])'`
     local input_s3_url=`cat ${bam_signpost_json} | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["urls"][0])'`
     local bam_name=$(basename ${input_s3_url})
-    local s3_out_object="${s3_out_bucket}/${uuid}/${bam_name}"
+    local s3_out_object="${s3_load_bucket}/${uuid}/${bam_name}"
     local job_dir="${scratch_dir}/${db_table_name}/${uuid}"
     
     mkdir -p ${cache_dir}
@@ -115,18 +115,18 @@ function main()
 
     local status="RUNNING"
     queue_status_update "${bam_name}" "${cache_dir}" "${cwl_dir}" "${queue_status_tool}" "${db_cred_path}" "${db_table_name}" \
-                        "${git_cwl_hash}" "${git_cwl_repo}" "${job_dir}" "${s3_out_bucket}" "${status}" "${uuid}"
+                        "${git_cwl_hash}" "${git_cwl_repo}" "${job_dir}" "${s3_load_bucket}" "${status}" "${uuid}"
 
     exit_status=run_md "${cache_dir}" "${etl_json_path}" "${job_dir}" "${tmp_dir}" "${uuid}"
     if [ ${exit_status} -ne 0]
     then
         local status="FAIL"
         queue_status_update "${bam_name}" "${cache_dir}" "${cwl_dir}" "${queue_status_tool}" "${db_cred_path}" "${db_table_name}" \
-                            "${git_cwl_hash}" "${git_cwl_repo}" "${job_dir}" "${s3_out_bucket}" "${status}" "${uuid}"
+                            "${git_cwl_hash}" "${git_cwl_repo}" "${job_dir}" "${s3_load_bucket}" "${status}" "${uuid}"
     else
         local status="COMPLETE"
         queue_status_update "${bam_name}" "${cache_dir}" "${cwl_dir}" "${queue_status_tool}" "${db_cred_path}" "${db_table_name}" \
-                            "${git_cwl_hash}" "${git_cwl_repo}" "${job_dir}" "${s3_out_bucket}" "${status}" "${uuid}"
+                            "${git_cwl_hash}" "${git_cwl_repo}" "${job_dir}" "${s3_load_bucket}" "${status}" "${uuid}"
     fi
 
 }
