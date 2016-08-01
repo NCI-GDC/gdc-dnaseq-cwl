@@ -23,9 +23,9 @@ inputs:
     type: string
   - id: endpoint_json
     type: File
-  - id: load_s3cfg_section
-    type: string
   - id: load_bucket
+    type: string
+  - id: load_s3cfg_section
     type: string
   - id: reference_fa_signpost_id
     type: string
