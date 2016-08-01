@@ -46,13 +46,13 @@ function queue_status_update()
     local cwl_dir="${3}"
     local cwl_tool="${4}"
     local db_cred_path="${5}"
-    local db_table_name="${13}"
-    local git_cwl_hash="${6}"
-    local git_cwl_repo="${7}"
-    local job_dir="${8}"
-    local s3_load_bucket="${11}"
-    local status="${12}"
-    local uuid="${14}"
+    local db_table_name="${6}"
+    local git_cwl_hash="${7}"
+    local git_cwl_repo="${8}"
+    local job_dir="${9}"
+    local s3_load_bucket="${10}"
+    local status="${11}"
+    local uuid="${12}"
     
     local cwl_tool_path=${cwl_dir}/${cwl_tool}
 
