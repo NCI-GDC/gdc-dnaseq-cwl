@@ -7,7 +7,7 @@
 
 ##ENV VARIABLE
 DB_CRED_PATH="XX_DB_CRED_PATH_XX"
-SCRATCH_DIR="/mnt/SCRATCH"
+SCRATCH_DIR="XX_SCRATCH_DIR_XX"
 CACHE_DIR="${SCRATCH_DIR}/cache"
 TMP_DIR="${SCRATCH_DIR}/tmp/tmp"
 VIRTUALENV_NAME="cwl"
@@ -17,12 +17,12 @@ GIT_CWL_REPO="git@github.com:NCI-GDC/cocleaning-cwl.git"
 GIT_CWL_HASH="XX_GIT_CWL_HASH_XX"
 CWL_DIR="${HOME}/cocleaning-cwl"
 QUEUE_STATUS_TOOL="tools/queue_status.cwl.yaml"
-WORKFLOW="workflows/markduplicates/md_workflow.cwl.yaml"
+WORKFLOW="workflows/markduplicates/etl.cwl.yaml"
 
 
 ##JOB VARIABLES
 DB_TABLE_NAME="markduplicates_wgs_status"
-ETL_JSON="XX_ETL_JSON_XX"
+ETL_JSON_PATH="XX_ETL_JSON_PATH_XX"
 #"s3://ceph_markduplicates_wgs" "s3://bioinformatics_scratch/maydeletetest/"
 S3_LOAD_BUCKET="XX_S3_LOAD_BUCKET_XX"
 UUID="XX_UUID_XX"
@@ -63,7 +63,7 @@ function queue_status_update()
         local output_json=`tac ${job_file} | sed '/^{/q' | tac`
         local load_sha1=`echo ${output_json} | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["dnaseq_workflow_output_sqlite"]["checksum"])'`
         local load_size=`echo ${output_json} | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["dnaseq_workflow_output_sqlite"]["size"])'`
-        local s3_url=${s3_load_bucket}/${uuid}/${bam_name}
+        local s3_url="${s3_load_bucket}/${uuid}/${bam_name}"
         local cwl_command="${cwl_base_command} --cwl_sha1 ${load_sha1} --cwl_size ${load_size} --repo ${git_cwl_repo}  --repo_hash ${git_cwl_hash} --s3_url ${s3_url} --status ${status} --table_name ${db_table_name} --uuid ${uuid}"
     else
         local cwl_command="${cwl_base_command} --repo ${git_cwl_repo}  --repo_hash ${git_cwl_hash} --status ${status} --table_name ${db_table_name} --uuid ${uuid}"
