@@ -15,14 +15,14 @@ def read_header(header_line):
     return header_key_dict
 
 
-def generate_bam_extract(uuid, location, write_path):
+def generate_bam_extract(location, write_path):
     f_open = open(write_path,'w')
     f_open.write('{\n  "urls": [\n    "' + location + '"\n  ]\n}')
     f_open.close()
     return
 
 
-def generate_etl(uuid, etl_json_template_path, alignment_last_step, s3_load_bucket, node_json_dir,
+def generate_etl(job_uuid, etl_json_template_path, alignment_last_step, s3_load_bucket, node_json_dir,
                  job_signpost_json, write_path):
     f_open = open(write_path, 'w')
     with open(etl_json_template_path, 'r') as read_open:
@@ -38,14 +38,14 @@ def generate_etl(uuid, etl_json_template_path, alignment_last_step, s3_load_buck
                 newline = line.replace('XX_LOAD_BUCKET_XX', s3_load_bucket)
                 f_open.write(newline)
             elif 'XX_UUID_XX' in line:
-                newline = line.replace('XX_UUID_XX', uuid)
+                newline = line.replace('XX_UUID_XX', job_uuid)
                 f_open.write(newline)
             else:
                 f_open.write(line)
     f_open.close()
     return
 
-def generate_slurm(uuid, slurm_template_path, db_cred_path, scratch_dir, git_cwl_hash, s3_load_bucket, job_etl_json, node_json_dir,
+def generate_slurm(job_uuid, slurm_template_path, db_cred_path, scratch_dir, git_cwl_hash, s3_load_bucket, job_etl_json, node_json_dir,
                    cghub_id, gdc_id, gdc_src_id, write_path):
     f_open = open(write_path, 'w')
     with open(slurm_template_path, 'r') as read_open:
@@ -76,7 +76,7 @@ def generate_slurm(uuid, slurm_template_path, db_cred_path, scratch_dir, git_cwl
                 newline = line.replace('XX_S3_LOAD_BUCKET_XX', s3_load_bucket)
                 f_open.write(newline)
             elif 'XX_UUID_XX' in line:
-                newline = line.replace('XX_UUID_XX', uuid)
+                newline = line.replace('XX_UUID_XX', job_uuid)
                 f_open.write(newline)
             else:
                 f_open.write(line)
@@ -92,10 +92,10 @@ def setup_job(db_cred_path, etl_json_template_path, git_cwl_hash, node_json_dir,
     job_signpost_json = job_uuid + '_signpost.json'
     job_slurm = job_uuid + '.sh'
 
-    generate_bam_extract(uuid, location, job_signpost_json)
-    generate_etl(uuid, slurm_template_path, etl_json_template_path, alignment_last_step, s3_load_bucket, node_json_dir,
+    generate_bam_extract(location, job_signpost_json)
+    generate_etl(job_uuid, etl_json_template_path, alignment_last_step, s3_load_bucket, node_json_dir,
                  job_signpost_json, job_etl_json)
-    generate_slurm(uuid, slurm_template_path, db_cred_path, scratch_dir, git_cwl_hash, s3_load_bucket, job_etl_json, node_json_dir,
+    generate_slurm(job_uuid, slurm_template_path, db_cred_path, scratch_dir, git_cwl_hash, s3_load_bucket, job_etl_json, node_json_dir,
                    cghub_id, gdc_id, gdc_src_id, job_slurm)
     return
 
