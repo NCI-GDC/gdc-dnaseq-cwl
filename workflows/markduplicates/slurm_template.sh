@@ -88,8 +88,7 @@ function run_md()
     local tmp_dir="${5}"
     local uuid="${6}"
 
-    local cwl_command="cwltool --debug --cachedir ${cache_dir} --tmpdir-prefix ${tmp_dir} --enable-net --custom-net host --outdir ${job_dir} ${etl_cwl_path} ${etwl_json_path} > ${job_dir}/${uuid}.out"
-    ${cwl_command}
+    cwltool --debug --cachedir ${cache_dir} --tmpdir-prefix ${tmp_dir} --enable-net --custom-net host --outdir ${job_dir} ${etl_cwl_path} ${etl_json_path} > ${job_dir}/${uuid}.out
 }
 
 function main()
