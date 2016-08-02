@@ -40,4 +40,6 @@ arguments:
 
   - valueFrom: "TMP_DIR=."
 
+successCodes: [0, 1]
+
 baseCommand: [java, -jar, /usr/local/bin/picard.jar, ValidateSamFile]
