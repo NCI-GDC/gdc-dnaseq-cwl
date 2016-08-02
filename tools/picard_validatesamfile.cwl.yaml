@@ -38,4 +38,6 @@ arguments:
     prefix: "OUTPUT="
     separate: false
 
+  - valueFrom: "TMP_DIR=."
+
 baseCommand: [java, -jar, /usr/local/bin/picard.jar, ValidateSamFile]
