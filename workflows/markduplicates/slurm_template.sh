@@ -19,7 +19,6 @@ CWL_DIR="${HOME}/cocleaning-cwl"
 QUEUE_STATUS_TOOL="tools/queue_status.cwl.yaml"
 WORKFLOW="workflows/markduplicates/etl.cwl.yaml"
 
-
 ##JOB VARIABLES
 CGHUB_ID="XX_CGHUB_ID_XX"
 DB_TABLE_NAME="markduplicates_wgs_status"
@@ -29,7 +28,6 @@ GDC_SRC_ID="XX_GDC_SRC_ID_XX"
 #"s3://ceph_markduplicates_wgs" "s3://bioinformatics_scratch/maydeletetest/"
 S3_LOAD_BUCKET="XX_S3_LOAD_BUCKET_XX"
 UUID="XX_UUID_XX"
-
 
 function activate_virtualenv()
 {
@@ -56,12 +54,9 @@ function queue_status_update()
     local s3_load_bucket="${13}"
     local status="${14}"
     local uuid="${15}"
-    
+
     local cwl_tool_path=${cwl_dir}/${cwl_tool}
 
-
-    #local this_virtenv_dir="${HOME}/.virtualenvs/cwl"
-    #local cwlrunner_path="${this_virtenv_dir}/bin/cwltool"
     local cwl_base_command="cwltool --debug --cachedir ${cache_dir} --tmpdir-prefix ${tmp_dir} --enable-net --custom-net host --outdir ${job_dir} ${cwl_tool_path} "
     if [[ "${status}" == "COMPLETE" ]]
     then
@@ -74,10 +69,8 @@ function queue_status_update()
     else
         local cwl_command="${cwl_base_command} --repo ${git_cwl_repo}  --repo_hash ${git_cwl_hash} --status ${status} --table_name ${db_table_name} --uuid ${uuid}"
     fi
-    echo "${cwlrunner_path} ${cwl_command}"
     ${cwl_command}
 }
-
 
 function run_md()
 {
@@ -117,8 +110,7 @@ function main()
     local s3_out_object="${s3_load_bucket}/${uuid}/${bam_name}"
     local job_dir="${scratch_dir}/${db_table_name}/${uuid}"
     local etl_cwl_path="${cwl_dir}/${workflow}"
-    
-    
+
     mkdir -p ${cache_dir}
     mkdir -p ${job_dir}
     mkdir -p ${tmp_dir}
