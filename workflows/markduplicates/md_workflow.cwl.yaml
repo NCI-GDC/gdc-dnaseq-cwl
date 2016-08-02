@@ -35,7 +35,7 @@ steps:
       - id: INPUT
         source: bam_path
       - id: VALIDATION_STRINGENCY
-        valueFrom: "STRICT"
+        valueFrom: "LENIENT"
     out:
       - id: OUTPUT
 
@@ -54,7 +54,7 @@ steps:
       - id: INPUT
         source: picard_markduplicates/OUTPUT
       - id: VALIDATION_STRINGENCY
-        valueFrom: "STRICT"
+        valueFrom: "LENIENT"
     out:
       - id: OUTPUT
 
