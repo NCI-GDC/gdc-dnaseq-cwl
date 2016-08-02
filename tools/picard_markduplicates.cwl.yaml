@@ -17,6 +17,13 @@ inputs:
       prefix: "INPUT="
       separate: false
 
+  - id: VALIDATION_STRINGENCY
+    default: "STRICT"
+    type: string
+    inputBinding:
+      prefix: "VALIDATION_STRINGENCY="
+      separate: false
+
 outputs:
   - id: OUTPUT
     type: File
@@ -43,7 +50,5 @@ arguments:
     separate: false
 
   - valueFrom: "TMP_DIR=."
-
-  - valueFrom: "VALIDATION_STRINGENCY=LENIENT"
 
 baseCommand: [java, -jar, /usr/local/bin/picard.jar, MarkDuplicates]

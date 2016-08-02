@@ -44,6 +44,8 @@ steps:
     in:
       - id: INPUT
         source: bam_path
+      - id: VALIDATION_STRINGENCY
+        valueFrom: "LENIENT"
     out:
       - id: OUTPUT
       - id: METRICS
@@ -67,6 +69,8 @@ steps:
         source: picard_markduplicates/OUTPUT
       - id: REFERENCE_SEQUENCE
         source: fasta_path
+      - id: VALIDATION_STRINGENCY
+        valueFrom: "LENIENT"
     out:
       - id: OUTPUT
 
@@ -79,6 +83,8 @@ steps:
         source: picard_markduplicates/OUTPUT
       - id: REFERENCE_SEQUENCE
         source: fasta_path
+      - id: VALIDATION_STRINGENCY
+        valueFrom: "LENIENT"
     out:
       - id: OUTPUT
 
@@ -89,6 +95,8 @@ steps:
         source: picard_markduplicates/OUTPUT
       - id: REFERENCE_SEQUENCE
         source: fasta_path
+      - id: VALIDATION_STRINGENCY
+        valueFrom: "LENIENT"
     out:
       - id: OUTPUT
 

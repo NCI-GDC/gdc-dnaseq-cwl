@@ -31,6 +31,13 @@ inputs:
       prefix: "REFERENCE_SEQUENCE="
       separate: false
 
+  - id: VALIDATION_STRINGENCY
+    default: "STRICT"
+    type: string
+    inputBinding:
+      prefix: "VALIDATION_STRINGENCY="
+      separate: false
+
 outputs:
   - id: OUTPUT
     type: File
@@ -45,7 +52,5 @@ arguments:
   - valueFrom: "TMP_DIR=."
 
   - valueFrom: "USE_OQ=true"
-
-  - valueFrom: "VALIDATION_STRINGENCY=STRICT"
 
 baseCommand: [java, -jar, /usr/local/bin/picard.jar, CollectOxoGMetrics]
