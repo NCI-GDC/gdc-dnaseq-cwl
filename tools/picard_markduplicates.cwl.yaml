@@ -44,6 +44,6 @@ arguments:
 
   - valueFrom: "TMP_DIR=."
 
-  - valueFrom: "VALIDATION_STRINGENCY=STRICT"
+  - valueFrom: "VALIDATION_STRINGENCY=LENIENT"
 
 baseCommand: [java, -jar, /usr/local/bin/picard.jar, MarkDuplicates]
