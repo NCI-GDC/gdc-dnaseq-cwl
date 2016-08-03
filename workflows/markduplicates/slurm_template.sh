@@ -60,14 +60,10 @@ function queue_status_update()
     local cwl_base_command="cwltool --debug --cachedir ${cache_dir} --tmpdir-prefix ${tmp_dir} --enable-net --custom-net host --outdir ${job_dir} ${cwl_tool_path} "
     if [[ "${status}" == "COMPLETE" ]]
     then
-        local job_file="${job_dir}/${uuid}.out"
-        local output_json=`tac ${job_file} | sed '/^{/q' | tac`
-        local load_sha1=`echo ${output_json} | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["dnaseq_workflow_output_sqlite"]["checksum"])'`
-        local load_size=`echo ${output_json} | python -c 'import json,sys;obj=json.load(sys.stdin);print(obj["dnaseq_workflow_output_sqlite"]["size"])'`
         local s3_url="${s3_load_bucket}/${uuid}/${bam_name}"
-        local cwl_command="${cwl_base_command} --cwl_sha1 ${load_sha1} --cwl_size ${load_size} --repo ${git_cwl_repo}  --repo_hash ${git_cwl_hash} --s3_url ${s3_url} --status ${status} --table_name ${db_table_name} --uuid ${uuid}"
+        local cwl_command="${cwl_base_command} --repo ${git_cwl_repo} --repo_hash ${git_cwl_hash} --status ${status} --table_name ${db_table_name} --uuid ${uuid} --s3_url ${s3_url}"
     else
-        local cwl_command="${cwl_base_command} --repo ${git_cwl_repo}  --repo_hash ${git_cwl_hash} --status ${status} --table_name ${db_table_name} --uuid ${uuid}"
+        local cwl_command="${cwl_base_command} --repo ${git_cwl_repo} --repo_hash ${git_cwl_hash} --status ${status} --table_name ${db_table_name} --uuid ${uuid}"
     fi
     ${cwl_command}
 }
@@ -81,7 +77,7 @@ function run_md()
     local tmp_dir="${5}"
     local uuid="${6}"
 
-    cwltool --debug --rm-tmpdir --cachedir ${cache_dir} --tmpdir-prefix ${tmp_dir} --enable-net --custom-net host --outdir ${job_dir} ${etl_cwl_path} ${etl_json_path} > ${job_dir}/${uuid}.out
+    cwltool --debug --rm-tmpdir --cachedir ${cache_dir} --tmpdir-prefix ${tmp_dir} --enable-net --custom-net host --outdir ${job_dir} ${etl_cwl_path} ${etl_json_path} | tee ${job_dir}/${uuid}.out
 }
 
 function main()
