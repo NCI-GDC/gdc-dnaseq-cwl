@@ -16,9 +16,9 @@ inputs:
     type: string
 
 outputs:
-  - id: load_sqlite_output
+  - id: merge_sqlite_destination_sqlite
     type: File
-    outputSource: load_sqlite/output
+    outputSource: merge_sqlite/destination_sqlite
 
 steps:
   - id: bai_ls_l
@@ -40,7 +40,7 @@ steps:
       - id: OUTPUT
 
   - id: bai_sha256
-    run: ../../tools/sha256.cwl.yaml
+    run: ../../tools/sha256sum.cwl.yaml
     in:
       - id: INPUT
         source: bam_path
@@ -65,7 +65,7 @@ steps:
       - id: OUTPUT
 
   - id: bam_sha256
-    run: ../../tools/sha256.cwl.yaml
+    run: ../../tools/sha256sum.cwl.yaml
     in:
       - id: INPUT
         source: bam_path
@@ -73,7 +73,7 @@ steps:
       - id: OUTPUT
 
   - id: bai_integrity_to_db
-    run: ../../tools/integrity_to_db.cwl.yaml
+    run: ../../tools/integrity_to_sqlite.cwl.yaml
     in:
       - id: LS_INPUT
         source: bai_ls_l/OUTPUT
@@ -85,7 +85,7 @@ steps:
       - id: OUTPUT
 
   - id: bam_integrity_to_db
-    run: ../../tools/integrity_to_db.cwl.yaml
+    run: ../../tools/integrity_to_sqlite.cwl.yaml
     in:
       - id: LS_INPUT
         source: bam_ls_l/OUTPUT
@@ -96,7 +96,7 @@ steps:
     out:
       - id: OUTPUT
 
-  - id: merge_all_sqlite
+  - id: merge_sqlite
     run: ../../tools/merge_sqlite.cwl.yaml
     in:
       - id: source_sqlite

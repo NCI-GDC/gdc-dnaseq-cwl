@@ -1,18 +1,11 @@
 #!/usr/bin/env cwl-runner
 
-cwlVersion: "cwl:draft-3"
-
-description: |
-  Usage:  cwl-runner <this-file-path> --source_sqlite <source-sqlite-path> --uuid <uuid-string>
-  Options:
-    --source_sqlite  source sqlite to insert in postgres
-    --uuid           UUID for log file and sqlite db file
+cwlVersion: v1.0
 
 requirements:
-  - $import: envvar-global.cwl
-  - class: InlineJavascriptRequirement
   - class: DockerRequirement
     dockerPull: quay.io/jeremiahsavage/sqlite_to_postgres
+  - class: InlineJavascriptRequirement
 
 class: CommandLineTool
 
@@ -40,8 +33,7 @@ inputs:
 outputs:
   - id: log
     type: File
-    description: "python log file"
     outputBinding:
-      glob: $(inputs.uuid + "_sqlite_to_postgres.log")
+      glob: $(inputs.uuid + ".log")
           
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/sqlite_to_postgres/main.py"]
+baseCommand: [sqlite_to_postgres]
