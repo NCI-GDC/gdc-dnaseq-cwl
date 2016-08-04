@@ -51,4 +51,4 @@ outputs:
     outputBinding:
       glob: $(inputs.uuid + ".log")
 
-baseCommand: [/usr/local/bin/integrity_to_sqlite
+baseCommand: [/usr/local/bin/integrity_to_sqlite]
