@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/merge_sqlite:2
+    dockerPull: quay.io/jeremiahsavage/merge_sqlite:3
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
@@ -31,6 +31,6 @@ outputs:
   - id: log
     type: File
     outputBinding:
-      glob: $(inputs.uuid + "_merge_sqlite.log")
+      glob: $(inputs.uuid + ".log")
 
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/merge_sqlite/main.py"]
+baseCommand: [/usr/local/bin/merge_sqlite]
