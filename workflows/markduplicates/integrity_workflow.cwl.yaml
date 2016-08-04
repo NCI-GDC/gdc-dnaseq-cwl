@@ -9,9 +9,9 @@ requirements:
  - class: MultipleInputFeatureRequirement
 
 inputs:
-  - id: bam_path
-    type: File
   - id: bai_path
+    type: File
+  - id: bam_path
     type: File
   - id: input_state
     type: string
