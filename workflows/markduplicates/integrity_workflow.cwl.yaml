@@ -1,0 +1,111 @@
+#!/usr/bin/env cwl-runner
+
+cwlVersion: v1.0
+
+class: Workflow
+
+requirements:
+ - class: StepInputExpressionRequirement
+
+inputs:
+  - id: bam_path
+    type: File
+  - id: uuid
+    type: string
+  - id: load_bucket
+    type: string
+
+outputs:
+  - id: load_sqlite_output
+    type: File
+    outputSource: load_sqlite/output
+
+steps:
+  - id: bai_ls_l
+    run: ../../tools/ls_l.cwl.yaml
+    in:
+      - id: INPUT
+        source: bam_path
+        valueFrom: $(self.secondaryFiles[0])
+    out:
+      - id: OUTPUT
+
+  - id: bai_md5sum
+    run: ../../tools/md5sum.cwl.yaml
+    in:
+      - id: INPUT
+        source: bam_path
+        valueFrom: $(self.secondaryFiles[0])
+    out:
+      - id: OUTPUT
+
+  - id: bai_sha256
+    run: ../../tools/sha256.cwl.yaml
+    in:
+      - id: INPUT
+        source: bam_path
+        valueFrom: $(self.secondaryFiles[0])
+    out:
+      - id: OUTPUT
+
+  - id: bam_ls_l
+    run: ../../tools/ls_l.cwl.yaml
+    in:
+      - id: INPUT
+        source: bam_path
+    out:
+      - id: OUTPUT
+
+  - id: bam_md5sum
+    run: ../../tools/md5sum.cwl.yaml
+    in:
+      - id: INPUT
+        source: bam_path
+    out:
+      - id: OUTPUT
+
+  - id: bam_sha256
+    run: ../../tools/sha256.cwl.yaml
+    in:
+      - id: INPUT
+        source: bam_path
+    out:
+      - id: OUTPUT
+
+  - id: bai_integrity_to_db
+    run: ../../tools/integrity_to_db.cwl.yaml
+    in:
+      - id: LS_INPUT
+        source: bai_ls_l/OUTPUT
+      - id: MD5_INPUT
+        source: bai_md5sum/OUTPUT
+      - id: SHA256_INPUT
+        source: bai_sha256/OUTPUT
+    out:
+      - id: OUTPUT
+
+  - id: bam_integrity_to_db
+    run: ../../tools/integrity_to_db.cwl.yaml
+    in:
+      - id: LS_INPUT
+        source: bam_ls_l/OUTPUT
+      - id: MD5_INPUT
+        source: bam_md5sum/OUTPUT
+      - id: SHA256_INPUT
+        source: bam_sha256/OUTPUT
+    out:
+      - id: OUTPUT
+
+  - id: merge_all_sqlite
+    run: ../../tools/merge_sqlite.cwl.yaml
+    in:
+      - id: source_sqlite
+        source: [
+        bai_integrity_to_db/OUTPUT,
+        bam_integrity_to_db/OUTPUT
+        ]
+      - id: uuid
+        source: uuid
+    out:
+      - id: destination_sqlite
+      - id: log
