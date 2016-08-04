@@ -6,13 +6,18 @@ class: Workflow
 
 requirements:
  - class: StepInputExpressionRequirement
+ - class: MultipleInputFeatureRequirement
 
 inputs:
   - id: bam_path
     type: File
-  - id: uuid
+  - id: bai_path
+    type: File
+  - id: input_state
     type: string
   - id: load_bucket
+    type: string
+  - id: uuid
     type: string
 
 outputs:
@@ -25,8 +30,7 @@ steps:
     run: ../../tools/ls_l.cwl.yaml
     in:
       - id: INPUT
-        source: bam_path
-        valueFrom: $(self.secondaryFiles[0])
+        source: bai_path
     out:
       - id: OUTPUT
 
@@ -34,8 +38,7 @@ steps:
     run: ../../tools/md5sum.cwl.yaml
     in:
       - id: INPUT
-        source: bam_path
-        valueFrom: $(self.secondaryFiles[0])
+        source: bai_path
     out:
       - id: OUTPUT
 
@@ -43,8 +46,7 @@ steps:
     run: ../../tools/sha256sum.cwl.yaml
     in:
       - id: INPUT
-        source: bam_path
-        valueFrom: $(self.secondaryFiles[0])
+        source: bai_path
     out:
       - id: OUTPUT
 
@@ -75,24 +77,36 @@ steps:
   - id: bai_integrity_to_db
     run: ../../tools/integrity_to_sqlite.cwl.yaml
     in:
-      - id: LS_INPUT
+      - id: input_state
+        source: input_state
+      - id: load_bucket
+        source: load_bucket
+      - id: ls_l_path
         source: bai_ls_l/OUTPUT
-      - id: MD5_INPUT
+      - id: md5sum_path
         source: bai_md5sum/OUTPUT
-      - id: SHA256_INPUT
+      - id: sha256sum_path
         source: bai_sha256/OUTPUT
+      - id: uuid
+        source: uuid
     out:
       - id: OUTPUT
 
   - id: bam_integrity_to_db
     run: ../../tools/integrity_to_sqlite.cwl.yaml
     in:
-      - id: LS_INPUT
+      - id: input_state
+        source: input_state
+      - id: load_bucket
+        source: load_bucket
+      - id: ls_l_path
         source: bam_ls_l/OUTPUT
-      - id: MD5_INPUT
+      - id: md5sum_path
         source: bam_md5sum/OUTPUT
-      - id: SHA256_INPUT
+      - id: sha256sum_path
         source: bam_sha256/OUTPUT
+      - id: uuid
+        source: uuid
     out:
       - id: OUTPUT
 
