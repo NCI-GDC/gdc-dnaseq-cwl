@@ -122,10 +122,17 @@ steps:
   - id: integrity_workflow
     run: integrity_workflow.cwl.yaml
     in:
+      - id: bai_path
+        source: md_workflow/picard_markduplicates_output_bam
+        valueFrom: $(self.secondaryFiles[0])
       - id: bam_path
         source: md_workflow/picard_markduplicates_output_bam
-      - id: sqlite_path
-        source: md_workflow/merge_all_sqlite_destination_sqlite
+      - id: input_state
+        valueFrom: "markduplicates_readgroups"
+      - id: load_bucket
+        source: load_bucket
+      - id: uuid
+        source: uuid
     out:
       - id: merge_sqlite_destination_sqlite
         
