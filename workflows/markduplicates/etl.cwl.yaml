@@ -127,7 +127,7 @@ steps:
       - id: sqlite_path
         source: md_workflow/merge_all_sqlite_destination_sqlite
     out:
-      - id: 
+      - id: merge_sqlite_destination_sqlite
         
   - id: load_bam
     run: ../../tools/aws_s3_put.cwl.yaml
