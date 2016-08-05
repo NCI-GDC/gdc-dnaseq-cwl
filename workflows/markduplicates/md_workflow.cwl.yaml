@@ -287,7 +287,6 @@ steps:
       - id: log
       - id: sqlite
 
-
   - id: integrity_workflow
     run: integrity_workflow.cwl.yaml
     in:
