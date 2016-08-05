@@ -120,7 +120,7 @@ steps:
     out:
       - id: picard_markduplicates_output_bam
       - id: merge_all_sqlite_destination_sqlite
-        
+
   - id: load_bam
     run: ../../tools/aws_s3_put.cwl.yaml
     in:
