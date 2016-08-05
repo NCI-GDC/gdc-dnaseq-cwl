@@ -20,13 +20,13 @@ inputs:
 
   - id: aws_shared_credentials
     type: File
-  
+
   - id: endpoint_json
     type: File
     inputBinding:
       loadContents: true
       valueFrom: null
-    
+
   - id: signpost_json
     type: File
     inputBinding:
@@ -62,7 +62,6 @@ arguments:
     prefix: --endpoint-url
     position: 0
 
-    
   - valueFrom: |
       ${
       var signpost_json = JSON.parse(inputs.signpost_json.contents);
