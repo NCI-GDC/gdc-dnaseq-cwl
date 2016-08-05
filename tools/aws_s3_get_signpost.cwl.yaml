@@ -41,7 +41,7 @@ outputs:
         ${
         var signpost_json = JSON.parse(inputs.signpost_json.contents);
         var signpost_url = String(signpost_json.urls.slice(0));
-        var file_name = signpost_url.split('/').slice(-1)[0]
+        var file_name = signpost_url.split('/').slice(-1)[0];
         return file_name
         }
 
