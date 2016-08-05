@@ -10,20 +10,20 @@ requirements:
 class: CommandLineTool
 
 inputs:
-  - id: source_sqlite_path
-    type: File
+  - id: ini_section
+    type: string
     inputBinding:
-      prefix: --source_sqlite_path
+      prefix: --ini_section
 
   - id: postgres_creds_path
     type: File
     inputBinding:
       prefix: --postgres_creds_path
 
-  - id: ini_section
-    type: string
+  - id: source_sqlite_path
+    type: File
     inputBinding:
-      prefix: --ini_section
+      prefix: --source_sqlite_path
 
   - id: uuid
     type: string
