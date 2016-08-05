@@ -7,6 +7,7 @@
 
 ##ENV VARIABLE
 DB_CRED_PATH="XX_DB_CRED_PATH_XX"
+INI_SECTION="XX_INI_SECTION_XX"
 SCRATCH_DIR="XX_SCRATCH_DIR_XX"
 CACHE_DIR="${SCRATCH_DIR}/cache"
 TMP_DIR="${SCRATCH_DIR}/tmp/tmp"
@@ -16,7 +17,7 @@ VIRTUALENV_NAME="cwl"
 GIT_CWL_REPO="git@github.com:NCI-GDC/cocleaning-cwl.git"
 GIT_CWL_HASH="XX_GIT_CWL_HASH_XX"
 CWL_DIR="${HOME}/cocleaning-cwl"
-QUEUE_STATUS_TOOL="tools/queue_status.cwl.yaml"
+QUEUE_STATUS_WORKFLOW="workflows/status/queue_status_workflow.cwl.yaml"
 WORKFLOW="workflows/markduplicates/etl.cwl.yaml"
 
 ##JOB VARIABLES
@@ -50,10 +51,11 @@ function queue_status_update()
     local gdc_src_id="${9}"
     local git_cwl_hash="${10}"
     local git_cwl_repo="${11}"
-    local job_dir="${12}"
-    local s3_load_bucket="${13}"
-    local status="${14}"
-    local uuid="${15}"
+    local ini_section="${12}"
+    local job_dir="${13}"
+    local s3_load_bucket="${14}"
+    local status="${15}"
+    local uuid="${16}"
 
     local cwl_tool_path=${cwl_dir}/${cwl_tool}
 
@@ -61,9 +63,9 @@ function queue_status_update()
     if [[ "${status}" == "COMPLETE" ]]
     then
         local s3_url="${s3_load_bucket}/${uuid}/${bam_name}"
-        local cwl_command="${cwl_base_command} --repo ${git_cwl_repo} --repo_hash ${git_cwl_hash} --status ${status} --table_name ${db_table_name} --uuid ${uuid} --s3_url ${s3_url}"
+        local cwl_command="${cwl_base_command} --ini_section ${ini_section} --postgres_creds_path ${db_cred_path} --repo ${git_cwl_repo} --repo_hash ${git_cwl_hash} --status ${status} --table_name ${db_table_name} --uuid ${uuid} --s3_url ${s3_url}"
     else
-        local cwl_command="${cwl_base_command} --repo ${git_cwl_repo} --repo_hash ${git_cwl_hash} --status ${status} --table_name ${db_table_name} --uuid ${uuid}"
+        local cwl_command="${cwl_base_command} --ini_section ${ini_section} --postgres_creds_path ${db_cred_path} --repo ${git_cwl_repo} --repo_hash ${git_cwl_hash} --status ${status} --table_name ${db_table_name} --uuid ${uuid}"
     fi
     ${cwl_command}
 }
@@ -92,7 +94,8 @@ function main()
     local gdc_src_id=${GDC_SRC_ID}
     local git_cwl_hash=${GIT_CWL_HASH}
     local git_cwl_repo=${GIT_CWL_REPO}
-    local queue_status_tool=${QUEUE_STATUS_TOOL}
+    local ini_section=${INI_SECTION}
+    local queue_status_workflow=${QUEUE_STATUS_WORKFLOW}
     local s3_load_bucket=${S3_LOAD_BUCKET}
     local scratch_dir=${SCRATCH_DIR}
     local tmp_dir=${TMP_DIR}
@@ -115,21 +118,21 @@ function main()
 
     local status="RUNNING"
     queue_status_update "${bam_name}" "${cache_dir}" "${cghub_id}" "${cwl_dir}" "${queue_status_tool}" "${db_cred_path}" \
-                        "${db_table_name}" "${gdc_id}" "${gdc_src_id}" "${git_cwl_hash}" "${git_cwl_repo}" "${job_dir}" \
-                        "${s3_load_bucket}" "${status}" "${uuid}"
+                        "${db_table_name}" "${ini_section}" "${gdc_id}" "${gdc_src_id}" "${git_cwl_hash}" "${git_cwl_repo}" \
+                        "${job_dir}" "${s3_load_bucket}" "${status}" "${uuid}"
 
     run_md "${cache_dir}" "${etl_cwl_path}" "${etl_json_path}" "${job_dir}" "${tmp_dir}" "${uuid}"
     if [ $? -ne 0 ]
     then
         local status="FAIL"
         queue_status_update "${bam_name}" "${cache_dir}" "${cghub_id}" "${cwl_dir}" "${queue_status_tool}" "${db_cred_path}" \
-                            "${db_table_name}" "${gdc_id}" "${gdc_src_id}" "${git_cwl_hash}" "${git_cwl_repo}" "${job_dir}" \
-                            "${s3_load_bucket}" "${status}" "${uuid}"
+                            "${db_table_name}" "${ini_section}" "${gdc_id}" "${gdc_src_id}" "${git_cwl_hash}" "${git_cwl_repo}" \
+                            "${job_dir}" "${s3_load_bucket}" "${status}" "${uuid}"
     else
         local status="COMPLETE"
         queue_status_update "${bam_name}" "${cache_dir}" "${cghub_id}" "${cwl_dir}" "${queue_status_tool}" "${db_cred_path}" \
-                            "${db_table_name}" "${gdc_id}" "${gdc_src_id}" "${git_cwl_hash}" "${git_cwl_repo}" "${job_dir}" \
-                            "${s3_load_bucket}" "${status}" "${uuid}"
+                            "${db_table_name}" "${ini_section}" "${gdc_id}" "${gdc_src_id}" "${git_cwl_hash}" "${git_cwl_repo}" \
+                            "${job_dir}" "${s3_load_bucket}" "${status}" "${uuid}"
     fi
 
 }
