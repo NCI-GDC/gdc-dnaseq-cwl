@@ -38,16 +38,6 @@ outputs:
     outputBinding:
       glob: $(inputs.INPUT.nameroot + ".metrics")
 
-  - id: STDOUT
-    type: File
-    outputBinding:
-      glob: $(inputs.INPUT.nameroot + ".stdout")
-
-  - id: STDERR
-    type: File
-    outputBinding:
-      glob: $(inputs.INPUT.nameroot + ".stderr")
-
 arguments:
   - valueFrom: "CREATE_INDEX=true"
 
@@ -60,9 +50,5 @@ arguments:
     separate: false
 
   - valueFrom: "TMP_DIR=."
-
-stdout: $(inputs.INPUT.nameroot + ".stdout")
-
-stderr: $(inputs.INPUT.nameroot + ".stderr")
 
 baseCommand: [java, -jar, /usr/local/bin/picard.jar, MarkDuplicates]
