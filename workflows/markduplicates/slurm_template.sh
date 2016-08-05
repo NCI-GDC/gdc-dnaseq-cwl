@@ -67,6 +67,7 @@ function queue_status_update()
     else
         local cwl_command="${cwl_base_command} --ini_section ${ini_section} --postgres_creds_path ${db_cred_path} --repo ${git_cwl_repo} --repo_hash ${git_cwl_hash} --status ${status} --table_name ${db_table_name} --uuid ${uuid}"
     fi
+    echo "${cwl_command}"
     ${cwl_command}
 }
 
@@ -79,6 +80,7 @@ function run_md()
     local tmp_dir="${5}"
     local uuid="${6}"
 
+    echo cwltool --debug --rm-tmpdir --cachedir ${cache_dir} --tmpdir-prefix ${tmp_dir} --enable-net --custom-net host --outdir ${job_dir} ${etl_cwl_path} ${etl_json_path}
     cwltool --debug --rm-tmpdir --cachedir ${cache_dir} --tmpdir-prefix ${tmp_dir} --enable-net --custom-net host --outdir ${job_dir} ${etl_cwl_path} ${etl_json_path}
 }
 
