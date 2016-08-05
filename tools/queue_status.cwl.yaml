@@ -10,21 +10,6 @@ requirements:
 class: CommandLineTool
 
 inputs:
-  - id: cwl_sha1
-    type: ["null", string]
-    inputBinding:
-      prefix: --cwl_sha1
-
-  - id: cwl_size
-    type: ["null", string]
-    inputBinding:
-      prefix: --cwl_size
-
-  - id: md5
-    type: ["null", string]
-    inputBinding:
-      prefix: --md5
-
   - id: repo
     type: string
     inputBinding:
