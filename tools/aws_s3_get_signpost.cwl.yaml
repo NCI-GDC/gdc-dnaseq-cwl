@@ -55,8 +55,8 @@ arguments:
       var signpost_root = signpost_array[0];
       var profile = signpost_root.split('.')[0];
 
-      var endpoint_json = JSON.parse(inputs.endpoint_json.contents)
-      var endpoint_url = String(endpoint_json[profile])
+      var endpoint_json = JSON.parse(inputs.endpoint_json.contents);
+      var endpoint_url = String(endpoint_json[profile]);
       return endpoint_url
       }
     prefix: --endpoint-url
