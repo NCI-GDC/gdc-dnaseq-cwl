@@ -102,7 +102,7 @@ steps:
     out:
       - id: output
 
-  - id: md_workflow
+  - id: transform
     run: md_workflow.cwl.yaml
     in:
       - id: alignment_last_step
@@ -131,7 +131,7 @@ steps:
       - id: endpoint_json
         source: endpoint_json
       - id: input
-        source: md_workflow/picard_markduplicates_output_bam
+        source: transform/picard_markduplicates_output_bam
       - id: s3cfg_section
         source: load_s3cfg_section
       - id: s3uri
@@ -167,7 +167,7 @@ steps:
       - id: endpoint_json
         source: endpoint_json
       - id: input
-        source: md_workflow/picard_markduplicates_output_bam
+        source: transform/picard_markduplicates_output_bam
         valueFrom: $(self.secondaryFiles[0])
       - id: s3cfg_section
         source: load_s3cfg_section
@@ -204,7 +204,7 @@ steps:
       - id: endpoint_json
         source: endpoint_json
       - id: input
-        source: md_workflow/merge_all_sqlite_destination_sqlite
+        source: transform/merge_all_sqlite_destination_sqlite
       - id: s3cfg_section
         source: load_s3cfg_section
       - id: s3uri
