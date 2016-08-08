@@ -59,7 +59,7 @@ function queue_status_update()
 
     local cwl_tool_path=${cwl_dir}/${cwl_tool}
 
-    local cwl_base_command="cwltool --debug --cachedir ${cache_dir} --tmpdir-prefix ${tmp_dir} --enable-net --custom-net host --outdir ${job_dir} ${cwl_tool_path} "
+    local cwl_base_command="cwltool --debug --rm-tmpdir --tmp-outdir-prefix ${cache_dir} --tmpdir-prefix ${tmp_dir} --enable-net --custom-net host --outdir ${job_dir} ${cwl_tool_path} "
     if [[ "${status}" == "COMPLETE" ]]
     then
         local s3_url="${s3_load_bucket}/${uuid}/${bam_name}"
@@ -80,7 +80,7 @@ function run_md()
     local tmp_dir="${5}"
     local uuid="${6}"
 
-    echo cwltool --debug --rm-tmpdir --cachedir ${cache_dir} --tmpdir-prefix ${tmp_dir} --enable-net --custom-net host --outdir ${job_dir} ${etl_cwl_path} ${etl_json_path}
+    echo cwltool --debug --rm-tmpdir --tmp-outdir-prefix ${cache_dir} --tmpdir-prefix ${tmp_dir} --enable-net --custom-net host --outdir ${job_dir} ${etl_cwl_path} ${etl_json_path}
     cwltool --debug --rm-tmpdir --cachedir ${cache_dir} --tmpdir-prefix ${tmp_dir} --enable-net --custom-net host --outdir ${job_dir} ${etl_cwl_path} ${etl_json_path}
 }
 
