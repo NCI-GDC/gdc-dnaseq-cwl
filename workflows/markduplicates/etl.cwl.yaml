@@ -17,8 +17,6 @@ inputs:
     type: File
   - id: bam_signpost_json
     type: File
-  - id: db_cred_path
-    type: File
   - id: db_snp_signpost_id
     type: string
   - id: endpoint_json

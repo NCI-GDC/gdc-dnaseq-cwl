@@ -12,10 +12,6 @@
         "class": "File",
         "path": "XX_BAM_SIGNPOST_JSON_XX"
     },
-    "db_cred_path": {
-        "class": "File",
-        "path": "/home/ubuntu/connect.ini"
-    },
     "db_snp_signpost_id": "4ba1c087-ec80-47c4-a9d5-e9bb9933fef4",
     "endpoint_json": {
         "class": "File",
