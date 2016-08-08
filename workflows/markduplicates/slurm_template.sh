@@ -17,7 +17,7 @@ VIRTUALENV_NAME="cwl"
 GIT_CWL_REPO="git@github.com:NCI-GDC/cocleaning-cwl.git"
 GIT_CWL_HASH="XX_GIT_CWL_HASH_XX"
 CWL_DIR="${HOME}/cocleaning-cwl"
-QUEUE_STATUS_WORKFLOW="workflows/status/queue_status_workflow.cwl.yaml"
+QUEUE_STATUS_WORKFLOW="workflows/status/status_postgres_workflow.cwl.yaml"
 WORKFLOW="workflows/markduplicates/etl.cwl.yaml"
 
 ##JOB VARIABLES
