@@ -136,6 +136,24 @@ steps:
         source: load_s3cfg_section
       - id: s3uri
         source: load_bucket
+        valueFrom: |
+          ${
+          
+            function endsWith(str, suffix) {
+              return str.indexOf(suffix, str.length - suffix.length) !== -1;
+            }
+          
+            if ( endsWith(self, '/') ) {
+              return self + inputs.uuid + '/';
+            }
+            else {
+              return self + '/' + inputs.uuid + '/';
+            }
+          
+          }
+      - id: uuid
+        source: uuid
+        valueFrom: null
     out:
       - id: output
 
@@ -155,6 +173,24 @@ steps:
         source: load_s3cfg_section
       - id: s3uri
         source: load_bucket
+        valueFrom: |
+          ${
+          
+            function endsWith(str, suffix) {
+              return str.indexOf(suffix, str.length - suffix.length) !== -1;
+            }
+          
+            if ( endsWith(self, '/') ) {
+              return self + inputs.uuid + '/';
+            }
+            else {
+              return self + '/' + inputs.uuid + '/';
+            }
+          
+          }
+      - id: uuid
+        source: uuid
+        valueFrom: null
     out:
       - id: output
 
@@ -173,5 +209,23 @@ steps:
         source: load_s3cfg_section
       - id: s3uri
         source: load_bucket
+        valueFrom: |
+          ${
+          
+            function endsWith(str, suffix) {
+              return str.indexOf(suffix, str.length - suffix.length) !== -1;
+            }
+          
+            if ( endsWith(self, '/') ) {
+              return self + inputs.uuid + '/';
+            }
+            else {
+              return self + '/' + inputs.uuid + '/';
+            }
+          
+          }
+      - id: uuid
+        source: uuid
+        valueFrom: null
     out:
       - id: output
