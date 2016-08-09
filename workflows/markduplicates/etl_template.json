@@ -1,0 +1,25 @@
+{
+    "alignment_last_step": "XX_LAST_STEP_XX",
+    "aws_config": {
+        "class": "File",
+        "path": "/home/ubuntu/.aws/config"
+    },
+    "aws_shared_credentials": {
+        "class": "File",
+        "path": "/home/ubuntu/aws_jhsavage_credentials"
+    },
+    "bam_signpost_json": {
+        "class": "File",
+        "path": "XX_BAM_SIGNPOST_JSON_XX"
+    },
+    "db_snp_signpost_id": "4ba1c087-ec80-47c4-a9d5-e9bb9933fef4",
+    "endpoint_json": {
+        "class": "File",
+        "path": "/home/ubuntu/jhsavage_endpoint.json"
+    },
+    "load_bucket": "XX_LOAD_BUCKET_XX",
+    "load_s3cfg_section": "ceph",
+    "reference_fa_signpost_id": "ed96790c-3eb5-4aa2-8f46-702d503e64e4",
+    "signpost_base_url": "signpost.service.consul/v0/did/",
+    "uuid": "XX_UUID_XX"
+}

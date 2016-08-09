@@ -17,15 +17,13 @@ inputs:
     type: File
   - id: bam_signpost_json
     type: File
-  - id: db_cred_path
-    type: File
   - id: db_snp_signpost_id
     type: string
   - id: endpoint_json
     type: File
-  - id: load_s3cfg_section
-    type: string
   - id: load_bucket
+    type: string
+  - id: load_s3cfg_section
     type: string
   - id: reference_fa_signpost_id
     type: string
@@ -35,12 +33,9 @@ inputs:
     type: string
 
 outputs:
-  - id: dnaseq_workflow_output_bam
+  - id: load_sqlite_output
     type: File
-    outputSource: md_workflow/picard_markduplicates_output_bam
-  - id: dnaseq_workflow_output_sqlite
-    type: File
-    outputSource: md_workflow/merge_all_sqlite_destination_sqlite
+    outputSource: load_sqlite/output
 
 steps:
   - id: extract_bam
@@ -105,7 +100,7 @@ steps:
     out:
       - id: output
 
-  - id: md_workflow
+  - id: transform
     run: md_workflow.cwl.yaml
     in:
       - id: alignment_last_step
@@ -114,6 +109,8 @@ steps:
         source: extract_bam/output
       - id: fasta_path
         source: extract_ref_fa/output
+      - id: load_bucket
+        source: load_bucket
       - id: uuid
         source: uuid
       - id: vcf_path
@@ -132,11 +129,29 @@ steps:
       - id: endpoint_json
         source: endpoint_json
       - id: input
-        source: md_workflow/picard_markduplicates_output_bam
+        source: transform/picard_markduplicates_output_bam
       - id: s3cfg_section
         source: load_s3cfg_section
       - id: s3uri
         source: load_bucket
+        valueFrom: |
+          ${
+          
+            function endsWith(str, suffix) {
+              return str.indexOf(suffix, str.length - suffix.length) !== -1;
+            }
+          
+            if ( endsWith(self, '/') ) {
+              return self + inputs.uuid + '/';
+            }
+            else {
+              return self + '/' + inputs.uuid + '/';
+            }
+          
+          }
+      - id: uuid
+        source: uuid
+        valueFrom: null
     out:
       - id: output
 
@@ -150,12 +165,30 @@ steps:
       - id: endpoint_json
         source: endpoint_json
       - id: input
-        source: md_workflow/picard_markduplicates_output_bam
+        source: transform/picard_markduplicates_output_bam
         valueFrom: $(self.secondaryFiles[0])
       - id: s3cfg_section
         source: load_s3cfg_section
       - id: s3uri
         source: load_bucket
+        valueFrom: |
+          ${
+          
+            function endsWith(str, suffix) {
+              return str.indexOf(suffix, str.length - suffix.length) !== -1;
+            }
+          
+            if ( endsWith(self, '/') ) {
+              return self + inputs.uuid + '/';
+            }
+            else {
+              return self + '/' + inputs.uuid + '/';
+            }
+          
+          }
+      - id: uuid
+        source: uuid
+        valueFrom: null
     out:
       - id: output
 
@@ -169,10 +202,28 @@ steps:
       - id: endpoint_json
         source: endpoint_json
       - id: input
-        source: md_workflow/merge_all_sqlite_destination_sqlite
+        source: transform/merge_all_sqlite_destination_sqlite
       - id: s3cfg_section
         source: load_s3cfg_section
       - id: s3uri
         source: load_bucket
+        valueFrom: |
+          ${
+          
+            function endsWith(str, suffix) {
+              return str.indexOf(suffix, str.length - suffix.length) !== -1;
+            }
+          
+            if ( endsWith(self, '/') ) {
+              return self + inputs.uuid + '/';
+            }
+            else {
+              return self + '/' + inputs.uuid + '/';
+            }
+          
+          }
+      - id: uuid
+        source: uuid
+        valueFrom: null
     out:
       - id: output

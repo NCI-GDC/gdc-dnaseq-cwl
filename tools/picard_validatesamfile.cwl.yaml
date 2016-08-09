@@ -18,6 +18,7 @@ inputs:
       separate: false
 
   - id: VALIDATION_STRINGENCY
+    default: "STRICT"
     type: string
     inputBinding:
       prefix: "VALIDATION_STRINGENCY="
@@ -37,5 +38,9 @@ arguments:
   - valueFrom: $(inputs.INPUT.nameroot + ".metrics")
     prefix: "OUTPUT="
     separate: false
+
+  - valueFrom: "TMP_DIR=."
+
+successCodes: [0, 1]
 
 baseCommand: [java, -jar, /usr/local/bin/picard.jar, ValidateSamFile]

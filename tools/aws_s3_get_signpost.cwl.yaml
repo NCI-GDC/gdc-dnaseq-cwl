@@ -20,13 +20,13 @@ inputs:
 
   - id: aws_shared_credentials
     type: File
-  
+
   - id: endpoint_json
     type: File
     inputBinding:
       loadContents: true
       valueFrom: null
-    
+
   - id: signpost_json
     type: File
     inputBinding:
@@ -41,7 +41,7 @@ outputs:
         ${
         var signpost_json = JSON.parse(inputs.signpost_json.contents);
         var signpost_url = String(signpost_json.urls.slice(0));
-        var file_name = signpost_url.split('/').slice(-1)[0]
+        var file_name = signpost_url.split('/').slice(-1)[0];
         return file_name
         }
 
@@ -55,14 +55,13 @@ arguments:
       var signpost_root = signpost_array[0];
       var profile = signpost_root.split('.')[0];
 
-      var endpoint_json = JSON.parse(inputs.endpoint_json.contents)
-      var endpoint_url = String(endpoint_json[profile])
+      var endpoint_json = JSON.parse(inputs.endpoint_json.contents);
+      var endpoint_url = String(endpoint_json[profile]);
       return endpoint_url
       }
     prefix: --endpoint-url
     position: 0
 
-    
   - valueFrom: |
       ${
       var signpost_json = JSON.parse(inputs.signpost_json.contents);

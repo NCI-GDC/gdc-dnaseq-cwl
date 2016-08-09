@@ -1,25 +1,15 @@
 #!/usr/bin/env cwl-runner
 
-cwlVersion: "cwl:draft-3"
+cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/queue_status
+    dockerPull: quay.io/jeremiahsavage/queue_status:4
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
 
 inputs:
-  - id: case_id
-    type: string
-    inputBinding:
-      prefix: --case_id
-
-  - id: uuid
-    type: string
-    inputBinding:
-      prefix: --gdc_id
-      
   - id: repo
     type: string
     inputBinding:
@@ -45,11 +35,20 @@ inputs:
     inputBinding:
       prefix: --table_name
 
+  - id: uuid
+    type: string
+    inputBinding:
+      prefix: --uuid
+
 outputs:
   - id: log
     type: File
-    description: "python log file"
     outputBinding:
-      glob: $(inputs.uuid+"_queue_status.log")
+      glob: $(inputs.uuid+".log")
 
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/queue_status/main.py"]
+  - id: sqlite
+    type: File
+    outputBinding:
+      glob: $(inputs.uuid+".db")
+
+baseCommand: [/usr/local/bin/queue_status]

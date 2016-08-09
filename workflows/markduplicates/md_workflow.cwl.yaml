@@ -15,6 +15,8 @@ inputs:
     type: File
   - id: fasta_path
     type: File
+  - id: load_bucket
+    type: string
   - id: uuid
     type: string
   - id: vcf_path
@@ -35,7 +37,7 @@ steps:
       - id: INPUT
         source: bam_path
       - id: VALIDATION_STRINGENCY
-        valueFrom: "STRICT"
+        valueFrom: "LENIENT"
     out:
       - id: OUTPUT
 
@@ -44,6 +46,8 @@ steps:
     in:
       - id: INPUT
         source: bam_path
+      - id: VALIDATION_STRINGENCY
+        valueFrom: "LENIENT"
     out:
       - id: OUTPUT
       - id: METRICS
@@ -54,7 +58,7 @@ steps:
       - id: INPUT
         source: picard_markduplicates/OUTPUT
       - id: VALIDATION_STRINGENCY
-        valueFrom: "STRICT"
+        valueFrom: "LENIENT"
     out:
       - id: OUTPUT
 
@@ -67,6 +71,8 @@ steps:
         source: picard_markduplicates/OUTPUT
       - id: REFERENCE_SEQUENCE
         source: fasta_path
+      - id: VALIDATION_STRINGENCY
+        valueFrom: "LENIENT"
     out:
       - id: OUTPUT
 
@@ -79,6 +85,8 @@ steps:
         source: picard_markduplicates/OUTPUT
       - id: REFERENCE_SEQUENCE
         source: fasta_path
+      - id: VALIDATION_STRINGENCY
+        valueFrom: "LENIENT"
     out:
       - id: OUTPUT
 
@@ -89,6 +97,8 @@ steps:
         source: picard_markduplicates/OUTPUT
       - id: REFERENCE_SEQUENCE
         source: fasta_path
+      - id: VALIDATION_STRINGENCY
+        valueFrom: "LENIENT"
     out:
       - id: OUTPUT
 
@@ -277,6 +287,23 @@ steps:
       - id: log
       - id: sqlite
 
+  - id: integrity_workflow
+    run: integrity_workflow.cwl.yaml
+    in:
+      - id: bai_path
+        source: picard_markduplicates/OUTPUT
+        valueFrom: $(self.secondaryFiles[0])
+      - id: bam_path
+        source: picard_markduplicates/OUTPUT
+      - id: input_state
+        valueFrom: "markduplicates_readgroups"
+      - id: load_bucket
+        source: load_bucket
+      - id: uuid
+        source: uuid
+    out:
+      - id: merge_sqlite_destination_sqlite
+
   - id: merge_all_sqlite
     run: ../../tools/merge_sqlite.cwl.yaml
     in:
@@ -290,7 +317,8 @@ steps:
         picard_collectwgsmetrics_to_sqlite/sqlite,
         samtools_idxstats_to_sqlite/sqlite,
         samtools_flagstat_to_sqlite/sqlite,
-        samtools_stats_to_sqlite/sqlite
+        samtools_stats_to_sqlite/sqlite,
+        integrity_workflow/merge_sqlite_destination_sqlite
         ]
       - id: uuid
         source: uuid

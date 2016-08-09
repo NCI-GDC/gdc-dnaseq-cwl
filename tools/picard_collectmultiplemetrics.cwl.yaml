@@ -31,6 +31,13 @@ inputs:
       prefix: "REFERENCE_SEQUENCE="
       separate: false
 
+  - id: VALIDATION_STRINGENCY
+    default: "STRICT"
+    type: string
+    inputBinding:
+      prefix: "VALIDATION_STRINGENCY="
+      separate: false
+
 outputs:
   - id: OUTPUT
     type: File
@@ -71,7 +78,5 @@ arguments:
   - valueFrom: "PROGRAM=QualityScoreDistribution"
     
   - valueFrom: "TMP_DIR=."
-
-  - valueFrom: "VALIDATION_STRINGENCY=STRICT"
 
 baseCommand: [java, -jar, /usr/local/bin/picard.jar, CollectMultipleMetrics]
