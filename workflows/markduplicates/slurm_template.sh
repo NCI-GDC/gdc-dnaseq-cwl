@@ -120,7 +120,7 @@ function main()
 
     local status="RUNNING"
     queue_status_update "${bam_name}" "${cache_dir}" "${cghub_id}" "${cwl_dir}" "${queue_status_workflow}" "${db_cred_path}" \
-                        "${db_table_name}" "${ini_section}" "${gdc_id}" "${gdc_src_id}" "${git_cwl_hash}" "${git_cwl_repo}" \
+                        "${db_table_name}" "${gdc_id}" "${gdc_src_id}" "${git_cwl_hash}" "${git_cwl_repo}" "${ini_section}" \
                         "${job_dir}" "${s3_load_bucket}" "${status}" "${uuid}"
 
     run_md "${cache_dir}" "${etl_cwl_path}" "${etl_json_path}" "${job_dir}" "${tmp_dir}" "${uuid}"
@@ -128,12 +128,12 @@ function main()
     then
         local status="FAIL"
         queue_status_update "${bam_name}" "${cache_dir}" "${cghub_id}" "${cwl_dir}" "${queue_status_workflow}" "${db_cred_path}" \
-                            "${db_table_name}" "${ini_section}" "${gdc_id}" "${gdc_src_id}" "${git_cwl_hash}" "${git_cwl_repo}" \
+                            "${db_table_name}" "${gdc_id}" "${gdc_src_id}" "${git_cwl_hash}" "${git_cwl_repo}" "${ini_section}" \
                             "${job_dir}" "${s3_load_bucket}" "${status}" "${uuid}"
     else
         local status="COMPLETE"
         queue_status_update "${bam_name}" "${cache_dir}" "${cghub_id}" "${cwl_dir}" "${queue_status_workflow}" "${db_cred_path}" \
-                            "${db_table_name}" "${ini_section}" "${gdc_id}" "${gdc_src_id}" "${git_cwl_hash}" "${git_cwl_repo}" \
+                            "${db_table_name}" "${gdc_id}" "${gdc_src_id}" "${git_cwl_hash}" "${git_cwl_repo}" "${ini_section}" \
                             "${job_dir}" "${s3_load_bucket}" "${status}" "${uuid}"
     fi
 
