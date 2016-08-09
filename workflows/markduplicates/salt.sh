@@ -3,7 +3,7 @@ s3cmd -c ~/.s3cfg.ceph --recursive put cocleaning-cwl s3://bioinformatics_scratc
 s3cmd -c ~/.s3cfg.ceph --recursive put connect_jhsavage.ini s3://bioinformatics_scratch/jhsavage_markduplicates_salt/
 s3cmd -c ~/.s3cfg.ceph put jhsavage_endpoint.json s3://bioinformatics_scratch/jhsavage_markduplicates_salt/
 
-salt -G 'cluster_name:DEADPOOL' cmd.run runas=ubuntu 's3cmd --recursive -c ~/.s3cfg.ceph get s3://bioinformatics_scratch/jhsavage_markduplicates_salt/'
+salt -G 'cluster_name:DEADPOOL' cmd.run runas=ubuntu 's3cmd --skip-existing --recursive -c ~/.s3cfg.ceph get s3://bioinformatics_scratch/jhsavage_markduplicates_salt/'
 
 salt -G 'cluster_name:DEADPOOL' cmd.run runas=ubuntu 'rm -rf /home/ubuntu/.virtualenvs'
 
