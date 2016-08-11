@@ -1,12 +1,6 @@
 #!/usr/bin/env cwl-runner
 
-cwlVersion: "cwl:draft-3"
-
-description: |
-  Usage:  cwl-runner <this-file-path> --bam_path <bam-path> --uuid <uuid-string>
-  Options:
-    --bam_path       Write an arbitrary number of compressed readgroups
-    --uuid           UUID for log file and sqlite db file
+cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
@@ -16,30 +10,25 @@ requirements:
 class: CommandLineTool
 
 inputs:
-  - id: bam_path
+  - id: INPUT
     type: File
+    format: "edam:format_2572"
     inputBinding:
       prefix: --bam_path
 
-  - id: uuid
-    type: string
-    inputBinding:
-      prefix: --uuid
-
 outputs:
-  - id: output_json
+  - id: OUTPUT
+    format: "edam:format_3464"
     type:
       type: array
       items: File
-    description: "The readgroups pairs split into compressed fastq"
     outputBinding:
       glob: "*.json"
       outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
 
   - id: log
     type: File
-    description: "python log file"
     outputBinding:
-      glob: $(inputs.uuid + "_bam_readgroup_to_json.log")
+      glob: $(inputs.uuid + ".log")
 
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/bam_readgroup_to_json/main.py"]
+baseCommand: [/usr/local/bin/bam_readgroup_to_json]
