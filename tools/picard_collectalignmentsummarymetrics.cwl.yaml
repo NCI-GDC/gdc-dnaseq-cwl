@@ -14,14 +14,28 @@ inputs:
     type: File
     format: "edam:format_2572"
     inputBinding:
-      prefix: "INPUT="
+      prefix: INPUT=
+      separate: false
+
+  - id: METRIC_ACCUMULATION_LEVEL
+    type: string
+    default: ALL_READS
+    inputBinding:
+      prefix: METRIC_ACCUMULATION_LEVEL=
       separate: false
 
   - id: REFERENCE_SEQUENCE
-    type: File
+    type: [null, File]
     format: "edam:format_1929"
     inputBinding:
-      prefix: "REFERENCE_SEQUENCE="
+      prefix: REFERENCE_SEQUENCE=
+      separate: false
+
+  - id: VALIDATION_STRINGENCY=
+    type: string
+    default: STRICT
+    inputBinding:
+      prefix: VALIDATION_STRINGENCY=STRICT
       separate: false
 
 outputs:
@@ -31,14 +45,10 @@ outputs:
       glob: $(inputs.INPUT.nameroot + ".metrics")
 
 arguments:
-  - valueFrom: "METRIC_ACCUMULATION_LEVEL=ALL_READS"
-
   - valueFrom: $(inputs.INPUT.nameroot + ".metrics")
     prefix: "OUTPUT="
     separate: false
 
   - valueFrom: "TMP_DIR=."
-
-  - valueFrom: "VALIDATION_STRINGENCY=STRICT"
 
 baseCommand: [java, -jar, /usr/local/bin/picard.jar, CollectAlignmentSummaryMetrics]
