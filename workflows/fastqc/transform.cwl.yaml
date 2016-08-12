@@ -273,12 +273,12 @@ steps:
 
   - id: readgroup_json_db
     run: ../../tools/readgroup_json_db.cwl.yaml
-    scatter: "#readgroup_json_db/json_path"
+    scatter: readgroup_json_db/json_path
     inputs:
       - id: json_path
-        source: "#bam_readgroup_to_json/output_json"
+        source: bam_readgroup_to_json/OUTPUT
       - id: uuid
-        source: "#uuid"
+        source: uuid
     outputs:
       - id: log
       - id: output_sqlite
@@ -287,7 +287,7 @@ steps:
     run: ../../tools/merge_sqlite.cwl.yaml
     inputs:
       - id: source_sqlite
-        source: "#readgroup_json_db/output_sqlite"
+        source: readgroup_json_db/output_sqlite
       - id: uuid
         source: uuid
     outputs:
@@ -299,18 +299,15 @@ steps:
     inputs:
       - id: source_sqlite
         source: [
-        "#merge_bwa_pe_sqlite/destination_sqlite",
-        "#merge_picard_sortsam_sqlite/destination_sqlite",
-        "#merge_picard_buildbamindex_sqlite/destination_sqlite",
-        "#merge_fastqc1_sqlite/destination_sqlite",
-        "#merge_fastqc_db1_sqlite/destination_sqlite",
-        "#merge_fastqc2_sqlite/destination_sqlite",
-        "#merge_fastqc_db2_sqlite/destination_sqlite",
-        "#merge_readgroup_json_db_sqlite/destination_sqlite",
-        "#merge_samtools_flagstat_sqlite/destination_sqlite",
-        "#merge_samtools_stats_sqlite/destination_sqlite",
-        "#merge_picard_collectmultiplemetrics_sqlite/destination_sqlite",
-        "#merge_picard_collectoxogmetrics_sqlite/destination_sqlite"]
+        merge_fastqc_db1_sqlite/destination_sqlite,
+        merge_fastqc_db2_sqlite/destination_sqlite,
+        merge_fastqc_db_s_sqlite/destination_sqlite,
+        merge_fastqc_db_o1_sqlite/destination_sqlite,
+        merge_fastqc_db_o2_sqlite/destination_sqlite,
+        picard_validatesamfile_to_sqlite/sqlite,
+        picard_collectalignmentsummarymetrics_to_sqlite/sqlite,
+        merge_readgroup_json_db_sqlite/destination_sqlite
+        ]
       - id: uuid
         source: uuid
     outputs:
