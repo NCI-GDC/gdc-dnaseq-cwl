@@ -17,6 +17,20 @@ inputs:
       prefix: "INPUT="
       separate: false
 
+  - id: MAX_OUTPUT
+    type: int
+    default: 2147483647
+    inputBinding:
+      prefix: MAX_OUTPUT=
+      separate: false
+
+  - id: MODE
+    type: string
+    default: VERBOSE
+    inputBinding:
+      prefix: MODE=
+      separate: false
+
   - id: VALIDATION_STRINGENCY
     default: "STRICT"
     type: string
@@ -31,10 +45,6 @@ outputs:
       glob: $(inputs.INPUT.nameroot + ".metrics")
 
 arguments:
-  - valueFrom: "MAX_OUTPUT=2147483647"
-
-  - valueFrom: "MODE=VERBOSE"
-
   - valueFrom: $(inputs.INPUT.nameroot + ".metrics")
     prefix: "OUTPUT="
     separate: false

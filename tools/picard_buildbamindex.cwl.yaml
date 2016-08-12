@@ -18,7 +18,21 @@ inputs:
     type: File
     format: "edam:format_2572"
     inputBinding:
-      prefix: "INPUT="
+      prefix: INPUT=
+      separate: false
+
+  - id: OUTPUT
+    type: string
+    default: $(inputs.INPUT.nameroot + ".bai")
+    inputBinding:
+      prefix: OUTPUT=
+      separate: false
+
+  - id: VALIDATION_STRINGENCY
+    type: string
+    default: STRICT
+    inputBinding:
+      prefix: VALIDATION_STRINGENCY=
       separate: false
 
 outputs:
@@ -30,11 +44,4 @@ outputs:
     secondaryFiles:
       - ^.bai
 
-arguments:
-  - valueFrom: $(inputs.INPUT.nameroot + ".bai")
-    prefix: "OUTPUT="
-    separate: false
-
-  - valueFrom: "VALIDATION_STRINGENCY=STRICT"
-          
 baseCommand: [java, -jar, /usr/local/bin/picard.jar, BuildBamIndex]
