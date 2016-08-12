@@ -29,6 +29,5 @@
         "path": "/home/ubuntu/connect.ini"
     },
     "load_s3cfg_section": "ceph",
-    "load_endpoint_url": "http://gdc-cephb-objstore.osdc.io",
     "load_bucket": "s3://bioinformatics_scratch/maydeletetest/"
 }
