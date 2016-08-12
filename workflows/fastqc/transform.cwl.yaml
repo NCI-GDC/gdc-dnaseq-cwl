@@ -19,12 +19,9 @@ inputs:
     type: string
 
 outputs:
-  - id: biobambam2_bamtofastq_output_sqlite
-    type: File
-    source: "#biobambam2_bamtofastq/output_sqlite"
   - id: merge_all_sqlite_destination_sqlite
     type: File
-    source: "#merge_all_sqlite/destination_sqlite"
+    source: merge_all_sqlite/destination_sqlite
 
 steps:
   - id: samtools_bamtobam
