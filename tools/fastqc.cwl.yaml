@@ -46,6 +46,7 @@ inputs:
 
   - id: INPUT
     type: File
+    format: "edam:format_2182"
     inputBinding:
       position: 99
 

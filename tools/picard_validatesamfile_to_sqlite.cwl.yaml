@@ -38,6 +38,7 @@ outputs:
 
   - id: sqlite
     type: File
+    format: "edam:format_3621"
     outputBinding:
       glob: $(inputs.uuid + ".db")
 
