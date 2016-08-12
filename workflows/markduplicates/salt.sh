@@ -17,4 +17,4 @@ salt -G 'cluster_name:DEADPOOL' cmd.run 'apt-get install htop -y'
 
 salt -G 'cluster_name:DEADPOOL' cmd.run runas=ubuntu 'rm -rf /home/ubuntu/cocleaning-cwl /home/ubuntu/md_json'
 
-salt -G 'cluster_name:DEADPOOL' cmd.run runas=ubuntu 'docker rm $(docker ps -a -q) && docker rmi $(docker images -q)'
+salt -G 'cluster_name:DEADPOOL' cmd.run runas=ubuntu 'docker rmi $(docker images -q)'
