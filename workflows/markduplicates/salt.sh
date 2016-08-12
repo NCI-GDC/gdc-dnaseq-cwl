@@ -14,3 +14,7 @@ salt -G 'cluster_name:DEADPOOL' cmd.run runas=ubuntu 'bash -c "export http_proxy
 salt -G 'cluster_name:DEADPOOL' cmd.run 'echo "172.17.29.16 signpost.service.consul" >> /etc/hosts'
 
 salt -G 'cluster_name:DEADPOOL' cmd.run 'apt-get install htop -y'
+
+salt -G 'cluster_name:DEADPOOL' cmd.run runas=ubuntu 'rm -rf /home/ubuntu/cocleaning-cwl /home/ubuntu/md_json'
+
+salt -G 'cluster_name:DEADPOOL' cmd.run runas=ubuntu 'docker rm $(docker ps -a -q) && docker rmi $(docker images -q)'
