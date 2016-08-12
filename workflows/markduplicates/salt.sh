@@ -15,6 +15,6 @@ salt -G 'cluster_name:DEADPOOL' cmd.run 'echo "172.17.29.16 signpost.service.con
 
 salt -G 'cluster_name:DEADPOOL' cmd.run 'apt-get install htop -y'
 
-salt -G 'cluster_name:DEADPOOL' cmd.run runas=ubuntu 'rm -rf /home/ubuntu/cocleaning-cwl /home/ubuntu/md_json'
+salt -G 'cluster_name:DEADPOOL' cmd.run runas=ubuntu 'rm -rf /home/ubuntu/cocleaning-cwl /home/ubuntu/md_json /mnt/SCRATCH/cache /mnt/SCRATCH/tmp'
 
-salt -G 'cluster_name:DEADPOOL' cmd.run runas=ubuntu 'docker rmi $(docker images -q)'
+salt -G 'cluster_name:DEADPOOL' cmd.run runas=ubuntu 'docker rmi -f $(docker images -q)'
