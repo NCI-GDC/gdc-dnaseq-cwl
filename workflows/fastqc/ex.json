@@ -4,7 +4,7 @@
         "class": "File",
         "path": "/home/ubuntu/endpoint.json"
     },
-    "bam_signpost_id": " 23d51953-011d-4fa9-9924-986f6ad355f9",
+    "bam_signpost_id": "23d51953-011d-4fa9-9924-986f6ad355f9",
     "thread_count": 8,
     "uuid": "atest",
     "aws_config": {
@@ -17,7 +17,7 @@
     },
     "db_cred_path": {
         "class": "File",
-        "path": "/home/ubuntu/connect.ini"
+        "path": "/home/ubuntu/connect_jhsavage_test.ini"
     },
     "load_s3cfg_section": "ceph",
     "load_bucket": "s3://bioinformatics_scratch/maydeletetest/"
