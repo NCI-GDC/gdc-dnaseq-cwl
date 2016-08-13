@@ -93,7 +93,7 @@ steps:
     scatter: fastqc_o2/INPUT
     inputs:
       - id: INPUT
-        source: biobambam2_bamtofastq/output_fastq_o2
+        source: biobambam_bamtofastq/output_fastq_o2
       - id: threads
         source: thread_count
     outputs:
