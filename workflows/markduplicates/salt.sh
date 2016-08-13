@@ -11,9 +11,13 @@ salt -G 'cluster_name:DEADPOOL' cmd.run runas=ubuntu 'sed -i "s/\/usr\/local\/bi
 
 salt -G 'cluster_name:DEADPOOL' cmd.run runas=ubuntu 'bash -c "export http_proxy=http://cloud-proxy:3128 && export https_proxy=http://cloud-proxy:3128 && source /usr/share/virtualenvwrapper/virtualenvwrapper.sh && mkvirtualenv --python /usr/bin/python2 cwl && pip install https://github.com/jeremiahsavage/cwltool/archive/1.0b.tar.gz"'
 
+salt -G 'cluster_name:DEADPOOL' cmd.run runas=ubuntu 'bash -c "export http_proxy=http://cloud-proxy:3128 && export https_proxy=http://cloud-proxy:3128 && source /usr/share/virtualenvwrapper/virtualenvwrapper.sh && mkvirtualenv --python /usr/bin/python2 cwl && pip install --upgrade pip && pip install 'requests[security]' && pip install cwltool --no-cache-dir"'
+
+salt -G 'cluster_name:DEADPOOL' cmd.run runas=ubuntu 'rm -rf /mnt/SCRATCH/cache /mnt/SCRATCH/tmp'
+
 salt -G 'cluster_name:DEADPOOL' cmd.run 'echo "172.17.29.16 signpost.service.consul" >> /etc/hosts'
 
-salt -G 'cluster_name:DEADPOOL' cmd.run 'apt-get install htop -y'
+salt -G 'cluster_name:DEADPOOL' cmd.run 'apt-get update &&  apt-get install python-dev libffi-dev libssl-dev htop s3cmd -y && apt-get clean'
 
 salt -G 'cluster_name:DEADPOOL' cmd.run runas=ubuntu 'rm -rf /home/ubuntu/cocleaning-cwl /home/ubuntu/md_json /mnt/SCRATCH/cache /mnt/SCRATCH/tmp'
 
