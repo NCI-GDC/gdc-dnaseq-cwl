@@ -70,7 +70,7 @@ steps:
     run: ../../tools/fastqc.cwl.yaml
     scatter: fastqc_s/INPUT
     inputs:
-      - id: fastq_path
+      - id: INPUT
         source: biobambam_bamtofastq/output_fastq_s
       - id: threads
         source: thread_count
@@ -81,7 +81,7 @@ steps:
     run: ../../tools/fastqc.cwl.yaml
     scatter: fastqc_o1/INPUT
     inputs:
-      - id: fastq_path
+      - id: INPUT
         source: biobambam_bamtofastq/output_fastq_o1
       - id: threads
         source: thread_count
