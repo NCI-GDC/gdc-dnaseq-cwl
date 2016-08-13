@@ -29,6 +29,6 @@ outputs:
   - id: log
     type: File
     outputBinding:
-      glob: $(inputs.uuid + ".log")
+      glob: "output.log"
 
 baseCommand: [/usr/local/bin/bam_readgroup_to_json]
