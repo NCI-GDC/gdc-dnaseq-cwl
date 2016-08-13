@@ -1,12 +1,4 @@
 {
-    "signpost_base_url": "signpost.service.consul/v0/did/",
-    "endpoint_json": {
-        "class": "File",
-        "path": "/home/ubuntu/endpoint.json"
-    },
-    "bam_signpost_id": "23d51953-011d-4fa9-9924-986f6ad355f9",
-    "thread_count": 8,
-    "uuid": "atest",
     "aws_config": {
         "class": "File",
         "path": "/home/ubuntu/.aws/config"
@@ -15,10 +7,18 @@
         "class": "File",
         "path": "/home/ubuntu/.aws/credentials"
     },
+    "bam_signpost_id": "23d51953-011d-4fa9-9924-986f6ad355f9",
     "db_cred_path": {
         "class": "File",
         "path": "/home/ubuntu/connect_jhsavage_test.ini"
     },
-    "load_s3cfg_section": "ceph",
+    "endpoint_json": {
+        "class": "File",
+        "path": "/home/ubuntu/endpoint.json"
+    },
     "load_bucket": "s3://bioinformatics_scratch/maydeletetest/"
+    "load_s3cfg_section": "ceph",
+    "signpost_base_url": "signpost.service.consul/v0/did/",
+    "thread_count": 8,
+    "uuid": "atest",
 }
