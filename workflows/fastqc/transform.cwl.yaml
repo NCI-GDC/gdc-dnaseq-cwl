@@ -19,12 +19,9 @@ inputs:
     type: string
 
 outputs:
-  - id: biobambam2_bamtofastq_output_sqlite
-    type: File
-    source: "#biobambam2_bamtofastq/output_sqlite"
   - id: merge_all_sqlite_destination_sqlite
     type: File
-    source: "#merge_all_sqlite/destination_sqlite"
+    outputSource: merge_all_sqlite/destination_sqlite
 
 steps:
   - id: samtools_bamtobam
@@ -37,10 +34,10 @@ steps:
 
   - id: biobambam_bamtofastq
     run: ../../tools/biobambam2_bamtofastq.cwl.yaml
-    inputs:
+    in:
       - id: filename
         source: samtools_bamtobam/OUTPUT
-    outputs:
+    out:
       - id: output_fastq1
       - id: output_fastq2
       - id: output_fastq_o1
@@ -50,184 +47,184 @@ steps:
   - id: fastqc1
     run: ../../tools/fastqc.cwl.yaml
     scatter: fastqc1/INPUT
-    inputs:
+    in:
       - id: INPUT
         source: biobambam_bamtofastq/output_fastq1
       - id: threads
         source: thread_count
-    outputs:
+    out:
       - id: OUTPUT
 
   - id: fastqc2
     run: ../../tools/fastqc.cwl.yaml
     scatter: fastqc2/INPUT
-    inputs:
+    in:
       - id: INPUT
         source: biobambam_bamtofastq/output_fastq2
       - id: threads
         source: thread_count
-    outputs:
+    out:
       - id: OUTPUT
 
   - id: fastqc_s
     run: ../../tools/fastqc.cwl.yaml
     scatter: fastqc_s/INPUT
-    inputs:
-      - id: fastq_path
+    in:
+      - id: INPUT
         source: biobambam_bamtofastq/output_fastq_s
       - id: threads
         source: thread_count
-    outputs:
+    out:
       - id: OUTPUT
 
   - id: fastqc_o1
     run: ../../tools/fastqc.cwl.yaml
     scatter: fastqc_o1/INPUT
-    inputs:
-      - id: fastq_path
+    in:
+      - id: INPUT
         source: biobambam_bamtofastq/output_fastq_o1
       - id: threads
         source: thread_count
-    outputs:
+    out:
       - id: OUTPUT
 
   - id: fastqc_o2
     run: ../../tools/fastqc.cwl.yaml
     scatter: fastqc_o2/INPUT
-    inputs:
+    in:
       - id: INPUT
-        source: biobambam2_bamtofastq/output_fastq_o2
+        source: biobambam_bamtofastq/output_fastq_o2
       - id: threads
         source: thread_count
-    outputs:
+    out:
       - id: OUTPUT
 
   - id: fastqc_db1
     run: ../../tools/fastqc_db.cwl.yaml
     scatter: fastqc_db1/INPUT
-    inputs:
+    in:
       - id: INPUT
         source: fastqc1/OUTPUT
       - id: uuid
         source: uuid
-    outputs:
+    out:
       - id: LOG
       - id: OUTPUT
 
   - id: fastqc_db2
     run: ../../tools/fastqc_db.cwl.yaml
     scatter: fastqc_db2/INPUT
-    inputs:
+    in:
       - id: INPUT
         source: fastqc2/OUTPUT
       - id: uuid
         source: uuid
-    outputs:
+    out:
       - id: LOG
       - id: OUTPUT
 
   - id: fastqc_db_s
     run: ../../tools/fastqc_db.cwl.yaml
     scatter: fastqc_db_s/INPUT
-    inputs:
+    in:
       - id: INPUT
         source: fastqc_s/OUTPUT
       - id: uuid
         source: uuid
-    outputs:
+    out:
       - id: LOG
       - id: OUTPUT
 
   - id: fastqc_db_o1
     run: ../../tools/fastqc_db.cwl.yaml
     scatter: fastqc_db_o1/INPUT
-    inputs:
+    in:
       - id: INPUT
         source: fastqc_o1/OUTPUT
       - id: uuid
         source: uuid
-    outputs:
+    out:
       - id: LOG
       - id: OUTPUT
 
   - id: fastqc_db_o2
     run: ../../tools/fastqc_db.cwl.yaml
     scatter: fastqc_db_o2/INPUT
-    inputs:
+    in:
       - id: INPUT
         source: fastqc_o2/OUTPUT
       - id: uuid
         source: uuid
-    outputs:
+    out:
       - id: LOG
       - id: OUTPUT
 
   - id: merge_fastqc_db1_sqlite
     run: ../../tools/merge_sqlite.cwl.yaml
-    inputs:
+    in:
       - id: source_sqlite
         source: fastqc_db1/OUTPUT
       - id: uuid
         source: uuid
-    outputs:
+    out:
       - id: destination_sqlite
       - id: log
 
   - id: merge_fastqc_db2_sqlite
     run: ../../tools/merge_sqlite.cwl.yaml
-    inputs:
+    in:
       - id: source_sqlite
         source: fastqc_db2/OUTPUT
       - id: uuid
         source: uuid
-    outputs:
+    out:
       - id: destination_sqlite
       - id: log
 
   - id: merge_fastqc_db_s_sqlite
     run: ../../tools/merge_sqlite.cwl.yaml
-    inputs:
+    in:
       - id: source_sqlite
         source: fastqc_db_s/OUTPUT
       - id: uuid
         source: uuid
-    outputs:
+    out:
       - id: destination_sqlite
       - id: log
 
   - id: merge_fastqc_db_o1_sqlite
     run: ../../tools/merge_sqlite.cwl.yaml
-    inputs:
+    in:
       - id: source_sqlite
         source: fastqc_db_o1/OUTPUT
       - id: uuid
         source: uuid
-    outputs:
+    out:
       - id: destination_sqlite
       - id: log
 
   - id: merge_fastqc_db_o2_sqlite
     run: ../../tools/merge_sqlite.cwl.yaml
-    inputs:
+    in:
       - id: source_sqlite
         source: fastqc_db_o2/OUTPUT
       - id: uuid
         source: uuid
-    outputs:
+    out:
       - id: destination_sqlite
       - id: log
 
   - id: picard_validatesamfile #need eof and dup QNAME detection
     run: ../../tools/picard_validatesamfile.cwl.yaml
-    inputs:
+    in:
       - id: INPUT
         source: bam_path
-    outputs:
+    out:
       - id: OUTPUT
 
   - id: picard_validatesamfile_to_sqlite
     run: ../../tools/picard_validatesamfile_to_sqlite.cwl.yaml
-    inputs:
+    in:
       - id: bam
         source: bam_path
         valueFrom: $(self.basename)
@@ -237,20 +234,20 @@ steps:
         source: picard_validatesamfile/OUTPUT
       - id: uuid
         source: uuid
-    outputs:
+    out:
       - id: sqlite
 
   - id: picard_collectalignmentsummarymetrics
     run: ../../tools/picard_collectalignmentsummarymetrics.cwl.yaml
-    inputs:
+    in:
       - id: INPUT
         source: bam_path
-    outputs:
+    out:
       - id: OUTPUT
 
   - id: picard_collectalignmentsummarymetrics_to_sqlite
     run: ../../tools/picard_collectalignmentsummarymetrics_to_sqlite.cwl.yaml
-    inputs:
+    in:
       - id: bam
         source: bam_path
         valueFrom: $(self.basename)
@@ -260,59 +257,56 @@ steps:
         source: picard_collectalignmentsummarymetrics/OUTPUT
       - id: uuid
         source: uuid
-    outputs:
+    out:
       - id: sqlite
 
   - id: bam_readgroup_to_json
     run: ../../tools/bam_readgroup_to_json.cwl.yaml
-    inputs:
+    in:
       - id: INPUT
         source: bam_path
-    outputs:
+    out:
       - id: OUTPUT
 
   - id: readgroup_json_db
     run: ../../tools/readgroup_json_db.cwl.yaml
-    scatter: "#readgroup_json_db/json_path"
-    inputs:
+    scatter: readgroup_json_db/json_path
+    in:
       - id: json_path
-        source: "#bam_readgroup_to_json/output_json"
+        source: bam_readgroup_to_json/OUTPUT
       - id: uuid
-        source: "#uuid"
-    outputs:
+        source: uuid
+    out:
       - id: log
       - id: output_sqlite
 
   - id: merge_readgroup_json_db_sqlite
     run: ../../tools/merge_sqlite.cwl.yaml
-    inputs:
+    in:
       - id: source_sqlite
-        source: "#readgroup_json_db/output_sqlite"
+        source: readgroup_json_db/output_sqlite
       - id: uuid
         source: uuid
-    outputs:
+    out:
       - id: destination_sqlite
       - id: log
         
   - id: merge_all_sqlite
     run: ../../tools/merge_sqlite.cwl.yaml
-    inputs:
+    in:
       - id: source_sqlite
         source: [
-        "#merge_bwa_pe_sqlite/destination_sqlite",
-        "#merge_picard_sortsam_sqlite/destination_sqlite",
-        "#merge_picard_buildbamindex_sqlite/destination_sqlite",
-        "#merge_fastqc1_sqlite/destination_sqlite",
-        "#merge_fastqc_db1_sqlite/destination_sqlite",
-        "#merge_fastqc2_sqlite/destination_sqlite",
-        "#merge_fastqc_db2_sqlite/destination_sqlite",
-        "#merge_readgroup_json_db_sqlite/destination_sqlite",
-        "#merge_samtools_flagstat_sqlite/destination_sqlite",
-        "#merge_samtools_stats_sqlite/destination_sqlite",
-        "#merge_picard_collectmultiplemetrics_sqlite/destination_sqlite",
-        "#merge_picard_collectoxogmetrics_sqlite/destination_sqlite"]
+        merge_fastqc_db1_sqlite/destination_sqlite,
+        merge_fastqc_db2_sqlite/destination_sqlite,
+        merge_fastqc_db_s_sqlite/destination_sqlite,
+        merge_fastqc_db_o1_sqlite/destination_sqlite,
+        merge_fastqc_db_o2_sqlite/destination_sqlite,
+        picard_validatesamfile_to_sqlite/sqlite,
+        picard_collectalignmentsummarymetrics_to_sqlite/sqlite,
+        merge_readgroup_json_db_sqlite/destination_sqlite
+        ]
       - id: uuid
         source: uuid
-    outputs:
+    out:
       - id: destination_sqlite
       - id: log

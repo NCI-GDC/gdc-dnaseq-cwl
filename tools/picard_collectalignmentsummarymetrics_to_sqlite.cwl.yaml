@@ -16,7 +16,7 @@ inputs:
       prefix: --bam
 
   - id: fasta
-    type: [null, string]
+    type: ["null", string]
     inputBinding:
       prefix: --fasta
 

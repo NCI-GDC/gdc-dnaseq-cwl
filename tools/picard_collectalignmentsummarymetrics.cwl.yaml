@@ -25,7 +25,7 @@ inputs:
       separate: false
 
   - id: REFERENCE_SEQUENCE
-    type: [null, File]
+    type: ["null", File]
     format: "edam:format_1929"
     inputBinding:
       prefix: REFERENCE_SEQUENCE=
@@ -35,7 +35,7 @@ inputs:
     type: string
     default: STRICT
     inputBinding:
-      prefix: VALIDATION_STRINGENCY=STRICT
+      prefix: VALIDATION_STRINGENCY=
       separate: false
 
 outputs:
