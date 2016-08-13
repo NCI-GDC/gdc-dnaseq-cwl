@@ -1,11 +1,10 @@
-#!/usr/bin/env cwltool
 {
     "signpost_base_url": "signpost.service.consul/v0/did/",
     "endpoint_json": {
         "class": "File",
         "path": "/home/ubuntu/endpoint.json"
     },
-    "bam_signpost_id": "a86dee42-23ec-4286-803a-1e6c1be2f7fe",
+    "bam_signpost_id": " 23d51953-011d-4fa9-9924-986f6ad355f9",
     "thread_count": 8,
     "uuid": "atest",
     "aws_config": {
