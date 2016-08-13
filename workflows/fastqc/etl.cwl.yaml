@@ -32,7 +32,7 @@ inputs:
 outputs:
   - id: load_sqlite_output
     type: File
-    outputSource: load_sqlite/output
+    outputSource: extract_bam/output
 
 steps:
   - id: extract_bam_signpost
@@ -59,50 +59,50 @@ steps:
     out:
       - id: output
 
-  - id: transform
-    run: transform.cwl.yaml
-    in:
-      - id: bam_path
-        source: extract_bam/output
-      - id: thread_count
-        source: thread_count
-      - id: uuid
-        source: uuid
-    out:
-      - id: merge_all_sqlite_destination_sqlite
+  # - id: transform
+  #   run: transform.cwl.yaml
+  #   in:
+  #     - id: bam_path
+  #       source: extract_bam/output
+  #     - id: thread_count
+  #       source: thread_count
+  #     - id: uuid
+  #       source: uuid
+  #   out:
+  #     - id: merge_all_sqlite_destination_sqlite
 
-  - id: load_sqlite
-    run: ../../tools/aws_s3_put.cwl.yaml
-    in:
-      - id: aws_config
-        source: aws_config
-      - id: aws_shared_credentials
-        source: aws_shared_credentials
-      - id: endpoint_json
-        source: endpoint_json
-      - id: input
-        source: transform/merge_all_sqlite_destination_sqlite
-      - id: s3cfg_section
-        source: load_s3cfg_section
-      - id: s3uri
-        source: load_bucket
-        valueFrom: |
-          ${
+  # - id: load_sqlite
+  #   run: ../../tools/aws_s3_put.cwl.yaml
+  #   in:
+  #     - id: aws_config
+  #       source: aws_config
+  #     - id: aws_shared_credentials
+  #       source: aws_shared_credentials
+  #     - id: endpoint_json
+  #       source: endpoint_json
+  #     - id: input
+  #       source: transform/merge_all_sqlite_destination_sqlite
+  #     - id: s3cfg_section
+  #       source: load_s3cfg_section
+  #     - id: s3uri
+  #       source: load_bucket
+  #       valueFrom: |
+  #         ${
           
-            function endsWith(str, suffix) {
-              return str.indexOf(suffix, str.length - suffix.length) !== -1;
-            }
+  #           function endsWith(str, suffix) {
+  #             return str.indexOf(suffix, str.length - suffix.length) !== -1;
+  #           }
           
-            if ( endsWith(self, '/') ) {
-              return self + inputs.uuid + '/';
-            }
-            else {
-              return self + '/' + inputs.uuid + '/';
-            }
+  #           if ( endsWith(self, '/') ) {
+  #             return self + inputs.uuid + '/';
+  #           }
+  #           else {
+  #             return self + '/' + inputs.uuid + '/';
+  #           }
           
-          }
-      - id: uuid
-        source: uuid
-        valueFrom: null
-    out:
-      - id: output
+  #         }
+  #     - id: uuid
+  #       source: uuid
+  #       valueFrom: null
+  #   out:
+  #     - id: output
