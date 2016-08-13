@@ -11,7 +11,7 @@ requirements:
   - class: InlineJavascriptRequirement
 
 inputs:
-  - id: bam
+  - id: bam_path
     type: File
     inputBinding:
       position: 2

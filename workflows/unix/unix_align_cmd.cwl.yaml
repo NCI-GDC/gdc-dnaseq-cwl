@@ -17,7 +17,7 @@ inputs:
     type: File
 
 outputs:
-  - id: "#output_bam"
+  - id: output_bam
     type: File
     outputBinding:
       glob: $(  inputs.readgroup_path.path.split('/').slice(-1)[0].slice(0,-10)+"_realign.bam" )
