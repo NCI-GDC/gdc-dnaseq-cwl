@@ -137,6 +137,8 @@ function main()
                             "${job_dir}" "${s3_load_bucket}" "${status}" "${uuid}"
     fi
     rm -rf "${cache_dir}*" "${job_dir}*" "${tmp_dir}*"
+    rm -rf /mnt/SCRATCH/cache
+    rm -rf /mnt/SCRATCH/tmp
 }
 
 main "$@"
