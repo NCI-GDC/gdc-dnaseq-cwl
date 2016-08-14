@@ -136,7 +136,7 @@ function main()
                             "${db_table_name}" "${gdc_id}" "${gdc_src_id}" "${git_cwl_hash}" "${git_cwl_repo}" "${ini_section}" \
                             "${job_dir}" "${s3_load_bucket}" "${status}" "${uuid}"
     fi
-    rm -rf ${cache_dir} ${job_dir} ${tmp_dir}
+    rm -rf "${cache_dir}*" "${job_dir}*" "${tmp_dir}*"
 }
 
 main "$@"
