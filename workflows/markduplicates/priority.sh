@@ -6,3 +6,6 @@ while read line ; do grep -l ${line} md_slurm/* ; done < deadpool.lst  > sbatch_
 sed -i 's/^/sbatch /' sbatch_deadpool.sh
 
 
+head -n 759 mkdup_needed_sort.txt | awk '{print $3}' > deadpool.lst
+while read line ; do grep -l ${line} md_slurm/* ; done < deadpool.lst  > sbatch_deadpool.sh
+sed -i 's/^/sbatch /' sbatch_deadpool.sh
