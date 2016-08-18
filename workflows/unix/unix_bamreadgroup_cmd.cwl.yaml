@@ -21,7 +21,7 @@ outputs:
       items: File
     outputBinding:
       glob: "*.readgroup"
-      outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
+      outputEval: $( self.sort(function(a,b) { return a.location > b.location }) )
 
 arguments:
   - valueFrom: ".readgroup"
