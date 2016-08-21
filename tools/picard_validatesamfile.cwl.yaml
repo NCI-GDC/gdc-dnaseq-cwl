@@ -49,7 +49,7 @@ arguments:
     prefix: "OUTPUT="
     separate: false
 
-  - valueFrom: $(runtime.outdir)
+  - valueFrom: $(runtime.tmpdir)
     prefix: "TMP_DIR="
     separate: false
 
