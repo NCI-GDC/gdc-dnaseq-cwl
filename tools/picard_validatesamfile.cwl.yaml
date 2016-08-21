@@ -49,7 +49,9 @@ arguments:
     prefix: "OUTPUT="
     separate: false
 
-  - valueFrom: "TMP_DIR=."
+  - valueFrom: $(runtime.outdir)
+    prefix: "TMP_DIR="
+    separate: false
 
 successCodes: [0, 1]
 
