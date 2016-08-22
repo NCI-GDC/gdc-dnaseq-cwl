@@ -7,8 +7,8 @@ class: CommandLineTool
 requirements:
   - class: DockerRequirement
     dockerPull: alpine
-  - class: ShellCommandRequirement
   - class: InlineJavascriptRequirement
+  - class: ShellCommandRequirement
 
 inputs:
   - id: bam_path
