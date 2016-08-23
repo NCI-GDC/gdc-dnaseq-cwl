@@ -65,20 +65,20 @@ arguments:
         }
 
         function bwa_aln_33(rg_str, outbam) {
-          var aln_cmd = [
-          "bwa", "aln", "-t", inputs.thread_count, inputs.fasta_path, inputs.thread_count, inputs.fastq1_path, ">", "aln.sai1", "&&",
-          "bwa", "aln", "-t", inputs.thread_count, inputs.fasta_path, inputs.thread_count, inputs.fastq2_path, ">", "aln.sai2", "&&",
-          "bwa", "sampe", "-r", "\"" + rg_str + "\"", input.fasta_path, "aln.sai1", "aln.sai2", inputs.fastq1.path, inputs.fastq.path, "|",
+          var cmd = [
+          "bwa", "aln", "-t", inputs.thread_count, inputs.fasta.path, inputs.fastq1.path, ">", "aln.sai1", "&&",
+          "bwa", "aln", "-t", inputs.thread_count, inputs.fasta.path, inputs.fastq2.path, ">", "aln.sai2", "&&",
+          "bwa", "sampe", "-r", "\"" + rg_str + "\"", inputs.fasta_path, "aln.sai1", "aln.sai2", inputs.fastq1.path, inputs.fastq2.path, "|",
           "samtools", "view", "-Shb", "-o", outbam, "-"
           ];
           return cmd.join(' ')
         }
 
         function bwa_aln_64(rg_str, outbam) {
-          var aln_cmd = [
-          "bwa", "aln", "-t", "-I", inputs.thread_count, inputs.fasta_path, inputs.thread_count, inputs.fastq1_path, ">", "aln.sai1", "&&",
-          "bwa", "aln", "-t", "-I", inputs.thread_count, inputs.fasta_path, inputs.thread_count, inputs.fastq2_path, ">", "aln.sai2", "&&",
-          "bwa", "sampe", "-r", "\"" + rg_str + "\"", input.fasta_path, "aln.sai1", "aln.sai2", inputs.fastq1.path, inputs.fastq.path, "|",
+          var cmd = [
+          "bwa", "aln", "-t", "-I", inputs.thread_count, inputs.fasta.path, inputs.fastq1.path, ">", "aln.sai1", "&&",
+          "bwa", "aln", "-t", "-I", inputs.thread_count, inputs.fasta.path, inputs.fastq2.path, ">", "aln.sai2", "&&",
+          "bwa", "sampe", "-r", "\"" + rg_str + "\"", inputs.fasta.path, "aln.sai1", "aln.sai2", inputs.fastq1.path, inputs.fastq2.path, "|",
           "samtools", "view", "-Shb", "-o", outbam, "-"
           ];
           return cmd.join(' ')
