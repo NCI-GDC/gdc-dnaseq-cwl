@@ -52,10 +52,26 @@ outputs:
 arguments:
   - valueFrom: |
       ${
-      var fastqc_json = JSON.parse(inputs.fastqc_json_path.contents);
-      var readlength = fastqc_json[fastq1_path.basename]["Sequence length"];
-      var encoding = fastqc_json[fastq1_path.basename]["Encoding"];
+        function bwa_aln() {
 
+        }
+
+        function bwa_mem() {
+
+        }
+        var MEM_ALN_CUTOFF = 70;
+        var fastqc_json = JSON.parse(inputs.fastqc_json_path.contents);
+        var readlength = fastqc_json[fastq1_path.basename]["Sequence length"];
+        var encoding = fastqc_json[fastq1_path.basename]["Encoding"];
+
+        if (readlength < MEM_ALN_CUTOFF) {
+          bwa_aln();
+        } else if (encoding != "Sanger / Illumina 1.9" {
+          bwa_aln();
+        } else {
+          bwa_mem();
+        }
+      
       }
 
 baseCommand: [bwa]
