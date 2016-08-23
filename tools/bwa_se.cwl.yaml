@@ -1,27 +1,23 @@
 #!/usr/bin/env cwl-runner
 
-cwlVersion: "cwl:draft-3"
-
-description: |
-  Usage:  cwl-runner <this-file-path> <options>
+cwlVersion: v1.0
 
 requirements:
   - class: InlineJavascriptRequirement
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/bwa_se_tool
+    dockerPull: quay.io/jeremiahsavage/bwa
+  - class: ShellCommandRequirement
 
 class: CommandLineTool
 
 inputs:
-  - id: fastq_path
+  - id: fastq
     type: File
-    inputBinding:
-      prefix: --fastq_path
+    format: "edam:format_2182"
 
-  - id: reference_fasta_path
+  - id: fasta
     type: File
-    inputBinding:
-      prefix: --reference_fasta_path
+    format: "edam:format_1929"
     secondaryFiles:
       - .amb
       - .ann
@@ -32,40 +28,86 @@ inputs:
   - id: readgroup_json_path
     type: File
     inputBinding:
-      prefix: --readgroup_json_path
+      loadContents: true
+      valueFrom: null
 
-  - id: fastqc_db_path
+  - id: fastqc_json_path
     type: File
     inputBinding:
-      prefix: --fastqc_db_path
-      
+      loadContents: true
+      valueFrom: null
+
   - id: thread_count
     type: int
-    inputBinding:
-      prefix: --thread_count
-
-  - id: uuid
-    type: string
-    inputBinding:
-      prefix: --uuid
 
 outputs:
-  - id: output_bam
+  - id: OUTPUT
     type: File
-    description: "Aligned BAM"
+    format: "edam:format_2572"
     outputBinding:
-      glob: $(inputs.readgroup_json_path.path.split('/').slice(-1)[0].slice(0,-5)+".bam")
+      glob: $(inputs.readgroup_json_path.basename.slice(0,-4) + "bam")
 
-  - id: log
-    type: File
-    description: "python log file"
-    outputBinding:
-      glob: $(inputs.uuid+"_bwa_mem.log")
+arguments:
+  - valueFrom: |
+      ${
+        function to_rg() {
+          var readgroup_str = "@RG";
+          var readgroup_json = JSON.parse(inputs.readgroup_json_path.contents);
+          for (var key in readgroup_json) {
+            var value = readgroup_json[key];
+            readgroup_str = readgroup_str + "\\t" + key + ":" + value;
+          }
+          return readgroup_str
+        }
 
-  - id: output_sqlite
-    type: File
-    description: "output sqlite"
-    outputBinding:
-      glob: $(inputs.uuid + ".db")
-          
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/bwa_se_tool/main.py"]
+        function bwa_aln_33(rg_str, outbam) {
+          var cmd = [
+          "bwa", "aln", "-t", inputs.thread_count, inputs.fasta.path, inputs.fastq.path, ">", "aln.sai", "&&",
+          "bwa", "samse", "-r", "\"" + rg_str + "\"", inputs.fasta.path, "aln.sai", inputs.fastq.path, "|",
+          "samtools", "view", "-Shb", "-o", outbam, "-"
+          ];
+          return cmd.join(' ')
+        }
+
+        function bwa_aln_64(rg_str, outbam) {
+          var cmd = [
+          "bwa", "aln", "-I","-t", inputs.thread_count, inputs.fasta.path, inputs.fastq.path, ">", "aln.sai", "&&",
+          "bwa", "samse", "-r", "\"" + rg_str + "\"", inputs.fasta.path, "aln.sai", inputs.fastq.path, "|",
+          "samtools", "view", "-Shb", "-o", outbam, "-"
+          ];
+          return cmd.join(' ')
+        }
+
+        function bwa_mem(rg_str, outbam) {
+          var cmd = [
+          "bwa", "mem", "-t", inputs.thread_count, "-T", "0", "-R", "\"" + rg_str + "\"",
+          inputs.fasta.path, inputs.fastq.path, "|",
+          "samtools", "view", "-Shb", "-o", outbam, "-"
+          ];
+          return cmd.join(' ')
+        }
+
+        var MEM_ALN_CUTOFF = 70;
+        var fastqc_json = JSON.parse(inputs.fastqc_json_path.contents);
+        var readlength = fastqc_json[inputs.fastq.basename]["Sequence length"];
+        var encoding = fastqc_json[inputs.fastq.basename]["Encoding"];
+        var rg_str = to_rg();
+
+        var outbam = inputs.readgroup_json_path.basename.slice(0,-4) + "bam";
+
+        if (encoding == "Illumina 1.3" || encoding == "Illumina 1.5") {
+          return bwa_aln_64(rg_str, outbam)
+        } else if (encoding == "Sanger / Illumina 1.9") {
+          if (readlength < MEM_ALN_CUTOFF) {
+            return bwa_aln_33(rg_str, outbam)
+          }
+          else {
+            return bwa_mem(rg_str, outbam)
+          }
+        } else {
+          return
+        }
+
+      }
+
+baseCommand: [bash, -c]
