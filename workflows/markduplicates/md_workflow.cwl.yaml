@@ -177,7 +177,6 @@ steps:
   - id: picard_collectmultiplemetrics_to_sqlite
     run: ../../tools/picard_collectmultiplemetrics_to_sqlite.cwl.yaml
     in:
-    in:
       - id: bam
         source: bam_path
         valueFrom: $(self.basename)
