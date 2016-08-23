@@ -17,6 +17,13 @@ inputs:
       prefix: INPUT=
       separate: false
 
+  - id: OUTPUT
+    type: string
+    default: $(inputs.INPUT.nameroot + ".metrics")
+    inputBinding:
+      prefix: OUTPUT=
+      separate: false
+
   - id: METRIC_ACCUMULATION_LEVEL
     type: string
     default: ALL_READS
@@ -31,6 +38,13 @@ inputs:
       prefix: REFERENCE_SEQUENCE=
       separate: false
 
+  - id: TMP_DIR
+    type: string
+    default: .
+    inputBinding:
+      prefix: TMP_DIR=
+      separate: false
+
   - id: VALIDATION_STRINGENCY=
     type: string
     default: STRICT
@@ -42,13 +56,6 @@ outputs:
   - id: OUTPUT
     type: File
     outputBinding:
-      glob: $(inputs.INPUT.nameroot + ".metrics")
-
-arguments:
-  - valueFrom: $(inputs.INPUT.nameroot + ".metrics")
-    prefix: "OUTPUT="
-    separate: false
-
-  - valueFrom: "TMP_DIR=."
+      glob: $(inputs.OUTPUT)
 
 baseCommand: [java, -jar, /usr/local/bin/picard.jar, CollectAlignmentSummaryMetrics]
