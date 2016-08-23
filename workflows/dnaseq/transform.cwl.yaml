@@ -1,6 +1,6 @@
 #!/usr/bin/env cwl-runner
 
-cwlVersion: "cwl:draft-3"
+cwlVersion: v1.0
 
 class: Workflow
 
@@ -34,279 +34,275 @@ outputs:
     source: "#merge_all_sqlite/destination_sqlite"
 
 steps:
-  - id: bam_readgroup_to_json
-    run: ../../tools/bam_readgroup_to_json.cwl.yaml
-    inputs:
-      - id: bam_path
-        source: "#bam_path"
-      - id: uuid
-        source: "#uuid"
-    outputs:
-      - id: output_json
+  - id: samtools_bamtobam
+    run: ../../tools/samtools_bamtobam.cwl.yaml
+    in:
+      - id: INPUT
+        source: bam_path
+    out:
+      - id: OUTPUT
 
-  - id: biobambam2_bamtofastq
+  - id: biobambam_bamtofastq
     run: ../../tools/biobambam2_bamtofastq.cwl.yaml
-    inputs:
-      - id: bam_path
-        source: "#bam_path"
-      - id: uuid
-        source: "#uuid"
-      - id: input_state
-        default: "original"
-    outputs:
+    in:
+      - id: filename
+        source: samtools_bamtobam/OUTPUT
+    out:
       - id: output_fastq1
       - id: output_fastq2
-      - id: output_fastq_s
       - id: output_fastq_o1
       - id: output_fastq_o2
-      - id: log
-      - id: output_sqlite
+      - id: output_fastq_s
 
   - id: fastqc1
     run: ../../tools/fastqc.cwl.yaml
-    scatter: "#fastqc1/fastq_path"
-    inputs:
-      - id: fastq_path
-        source: "#biobambam2_bamtofastq/output_fastq1"
-      - id: uuid
-        source: "#uuid"
-      - id: thread_count
-        source: "#thread_count"
-    outputs:
-      - id: fastqc_zip
-      - id: log
-      - id: output_sqlite
+    scatter: fastqc1/INPUT
+    in:
+      - id: INPUT
+        source: biobambam_bamtofastq/output_fastq1
+      - id: threads
+        source: thread_count
+    out:
+      - id: OUTPUT
 
   - id: fastqc2
     run: ../../tools/fastqc.cwl.yaml
-    scatter: "#fastqc2/fastq_path"
-    inputs:
-      - id: fastq_path
-        source: "#biobambam2_bamtofastq/output_fastq2"
-      - id: uuid
-        source: "#uuid"
-      - id: thread_count
-        source: "#thread_count"
-    outputs:
-      - id: fastqc_zip
-      - id: log
-      - id: output_sqlite
+    scatter: fastqc2/INPUT
+    in:
+      - id: INPUT
+        source: biobambam_bamtofastq/output_fastq2
+      - id: threads
+        source: thread_count
+    out:
+      - id: OUTPUT
 
   - id: fastqc_s
     run: ../../tools/fastqc.cwl.yaml
-    scatter: "#fastqc_s/fastq_path"
-    inputs:
-      - id: fastq_path
-        source: "#biobambam2_bamtofastq/output_fastq_s"
-      - id: uuid
-        source: "#uuid"
-      - id: thread_count
-        source: "#thread_count"
-    outputs:
-      - id: fastqc_zip
-      - id: log
-      - id: output_sqlite
+    scatter: fastqc_s/INPUT
+    in:
+      - id: INPUT
+        source: biobambam_bamtofastq/output_fastq_s
+      - id: threads
+        source: thread_count
+    out:
+      - id: OUTPUT
 
   - id: fastqc_o1
     run: ../../tools/fastqc.cwl.yaml
-    scatter: "#fastqc_o1/fastq_path"
-    inputs:
-      - id: fastq_path
-        source: "#biobambam2_bamtofastq/output_fastq_o1"
-      - id: uuid
-        source: "#uuid"
-      - id: thread_count
-        source: "#thread_count"
-    outputs:
-      - id: fastqc_zip
-      - id: log
-      - id: output_sqlite
+    scatter: fastqc_o1/INPUT
+    in:
+      - id: INPUT
+        source: biobambam_bamtofastq/output_fastq_o1
+      - id: threads
+        source: thread_count
+    out:
+      - id: OUTPUT
 
   - id: fastqc_o2
     run: ../../tools/fastqc.cwl.yaml
-    scatter: "#fastqc_o2/fastq_path"
-    inputs:
-      - id: fastq_path
-        source: "#biobambam2_bamtofastq/output_fastq_o2"
-      - id: uuid
-        source: "#uuid"
-      - id: thread_count
-        source: "#thread_count"
-    outputs:
-      - id: fastqc_zip
-      - id: log
-      - id: output_sqlite
+    scatter: fastqc_o2/INPUT
+    in:
+      - id: INPUT
+        source: biobambam_bamtofastq/output_fastq_o2
+      - id: threads
+        source: thread_count
+    out:
+      - id: OUTPUT
 
   - id: fastqc_db1
     run: ../../tools/fastqc_db.cwl.yaml
-    scatter: "#fastqc_db1/fastqc_zip_path"
-    inputs:
-      - id: fastqc_zip_path
-        source: "#fastqc1/fastqc_zip"
+    scatter: fastqc_db1/INPUT
+    in:
+      - id: INPUT
+        source: fastqc1/OUTPUT
       - id: uuid
-        source: "#uuid"
-    outputs:
-      - id: output_sqlite
-      - id: log
+        source: uuid
+    out:
+      - id: LOG
+      - id: OUTPUT
 
   - id: fastqc_db2
     run: ../../tools/fastqc_db.cwl.yaml
-    scatter: "#fastqc_db2/fastqc_zip_path"
-    inputs:
-      - id: fastqc_zip_path
-        source: "#fastqc2/fastqc_zip"
+    scatter: fastqc_db2/INPUT
+    in:
+      - id: INPUT
+        source: fastqc2/OUTPUT
       - id: uuid
-        source: "#uuid"
-    outputs:
-      - id: output_sqlite
-      - id: log
+        source: uuid
+    out:
+      - id: LOG
+      - id: OUTPUT
 
   - id: fastqc_db_s
     run: ../../tools/fastqc_db.cwl.yaml
-    scatter: "#fastqc_db_s/fastqc_zip_path"
-    inputs:
-      - id: fastqc_zip_path
-        source: "#fastqc_s/fastqc_zip"
+    scatter: fastqc_db_s/INPUT
+    in:
+      - id: INPUT
+        source: fastqc_s/OUTPUT
       - id: uuid
-        source: "#uuid"
-    outputs:
-      - id: output_sqlite
-      - id: log
+        source: uuid
+    out:
+      - id: LOG
+      - id: OUTPUT
 
   - id: fastqc_db_o1
     run: ../../tools/fastqc_db.cwl.yaml
-    scatter: "#fastqc_db_o1/fastqc_zip_path"
-    inputs:
-      - id: fastqc_zip_path
-        source: "#fastqc_o1/fastqc_zip"
+    scatter: fastqc_db_o1/INPUT
+    in:
+      - id: INPUT
+        source: fastqc_o1/OUTPUT
       - id: uuid
-        source: "#uuid"
-    outputs:
-      - id: output_sqlite
-      - id: log
+        source: uuid
+    out:
+      - id: LOG
+      - id: OUTPUT
 
   - id: fastqc_db_o2
     run: ../../tools/fastqc_db.cwl.yaml
-    scatter: "#fastqc_db_o2/fastqc_zip_path"
-    inputs:
-      - id: fastqc_zip_path
-        source: "#fastqc_o2/fastqc_zip"
+    scatter: fastqc_db_o2/INPUT
+    in:
+      - id: INPUT
+        source: fastqc_o2/OUTPUT
       - id: uuid
-        source: "#uuid"
-    outputs:
-      - id: output_sqlite
-      - id: log
-
-  - id: merge_fastqc1_sqlite
-    run: ../../tools/merge_sqlite.cwl.yaml
-    inputs:
-      - id: source_sqlite
-        source: "#fastqc1/output_sqlite"
-      - id: uuid
-        source: "#uuid"
-    outputs:
-      - id: destination_sqlite
-      - id: log
-
-  - id: merge_fastqc2_sqlite
-    run: ../../tools/merge_sqlite.cwl.yaml
-    inputs:
-      - id: source_sqlite
-        source: "#fastqc2/output_sqlite"
-      - id: uuid
-        source: "#uuid"
-    outputs:
-      - id: destination_sqlite
-      - id: log
-
-  - id: merge_fastqc2_sqlite
-    run: ../../tools/merge_sqlite.cwl.yaml
-    inputs:
-      - id: source_sqlite
-        source: "#fastqc_s/output_sqlite"
-      - id: uuid
-        source: "#uuid"
-    outputs:
-      - id: destination_sqlite
-      - id: log
-
-  - id: merge_fastqc_o1_sqlite
-    run: ../../tools/merge_sqlite.cwl.yaml
-    inputs:
-      - id: source_sqlite
-        source: "#fastqc_o1/output_sqlite"
-      - id: uuid
-        source: "#uuid"
-    outputs:
-      - id: destination_sqlite
-      - id: log
-
-  - id: merge_fastqc_o2_sqlite
-    run: ../../tools/merge_sqlite.cwl.yaml
-    inputs:
-      - id: source_sqlite
-        source: "#fastqc_o2/output_sqlite"
-      - id: uuid
-        source: "#uuid"
-    outputs:
-      - id: destination_sqlite
-      - id: log
+        source: uuid
+    out:
+      - id: LOG
+      - id: OUTPUT
 
   - id: merge_fastqc_db1_sqlite
     run: ../../tools/merge_sqlite.cwl.yaml
-    inputs:
+    in:
       - id: source_sqlite
-        source: "#fastqc_db1/output_sqlite"
+        source: fastqc_db1/OUTPUT
       - id: uuid
-        source: "#uuid"
-    outputs:
+        source: uuid
+    out:
       - id: destination_sqlite
       - id: log
 
   - id: merge_fastqc_db2_sqlite
     run: ../../tools/merge_sqlite.cwl.yaml
-    inputs:
+    in:
       - id: source_sqlite
-        source: "#fastqc_db2/output_sqlite"
+        source: fastqc_db2/OUTPUT
       - id: uuid
-        source: "#uuid"
-    outputs:
+        source: uuid
+    out:
       - id: destination_sqlite
       - id: log
 
   - id: merge_fastqc_db_s_sqlite
     run: ../../tools/merge_sqlite.cwl.yaml
-    inputs:
+    in:
       - id: source_sqlite
-        source: "#fastqc_db_s/output_sqlite"
+        source: fastqc_db_s/OUTPUT
       - id: uuid
-        source: "#uuid"
-    outputs:
+        source: uuid
+    out:
       - id: destination_sqlite
       - id: log
 
   - id: merge_fastqc_db_o1_sqlite
     run: ../../tools/merge_sqlite.cwl.yaml
-    inputs:
+    in:
       - id: source_sqlite
-        source: "#fastqc_db_o1/output_sqlite"
+        source: fastqc_db_o1/OUTPUT
       - id: uuid
-        source: "#uuid"
-    outputs:
+        source: uuid
+    out:
       - id: destination_sqlite
       - id: log
 
   - id: merge_fastqc_db_o2_sqlite
     run: ../../tools/merge_sqlite.cwl.yaml
-    inputs:
+    in:
       - id: source_sqlite
-        source: "#fastqc_db_o2/output_sqlite"
+        source: fastqc_db_o2/OUTPUT
       - id: uuid
-        source: "#uuid"
-    outputs:
+        source: uuid
+    out:
       - id: destination_sqlite
       - id: log
 
+  - id: picard_validatesamfile #need eof and dup QNAME detection
+    run: ../../tools/picard_validatesamfile.cwl.yaml
+    in:
+      - id: INPUT
+        source: bam_path
+    out:
+      - id: OUTPUT
+
+  - id: picard_validatesamfile_to_sqlite
+    run: ../../tools/picard_validatesamfile_to_sqlite.cwl.yaml
+    in:
+      - id: bam
+        source: bam_path
+        valueFrom: $(self.basename)
+      - id: input_state
+        valueFrom: "original"
+      - id: metric_path
+        source: picard_validatesamfile/OUTPUT
+      - id: uuid
+        source: uuid
+    out:
+      - id: sqlite
+
+  - id: picard_collectalignmentsummarymetrics
+    run: ../../tools/picard_collectalignmentsummarymetrics.cwl.yaml
+    in:
+      - id: INPUT
+        source: bam_path
+    out:
+      - id: OUTPUT
+
+  - id: picard_collectalignmentsummarymetrics_to_sqlite
+    run: ../../tools/picard_collectalignmentsummarymetrics_to_sqlite.cwl.yaml
+    in:
+      - id: bam
+        source: bam_path
+        valueFrom: $(self.basename)
+      - id: input_state
+        valueFrom: "original"
+      - id: metric_path
+        source: picard_collectalignmentsummarymetrics/OUTPUT
+      - id: uuid
+        source: uuid
+    out:
+      - id: sqlite
+
+  - id: bam_readgroup_to_json
+    run: ../../tools/bam_readgroup_to_json.cwl.yaml
+    in:
+      - id: INPUT
+        source: bam_path
+    out:
+      - id: OUTPUT
+
+  - id: readgroup_json_db
+    run: ../../tools/readgroup_json_db.cwl.yaml
+    scatter: readgroup_json_db/json_path
+    in:
+      - id: json_path
+        source: bam_readgroup_to_json/OUTPUT
+      - id: uuid
+        source: uuid
+    out:
+      - id: log
+      - id: output_sqlite
+
+  - id: merge_readgroup_json_db_sqlite
+    run: ../../tools/merge_sqlite.cwl.yaml
+    in:
+      - id: source_sqlite
+        source: readgroup_json_db/output_sqlite
+      - id: uuid
+        source: uuid
+    out:
+      - id: destination_sqlite
+      - id: log
+        
+
+  
   - id: decider_bwa_pe
     run: ../../tools/decider_bwa_pe_docker.cwl.yaml
     inputs:
