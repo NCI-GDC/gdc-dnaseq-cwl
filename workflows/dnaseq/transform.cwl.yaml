@@ -224,6 +224,34 @@ steps:
       - id: destination_sqlite
       - id: log
 
+  - id: fastqc_pe_json
+    run: ../../tools/fastqc_basicstatistics_json.cwl
+    in:
+      - id: merge_fastqc_db1_sqlite/destination_sqlite
+    out:
+      - id: OUTPUT
+
+  # - id: fastqc_se_json
+  #   run: ../../tools/fastqc_basicstatistics_json.cwl
+  #   in:
+  #     - id: merge_fastqc_db_s_sqlite/destination_sqlite
+  #   out:
+  #     - id: OUTPUT
+
+  # - id: fastqc_o1_json
+  #   run: ../../tools/fastqc_basicstatistics_json.cwl
+  #   in:
+  #     - id: merge_fastqc_db_o1_sqlite/destination_sqlite
+  #   out:
+  #     - id: OUTPUT
+
+  # - id: fastqc_o2_json
+  #   run: ../../tools/fastqc_basicstatistics_json.cwl
+  #   in:
+  #     - id: merge_fastqc_db_o2_sqlite/destination_sqlite
+  #   out:
+  #     - id: OUTPUT
+
   - id: picard_validatesamfile #need eof and dup QNAME detection
     run: ../../tools/picard_validatesamfile.cwl.yaml
     in:
