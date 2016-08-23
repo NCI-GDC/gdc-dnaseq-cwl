@@ -21,6 +21,7 @@ inputs:
 
   - id: fasta
     type: File
+    format: "edam:format_1929"
     secondaryFiles:
       - .amb
       - .ann
@@ -30,7 +31,6 @@ inputs:
 
   - id: readgroup_json_path
     type: File
-    format: "edam:format_1929"
     inputBinding:
       loadContents: true
       valueFrom: null
@@ -68,7 +68,7 @@ arguments:
           var cmd = [
           "bwa", "aln", "-t", inputs.thread_count, inputs.fasta.path, inputs.fastq1.path, ">", "aln.sai1", "&&",
           "bwa", "aln", "-t", inputs.thread_count, inputs.fasta.path, inputs.fastq2.path, ">", "aln.sai2", "&&",
-          "bwa", "sampe", "-r", "\"" + rg_str + "\"", inputs.fasta_path, "aln.sai1", "aln.sai2", inputs.fastq1.path, inputs.fastq2.path, "|",
+          "bwa", "sampe", "-r", "\"" + rg_str + "\"", inputs.fasta.path, runtime.outdir+"/aln.sai1", runtime.outdir+"/aln.sai2", inputs.fastq1.path, inputs.fastq2.path, "|",
           "samtools", "view", "-Shb", "-o", outbam, "-"
           ];
           return cmd.join(' ')
@@ -76,9 +76,9 @@ arguments:
 
         function bwa_aln_64(rg_str, outbam) {
           var cmd = [
-          "bwa", "aln", "-t", "-I", inputs.thread_count, inputs.fasta.path, inputs.fastq1.path, ">", "aln.sai1", "&&",
-          "bwa", "aln", "-t", "-I", inputs.thread_count, inputs.fasta.path, inputs.fastq2.path, ">", "aln.sai2", "&&",
-          "bwa", "sampe", "-r", "\"" + rg_str + "\"", inputs.fasta.path, "aln.sai1", "aln.sai2", inputs.fastq1.path, inputs.fastq2.path, "|",
+          "bwa", "aln", "-I","-t", inputs.thread_count, inputs.fasta.path, inputs.fastq1.path, ">", "aln.sai1", "&&",
+          "bwa", "aln", "-I", "-t", inputs.thread_count, inputs.fasta.path, inputs.fastq2.path, ">", "aln.sai2", "&&",
+          "bwa", "sampe", "-r", "\"" + rg_str + "\"", inputs.fasta.path, runtime.outdir+"/aln.sai1", runtime.outdir+"/aln.sai2", inputs.fastq1.path, inputs.fastq2.path, "|",
           "samtools", "view", "-Shb", "-o", outbam, "-"
           ];
           return cmd.join(' ')
@@ -113,7 +113,7 @@ arguments:
         } else {
           return
         }
-      
+
       }
 
 baseCommand: [bash, -c]
