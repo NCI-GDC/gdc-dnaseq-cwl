@@ -6,24 +6,19 @@ requirements:
   - class: InlineJavascriptRequirement
   - class: DockerRequirement
     dockerPull: quay.io/jeremiahsavage/bwa
+  - class: ShellCommandRequirement
 
 class: CommandLineTool
 
 inputs:
-  - id: fastq1_path
+  - id: fastq1
     type: File
-    inputBinding:
-      prefix: --fastq1_path
 
-  - id: fastq2_path
+  - id: fastq2
     type: File
-    inputBinding:
-      prefix: --fastq2_path
 
-  - id: reference_fasta_path
+  - id: fasta
     type: File
-    inputBinding:
-      prefix: --reference_fasta_path
     secondaryFiles:
       - .amb
       - .ann
@@ -34,17 +29,17 @@ inputs:
   - id: readgroup_json_path
     type: File
     inputBinding:
-      prefix: --readgroup_json_path
+      loadContents: true
+      valueFrom: null
 
   - id: fastqc_json_path
     type: File
     inputBinding:
-      prefix: --fastqc_json_path
+      loadContents: true
+      valueFrom: null
 
   - id: thread_count
     type: int
-    inputBinding:
-      prefix: --thread_count
 
 outputs:
   []
@@ -54,40 +49,45 @@ arguments:
       ${
         function to_rg() {
           var readgroup_str = "@RG";
-          var readgroup_json = JSON.parse(inputs.readgroup_json_path);
-          for (key in readgroup_json) {
-            var value = readgroup_json[key]
-              readgroup_str = readgroup_str + "\t" + key + ":" + value;
+          var readgroup_json = JSON.parse(inputs.readgroup_json_path.contents);
+          for (var key in readgroup_json) {
+            var value = readgroup_json[key];
+            readgroup_str = readgroup_str + "\\t" + key + ":" + value;
           }
           return readgroup_str
         }
-      
+
         function bwa_aln(rg_str) {
           var aln_cmd = [
-          "aln", "-t", inputs.fasta_path, inputs.thread_count, inputs.fastq1_path, ">", "aln.sai1", "&&"
-          "aln", "-t", inputs.fasta_path, inputs.thread_count, inputs.fastq2_path, ">", "aln.sai2", "&&"
-          "bwa", "sampe", "-r", rg_str, input.fasta_path, "aln.sai1", "aln.sai2", inputs.fastq1_path, inputs.fastq2_path
+          "bwa", "aln", "-t", inputs.fasta_path, inputs.thread_count, inputs.fastq1_path, ">", "aln.sai1", "&&",
+          "bwa", "aln", "-t", inputs.fasta_path, inputs.thread_count, inputs.fastq2_path, ">", "aln.sai2", "&&",
+          "bwa", "sampe", "-r", rg_str, input.fasta_path, "aln.sai1", "aln.sai2", inputs.fastq1.path, inputs.fastq.path
           ];
+          return cmd
         }
 
         function bwa_mem(rg_str) {
-          var mem_cmd = [
-          "mem", "-t", inputs.thread_count, "-T", "0", "-R", rg_str, inputs.fasta_path, inputs.fastq1_path, inputs.fastq2_path
+          var cmd = [
+          "/usr/local/bin/bwa", "mem", "-t", inputs.thread_count, "-T", "0", "-R", "\"" + rg_str + "\"",
+          inputs.fasta.path, inputs.fastq1.path, inputs.fastq2.path
           ];
+          return cmd.join(' ')
         }
+
         var MEM_ALN_CUTOFF = 70;
         var fastqc_json = JSON.parse(inputs.fastqc_json_path.contents);
-        var readlength = fastqc_json[fastq1_path.basename]["Sequence length"];
-        var encoding = fastqc_json[fastq1_path.basename]["Encoding"];
-        var rg_str = to_rg()
+        var readlength = fastqc_json[inputs.fastq1.basename]["Sequence length"];
+        var encoding = fastqc_json[inputs.fastq1.basename]["Encoding"];
+        var rg_str = to_rg();
+
         if (readlength < MEM_ALN_CUTOFF) {
-          bwa_aln(rg_str);
-        } else if (encoding != "Sanger / Illumina 1.9" {
-          bwa_aln(rg_str);
+          return "mem"
+        } else if (encoding != "Sanger / Illumina 1.9") {
+          return "mem"
         } else {
-          bwa_mem(rg_str);
+          return bwa_mem(rg_str)
         }
       
       }
 
-baseCommand: [bwa]
+baseCommand: [bash, -c]
