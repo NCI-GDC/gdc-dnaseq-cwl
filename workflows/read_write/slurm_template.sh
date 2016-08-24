@@ -15,15 +15,11 @@ GIT_CWL_REPO="git@github.com:NCI-GDC/cocleaning-cwl.git"
 GIT_CWL_HASH="XX_GIT_CWL_HASH_XX"
 CWL_DIR="${HOME}/cocleaning-cwl"
 QUEUE_STATUS_WORKFLOW="workflows/status/status_postgres_workflow.cwl.yaml"
-WORKFLOW="workflows/read_write/read_write.cwl"
+WORKFLOW="workflows/read_write/etl.cwl"
 
 ##JOB VARIABLES
-CGHUB_ID="XX_CGHUB_ID_XX"
-DB_TABLE_NAME="markduplicates_wgs_status"
+DB_TABLE_NAME='read_write'
 ETL_JSON_PATH="XX_ETL_JSON_PATH_XX"
-GDC_ID="XX_GDC_ID_XX"
-GDC_SRC_ID="XX_GDC_SRC_ID_XX"
-#"s3://ceph_markduplicates_wgs" "s3://bioinformatics_scratch/maydeletetest/"
 S3_LOAD_BUCKET="XX_S3_LOAD_BUCKET_XX"
 UUID="XX_UUID_XX"
 
@@ -54,15 +50,10 @@ function main()
     local cache_dir=${CACHE_DIR}
     local cghub_id=${CGHUB_ID}
     local cwl_dir=${CWL_DIR}
-    local db_cred_path=${DB_CRED_PATH}
     local db_table_name=${DB_TABLE_NAME}
     local etl_json_path=${ETL_JSON_PATH}
-    local gdc_id=${GDC_ID}
-    local gdc_src_id=${GDC_SRC_ID}
     local git_cwl_hash=${GIT_CWL_HASH}
     local git_cwl_repo=${GIT_CWL_REPO}
-    local ini_section=${INI_SECTION}
-    local queue_status_workflow=${QUEUE_STATUS_WORKFLOW}
     local s3_load_bucket=${S3_LOAD_BUCKET}
     local scratch_dir=${SCRATCH_DIR}
     local tmp_dir=${TMP_DIR}
