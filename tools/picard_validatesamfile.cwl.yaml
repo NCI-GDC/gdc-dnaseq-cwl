@@ -31,6 +31,20 @@ inputs:
       prefix: MODE=
       separate: false
 
+  - id: OUTPUT
+    type: string
+    default: $(inputs.INPUT.basename + ".metrics")
+    inputBinding:
+      prefix: OUTPUT=
+      separate: false
+
+  - id: TMP_DIR
+    type: string
+    default: $(runtime.tmpdir)
+    inputBinding:
+      prefix: TMP_DIR=
+      separate: false
+
   - id: VALIDATION_STRINGENCY
     default: "STRICT"
     type: string
@@ -42,16 +56,7 @@ outputs:
   - id: OUTPUT
     type: File
     outputBinding:
-      glob: $(inputs.INPUT.nameroot + ".metrics")
-
-arguments:
-  - valueFrom: $(inputs.INPUT.nameroot + ".metrics")
-    prefix: "OUTPUT="
-    separate: false
-
-  - valueFrom: $(runtime.tmpdir)
-    prefix: "TMP_DIR="
-    separate: false
+      glob: $(inputs.OUTPUT)
 
 successCodes: [0, 1]
 
