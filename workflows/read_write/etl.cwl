@@ -57,7 +57,7 @@ steps:
         source: load_s3cfg_section
       - id: s3uri
         source: load_bucket
-        valueFrom: $(self + '/' + inputs.uuid + '/')
+        valueFrom: $(self + inputs.uuid + '/')
       - id: uuid
         source: uuid
         valueFrom: null
