@@ -11,7 +11,7 @@ salt -G 'cluster_name:WOLVERINE' cmd.run runas=ubuntu 'bash -c "source /usr/shar
 
 
 #install
-salt -G 'cluster_name:WOLVERINE' cmd.run runas=ubuntu 'rm -rf /home/ubuntu/cocleaning-cwl /home/ubuntu/rw_json'
+salt -G 'cluster_name:WOLVERINE' cmd.run runas=ubuntu 'rm -rf /home/ubuntu/cocleaning-cwl /home/ubuntu/rw_json /mnt/SCRATCH/read_write'
 salt -G 'cluster_name:WOLVERINE' cmd.run runas=ubuntu 'rm /mnt/SCRATCH/slurm-*'
 
 salt -G 'cluster_name:WOLVERINE' cmd.run runas=ubuntu 's3cmd --skip-existing --recursive -c ~/.s3cfg.ceph get s3://bioinformatics_scratch/read_write/'
