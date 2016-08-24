@@ -37,6 +37,13 @@ inputs:
       prefix: TMP_DIR=
       separate: false
 
+  - id: VALIDATION_STRINGENCY
+    type: string
+    default: "STRICT"
+    inputBinding:
+      prefix: VALIDATION_STRINGENCY=
+      separate: false
+
 outputs:
   - id: OUTPUT
     type: File
@@ -44,4 +51,4 @@ outputs:
     outputBinding:
       glob: $(inputs.OUTPUT)
           
-baseCommand: baseCommand: [java, -jar, /usr/local/bin/picard.jar, SortSam]
+baseCommand: [java, -jar, /usr/local/bin/picard.jar, SortSam]
