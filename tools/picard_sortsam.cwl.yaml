@@ -1,53 +1,47 @@
 #!/usr/bin/env cwl-runner
 
-cwlVersion: "cwl:draft-3"
-
-description: |
-  Usage:  cwl-runner <this-file-path> --bam_path <bam-path> --uuid <uuid-string>
-  Options:
-    --bam_path       BAM file
-    --uuid           UUID for log file and sqlite db file
+cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/picard_tool
+    dockerPull: quay.io/jeremiahsavage/picard:1
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
 
 inputs:
-  - id: bam_path
+  - id: CREATE_INDEX
+    type: boolean
+    default: true
+    inputBinding:
+      prefix: CREATE_INDEX
+
+  - id: INPUT
     type: File
+    format: "edam:format_2572"
     inputBinding:
-      prefix: --bam_path
+      prefix: INPUT=
+      separate: false
 
-  - id: uuid
+  - id: OUTPUT
     type: string
+    default: $(inputs.INPUT.basename)
     inputBinding:
-      prefix: --uuid
+      prefix: OUTPUT=
+      separate: false
 
-  - id: input_state
-    type: ["null", string]
+  - id: TMP_DIR
+    type: string
+    default: $(runtime.tmpdir)
     inputBinding:
-      prefix: --input_state
+      prefix: TMP_DIR=
+      separate: false
 
 outputs:
-  - id: output_bam
+  - id: OUTPUT
     type: File
-    description: "The sorted BAM"
+    format: "edam:format_2572"
     outputBinding:
-      glob: $(inputs.bam_path.path.split('/').slice(-1)[0])
-
-  - id: log
-    type: File
-    description: "python log file"
-    outputBinding:
-      glob: $(inputs.uuid+"_picard_SortSam.log")
-
-  - id: output_sqlite
-    type: File
-    description: "output sqlite"
-    outputBinding:
-      glob: $(inputs.uuid + ".db")
+      glob: $(inputs.OUTPUT)
           
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/picard_tool/main.py", "--tool_name", "SortSam"]
+baseCommand: baseCommand: [java, -jar, /usr/local/bin/picard.jar, SortSam]
