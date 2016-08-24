@@ -77,12 +77,8 @@ function main()
     run_stress "${cache_dir}" "${etl_cwl_path}" "${etl_json_path}" "${job_dir}" "${tmp_dir}" "${uuid}"
     if [ $? -ne 0 ]
     then
-        rm -rf /mnt/SCRATCH/cache
-        rm -rf /mnt/SCRATCH/tmp
         exit 1
     else
-        rm -rf /mnt/SCRATCH/cache
-        rm -rf /mnt/SCRATCH/tmp
         exit 0
     fi
 }
