@@ -1,60 +1,86 @@
 #!/usr/bin/env cwl-runner
 
-cwlVersion: "cwl:draft-3"
-
-description: |
-  Usage:  cwl-runner <this-file-path> [ --bam_path <bam-path> ] --uuid <uuid-string>
-  Options:
-    --bam_path       BAM file
-    --uuid           UUID for log file and sqlite db file
+cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/picard_tool
+    dockerPull: quay.io/jeremiahsavage/picard:1
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
 
 inputs:
-  - id: bam_path
+  - id: ASSUME_SORTED
+    type: boolean
+    default: false
+    inputBinding:
+      prefix: ASSUME_SORTED
+
+  - id: CREATE_INDEX
+    type: boolean
+    default: true
+    inputBinding:
+      prefix: CREATE_INDEX
+
+  - id: INPUT
+    format: "edam:format_2572"
     type:
       type: array
       items: File
       inputBinding:
-        prefix: --bam_path
+        prefix: INPUT=
+        separate: false
 
-  - id: uuid
+  - id: INTERVALS
+    type: ["null", File]
+    inputBinding:
+      prefix: INTERVALS=
+      separate: false
+
+  - id: MERGE_SEQUENCE_DICTIONARIES
+    type: boolean
+    default: false
+    inputBinding:
+      prefix: MERGE_SEQUENCE_DICTIONARIES
+
+  - id: OUTPUT
     type: string
+    default: $(inputs.INPUT.basename)
     inputBinding:
-      prefix: --uuid
+      prefix: OUTPUT=
+      separate: false
 
-  - id: outbam_name
+  - id: SORT_ORDER
     type: string
+    default: "coordinate"
     inputBinding:
-      prefix: --outbam_name
+      prefix: SORT_ORDER=
+      separate: false
 
-  - id: input_state
-    type: ["null", string]
+  - id: TMP_DIR
+    type: string
+    default: $(runtime.tmpdir)
     inputBinding:
-      prefix: --input_state
+      prefix: TMP_DIR=
+      separate: false
+
+  - id: USE_THREADING
+    type: boolean
+    default: true
+    inputBinding:
+      prefix: USE_THREADING
+
+  - id: VALIDATION_STRINGENCY
+    type: string
+    default: "STRICT"
+    inputBinding:
+      prefix: VALIDATION_STRINGENCY=
+      separate: false
 
 outputs:
-  - id: output_bam
+  - id: OUTPUT
     type: File
-    description: "The merged BAM"
     outputBinding:
-      glob: $(inputs.outbam_name)
+      glob: $(inputs.OUTPUT)
 
-  - id: log
-    type: File
-    description: "python log file"
-    outputBinding:
-      glob: $(inputs.uuid+"_picard_MergeSamFiles.log")
-
-  - id: output_sqlite
-    type: File
-    description: "sqlite file"
-    outputBinding:
-      glob: $(inputs.uuid + ".db")
-
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/picard_tool/main.py", "--tool_name", "MergeSamFiles"]
+baseCommand: [java, -jar, /usr/local/bin/picard.jar, MergeSamFiles]
