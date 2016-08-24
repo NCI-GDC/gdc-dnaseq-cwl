@@ -45,7 +45,6 @@ inputs:
 
   - id: OUTPUT
     type: string
-    default: $(inputs.INPUT.basename)
     inputBinding:
       prefix: OUTPUT=
       separate: false
