@@ -8,3 +8,7 @@ salt -G 'cluster_name:WOLVERINE' cmd.run runas=ubuntu 'bash -c "export http_prox
 
 #check
 salt -G 'cluster_name:WOLVERINE' cmd.run runas=ubuntu 'bash -c "source /usr/share/virtualenvwrapper/virtualenvwrapper.sh && workon cwl && cwltool --version"'
+
+
+#install
+salt -G 'cluster_name:WOLVERINE' cmd.run runas=ubuntu 's3cmd --skip-existing --recursive -c ~/.s3cfg.ceph get s3://bioinformatics_scratch/read_write/'

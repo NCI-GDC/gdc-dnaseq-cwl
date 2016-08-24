@@ -16,8 +16,7 @@ def generate_bam_extract(location, write_path):
     return
 
 
-def generate_etl(job_uuid, etl_json_template_path, alignment_last_step, s3_load_bucket, node_json_dir,
-                 job_signpost_json, write_path):
+def generate_etl(job_uuid, etl_json_template_path, s3_load_bucket, node_json_dir, job_signpost_json, write_path):
     f_open = open(write_path, 'w')
     with open(etl_json_template_path, 'r') as read_open:
         for line in read_open:
@@ -39,26 +38,14 @@ def generate_etl(job_uuid, etl_json_template_path, alignment_last_step, s3_load_
     f_open.close()
     return
 
-def generate_slurm(job_uuid, slurm_template_path, db_cred_path, scratch_dir, git_cwl_hash, s3_load_bucket, job_etl_json, node_json_dir,
-                   cghub_id, gdc_id, gdc_src_id, thread_count, write_path):
+def generate_slurm(job_uuid, slurm_template_path, scratch_dir, git_cwl_hash, s3_load_bucket, job_etl_json, node_json_dir,
+                   thread_count, write_path):
     f_open = open(write_path, 'w')
     with open(slurm_template_path, 'r') as read_open:
         for line in read_open:
-            if 'XX_CGHUB_ID_XX' in line:
-                newline = line.replace('XX_CGHUB_ID_XX', cghub_id)
-                f_open.write(newline)
-            elif 'XX_DB_CRED_PATH_XX' in line:
-                newline = line.replace('XX_DB_CRED_PATH_XX', db_cred_path)
-                f_open.write(newline)
-            elif 'XX_ETL_JSON_PATH_XX' in line:
+            if 'XX_ETL_JSON_PATH_XX' in line:
                 etl_json_path = os.path.join(node_json_dir, job_etl_json)
                 newline = line.replace('XX_ETL_JSON_PATH_XX', etl_json_path)
-                f_open.write(newline)
-            elif 'XX_GDC_ID_XX' in line:
-                newline = line.replace('XX_GDC_ID_XX', gdc_id)
-                f_open.write(newline)
-            elif 'XX_GDC_SRC_ID_XX' in line:
-                newline = line.replace('XX_GDC_SRC_ID_XX', gdc_src_id)
                 f_open.write(newline)
             elif 'XX_GIT_CWL_HASH_XX' in line:
                 newline = line.replace('XX_GIT_CWL_HASH_XX', git_cwl_hash)
@@ -81,7 +68,7 @@ def generate_slurm(job_uuid, slurm_template_path, db_cred_path, scratch_dir, git
     return
 
 
-def setup_job(db_cred_path, etl_json_template_path, git_cwl_hash, node_json_dir, s3_load_bucket, scratch_dir,
+def setup_job(etl_json_template_path, git_cwl_hash, node_json_dir, s3_load_bucket, scratch_dir,
               slurm_template_path, thread_count, filesize, location):
     
     job_uuid = filesize
@@ -90,10 +77,9 @@ def setup_job(db_cred_path, etl_json_template_path, git_cwl_hash, node_json_dir,
     job_slurm = job_uuid + '.sh'
 
     generate_bam_extract(location, job_signpost_json)
-    generate_etl(job_uuid, etl_json_template_path, alignment_last_step, s3_load_bucket, node_json_dir,
-                 job_signpost_json, job_etl_json)
-    generate_slurm(job_uuid, slurm_template_path, db_cred_path, scratch_dir, git_cwl_hash, s3_load_bucket, job_etl_json, node_json_dir,
-                   cghub_id, gdc_id, gdc_src_id, thread_count, job_slurm)
+    generate_etl(job_uuid, etl_json_template_path, s3_load_bucket, node_json_dir, job_signpost_json, job_etl_json)
+    generate_slurm(job_uuid, slurm_template_path, scratch_dir, git_cwl_hash, s3_load_bucket, job_etl_json, node_json_dir,
+                   thread_count, job_slurm)
     return
 
 
@@ -146,7 +132,7 @@ def main():
 
     with open(job_table_path, 'r') as job_table_open:
         for job_line in job_table_open:
-            job_split = job_line.strip().split(' ')
+            job_split = job_line.strip().split()
             filesize = job_split[2]
             location = job_split[3]
             setup_job(etl_json_template_path, git_cwl_hash, node_json_dir, s3_load_bucket, scratch_dir,
