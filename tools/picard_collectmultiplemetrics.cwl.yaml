@@ -24,16 +24,9 @@ inputs:
       prefix: INPUT=
       separate: false
 
-  - id: OUTPUT
-    type: string
-    default: $(inputs.INPUT.nameroot)
-    inputBinding:
-      prefix: OUTPUT=
-      separate: false
-
   - id: METRIC_ACCUMULATION_LEVEL=
     type: string
-    default: "ALL_READS"
+    default: ALL_READS
     inputBinding:
       prefix: METRIC_ACCUMULATION_LEVEL=
       separate: false
@@ -47,13 +40,13 @@ inputs:
 
   - id: TMP_DIR
     type: string
-    default: "."
+    default: .
     inputBinding:
       prefix: TMP_DIR=
       separate: false
 
   - id: VALIDATION_STRINGENCY
-    default: "STRICT"
+    default: STRICT
     type: string
     inputBinding:
       prefix: VALIDATION_STRINGENCY=
@@ -63,7 +56,7 @@ outputs:
   - id: OUTPUT
     type: File
     outputBinding:
-      glob: $(inputs.OUTPUT + ".alignment_summary_metrics")
+      glob: $(inputs.INPUT.nameroot + ".alignment_summary_metrics")
     secondaryFiles:
       - ^.bait_bias_detail_metrics
       - ^.bait_bias_summary_metrics
@@ -91,5 +84,9 @@ arguments:
   - valueFrom: "PROGRAM=CollectSequencingArtifactMetrics"
   - valueFrom: "PROGRAM=MeanQualityByCycle"
   - valueFrom: "PROGRAM=QualityScoreDistribution"
+
+  - valueFrom: $(inputs.INPUT.nameroot)
+    prefix: OUTPUT=
+    separate: false
 
 baseCommand: [java, -jar, /usr/local/bin/picard.jar, CollectMultipleMetrics]
