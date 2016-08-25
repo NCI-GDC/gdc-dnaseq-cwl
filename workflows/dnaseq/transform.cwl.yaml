@@ -322,75 +322,75 @@ steps:
       - id: destination_sqlite
       - id: log
 
-  - id: decider_bwa_pe
-    run: ../../tools/decider_bwa_pe_docker.cwl.yaml
-    inputs:
-      - id: fastq1_path
-        source: "#biobambam2_bamtofastq/output_fastq1"
-      - id: fastq2_path
-        source: "#biobambam2_bamtofastq/output_fastq2"
-      - id: readgroup_path
-        source: "#bam_readgroup_to_json/output_json"
-      - id: fastqc_db1_path
-        source: "#fastqc_db1/output_sqlite"
-      - id: fastqc_db2_path
-        source: "#fastqc_db2/output_sqlite"
-      - id: uuid
-        source: "#uuid"
-    outputs:
-      - id: output_fastq1_paths
-      - id: output_fastq2_paths
-      - id: output_readgroup_paths
-      - id: output_db1_paths
-      - id: output_db2_paths
+  # - id: decider_bwa_pe
+  #   run: ../../tools/decider_bwa_pe_docker.cwl.yaml
+  #   inputs:
+  #     - id: fastq1_path
+  #       source: "#biobambam2_bamtofastq/output_fastq1"
+  #     - id: fastq2_path
+  #       source: "#biobambam2_bamtofastq/output_fastq2"
+  #     - id: readgroup_path
+  #       source: "#bam_readgroup_to_json/output_json"
+  #     - id: fastqc_db1_path
+  #       source: "#fastqc_db1/output_sqlite"
+  #     - id: fastqc_db2_path
+  #       source: "#fastqc_db2/output_sqlite"
+  #     - id: uuid
+  #       source: "#uuid"
+  #   outputs:
+  #     - id: output_fastq1_paths
+  #     - id: output_fastq2_paths
+  #     - id: output_readgroup_paths
+  #     - id: output_db1_paths
+  #     - id: output_db2_paths
 
-  - id: decider_bwa_se
-    run: ../../tools/decider_bwa_se_docker.cwl.yaml
-    inputs:
-      - id: fastq_path
-        source: "#biobambam2_bamtofastq/output_fastq_s"
-      - id: readgroup_path
-        source: "#bam_readgroup_to_json/output_json"
-      - id: fastqc_db_path
-        source: "#fastqc_db_s/output_sqlite"
-      - id: uuid
-        source: "#uuid"
-    outputs:
-      - id: output_fastq_paths
-      - id: output_readgroup_paths
-      - id: output_db_paths
+  # - id: decider_bwa_se
+  #   run: ../../tools/decider_bwa_se_docker.cwl.yaml
+  #   inputs:
+  #     - id: fastq_path
+  #       source: "#biobambam2_bamtofastq/output_fastq_s"
+  #     - id: readgroup_path
+  #       source: "#bam_readgroup_to_json/output_json"
+  #     - id: fastqc_db_path
+  #       source: "#fastqc_db_s/output_sqlite"
+  #     - id: uuid
+  #       source: "#uuid"
+  #   outputs:
+  #     - id: output_fastq_paths
+  #     - id: output_readgroup_paths
+  #     - id: output_db_paths
 
-  - id: decider_bwa_o1
-    run: ../../tools/decider_bwa_o1_docker.cwl.yaml
-    inputs:
-      - id: fastq_path
-        source: "#biobambam2_bamtofastq/output_fastq_o1"
-      - id: readgroup_path
-        source: "#bam_readgroup_to_json/output_json"
-      - id: fastqc_db_path
-        source: "#fastqc_db_o1/output_sqlite"
-      - id: uuid
-        source: "#uuid"
-    outputs:
-      - id: output_fastq_paths
-      - id: output_readgroup_paths
-      - id: output_db_paths
+  # - id: decider_bwa_o1
+  #   run: ../../tools/decider_bwa_o1_docker.cwl.yaml
+  #   inputs:
+  #     - id: fastq_path
+  #       source: "#biobambam2_bamtofastq/output_fastq_o1"
+  #     - id: readgroup_path
+  #       source: "#bam_readgroup_to_json/output_json"
+  #     - id: fastqc_db_path
+  #       source: "#fastqc_db_o1/output_sqlite"
+  #     - id: uuid
+  #       source: "#uuid"
+  #   outputs:
+  #     - id: output_fastq_paths
+  #     - id: output_readgroup_paths
+  #     - id: output_db_paths
 
-  - id: decider_bwa_o2
-    run: ../../tools/decider_bwa_o2_docker.cwl.yaml
-    inputs:
-      - id: fastq_path
-        source: "#biobambam2_bamtofastq/output_fastq_o1"
-      - id: readgroup_path
-        source: "#bam_readgroup_to_json/output_json"
-      - id: fastqc_db_path
-        source: "#fastqc_db_o2/output_sqlite"
-      - id: uuid
-        source: "#uuid"
-    outputs:
-      - id: output_fastq_paths
-      - id: output_readgroup_paths
-      - id: output_db_paths
+  # - id: decider_bwa_o2
+  #   run: ../../tools/decider_bwa_o2_docker.cwl.yaml
+  #   inputs:
+  #     - id: fastq_path
+  #       source: "#biobambam2_bamtofastq/output_fastq_o1"
+  #     - id: readgroup_path
+  #       source: "#bam_readgroup_to_json/output_json"
+  #     - id: fastqc_db_path
+  #       source: "#fastqc_db_o2/output_sqlite"
+  #     - id: uuid
+  #       source: "#uuid"
+  #   outputs:
+  #     - id: output_fastq_paths
+  #     - id: output_readgroup_paths
+  #     - id: output_db_paths
 
   - id: bwa_pe
     run: ../../tools/bwa_pe.cwl.yaml
@@ -418,15 +418,6 @@ steps:
     inputs:
       - id: INPUT
         source: bwa_pe/OUTPUT
-    outputs:
-      - id: OUTPUT
-
-  - id: picard_buildbamindex
-    run: ../../tools/picard_buildbamindex.cwl.yaml
-    scatter: picard_buildbamindex/bam_path
-    inputs:
-      - id: INPUT
-        source: picard_sortsam/OUTPUT
     outputs:
       - id: OUTPUT
 
@@ -576,9 +567,22 @@ steps:
     run: ../../tools/merge_sqlite.cwl.yaml
     inputs:
       - id: source_sqlite
-        source: [ "#merge_bwa_pe_sqlite/destination_sqlite", "#merge_picard_sortsam_sqlite/destination_sqlite", "#merge_picard_buildbamindex_sqlite/destination_sqlite", "#merge_fastqc1_sqlite/destination_sqlite", "#merge_fastqc_db1_sqlite/destination_sqlite", "#merge_fastqc2_sqlite/destination_sqlite", "#merge_fastqc_db2_sqlite/destination_sqlite", "#merge_readgroup_json_db_sqlite/destination_sqlite", "#merge_samtools_flagstat_sqlite/destination_sqlite", "#merge_samtools_stats_sqlite/destination_sqlite", "#merge_picard_collectmultiplemetrics_sqlite/destination_sqlite", "#merge_picard_collectoxogmetrics_sqlite/destination_sqlite"]
+        source: [
+          merge_bwa_pe_sqlite/destination_sqlite
+          merge_picard_sortsam_sqlite/destination_sqlite
+          merge_picard_buildbamindex_sqlite/destination_sqlite
+          merge_fastqc1_sqlite/destination_sqlite
+          merge_fastqc_db1_sqlite/destination_sqlite
+          merge_fastqc2_sqlite/destination_sqlite
+          merge_fastqc_db2_sqlite/destination_sqlite
+          merge_readgroup_json_db_sqlite/destination_sqlite
+          merge_samtools_flagstat_sqlite/destination_sqlite
+          merge_samtools_stats_sqlite/destination_sqlite
+          merge_picard_collectmultiplemetrics_sqlite/destination_sqlite
+          merge_picard_collectoxogmetrics_sqlite/destination_sqlite
+        ]
       - id: uuid
-        source: "#uuid"
+        source: uuid
     outputs:
       - id: destination_sqlite
       - id: log

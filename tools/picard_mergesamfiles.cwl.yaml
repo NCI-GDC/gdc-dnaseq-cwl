@@ -58,7 +58,7 @@ inputs:
 
   - id: TMP_DIR
     type: string
-    default: $(runtime.tmpdir)
+    default: .
     inputBinding:
       prefix: TMP_DIR=
       separate: false

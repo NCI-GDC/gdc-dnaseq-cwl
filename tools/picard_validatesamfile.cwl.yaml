@@ -31,16 +31,9 @@ inputs:
       prefix: MODE=
       separate: false
 
-  - id: OUTPUT
-    type: string
-    default: $(inputs.INPUT.basename + ".metrics")
-    inputBinding:
-      prefix: OUTPUT=
-      separate: false
-
   - id: TMP_DIR
     type: string
-    default: $(runtime.tmpdir)
+    default: .
     inputBinding:
       prefix: TMP_DIR=
       separate: false
@@ -56,8 +49,13 @@ outputs:
   - id: OUTPUT
     type: File
     outputBinding:
-      glob: $(inputs.OUTPUT)
+      glob: $(inputs.INPUT.basename + ".metrics")
 
+arguments:
+  - valueFrom: $(inputs.INPUT.basename + ".metrics")
+    prefix: OUTPUT=
+    separate: false
+      
 successCodes: [0, 1]
 
 baseCommand: [java, -jar, /usr/local/bin/picard.jar, ValidateSamFile]

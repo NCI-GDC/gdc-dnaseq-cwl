@@ -1,4 +1,4 @@
-#!/usr/bin/env cwl-runner
+ #!/usr/bin/env cwl-runner
 
 cwlVersion: v1.0
 
@@ -11,10 +11,11 @@ class: CommandLineTool
 
 inputs:
   - id: CREATE_INDEX
-    type: boolean
-    default: true
+    type: string
+    default: "true"
     inputBinding:
-      prefix: CREATE_INDEX
+      prefix: CREATE_INDEX=
+      separate: false
 
   - id: INPUT
     type: File
@@ -23,16 +24,16 @@ inputs:
       prefix: INPUT=
       separate: false
 
-  - id: OUTPUT
+  - id: SORT_ORDER
     type: string
-    default: $(inputs.INPUT.basename)
+    default: "coordinate"
     inputBinding:
-      prefix: OUTPUT=
+      prefix: SORT_ORDER=
       separate: false
 
   - id: TMP_DIR
     type: string
-    default: $(runtime.tmpdir)
+    default: "."
     inputBinding:
       prefix: TMP_DIR=
       separate: false
@@ -49,6 +50,11 @@ outputs:
     type: File
     format: "edam:format_2572"
     outputBinding:
-      glob: $(inputs.OUTPUT)
+      glob: $(inputs.INPUT.basename)
+
+arguments:
+  - valueFrom: $(inputs.INPUT.basename)
+    prefix: OUTPUT=
+    separate: false
           
 baseCommand: [java, -jar, /usr/local/bin/picard.jar, SortSam]

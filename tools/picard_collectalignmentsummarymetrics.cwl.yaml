@@ -17,13 +17,6 @@ inputs:
       prefix: INPUT=
       separate: false
 
-  - id: OUTPUT
-    type: string
-    default: $(inputs.INPUT.nameroot + ".metrics")
-    inputBinding:
-      prefix: OUTPUT=
-      separate: false
-
   - id: METRIC_ACCUMULATION_LEVEL
     type: string
     default: ALL_READS
@@ -56,6 +49,11 @@ outputs:
   - id: OUTPUT
     type: File
     outputBinding:
-      glob: $(inputs.OUTPUT)
+      glob: $(inputs.INPUT.basename + ".metrics")
+
+arguments:
+  - valueFrom: $(inputs.INPUT.nameroot + ".metrics")
+    prefix: OUTPUT=
+    separate: false
 
 baseCommand: [java, -jar, /usr/local/bin/picard.jar, CollectAlignmentSummaryMetrics]

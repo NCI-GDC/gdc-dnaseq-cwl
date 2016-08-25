@@ -24,20 +24,6 @@ inputs:
       prefix: INPUT=
       separate: false
 
-  - id: METRICS_FILE
-    default: $(inputs.INPUT.nameroot + ".metrics")
-    type: string
-    inputBinding:
-      prefix: METRICS_FILE=
-      separate: false
-
-  - id: OUTPUT
-    default: $(inputs.INPUT.basename)
-    type: string
-    inputBinding:
-      prefix: OUTPUT=
-      separate: false
-
   - id: TMP_DIR
     default: .
     type: string
@@ -46,7 +32,7 @@ inputs:
       separate: false
 
   - id: VALIDATION_STRINGENCY
-    default: "STRICT"
+    default: STRICT
     type: string
     inputBinding:
       prefix: VALIDATION_STRINGENCY=
@@ -57,13 +43,22 @@ outputs:
     type: File
     format: "edam:format_2572"
     outputBinding:
-      glob: $(inputs.OUTPUT)
+      glob: $(inputs.INPUT.basename)
     secondaryFiles:
       - ^.bai
 
   - id: METRICS
     type: File
     outputBinding:
-      glob: $(inputs.INPUT.nameroot + ".metrics")
+      glob: $(inputs.INPUT.basename + ".metrics")
+
+arguments::
+  - valueFrom: $(inputs.INPUT.basename)
+    prefix: OUTPUT=
+    separate: false
+
+  - valueFrom: $(inputs.INPUT.basename + ".metrics")
+    prefix: METRICS_FILES=
+    separate: false
 
 baseCommand: [java, -jar, /usr/local/bin/picard.jar, MarkDuplicates]
