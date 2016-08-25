@@ -2,6 +2,8 @@
 
 cwlVersion: cwl:draft-3
 
+class: CommandLineTool
+
 requirements:
   - class: InlineJavascriptRequirement
   - class: CreateFileRequirement
@@ -20,8 +22,6 @@ requirements:
         fileContent: $(inputs.fasta_pac_path)
       - filename: $(inputs.fasta_sa_path.basename)
         fileContent: $(inputs.fasta_sa_path)
-
-class: CommandLineTool
 
 inputs:
   - id: fasta_path
