@@ -40,7 +40,7 @@ inputs:
     type: File
 
 outputs:
-  - id: output_fasta
+  - id: output
     type: File
     outputBinding:
       glob: $(inputs.fasta_path.basename)
