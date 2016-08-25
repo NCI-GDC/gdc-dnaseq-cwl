@@ -51,7 +51,7 @@ inputs:
 
   - id: SORT_ORDER
     type: string
-    default: "coordinate"
+    default: coordinate
     inputBinding:
       prefix: SORT_ORDER=
       separate: false
@@ -71,7 +71,7 @@ inputs:
 
   - id: VALIDATION_STRINGENCY
     type: string
-    default: "STRICT"
+    default: STRICT
     inputBinding:
       prefix: VALIDATION_STRINGENCY=
       separate: false
