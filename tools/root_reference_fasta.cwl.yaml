@@ -52,4 +52,4 @@ outputs:
       - .pac
       - .sa
 
-baseCommand: []
+baseCommand: ["true"]
