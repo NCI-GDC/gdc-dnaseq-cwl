@@ -24,6 +24,12 @@ inputs:
       prefix: INPUT=
       separate: false
 
+  - id: OUTPUT
+    type: File
+    inputBinding:
+      prefix: OUTPUT=
+      separate: false
+
   - id: SORT_ORDER
     type: string
     default: "coordinate"
@@ -50,11 +56,6 @@ outputs:
     type: File
     format: "edam:format_2572"
     outputBinding:
-      glob: $(inputs.INPUT.basename)
-
-arguments:
-  - valueFrom: $(inputs.INPUT.basename)
-    prefix: OUTPUT=
-    separate: false
+      glob: $(inputs.OUTPUT)
           
 baseCommand: [java, -jar, /usr/local/bin/picard.jar, SortSam]
