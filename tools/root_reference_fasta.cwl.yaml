@@ -1,27 +1,27 @@
 #!/usr/bin/env cwl-runner
 
-cwlVersion: cwl:draft-3
+cwlVersion: v1.0
 
 class: CommandLineTool
 
 requirements:
   - class: InlineJavascriptRequirement
-  - class: CreateFileRequirement
-    fileDef:
-      - filename: $(inputs.fasta_path.basename)
-        fileContent: $(inputs.fasta_path)
-      - filename: $(inputs.fasta_amb_path.basename)
-        fileContent: $(inputs.fasta_amb_path)
-      - filename: $(inputs.fasta_ann_path.basename)
-        fileContent: $(inputs.fasta_ann_path)
-      - filename: $(inputs.fasta_bwt_path.basename)
-        fileContent: $(inputs.fasta_bwt_path)
-      - filename: $(inputs.fasta_fai_path.basename)
-        fileContent: $(inputs.fasta_fai_path)
-      - filename: $(inputs.fasta_pac_path.basename)
-        fileContent: $(inputs.fasta_pac_path)
-      - filename: $(inputs.fasta_sa_path.basename)
-        fileContent: $(inputs.fasta_sa_path)
+  - class: InitialWorkDirRequirement
+    listing:
+      - entryname: $(inputs.fasta_path.basename)
+        entry: $(inputs.fasta_path)
+      - entryname: $(inputs.fasta_amb_path.basename)
+        entry: $(inputs.fasta_amb_path)
+      - entryname: $(inputs.fasta_ann_path.basename)
+        entry: $(inputs.fasta_ann_path)
+      - entryname: $(inputs.fasta_bwt_path.basename)
+        entry: $(inputs.fasta_bwt_path)
+      - entryname: $(inputs.fasta_fai_path.basename)
+        entry: $(inputs.fasta_fai_path)
+      - entryname: $(inputs.fasta_pac_path.basename)
+        entry: $(inputs.fasta_pac_path)
+      - entryname: $(inputs.fasta_sa_path.basename)
+        entry: $(inputs.fasta_sa_path)
 
 inputs:
   - id: fasta_path
@@ -52,4 +52,4 @@ outputs:
       - .pac
       - .sa
 
-baseCommand: ["true"]
+baseCommand: [/bin/true]
