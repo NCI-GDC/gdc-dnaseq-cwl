@@ -1,12 +1,6 @@
 #!/usr/bin/env cwl-runner
 
-cwlVersion: "cwl:draft-3"
-
-description: |
-  Usage:  cwl-runner <this-file-path> --bam_path <bam-path> --uuid <uuid-string>
-  Options:
-    --bam_path       Generate reheadered BAM from a BAM input
-    --uuid           UUID for log file and sqlite db file
+cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
@@ -18,36 +12,20 @@ class: CommandLineTool
 inputs:
   - id: bam_path
     type: File
+    format: "edam:format_2572"
     inputBinding:
       prefix: --bam_path
-
-  - id: uuid
-    type: string
-    inputBinding:
-      prefix: --uuid
-
-  - id: input_state
-    type: ["null", string]
-    inputBinding:
-      prefix: --input_state
 
 outputs:
   - id: output_bam
     type: File
-    description: "The BAM file reheadered"
+    format: "edam:format_2572"
     outputBinding:
-      glob: $(inputs.bam_path.path.split('/').slice(-1)[0])
+      glob: $(inputs.bam_path.basename)
 
   - id: log
     type: File
-    description: "python log file"
     outputBinding:
-      glob: $(inputs.bam_path.path.split('/').slice(-1)[0]+"_bam_reheader.log")
+      glob: $(inputs.bam_path.basename + ".log")
 
-  - id: output_sqlite
-    type: File
-    description: "sqlite file"
-    outputBinding:
-      glob: $(inputs.uuid + ".db")
-
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/bam_reheader/main.py"]
+baseCommand: [/usr/local/bin/bam_reheader]
