@@ -14,7 +14,7 @@ inputs:
     type: File
     format: "edam:format_2572"
     inputBinding:
-      prefix: "INPUT="
+      prefix: INPUT=
       separate: false
 
   - id: MAX_OUTPUT
@@ -39,10 +39,10 @@ inputs:
       separate: false
 
   - id: VALIDATION_STRINGENCY
-    default: "STRICT"
+    default: STRICT
     type: string
     inputBinding:
-      prefix: "VALIDATION_STRINGENCY="
+      prefix: VALIDATION_STRINGENCY=
       separate: false
 
 outputs:
