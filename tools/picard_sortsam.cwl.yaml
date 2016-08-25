@@ -12,7 +12,7 @@ class: CommandLineTool
 inputs:
   - id: CREATE_INDEX
     type: string
-    default: "true"
+    default: true
     inputBinding:
       prefix: CREATE_INDEX=
       separate: false
@@ -33,7 +33,7 @@ inputs:
 
   - id: TMP_DIR
     type: string
-    default: "."
+    default: .
     inputBinding:
       prefix: TMP_DIR=
       separate: false
