@@ -52,7 +52,7 @@ outputs:
       glob: $(inputs.INPUT.basename + ".metrics")
 
 arguments:
-  - valueFrom: $(inputs.INPUT.nameroot + ".metrics")
+  - valueFrom: $(inputs.INPUT.basename + ".metrics")
     prefix: OUTPUT=
     separate: false
 
