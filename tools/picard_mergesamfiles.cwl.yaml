@@ -17,10 +17,11 @@ inputs:
       prefix: ASSUME_SORTED
 
   - id: CREATE_INDEX
-    type: boolean
-    default: true
+    type: string
+    default: "true"
     inputBinding:
-      prefix: CREATE_INDEX
+      prefix: CREATE_INDEX=
+      separate: false
 
   - id: INPUT
     format: "edam:format_2572"
@@ -38,10 +39,11 @@ inputs:
       separate: false
 
   - id: MERGE_SEQUENCE_DICTIONARIES
-    type: boolean
-    default: false
+    type: string
+    default: "false"
     inputBinding:
-      prefix: MERGE_SEQUENCE_DICTIONARIES
+      prefix: MERGE_SEQUENCE_DICTIONARIES=
+      separate: false
 
   - id: OUTPUT
     type: string
@@ -64,10 +66,10 @@ inputs:
       separate: false
 
   - id: USE_THREADING
-    type: boolean
-    default: true
+    type: string
+    default: "true"
     inputBinding:
-      prefix: USE_THREADING
+      prefix: USE_THREADING=
 
   - id: VALIDATION_STRINGENCY
     type: string
@@ -77,7 +79,7 @@ inputs:
       separate: false
 
 outputs:
-  - id: OUTPUT
+  - id: MERGED_OUTPUT
     type: File
     outputBinding:
       glob: $(inputs.OUTPUT)

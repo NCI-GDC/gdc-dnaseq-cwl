@@ -438,27 +438,26 @@ steps:
       - id: INPUT
         source: bwa_pe/OUTPUT
       - id: OUTPUT
-        source: bwa_pe/OUTPUT
-        valueFrom: $(self.basename)
+        valueFrom: $(inputs.INPUT.basename)
     out:
-      - id: OUTPUT
+      - id: SORTED_OUTPUT
 
   - id: picard_mergesamfiles
     run: ../../tools/picard_mergesamfiles.cwl.yaml
     in:
       - id: INPUT
-        source: picard_sortsam/OUTPUT
+        source: picard_sortsam/SORTED_OUTPUT
       - id: OUTPUT
         source: bam_path
         valueFrom: $(self.basename)
     out:
-      - id: OUTPUT
+      - id: MERGED_OUTPUT
 
   - id: bam_reheader
     run: ../../tools/bam_reheader.cwl.yaml
     in:
       - id: bam_path
-        source: picard_mergesamfiles/OUTPUT
+        source: picard_mergesamfiles/MERGED_OUTPUT
     out:
       - id: output_bam
 
