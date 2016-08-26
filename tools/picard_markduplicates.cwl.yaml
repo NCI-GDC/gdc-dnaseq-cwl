@@ -10,7 +10,7 @@ requirements:
 class: CommandLineTool
 
 inputs:
-  - valueFrom: CREATE_INDEX
+  - id: CREATE_INDEX
     type: string
     default: true
     inputBinding:
