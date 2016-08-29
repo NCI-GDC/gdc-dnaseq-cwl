@@ -1,6 +1,6 @@
 #!/usr/bin/env cwl-runner
 
-cwlVersion: cwl:draft-3
+cwlVersion: v1.0
 
 requirements:
   - class: InlineJavascriptRequirement
@@ -57,7 +57,7 @@ outputs:
       items: ["null", File]
     outputBinding:
       glob: "*_1.fq.gz"
-      outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
+      outputEval: $( self.sort(function(a,b) { return a.location > b.location }) )
 
   - id: output_fastq2_paths
     type:
@@ -65,7 +65,7 @@ outputs:
       items: ["null", File]
     outputBinding:
       glob: "*_2.fq.gz"
-      outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
+      outputEval: $( self.sort(function(a,b) { return a.location > b.location }) )
 
   - id: output_readgroup_paths
     type:
@@ -73,7 +73,7 @@ outputs:
       items: ["null", File]
     outputBinding:
       glob: "*.json"
-      outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
+      outputEval: $( self.sort(function(a,b) { return a.location > b.location }) )
       
   - id: output_db1_paths
     type:
@@ -81,7 +81,7 @@ outputs:
       items: ["null", File]
     outputBinding:
       glob: "*_1_fastqc.db"
-      outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
+      outputEval: $( self.sort(function(a,b) { return a.location > b.location }) )
 
   - id: output_db2_paths
     type:
@@ -89,6 +89,6 @@ outputs:
       items: ["null", File]
     outputBinding:
       glob: "*_2_fastqc.db"
-      outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
+      outputEval: $( self.sort(function(a,b) { return a.location > b.location }) )
 
 baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/.virtualenvs/p3/lib/python3.5/site-packages/decider_bwa_pe/main.py"]
