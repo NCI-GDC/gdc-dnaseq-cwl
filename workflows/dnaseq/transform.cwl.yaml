@@ -92,27 +92,27 @@ steps:
     out:
       - id: OUTPUT
 
-  # - id: fastqc_o1
-  #   run: ../../tools/fastqc.cwl.yaml
-  #   scatter: fastqc_o1/INPUT
-  #   in:
-  #     - id: INPUT
-  #       source: biobambam_bamtofastq/output_fastq_o1
-  #     - id: threads
-  #       source: thread_count
-  #   out:
-  #     - id: OUTPUT
+  - id: fastqc_o1
+    run: ../../tools/fastqc.cwl.yaml
+    scatter: fastqc_o1/INPUT
+    in:
+      - id: INPUT
+        source: biobambam_bamtofastq/output_fastq_o1
+      - id: threads
+        source: thread_count
+    out:
+      - id: OUTPUT
 
-  # - id: fastqc_o2
-  #   run: ../../tools/fastqc.cwl.yaml
-  #   scatter: fastqc_o2/INPUT
-  #   in:
-  #     - id: INPUT
-  #       source: biobambam_bamtofastq/output_fastq_o2
-  #     - id: threads
-  #       source: thread_count
-  #   out:
-  #     - id: OUTPUT
+  - id: fastqc_o2
+    run: ../../tools/fastqc.cwl.yaml
+    scatter: fastqc_o2/INPUT
+    in:
+      - id: INPUT
+        source: biobambam_bamtofastq/output_fastq_o2
+      - id: threads
+        source: thread_count
+    out:
+      - id: OUTPUT
 
   - id: fastqc_db1
     run: ../../tools/fastqc_db.cwl.yaml
@@ -150,29 +150,29 @@ steps:
       - id: LOG
       - id: OUTPUT
 
-  # - id: fastqc_db_o1
-  #   run: ../../tools/fastqc_db.cwl.yaml
-  #   scatter: fastqc_db_o1/INPUT
-  #   in:
-  #     - id: INPUT
-  #       source: fastqc_o1/OUTPUT
-  #     - id: uuid
-  #       source: uuid
-  #   out:
-  #     - id: LOG
-  #     - id: OUTPUT
+  - id: fastqc_db_o1
+    run: ../../tools/fastqc_db.cwl.yaml
+    scatter: fastqc_db_o1/INPUT
+    in:
+      - id: INPUT
+        source: fastqc_o1/OUTPUT
+      - id: uuid
+        source: uuid
+    out:
+      - id: LOG
+      - id: OUTPUT
 
-  # - id: fastqc_db_o2
-  #   run: ../../tools/fastqc_db.cwl.yaml
-  #   scatter: fastqc_db_o2/INPUT
-  #   in:
-  #     - id: INPUT
-  #       source: fastqc_o2/OUTPUT
-  #     - id: uuid
-  #       source: uuid
-  #   out:
-  #     - id: LOG
-  #     - id: OUTPUT
+  - id: fastqc_db_o2
+    run: ../../tools/fastqc_db.cwl.yaml
+    scatter: fastqc_db_o2/INPUT
+    in:
+      - id: INPUT
+        source: fastqc_o2/OUTPUT
+      - id: uuid
+        source: uuid
+    out:
+      - id: LOG
+      - id: OUTPUT
 
   - id: merge_fastqc_db1_sqlite
     run: ../../tools/merge_sqlite.cwl.yaml
@@ -207,27 +207,27 @@ steps:
       - id: destination_sqlite
       - id: log
 
-  # - id: merge_fastqc_db_o1_sqlite
-  #   run: ../../tools/merge_sqlite.cwl.yaml
-  #   in:
-  #     - id: source_sqlite
-  #       source: fastqc_db_o1/OUTPUT
-  #     - id: uuid
-  #       source: uuid
-  #   out:
-  #     - id: destination_sqlite
-  #     - id: log
+  - id: merge_fastqc_db_o1_sqlite
+    run: ../../tools/merge_sqlite.cwl.yaml
+    in:
+      - id: source_sqlite
+        source: fastqc_db_o1/OUTPUT
+      - id: uuid
+        source: uuid
+    out:
+      - id: destination_sqlite
+      - id: log
 
-  # - id: merge_fastqc_db_o2_sqlite
-  #   run: ../../tools/merge_sqlite.cwl.yaml
-  #   in:
-  #     - id: source_sqlite
-  #       source: fastqc_db_o2/OUTPUT
-  #     - id: uuid
-  #       source: uuid
-  #   out:
-  #     - id: destination_sqlite
-  #     - id: log
+  - id: merge_fastqc_db_o2_sqlite
+    run: ../../tools/merge_sqlite.cwl.yaml
+    in:
+      - id: source_sqlite
+        source: fastqc_db_o2/OUTPUT
+      - id: uuid
+        source: uuid
+    out:
+      - id: destination_sqlite
+      - id: log
 
   - id: fastqc_pe_basicstats_json
     run: ../../tools/fastqc_basicstatistics_json.cwl
@@ -343,7 +343,7 @@ steps:
 
   # - id: decider_bwa_o1
   #   run: ../../tools/decider_bwa_o1_docker.cwl.yaml
-  #   inputs:
+  #   in:
   #     - id: fastq_path
   #       source: "#biobambam2_bamtofastq/output_fastq_o1"
   #     - id: readgroup_path
@@ -352,7 +352,7 @@ steps:
   #       source: "#fastqc_db_o1/output_sqlite"
   #     - id: uuid
   #       source: "#uuid"
-  #   outputs:
+  #   out:
   #     - id: output_fastq_paths
   #     - id: output_readgroup_paths
   #     - id: output_db_paths
@@ -412,9 +412,9 @@ steps:
     out:
       - id: OUTPUT
 
-  - id: picard_sortsam
+  - id: picard_sortsam_pe
     run: ../../tools/picard_sortsam.cwl.yaml
-    scatter: picard_sortsam/INPUT
+    scatter: picard_sortsam_pe/INPUT
     in:
       - id: INPUT
         source: bwa_pe/OUTPUT
@@ -423,11 +423,47 @@ steps:
     out:
       - id: SORTED_OUTPUT
 
+  - id: picard_mergesamfiles_pe
+    run: ../../tools/picard_mergesamfiles.cwl.yaml
+    in:
+      - id: INPUT
+        source: picard_sortsam_pe/SORTED_OUTPUT
+      - id: OUTPUT
+        source: bam_path
+        valueFrom: $(self.basename)
+    out:
+      - id: MERGED_OUTPUT
+
+  - id: picard_sortsam_se
+    run: ../../tools/picard_sortsam.cwl.yaml
+    scatter: picard_sortsam_se/INPUT
+    in:
+      - id: INPUT
+        source: bwa_se/OUTPUT
+      - id: OUTPUT
+        valueFrom: $(inputs.INPUT.basename)
+    out:
+      - id: SORTED_OUTPUT
+
+  - id: picard_mergesamfiles_se
+    run: ../../tools/picard_mergesamfiles.cwl.yaml
+    in:
+      - id: INPUT
+        source: picard_sortsam_se/SORTED_OUTPUT
+      - id: OUTPUT
+        source: bam_path
+        valueFrom: $(self.basename)
+    out:
+      - id: MERGED_OUTPUT
+
   - id: picard_mergesamfiles
     run: ../../tools/picard_mergesamfiles.cwl.yaml
     in:
       - id: INPUT
-        source: picard_sortsam/SORTED_OUTPUT
+        source: [
+        picard_mergesamfiles_pe/MERGED_OUTPUT,
+        picard_mergesamfiles_se/MERGED_OUTPUT
+        ]
       - id: OUTPUT
         source: bam_path
         valueFrom: $(self.basename)
