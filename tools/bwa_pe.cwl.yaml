@@ -103,6 +103,11 @@ arguments:
 
         var outbam = inputs.readgroup_json_path.basename.slice(0,-4) + "bam";
 
+        if (inputs.fastq1.size == 0 && inputs.fastq2.size == 0) {
+          var cmd = [ "touch", "outbam"];
+          return cmd.join(' ')
+        }
+        
         if (encoding == "Illumina 1.3" || encoding == "Illumina 1.5") {
           return bwa_aln_64(rg_str, outbam)
         } else if (encoding == "Sanger / Illumina 1.9") {
