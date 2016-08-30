@@ -3,9 +3,9 @@
 cwlVersion: v1.0
 
 requirements:
-  - class: InlineJavascriptRequirement
   - class: DockerRequirement
     dockerPull: quay.io/jeremiahsavage/bwa
+  - class: InlineJavascriptRequirement
   - class: ShellCommandRequirement
 
 class: CommandLineTool
