@@ -81,8 +81,21 @@ inputs:
 
 outputs:
   - id: MERGED_OUTPUT
-    type: File
+    type: ["null", File]
     outputBinding:
       glob: $(inputs.OUTPUT)
 
-baseCommand: [java, -jar, /usr/local/bin/picard.jar, MergeSamFiles]
+arguments:
+  - valueFrom: |
+      ${
+        if (inputs.INPUT.length == 0) {
+          var cmd = ['/bin/true'];
+          return cmd
+        }
+        else {
+          var cmd = ["java", "-jar", "/usr/local/bin/picard.jar", "MergeSamFiles"];
+          return cmd
+        }
+
+      }
+baseCommand: []
