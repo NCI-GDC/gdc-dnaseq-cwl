@@ -245,21 +245,24 @@ steps:
     out:
       - id: OUTPUT
 
-  # - id: fastqc_o1_json
-  #   run: ../../tools/fastqc_basicstatistics_json.cwl
-  #   in:
-  #     - id: merge_fastqc_db_o1_sqlite/destination_sqlite
-  #   out:
-  #     - id: OUTPUT
+  - id: fastqc_o1_basicstats_json
+    run: ../../tools/fastqc_basicstatistics_json.cwl
+    in:
+      - id: sqlite_path
+        source: merge_fastqc_db_o1_sqlite/destination_sqlite
+    out:
+      - id: OUTPUT
 
-  # - id: fastqc_o2_json
-  #   run: ../../tools/fastqc_basicstatistics_json.cwl
-  #   in:
-  #     - id: merge_fastqc_db_o2_sqlite/destination_sqlite
-  #   out:
-  #     - id: OUTPUT
-#need eof and dup QNAME detection
+  - id: fastqc_o2_basicstats_json
+    run: ../../tools/fastqc_basicstatistics_json.cwl
+    in:
+      - id: sqlite_path
+        source: merge_fastqc_db_o2_sqlite/destination_sqlite
+    out:
+      - id: OUTPUT
 
+        
+  #need eof and dup QNAME detection
   # - id: picard_validatesamfile_to_sqlite
   #   run: ../../tools/picard_validatesamfile_to_sqlite.cwl.yaml
   #   in:
@@ -274,52 +277,6 @@ steps:
   #       source: uuid
   #   out:
   #     - id: sqlite
-
-  # - id: picard_collectalignmentsummarymetrics
-  #   run: ../../tools/picard_collectalignmentsummarymetrics.cwl.yaml
-  #   in:
-  #     - id: INPUT
-  #       source: bam_path
-  #   out:
-  #     - id: OUTPUT
-
-  # - id: picard_collectalignmentsummarymetrics_to_sqlite
-  #   run: ../../tools/picard_collectalignmentsummarymetrics_to_sqlite.cwl.yaml
-  #   in:
-  #     - id: bam
-  #       source: bam_path
-  #       valueFrom: $(self.basename)
-  #     - id: input_state
-  #       valueFrom: "original"
-  #     - id: metric_path
-  #       source: picard_collectalignmentsummarymetrics/OUTPUT
-  #     - id: uuid
-  #       source: uuid
-  #   out:
-  #     - id: sqlite
-
-  # - id: readgroup_json_db
-  #   run: ../../tools/readgroup_json_db.cwl.yaml
-  #   scatter: readgroup_json_db/json_path
-  #   in:
-  #     - id: json_path
-  #       source: bam_readgroup_to_json/OUTPUT
-  #     - id: uuid
-  #       source: uuid
-  #   out:
-  #     - id: log
-  #     - id: output_sqlite
-
-  # - id: merge_readgroup_json_db_sqlite
-  #   run: ../../tools/merge_sqlite.cwl.yaml
-  #   in:
-  #     - id: source_sqlite
-  #       source: readgroup_json_db/output_sqlite
-  #     - id: uuid
-  #       source: uuid
-  #   out:
-  #     - id: destination_sqlite
-  #     - id: log
 
   - id: decider_bwa_pe
     run: ../../tools/decider_bwa_expression.cwl.yaml
@@ -341,38 +298,25 @@ steps:
     out:
       - id: output_readgroup_paths
 
-  # - id: decider_bwa_o1
-  #   run: ../../tools/decider_bwa_o1_docker.cwl.yaml
-  #   in:
-  #     - id: fastq_path
-  #       source: "#biobambam2_bamtofastq/output_fastq_o1"
-  #     - id: readgroup_path
-  #       source: "#bam_readgroup_to_json/output_json"
-  #     - id: fastqc_db_path
-  #       source: "#fastqc_db_o1/output_sqlite"
-  #     - id: uuid
-  #       source: "#uuid"
-  #   out:
-  #     - id: output_fastq_paths
-  #     - id: output_readgroup_paths
-  #     - id: output_db_paths
+  - id: decider_bwa_o1
+    run: ../../tools/decider_bwa_expression.cwl.yaml
+    in:
+      - id: fastq_path
+        source: biobambam_bamtofastq/output_fastq_o1
+      - id: readgroup_path
+        source: bam_readgroup_to_json/OUTPUT
+    out:
+      - id: output_readgroup_paths
 
-  # - id: decider_bwa_o2
-  #   run: ../../tools/decider_bwa_o2_docker.cwl.yaml
-  #   inputs:
-  #     - id: fastq_path
-  #       source: "#biobambam2_bamtofastq/output_fastq_o1"
-  #     - id: readgroup_path
-  #       source: "#bam_readgroup_to_json/output_json"
-  #     - id: fastqc_db_path
-  #       source: "#fastqc_db_o2/output_sqlite"
-  #     - id: uuid
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: output_fastq_paths
-  #     - id: output_readgroup_paths
-  #     - id: output_db_paths
-
+  - id: decider_bwa_o2
+    run: ../../tools/decider_bwa_expression.cwl.yaml
+    in:
+      - id: fastq_path
+        source: biobambam_bamtofastq/output_fastq_o2
+      - id: readgroup_path
+        source: bam_readgroup_to_json/OUTPUT
+    out:
+      - id: output_readgroup_paths
 
   - id: bwa_pe
     run: ../../tools/bwa_pe.cwl.yaml
@@ -407,6 +351,42 @@ steps:
         source: decider_bwa_se/output_readgroup_paths
       - id: fastqc_json_path
         source: fastqc_se_basicstats_json/OUTPUT
+      - id: thread_count
+        source: thread_count
+    out:
+      - id: OUTPUT
+
+  - id: bwa_o1
+    run: ../../tools/bwa_se.cwl.yaml
+    scatter: [bwa_o1/fastq, bwa_o1/readgroup_json_path]
+    scatterMethod: "dotproduct"
+    in:
+      - id: fasta
+        source: reference_fasta_path
+      - id: fastq
+        source: biobambam_bamtofastq/output_fastq_o1
+      - id: readgroup_json_path
+        source: decider_bwa_o1/output_readgroup_paths
+      - id: fastqc_json_path
+        source: fastqc_o1_basicstats_json/OUTPUT
+      - id: thread_count
+        source: thread_count
+    out:
+      - id: OUTPUT
+
+  - id: bwa_o2
+    run: ../../tools/bwa_se.cwl.yaml
+    scatter: [bwa_o2/fastq, bwa_o2/readgroup_json_path]
+    scatterMethod: "dotproduct"
+    in:
+      - id: fasta
+        source: reference_fasta_path
+      - id: fastq
+        source: biobambam_bamtofastq/output_fastq_o2
+      - id: readgroup_json_path
+        source: decider_bwa_o2/output_readgroup_paths
+      - id: fastqc_json_path
+        source: fastqc_o2_basicstats_json/OUTPUT
       - id: thread_count
         source: thread_count
     out:
@@ -456,13 +436,59 @@ steps:
     out:
       - id: MERGED_OUTPUT
 
+  - id: picard_sortsam_o1
+    run: ../../tools/picard_sortsam.cwl.yaml
+    scatter: picard_sortsam_o1/INPUT
+    in:
+      - id: INPUT
+        source: bwa_o1/OUTPUT
+      - id: OUTPUT
+        valueFrom: $(inputs.INPUT.basename)
+    out:
+      - id: SORTED_OUTPUT
+
+  - id: picard_mergesamfiles_o1
+    run: ../../tools/picard_mergesamfiles.cwl.yaml
+    in:
+      - id: INPUT
+        source: picard_sortsam_o1/SORTED_OUTPUT
+      - id: OUTPUT
+        source: bam_path
+        valueFrom: $(self.basename)
+    out:
+      - id: MERGED_OUTPUT
+
+  - id: picard_sortsam_o2
+    run: ../../tools/picard_sortsam.cwl.yaml
+    scatter: picard_sortsam_o2/INPUT
+    in:
+      - id: INPUT
+        source: bwa_o2/OUTPUT
+      - id: OUTPUT
+        valueFrom: $(inputs.INPUT.basename)
+    out:
+      - id: SORTED_OUTPUT
+
+  - id: picard_mergesamfiles_o2
+    run: ../../tools/picard_mergesamfiles.cwl.yaml
+    in:
+      - id: INPUT
+        source: picard_sortsam_o2/SORTED_OUTPUT
+      - id: OUTPUT
+        source: bam_path
+        valueFrom: $(self.basename)
+    out:
+      - id: MERGED_OUTPUT
+
   - id: picard_mergesamfiles
     run: ../../tools/picard_mergesamfiles.cwl.yaml
     in:
       - id: INPUT
         source: [
         picard_mergesamfiles_pe/MERGED_OUTPUT,
-        picard_mergesamfiles_se/MERGED_OUTPUT
+        picard_mergesamfiles_se/MERGED_OUTPUT.
+        picard_mergesamfiles_o1/MERGED_OUTPUT.
+        picard_mergesamfiles_o2/MERGED_OUTPUT
         ]
       - id: OUTPUT
         source: bam_path
