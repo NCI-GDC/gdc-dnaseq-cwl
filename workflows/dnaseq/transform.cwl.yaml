@@ -240,7 +240,8 @@ steps:
   - id: fastqc_se_basicstats_json
     run: ../../tools/fastqc_basicstatistics_json.cwl
     in:
-      - id: merge_fastqc_db_s_sqlite/destination_sqlite
+      - id: sqlite_path
+        source: merge_fastqc_db_s_sqlite/destination_sqlite
     out:
       - id: OUTPUT
 
@@ -395,13 +396,13 @@ steps:
 
   - id: bwa_se
     run: ../../tools/bwa_se.cwl.yaml
-    scatter: [bwa_se/fastq1, bwa_se/readgroup_json_path]
+    scatter: [bwa_se/fastq, bwa_se/readgroup_json_path]
     scatterMethod: "dotproduct"
     in:
       - id: fasta
         source: reference_fasta_path
       - id: fastq
-        source: biobambam_bamtofastq/output_fastq_2
+        source: biobambam_bamtofastq/output_fastq_s
       - id: readgroup_json_path
         source: decider_bwa_se/output_readgroup_paths
       - id: fastqc_json_path
