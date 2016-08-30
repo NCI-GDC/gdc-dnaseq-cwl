@@ -70,6 +70,7 @@ inputs:
     default: "true"
     inputBinding:
       prefix: USE_THREADING=
+      separate: false
 
   - id: VALIDATION_STRINGENCY
     type: string
