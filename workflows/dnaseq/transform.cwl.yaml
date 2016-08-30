@@ -81,16 +81,16 @@ steps:
     out:
       - id: OUTPUT
 
-  # - id: fastqc_s
-  #   run: ../../tools/fastqc.cwl.yaml
-  #   scatter: fastqc_s/INPUT
-  #   in:
-  #     - id: INPUT
-  #       source: biobambam_bamtofastq/output_fastq_s
-  #     - id: threads
-  #       source: thread_count
-  #   out:
-  #     - id: OUTPUT
+  - id: fastqc_s
+    run: ../../tools/fastqc.cwl.yaml
+    scatter: fastqc_s/INPUT
+    in:
+      - id: INPUT
+        source: biobambam_bamtofastq/output_fastq_s
+      - id: threads
+        source: thread_count
+    out:
+      - id: OUTPUT
 
   # - id: fastqc_o1
   #   run: ../../tools/fastqc.cwl.yaml
@@ -138,17 +138,17 @@ steps:
       - id: LOG
       - id: OUTPUT
 
-  # - id: fastqc_db_s
-  #   run: ../../tools/fastqc_db.cwl.yaml
-  #   scatter: fastqc_db_s/INPUT
-  #   in:
-  #     - id: INPUT
-  #       source: fastqc_s/OUTPUT
-  #     - id: uuid
-  #       source: uuid
-  #   out:
-  #     - id: LOG
-  #     - id: OUTPUT
+  - id: fastqc_db_s
+    run: ../../tools/fastqc_db.cwl.yaml
+    scatter: fastqc_db_s/INPUT
+    in:
+      - id: INPUT
+        source: fastqc_s/OUTPUT
+      - id: uuid
+        source: uuid
+    out:
+      - id: LOG
+      - id: OUTPUT
 
   # - id: fastqc_db_o1
   #   run: ../../tools/fastqc_db.cwl.yaml
@@ -196,16 +196,16 @@ steps:
       - id: destination_sqlite
       - id: log
 
-  # - id: merge_fastqc_db_s_sqlite
-  #   run: ../../tools/merge_sqlite.cwl.yaml
-  #   in:
-  #     - id: source_sqlite
-  #       source: fastqc_db_s/OUTPUT
-  #     - id: uuid
-  #       source: uuid
-  #   out:
-  #     - id: destination_sqlite
-  #     - id: log
+  - id: merge_fastqc_db_s_sqlite
+    run: ../../tools/merge_sqlite.cwl.yaml
+    in:
+      - id: source_sqlite
+        source: fastqc_db_s/OUTPUT
+      - id: uuid
+        source: uuid
+    out:
+      - id: destination_sqlite
+      - id: log
 
   # - id: merge_fastqc_db_o1_sqlite
   #   run: ../../tools/merge_sqlite.cwl.yaml
@@ -237,12 +237,12 @@ steps:
     out:
       - id: OUTPUT
 
-  # - id: fastqc_se_json
-  #   run: ../../tools/fastqc_basicstatistics_json.cwl
-  #   in:
-  #     - id: merge_fastqc_db_s_sqlite/destination_sqlite
-  #   out:
-  #     - id: OUTPUT
+  - id: fastqc_se_basicstats_json
+    run: ../../tools/fastqc_basicstatistics_json.cwl
+    in:
+      - id: merge_fastqc_db_s_sqlite/destination_sqlite
+    out:
+      - id: OUTPUT
 
   # - id: fastqc_o1_json
   #   run: ../../tools/fastqc_basicstatistics_json.cwl
@@ -320,43 +320,25 @@ steps:
   #     - id: destination_sqlite
   #     - id: log
 
-  # - id: decider_bwa_pe
-  #   run: ../../tools/decider_bwa_pe_docker.cwl.yaml
-  #   inputs:
-  #     - id: fastq1_path
-  #       source: "#biobambam2_bamtofastq/output_fastq1"
-  #     - id: fastq2_path
-  #       source: "#biobambam2_bamtofastq/output_fastq2"
-  #     - id: readgroup_path
-  #       source: "#bam_readgroup_to_json/output_json"
-  #     - id: fastqc_db1_path
-  #       source: "#fastqc_db1/output_sqlite"
-  #     - id: fastqc_db2_path
-  #       source: "#fastqc_db2/output_sqlite"
-  #     - id: uuid
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: output_fastq1_paths
-  #     - id: output_fastq2_paths
-  #     - id: output_readgroup_paths
-  #     - id: output_db1_paths
-  #     - id: output_db2_paths
+  - id: decider_bwa_pe
+    run: ../../tools/decider_bwa_expression.cwl.yaml
+    in:
+      - id: fastq_path
+        source: biobambam_bamtofastq/output_fastq1
+      - id: readgroup_path
+        source: bam_readgroup_to_json/OUTPUT
+    out:
+      - id: output_readgroup_paths
 
-  # - id: decider_bwa_se
-  #   run: ../../tools/decider_bwa_se_docker.cwl.yaml
-  #   inputs:
-  #     - id: fastq_path
-  #       source: "#biobambam2_bamtofastq/output_fastq_s"
-  #     - id: readgroup_path
-  #       source: "#bam_readgroup_to_json/output_json"
-  #     - id: fastqc_db_path
-  #       source: "#fastqc_db_s/output_sqlite"
-  #     - id: uuid
-  #       source: "#uuid"
-  #   outputs:
-  #     - id: output_fastq_paths
-  #     - id: output_readgroup_paths
-  #     - id: output_db_paths
+  - id: decider_bwa_se
+    run: ../../tools/decider_bwa_expression.cwl.yaml
+    in:
+      - id: fastq_path
+        source: biobambam_bamtofastq/output_fastq_s
+      - id: readgroup_path
+        source: bam_readgroup_to_json/OUTPUT
+    out:
+      - id: output_readgroup_paths
 
   # - id: decider_bwa_o1
   #   run: ../../tools/decider_bwa_o1_docker.cwl.yaml
@@ -390,26 +372,6 @@ steps:
   #     - id: output_readgroup_paths
   #     - id: output_db_paths
 
-  # - id: bwa_pe
-  #   run: ../../tools/bwa_pe.cwl.yaml
-  #   scatter: [bwa_pe/fastq1_path, bwa_pe/fastq2_path, bwa_pe/readgroup_json_path]
-  #   scatterMethod: "dotproduct"
-  #   inputs:
-  #     - id: fasta
-  #       source: reference_fasta_path
-  #     - id: fastq1
-  #       source: decider_bwa_pe/output_fastq1_paths
-  #     - id: fastq2
-  #       source: decider_bwa_pe/output_fastq2_paths
-  #     - id: readgroup_json_path
-  #       source: decider_bwa_pe/output_readgroup_paths
-  #     - id: fastqc_json_path
-  #       source: fastqc_pe_basicstats_json/OUTPUT
-  #     - id: thread_count
-  #       source: thread_count
-  #   outputs:
-  #     - id: OUTPUT
-
 
   - id: bwa_pe
     run: ../../tools/bwa_pe.cwl.yaml
@@ -423,9 +385,27 @@ steps:
       - id: fastq2
         source: biobambam_bamtofastq/output_fastq2
       - id: readgroup_json_path
-        source: bam_readgroup_to_json/OUTPUT
+        source: decider_bwa_pe/output_readgroup_paths
       - id: fastqc_json_path
         source: fastqc_pe_basicstats_json/OUTPUT
+      - id: thread_count
+        source: thread_count
+    out:
+      - id: OUTPUT
+
+  - id: bwa_se
+    run: ../../tools/bwa_se.cwl.yaml
+    scatter: [bwa_se/fastq1, bwa_se/readgroup_json_path]
+    scatterMethod: "dotproduct"
+    in:
+      - id: fasta
+        source: reference_fasta_path
+      - id: fastq
+        source: biobambam_bamtofastq/output_fastq_2
+      - id: readgroup_json_path
+        source: decider_bwa_se/output_readgroup_paths
+      - id: fastqc_json_path
+        source: fastqc_se_basicstats_json/OUTPUT
       - id: thread_count
         source: thread_count
     out:
