@@ -14,12 +14,6 @@ inputs:
       type: array
       items: File
 
-  - id: fastq2_path
-    format: "edam:format_2182"
-    type:
-      type: array
-      items: File
-
   - id: readgroup_path
     format: "edam:format_3464"
     type:
@@ -27,18 +21,6 @@ inputs:
       items: File
 
 outputs:
-  - id: output_fastq1_paths
-    format: "edam:format_2182"
-    type:
-      type: array
-      items: File
-
-  - id: output_fastq2_paths
-    format: "edam:format_2182"
-    type:
-      type: array
-      items: File
-
   - id: output_readgroup_paths
     format: "edam:format_3464"
     type:
@@ -83,13 +65,7 @@ expression: |
         }
       }
 
-      var fastq1_sorted = inputs.fastq1_path.sort(function(a,b) { return a.location > b.location } )
-      var fastq2_sorted = inputs.fastq2_path.sort(function(a,b) { return a.location > b.location } )
       var readgroup_sorted = readgroup_array.sort(function(a,b) { return a.location > b.location } )
 
-      return [
-        {'output_fastq1_paths': fastq1_sorted},
-        {'output_fastq2_paths': fastq2_sorted},
-        {'output_readgroup_paths': readgroup_sorted}
-      ]
+      return {'output_readgroup_paths': readgroup_sorted}
     }
