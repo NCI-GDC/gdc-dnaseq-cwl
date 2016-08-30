@@ -117,3 +117,26 @@ steps:
     outputs:
       - id: destination_sqlite
       - id: log
+
+  - id: readgroup_json_db
+    run: ../../tools/readgroup_json_db.cwl.yaml
+    scatter: readgroup_json_db/json_path
+    in:
+      - id: json_path
+        source: bam_readgroup_to_json/OUTPUT
+      - id: uuid
+        source: uuid
+    out:
+      - id: log
+      - id: output_sqlite
+
+  - id: merge_readgroup_json_db_sqlite
+    run: ../../tools/merge_sqlite.cwl.yaml
+    in:
+      - id: source_sqlite
+        source: readgroup_json_db/output_sqlite
+      - id: uuid
+        source: uuid
+    out:
+      - id: destination_sqlite
+      - id: log
