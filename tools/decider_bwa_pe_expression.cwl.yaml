@@ -47,6 +47,13 @@ outputs:
 
 expression: |
    ${
+      function include(arr,obj) {
+        return (arr.indexOf(obj) != -1)
+      }
+      function endsWith(str, suffix) {
+        return str.indexOf(suffix, str.length - suffix.length) !== -1;
+      }
+
       function local_basename(path) {
         var basename = path.split(/[\\/]/).pop();
         return basename
@@ -56,26 +63,32 @@ expression: |
         return path.replace(/\\/g,'/').replace(/\/[^\/]*$/, '');
       }
 
-      var readgroup_path_array = [];
-      for (var fq1_path in inputs.fastq1_path.location) {
-        var fq_name = local_basename(fq1_path);
+      // get predicted readgroup basenames from fastq1
+      var readgroup_basename_array = [];
+      for (var i = 0; i < inputs.fastq1_path.length; i++) {
+        var fq1_path = inputs.fastq1_path[i];
+        var fq_name = local_basename(fq1_path.location);
         var readgroup_name = fq_name.slice(0,-8) + ".json";
-        var readgroup_dir = local_dirname(inputs.readgroup_path.location[0]);
-        var readgroup_path = readgroup_dir + "/" + readgroup_name;
-        readgroup_path_array.push(readgroup_path);
+        readgroup_basename_array.push(readgroup_name);
       }
-      var readgroup_obj_array = [];
-      for (var readgroup_path in readgroup_path_array) {
-        for (var readgroup_obj in inputs.readgroup_path) {
-          if (readgroup_path == readgroup_obj.location) {
-            readgroup_obj_array.push(readgroup_obj);
-          }
+
+      // find which readgroup items are in predicted basenames
+      var readgroup_array = [];
+      for (var i = 0; i < inputs.readgroup_path.length; i++) {
+        var readgroup_path = inputs.readgroup_path[i];
+        var readgroup_basename = local_basename(readgroup_path.location);
+        if (include(readgroup_basename_array, readgroup_basename)) {
+          readgroup_array.push(readgroup_path);
         }
       }
 
+      var fastq1_sorted = inputs.fastq1_path.sort(function(a,b) { return a.location > b.location } )
+      var fastq2_sorted = inputs.fastq2_path.sort(function(a,b) { return a.location > b.location } )
+      var readgroup_sorted = readgroup_array.sort(function(a,b) { return a.location > b.location } )
+
       return [
-        {'output_fastq1_paths': inputs.fastq1_path},
-        {'output_fastq2_paths': inputs.fastq2_path},
-        {'output_readgroup_paths': inputs.readgroup_obj_array},
+        {'output_fastq1_paths': fastq1_sorted},
+        {'output_fastq2_paths': fastq2_sorted},
+        {'output_readgroup_paths': readgroup_sorted}
       ]
     }
