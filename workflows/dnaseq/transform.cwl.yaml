@@ -9,6 +9,7 @@ requirements:
   - class: MultipleInputFeatureRequirement
   - class: ScatterFeatureRequirement
   - class: StepInputExpressionRequirement
+  - class: SubworkflowFeatureRequirement
 
 inputs:
   - id: bam_path
@@ -84,6 +85,29 @@ steps:
         source: samtools_bamtobam/OUTPUT
     out:
       - id: OUTPUT
+
+  - id: readgroup_json_db
+    run: ../../tools/readgroup_json_db.cwl
+    scatter: readgroup_json_db/json_path
+    in:
+      - id: json_path
+        source: bam_readgroup_to_json/OUTPUT
+      - id: uuid
+        source: uuid
+    out:
+      - id: log
+      - id: output_sqlite
+
+  - id: merge_readgroup_json_db
+    run: ../../tools/merge_sqlite.cwl
+    in:
+      - id: source_sqlite
+        source: readgroup_json_db/output_sqlite
+      - id: uuid
+        source: uuid
+    out:
+      - id: destination_sqlite
+      - id: log
 
   - id: fastqc1
     run: ../../tools/fastqc.cwl
@@ -464,6 +488,17 @@ steps:
     out:
       - id: merge_sqlite_destination_sqlite
 
+  - id: merge_metrics_pe
+    run: ../../tools/merge_sqlite.cwl
+    in:
+      - id: source_sqlite
+        source: metrics_pe/merge_sqlite_destination_sqlite
+      - id: uuid
+        source: uuid
+    out:
+      - id: destination_sqlite
+      - id: log
+
   - id: picard_mergesamfiles_pe
     run: ../../tools/picard_mergesamfiles.cwl
     in:
@@ -602,13 +637,14 @@ steps:
         source: [
           picard_validatesamfile_original_to_sqlite/sqlite,
           picard_validatesamfile_markdupl_to_sqlite/sqlite,
+          merge_readgroup_json_db/destination_sqlite,
           merge_fastqc_db1_sqlite/destination_sqlite,
           merge_fastqc_db2_sqlite/destination_sqlite,
           merge_fastqc_db_s_sqlite/destination_sqlite,
           merge_fastqc_db_o1_sqlite/destination_sqlite,
           merge_fastqc_db_o2_sqlite/destination_sqlite,
-          metrics_pe/merge_sqlite_destination_sqlite,
-          picard_markduplicates_to_sqlite,sqlite,
+          merge_metrics_pe/destination_sqlite,
+          picard_markduplicates_to_sqlite/sqlite,
           integrity/merge_sqlite_destination_sqlite
         ]
       - id: uuid

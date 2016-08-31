@@ -29,14 +29,14 @@ outputs:
 steps:
   - id: picard_collectmultiplemetrics
     run: ../../tools/picard_collectmultiplemetrics.cwl
-    inputs:
+    in:
       - id: DB_SNP
         source: db_snp_vcf
       - id: INPUT
         source: bam
       - id: REFERENCE_SEQUENCE
-        source: reference_fasta_path
-    outputs:
+        source: fasta
+    out:
       - id: OUTPUT
 
   - id: picard_collectmultiplemetrics_to_sqlite
@@ -63,14 +63,14 @@ steps:
 
   - id: picard_collectoxogmetrics
     run: ../../tools/picard_collectoxogmetrics.cwl
-    inputs:
+    in:
       - id: DB_SNP
         source: bam
       - id: INPUT
         source: db_snp_vcf
       - id: REFERENCE_SEQUENCE
         source: fasta
-    outputs:
+    out:
       - id: OUTPUT
 
   - id: picard_collectoxogmetrics_to_sqlite
@@ -97,14 +97,14 @@ steps:
 
   - id: picard_collectwgsmetrics
     run: ../../tools/picard_collectwgsmetrics.cwl
-    inputs:
+    in:
       - id: DB_SNP
         source: bam
       - id: INPUT
         source: db_snp_vcf
       - id: REFERENCE_SEQUENCE
         source: fasta
-    outputs:
+    out:
       - id: OUTPUT
 
   - id: picard_collectwgsmetrics_to_sqlite
@@ -125,17 +125,6 @@ steps:
     out:
       - id: log
       - id: sqlite
-
-  - id: readgroup_json_db
-    run: ../../tools/readgroup_json_db.cwl
-    in:
-      - id: json_path
-        source: bam_readgroup_to_json/OUTPUT
-      - id: uuid
-        source: uuid
-    out:
-      - id: log
-      - id: output_sqlite
 
   - id: samtools_flagstat
     run: ../../tools/samtools_flagstat.cwl
@@ -208,19 +197,18 @@ steps:
 
   - id: merge_sqlite
     run: ../../tools/merge_sqlite.cwl
-    inputs:
+    in:
       - id: source_sqlite
         source: [
           picard_collectmultiplemetrics_to_sqlite/sqlite,
           picard_collectoxogmetrics_to_sqlite/sqlite,
           picard_collectwgsmetrics_to_sqlite/sqlite,
-          readgroup_json_db/output_sqlite,
           samtools_flagstat_to_sqlite/sqlite,
           samtools_idxstats_to_sqlite/sqlite,
           samtools_stats_to_sqlite/sqlite
         ]
       - id: uuid
         source: uuid
-    outputs:
+    out:
       - id: destination_sqlite
       - id: log
