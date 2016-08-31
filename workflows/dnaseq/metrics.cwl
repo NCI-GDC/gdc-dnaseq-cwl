@@ -98,10 +98,8 @@ steps:
   - id: picard_collectwgsmetrics
     run: ../../tools/picard_collectwgsmetrics.cwl
     in:
-      - id: DB_SNP
-        source: bam
       - id: INPUT
-        source: db_snp_vcf
+        source: bam
       - id: REFERENCE_SEQUENCE
         source: fasta
     out:
