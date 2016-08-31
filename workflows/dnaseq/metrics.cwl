@@ -65,9 +65,9 @@ steps:
     run: ../../tools/picard_collectoxogmetrics.cwl
     in:
       - id: DB_SNP
-        source: bam
-      - id: INPUT
         source: db_snp_vcf
+      - id: INPUT
+        source: bam
       - id: REFERENCE_SEQUENCE
         source: fasta
     out:
