@@ -28,9 +28,6 @@ inputs:
     type:
       type: array
       items: File
-      inputBinding:
-        prefix: INPUT=
-        separate: false
 
   - id: INTERVALS
     type: ["null", File]
@@ -81,7 +78,7 @@ inputs:
 
 outputs:
   - id: MERGED_OUTPUT
-    type: ["null", File]
+    type: File
     outputBinding:
       glob: $(inputs.OUTPUT)
 
@@ -89,12 +86,21 @@ arguments:
   - valueFrom: |
       ${
         if (inputs.INPUT.length == 0) {
-          var cmd = ['/bin/true'];
+          var cmd = ['/usr/bin/touch', inputs.OUTPUT];
           return cmd
         }
         else {
           var cmd = ["java", "-jar", "/usr/local/bin/picard.jar", "MergeSamFiles"];
-          return cmd
+          var use_input = [];
+          for (var i = 0; i < inputs.INPUT.length; i++) {
+            var filesize = inputs.INPUT[i].size;
+            if (filesize > 0) {
+              use_input.push("INPUT=" + inputs.INPUT[i].path);
+            }
+          }
+
+          var run_cmd = cmd.concat(use_input);
+          return run_cmd
         }
 
       }
