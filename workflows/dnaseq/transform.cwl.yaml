@@ -561,7 +561,7 @@ steps:
 
   - id: metrics_o2
     run: metrics.cwl
-    scatter: metrics_o1/bam
+    scatter: metrics_o2/bam
     in:
       - id: bam
         source: picard_sortsam_o2/SORTED_OUTPUT
