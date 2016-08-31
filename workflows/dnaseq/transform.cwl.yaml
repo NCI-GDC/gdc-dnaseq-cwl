@@ -48,7 +48,7 @@ steps:
         valueFrom: "LENIENT"
     out:
       - id: OUTPUT
-        
+
   # need eof and dup QNAME detection
   - id: picard_validatesamfile_original_to_sqlite
     run: ../../tools/picard_validatesamfile_to_sqlite.cwl.yaml
@@ -529,7 +529,7 @@ steps:
         valueFrom: "STRICT"
     out:
       - id: OUTPUT
-        
+
   #need eof and dup QNAME detection
   - id: picard_validatesamfile_markdupl_to_sqlite
     run: ../../tools/picard_validatesamfile_to_sqlite.cwl.yaml
