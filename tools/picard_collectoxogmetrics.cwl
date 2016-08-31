@@ -40,7 +40,7 @@ inputs:
 
   - id: USE_OQ
     type: string
-    default: true
+    default: "true"
     inputBinding:
       prefix: USE_OQ=
       separate: false
