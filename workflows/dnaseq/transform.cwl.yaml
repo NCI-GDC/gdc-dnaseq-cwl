@@ -412,17 +412,6 @@ steps:
     out:
       - id: SORTED_OUTPUT
 
-  - id: picard_mergesamfiles_pe
-    run: ../../tools/picard_mergesamfiles.cwl
-    in:
-      - id: INPUT
-        source: picard_sortsam_pe/SORTED_OUTPUT
-      - id: OUTPUT
-        source: bam_path
-        valueFrom: $(self.basename)
-    out:
-      - id: MERGED_OUTPUT
-
   - id: picard_sortsam_se
     run: ../../tools/picard_sortsam.cwl
     scatter: picard_sortsam_se/INPUT
@@ -433,17 +422,6 @@ steps:
         valueFrom: $(inputs.INPUT.basename)
     out:
       - id: SORTED_OUTPUT
-
-  - id: picard_mergesamfiles_se
-    run: ../../tools/picard_mergesamfiles.cwl
-    in:
-      - id: INPUT
-        source: picard_sortsam_se/SORTED_OUTPUT
-      - id: OUTPUT
-        source: bam_path
-        valueFrom: $(self.basename)
-    out:
-      - id: MERGED_OUTPUT
 
   - id: picard_sortsam_o1
     run: ../../tools/picard_sortsam.cwl
@@ -456,17 +434,6 @@ steps:
     out:
       - id: SORTED_OUTPUT
 
-  - id: picard_mergesamfiles_o1
-    run: ../../tools/picard_mergesamfiles.cwl
-    in:
-      - id: INPUT
-        source: picard_sortsam_o1/SORTED_OUTPUT
-      - id: OUTPUT
-        source: bam_path
-        valueFrom: $(self.basename)
-    out:
-      - id: MERGED_OUTPUT
-
   - id: picard_sortsam_o2
     run: ../../tools/picard_sortsam.cwl
     scatter: picard_sortsam_o2/INPUT
@@ -477,6 +444,58 @@ steps:
         valueFrom: $(inputs.INPUT.basename)
     out:
       - id: SORTED_OUTPUT
+
+  - id: metrics_pe
+    run: metrics.cwl
+    scatter: metrics_pe/bam
+    in:
+      - id: bam
+        source: picard_sortsam_pe/SORTED_OUTPUT
+      - id: db_snp_vcf
+        source: db_snp_path
+      - id: fasta
+        source: reference_fasta_path
+      - id: input_state
+        valueFrom: "sorted_readgroup"
+      - id: thread_count
+        source: thread_count
+      - id: uuid
+        source: uuid
+    out:
+      - id: merge_sqlite_destination_sqlite
+
+  - id: picard_mergesamfiles_pe
+    run: ../../tools/picard_mergesamfiles.cwl
+    in:
+      - id: INPUT
+        source: picard_sortsam_pe/SORTED_OUTPUT
+      - id: OUTPUT
+        source: bam_path
+        valueFrom: $(self.basename)
+    out:
+      - id: MERGED_OUTPUT
+
+  - id: picard_mergesamfiles_se
+    run: ../../tools/picard_mergesamfiles.cwl
+    in:
+      - id: INPUT
+        source: picard_sortsam_se/SORTED_OUTPUT
+      - id: OUTPUT
+        source: bam_path
+        valueFrom: $(self.basename)
+    out:
+      - id: MERGED_OUTPUT
+
+  - id: picard_mergesamfiles_o1
+    run: ../../tools/picard_mergesamfiles.cwl
+    in:
+      - id: INPUT
+        source: picard_sortsam_o1/SORTED_OUTPUT
+      - id: OUTPUT
+        source: bam_path
+        valueFrom: $(self.basename)
+    out:
+      - id: MERGED_OUTPUT
 
   - id: picard_mergesamfiles_o2
     run: ../../tools/picard_mergesamfiles.cwl
@@ -588,6 +607,7 @@ steps:
           merge_fastqc_db_s_sqlite/destination_sqlite,
           merge_fastqc_db_o1_sqlite/destination_sqlite,
           merge_fastqc_db_o2_sqlite/destination_sqlite,
+          metrics_pe/merge_sqlite_destination_sqlite,
           picard_markduplicates_to_sqlite,sqlite,
           integrity/merge_sqlite_destination_sqlite
         ]
