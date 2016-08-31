@@ -78,6 +78,46 @@ steps:
       - id: output_fastq_o2
       - id: output_fastq_s
 
+  - id: remove_duplicate_fastq1
+    scatter: remove_duplicate_fastq/INPUT
+    in:
+      - id: INPUT
+        source: biobambam_bamtofastq/output_fastq1
+    out:
+      - id: OUTPUT
+
+  - id: remove_duplicate_fastq2
+    scatter: remove_duplicate_fastq/INPUT
+    in:
+      - id: INPUT
+        source: biobambam_bamtofastq/output_fastq2
+    out:
+      - id: OUTPUT
+
+  - id: remove_duplicate_fastq_o1
+    scatter: remove_duplicate_fastq/INPUT
+    in:
+      - id: INPUT
+        source: biobambam_bamtofastq/output_fastq_o2
+    out:
+      - id: OUTPUT
+
+  - id: remove_duplicate_fastq_o2
+    scatter: remove_duplicate_fastq/INPUT
+    in:
+      - id: INPUT
+        source: biobambam_bamtofastq/output_fastq_o2
+    out:
+      - id: OUTPUT
+
+  - id: remove_duplicate_fastq_s
+    scatter: remove_duplicate_fastq/INPUT
+    in:
+      - id: INPUT
+        source: biobambam_bamtofastq/output_fastq_s
+    out:
+      - id: OUTPUT
+
   - id: bam_readgroup_to_json
     run: ../../tools/bam_readgroup_to_json.cwl
     in:
