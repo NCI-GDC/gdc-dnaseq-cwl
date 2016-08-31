@@ -707,7 +707,6 @@ steps:
 
   - id: metrics_markduplicates
     run: metrics.cwl
-    scatter: metrics_pe/bam
     in:
       - id: bam
         source: picard_markduplicates/OUTPUT
