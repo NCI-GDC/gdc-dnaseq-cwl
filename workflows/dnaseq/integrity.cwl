@@ -25,7 +25,7 @@ outputs:
 
 steps:
   - id: bai_ls_l
-    run: ../../tools/ls_l.cwl.yaml
+    run: ../../tools/ls_l.cwl
     in:
       - id: INPUT
         source: bai_path
@@ -33,7 +33,7 @@ steps:
       - id: OUTPUT
 
   - id: bai_md5sum
-    run: ../../tools/md5sum.cwl.yaml
+    run: ../../tools/md5sum.cwl
     in:
       - id: INPUT
         source: bai_path
@@ -41,7 +41,7 @@ steps:
       - id: OUTPUT
 
   - id: bai_sha256
-    run: ../../tools/sha256sum.cwl.yaml
+    run: ../../tools/sha256sum.cwl
     in:
       - id: INPUT
         source: bai_path
@@ -49,7 +49,7 @@ steps:
       - id: OUTPUT
 
   - id: bam_ls_l
-    run: ../../tools/ls_l.cwl.yaml
+    run: ../../tools/ls_l.cwl
     in:
       - id: INPUT
         source: bam_path
@@ -57,7 +57,7 @@ steps:
       - id: OUTPUT
 
   - id: bam_md5sum
-    run: ../../tools/md5sum.cwl.yaml
+    run: ../../tools/md5sum.cwl
     in:
       - id: INPUT
         source: bam_path
@@ -65,7 +65,7 @@ steps:
       - id: OUTPUT
 
   - id: bam_sha256
-    run: ../../tools/sha256sum.cwl.yaml
+    run: ../../tools/sha256sum.cwl
     in:
       - id: INPUT
         source: bam_path
@@ -73,7 +73,7 @@ steps:
       - id: OUTPUT
 
   - id: bai_integrity_to_db
-    run: ../../tools/integrity_to_sqlite.cwl.yaml
+    run: ../../tools/integrity_to_sqlite.cwl
     in:
       - id: input_state
         source: input_state
@@ -89,7 +89,7 @@ steps:
       - id: OUTPUT
 
   - id: bam_integrity_to_db
-    run: ../../tools/integrity_to_sqlite.cwl.yaml
+    run: ../../tools/integrity_to_sqlite.cwl
     in:
       - id: input_state
         source: input_state
@@ -105,7 +105,7 @@ steps:
       - id: OUTPUT
 
   - id: merge_sqlite
-    run: ../../tools/merge_sqlite.cwl.yaml
+    run: ../../tools/merge_sqlite.cwl
     in:
       - id: source_sqlite
         source: [
