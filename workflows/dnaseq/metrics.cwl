@@ -49,7 +49,7 @@ steps:
         source: fasta
         valueFrom: $(self.basename)
       - id: input_state
-        valueFrom: "sorted_readgroup"
+        source: input_state
       - id: metric_path
         source: picard_collectmultiplemetrics/OUTPUT
       - id: uuid
@@ -83,7 +83,7 @@ steps:
         source: fasta
         valueFrom: $(self.basename)
       - id: input_state
-        valueFrom: "sorted_readgroup"
+        source: input_state
       - id: metric_path
         source: picard_collectoxogmetrics/OUTPUT
       - id: uuid
@@ -117,7 +117,7 @@ steps:
         source: fasta
         valueFrom: $(self.basename)
       - id: input_state
-        valueFrom: "sorted_readgroup"
+        source: input_state
       - id: metric_path
         source: picard_collectwgsmetrics/OUTPUT
       - id: uuid
@@ -152,7 +152,7 @@ steps:
         source: bam
         valueFrom: $(self.basename)
       - id: input_state
-        valueFrom: "sorted_readgroup"
+        source: input_state
       - id: metric_path
         source: samtools_flagstat/OUTPUT
       - id: uuid
@@ -175,7 +175,7 @@ steps:
         source: bam
         valueFrom: $(self.basename)
       - id: input_state
-        valueFrom: "sorted_readgroup"
+        source: input_state
       - id: metric_path
         source: samtools_idxstats/OUTPUT
       - id: uuid
@@ -198,7 +198,7 @@ steps:
         source: bam
         valueFrom: $(self.basename)
       - id: input_state
-        valueFrom: "sorted_readgroup"
+        source: input_state
       - id: metric_path
         source: samtools_stats/OUTPUT
       - id: uuid
