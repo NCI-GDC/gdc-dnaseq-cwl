@@ -140,3 +140,28 @@ steps:
     out:
       - id: destination_sqlite
       - id: log
+
+
+  - id: merge_all_sqlite
+    run: ../../tools/merge_sqlite.cwl.yaml
+    inputs:
+      - id: source_sqlite
+        source: [
+          merge_bwa_pe_sqlite/destination_sqlite
+          merge_picard_sortsam_sqlite/destination_sqlite
+          merge_picard_buildbamindex_sqlite/destination_sqlite
+          merge_fastqc1_sqlite/destination_sqlite
+          merge_fastqc_db1_sqlite/destination_sqlite
+          merge_fastqc2_sqlite/destination_sqlite
+          merge_fastqc_db2_sqlite/destination_sqlite
+          merge_readgroup_json_db_sqlite/destination_sqlite
+          merge_samtools_flagstat_sqlite/destination_sqlite
+          merge_samtools_stats_sqlite/destination_sqlite
+          merge_picard_collectmultiplemetrics_sqlite/destination_sqlite
+          merge_picard_collectoxogmetrics_sqlite/destination_sqlite
+        ]
+      - id: uuid
+        source: uuid
+    outputs:
+      - id: destination_sqlite
+      - id: log
