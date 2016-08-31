@@ -28,7 +28,7 @@ outputs:
     outputSource: picard_markduplicates/OUTPUT
   - id: merge_all_sqlite_destination_sqlite
     type: File
-    source: merge_all_sqlite/destination_sqlite
+    outputSource: merge_all_sqlite/destination_sqlite
 
 steps:
   - id: samtools_bamtobam
@@ -548,7 +548,7 @@ steps:
 
   - id: merge_all_sqlite
     run: ../../tools/merge_sqlite.cwl.yaml
-    inputs:
+    in:
       - id: source_sqlite
         source: [
           picard_validatesamfile_original_to_sqlite/sqlite,
@@ -561,6 +561,6 @@ steps:
         ]
       - id: uuid
         source: uuid
-    outputs:
+    out:
       - id: destination_sqlite
       - id: log
