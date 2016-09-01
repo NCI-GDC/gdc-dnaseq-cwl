@@ -14,21 +14,21 @@ inputs:
     type: File
     format: "edam:format_2572"
     inputBinding:
-      prefix: "INPUT="
+      prefix: INPUT=
       separate: false
 
   - id: REFERENCE_SEQUENCE
     type: File
     format: "edam:format_1929"
     inputBinding:
-      prefix: "REFERENCE_SEQUENCE="
+      prefix: REFERENCE_SEQUENCE=
       separate: false
 
   - id: VALIDATION_STRINGENCY
-    default: "STRICT"
+    default: STRICT
     type: string
     inputBinding:
-      prefix: "VALIDATION_STRINGENCY="
+      prefix: VALIDATION_STRINGENCY=
       separate: false
 
 outputs:
@@ -39,7 +39,7 @@ outputs:
 
 arguments:
   - valueFrom: $(inputs.INPUT.nameroot + ".metrics")
-    prefix: "OUTPUT="
+    prefix: OUTPUT=
     separate: false
 
 baseCommand: [java, -jar, /usr/local/bin/picard.jar, CollectWgsMetrics]
