@@ -79,6 +79,7 @@ steps:
       - id: output_fastq_s
 
   - id: remove_duplicate_fastq1
+    run: ../../tools/fastq_remove_duplicate_qname.cwl
     scatter: remove_duplicate_fastq/INPUT
     in:
       - id: INPUT
@@ -87,6 +88,7 @@ steps:
       - id: OUTPUT
 
   - id: remove_duplicate_fastq2
+    run: ../../tools/fastq_remove_duplicate_qname.cwl
     scatter: remove_duplicate_fastq/INPUT
     in:
       - id: INPUT
@@ -95,6 +97,7 @@ steps:
       - id: OUTPUT
 
   - id: remove_duplicate_fastq_o1
+    run: ../../tools/fastq_remove_duplicate_qname.cwl
     scatter: remove_duplicate_fastq/INPUT
     in:
       - id: INPUT
@@ -103,6 +106,7 @@ steps:
       - id: OUTPUT
 
   - id: remove_duplicate_fastq_o2
+    run: ../../tools/fastq_remove_duplicate_qname.cwl
     scatter: remove_duplicate_fastq/INPUT
     in:
       - id: INPUT
@@ -111,10 +115,51 @@ steps:
       - id: OUTPUT
 
   - id: remove_duplicate_fastq_s
+    run: ../../tools/fastq_remove_duplicate_qname.cwl
     scatter: remove_duplicate_fastq/INPUT
     in:
       - id: INPUT
         source: biobambam_bamtofastq/output_fastq_s
+    out:
+      - id: OUTPUT
+
+  - id: sort_scattered_fastq1
+    run: ../../tools/sort_scatter_expression.cwl
+    in:
+      - id: INPUT
+        source: remove_duplicate_fastq1/OUTPUT
+    out:
+      - id: OUTPUT
+
+  - id: sort_scattered_fastq2
+    run: ../../tools/sort_scatter_expression.cwl
+    in:
+      - id: INPUT
+        source: remove_duplicate_fastq2/OUTPUT
+    out:
+      - id: OUTPUT
+
+  - id: sort_scattered_fastq_o1
+    run: ../../tools/sort_scatter_expression.cwl
+    in:
+      - id: INPUT
+        source: remove_duplicate_fastq_o1/OUTPUT
+    out:
+      - id: OUTPUT
+
+  - id: sort_scattered_fastq_o2
+    run: ../../tools/sort_scatter_expression.cwl
+    in:
+      - id: INPUT
+        source: remove_duplicate_fastq_o2/OUTPUT
+    out:
+      - id: OUTPUT
+
+  - id: sort_scattered_fastq_s
+    run: ../../tools/sort_scatter_expression.cwl
+    in:
+      - id: INPUT
+        source: remove_duplicate_fastq_s/OUTPUT
     out:
       - id: OUTPUT
 
@@ -154,7 +199,7 @@ steps:
     scatter: fastqc1/INPUT
     in:
       - id: INPUT
-        source: biobambam_bamtofastq/output_fastq1
+        source: sort_scattered_fastq1/OUTPUT
       - id: threads
         source: thread_count
     out:
@@ -165,7 +210,7 @@ steps:
     scatter: fastqc2/INPUT
     in:
       - id: INPUT
-        source: biobambam_bamtofastq/output_fastq2
+        source: sort_scattered_fastq2/OUTPUT
       - id: threads
         source: thread_count
     out:
@@ -176,7 +221,7 @@ steps:
     scatter: fastqc_s/INPUT
     in:
       - id: INPUT
-        source: biobambam_bamtofastq/output_fastq_s
+        source: sort_scattered_fastq_s/OUTPUT
       - id: threads
         source: thread_count
     out:
@@ -187,7 +232,7 @@ steps:
     scatter: fastqc_o1/INPUT
     in:
       - id: INPUT
-        source: biobambam_bamtofastq/output_fastq_o1
+        source: sort_scattered_fastq_o1/OUTPUT
       - id: threads
         source: thread_count
     out:
@@ -198,7 +243,7 @@ steps:
     scatter: fastqc_o2/INPUT
     in:
       - id: INPUT
-        source: biobambam_bamtofastq/output_fastq_o2
+        source: sort_scattered_fastq_o2/OUTPUT
       - id: threads
         source: thread_count
     out:
@@ -355,7 +400,7 @@ steps:
     run: ../../tools/decider_bwa_expression.cwl
     in:
       - id: fastq_path
-        source: biobambam_bamtofastq/output_fastq1
+        source: sort_scattered_fastq1/OUTPUT
       - id: readgroup_path
         source: bam_readgroup_to_json/OUTPUT
     out:
@@ -365,7 +410,7 @@ steps:
     run: ../../tools/decider_bwa_expression.cwl
     in:
       - id: fastq_path
-        source: biobambam_bamtofastq/output_fastq_s
+        source: sort_scattered_fastq_s/OUTPUT
       - id: readgroup_path
         source: bam_readgroup_to_json/OUTPUT
     out:
@@ -375,7 +420,7 @@ steps:
     run: ../../tools/decider_bwa_expression.cwl
     in:
       - id: fastq_path
-        source: biobambam_bamtofastq/output_fastq_o1
+        source: sort_scattered_fastq_o1/OUTPUT
       - id: readgroup_path
         source: bam_readgroup_to_json/OUTPUT
     out:
@@ -385,7 +430,7 @@ steps:
     run: ../../tools/decider_bwa_expression.cwl
     in:
       - id: fastq_path
-        source: biobambam_bamtofastq/output_fastq_o2
+        source: sort_scattered_fastq_o2/OUTPUT
       - id: readgroup_path
         source: bam_readgroup_to_json/OUTPUT
     out:
@@ -399,9 +444,9 @@ steps:
       - id: fasta
         source: reference_fasta_path
       - id: fastq1
-        source: biobambam_bamtofastq/output_fastq1
+        source: sort_scattered_fastq1/OUTPUT
       - id: fastq2
-        source: biobambam_bamtofastq/output_fastq2
+        source: sort_scattered_fastq2/OUTPUT
       - id: readgroup_json_path
         source: decider_bwa_pe/output_readgroup_paths
       - id: fastqc_json_path
@@ -419,7 +464,7 @@ steps:
       - id: fasta
         source: reference_fasta_path
       - id: fastq
-        source: biobambam_bamtofastq/output_fastq_s
+        source: sort_scattered_fastq_s/OUTPUT
       - id: readgroup_json_path
         source: decider_bwa_se/output_readgroup_paths
       - id: fastqc_json_path
@@ -437,7 +482,7 @@ steps:
       - id: fasta
         source: reference_fasta_path
       - id: fastq
-        source: biobambam_bamtofastq/output_fastq_o1
+        source: sort_scattered_fastq_o1/OUTPUT
       - id: readgroup_json_path
         source: decider_bwa_o1/output_readgroup_paths
       - id: fastqc_json_path
@@ -455,7 +500,7 @@ steps:
       - id: fasta
         source: reference_fasta_path
       - id: fastq
-        source: biobambam_bamtofastq/output_fastq_o2
+        source: sort_scattered_fastq_o2/OUTPUT
       - id: readgroup_json_path
         source: decider_bwa_o2/output_readgroup_paths
       - id: fastqc_json_path
