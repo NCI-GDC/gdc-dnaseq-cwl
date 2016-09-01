@@ -16,6 +16,8 @@ inputs:
     type: File
   - id: input_state
     type: string
+  - id: parent_bam
+    type: string
   - id: thread_count
     type: int
   - id: uuid
@@ -27,6 +29,77 @@ outputs:
     outputSource: merge_sqlite/destination_sqlite
 
 steps:
+  - id: get_bam_readgroups
+    run: ../../tools/get_bam_readgroups.cwl
+    in:
+      - id: bam
+        source: bam
+    out:
+      - id: readgroups
+
+  - id: get_bam_library
+    run: ../../tools/get_bam_library.cwl
+    in:
+      - id: readgroups
+        source: get_bam_readgroups/OUTPUT
+    out:
+      - id: library
+
+  - id: get_bam_exome_kit
+    run: ../../tools/get_exome_kit.cwl
+    in:
+      - id: bam
+        source: parent_bam
+      - id: library
+        source: get_bam_library/OUTPUT
+    out:
+      - id: exome_kit
+
+  - id: get_bait_target
+    run: ../../tools/get_bait_target.cwl
+    in:
+      - id: exome_kit
+        source: get_bam_exome_kit/exome_kit
+    out:
+      - id: bait
+      - id: target
+
+  - id: picard_collecthsmetrics
+    run: ../../tools/picard_collecthsmetrics.cwl
+    in:
+      - id: BAIT_INTERVALS
+        source: get_bait_target/bait
+      - id: INPUT
+        source: bam
+      - id: OUTPUT
+        source: bam
+        valueFrom: $(self.basename + ".metrics")
+      - id: REFERNCE_SEQUENCE
+        source: fasta
+      - id: TARGET_INTERVALS
+        source: get_bait_target/target
+    out:
+      - id: METRIC_OUTPUT
+
+  - id: picard_collecthsmetrics_to_sqlite
+    run: ../../tools/picard_collecthsmetrics_to_sqlite.cwl
+    in:
+      - id: bam
+        source: bam
+        valueFrom: $(self.basename)
+      - id: fasta
+        source: fasta
+        valueFrom: $(self.basename)
+      - id: input_state
+        source: input_state
+      - id: metric_path
+        source: picard_collecthsmetrics/OUTPUT
+      - id: uuid
+        source: uuid
+    out:
+      - id: log
+      - id: sqlite
+
   - id: picard_collectmultiplemetrics
     run: ../../tools/picard_collectmultiplemetrics.cwl
     in:
