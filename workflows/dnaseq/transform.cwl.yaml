@@ -116,7 +116,7 @@ steps:
 
   - id: remove_duplicate_fastq_s
     run: ../../tools/fastq_remove_duplicate_qname.cwl
-    scatter: remove_duplicate_fastq/INPUT
+    scatter: remove_duplicate_fastq_s/INPUT
     in:
       - id: INPUT
         source: biobambam_bamtofastq/output_fastq_s
