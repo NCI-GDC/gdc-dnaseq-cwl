@@ -9,14 +9,12 @@ class: ExpressionTool
 
 inputs:
   - id: INPUT
-    format: "edam:format_2182"
     type:
       type: array
       items: File
 
 outputs:
   - id: OUTPUT
-    format: "edam:format_2182"
     type:
       type: array
       items: File
