@@ -80,7 +80,7 @@ steps:
 
   - id: remove_duplicate_fastq1
     run: ../../tools/fastq_remove_duplicate_qname.cwl
-    scatter: remove_duplicate_fastq/INPUT
+    scatter: remove_duplicate_fastq1/INPUT
     in:
       - id: INPUT
         source: biobambam_bamtofastq/output_fastq1
@@ -89,7 +89,7 @@ steps:
 
   - id: remove_duplicate_fastq2
     run: ../../tools/fastq_remove_duplicate_qname.cwl
-    scatter: remove_duplicate_fastq/INPUT
+    scatter: remove_duplicate_fastq2/INPUT
     in:
       - id: INPUT
         source: biobambam_bamtofastq/output_fastq2
@@ -98,7 +98,7 @@ steps:
 
   - id: remove_duplicate_fastq_o1
     run: ../../tools/fastq_remove_duplicate_qname.cwl
-    scatter: remove_duplicate_fastq/INPUT
+    scatter: remove_duplicate_fastq_o2/INPUT
     in:
       - id: INPUT
         source: biobambam_bamtofastq/output_fastq_o2
@@ -107,7 +107,7 @@ steps:
 
   - id: remove_duplicate_fastq_o2
     run: ../../tools/fastq_remove_duplicate_qname.cwl
-    scatter: remove_duplicate_fastq/INPUT
+    scatter: remove_duplicate_fastq_o2/INPUT
     in:
       - id: INPUT
         source: biobambam_bamtofastq/output_fastq_o2
