@@ -6,7 +6,6 @@ requirements:
   - class: DockerRequirement
     dockerPull: python:3.5.2-alpine
   - class: InlineJavascriptRequirement
-  - class: ShellCommandRequirement
 
 class: CommandLineTool
 
@@ -35,6 +34,5 @@ arguments:
       var cmd = "exec(\"import json\\nwith open('" + inputs.bam_library_capturekey.path + "') as data_file: data = json.load(data_file)\\nprint(data['" + inputs.bam + "']['" + inputs.library + "'])\")";
       return cmd
       }
-    shellQuote: true
 
 baseCommand: [python, -c]
