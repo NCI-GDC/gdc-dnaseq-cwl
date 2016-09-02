@@ -11,14 +11,14 @@ requirements:
 class: CommandLineTool
 
 inputs:
-  - id: INPUT
+  - id: bam
     format: "edam:format_2572"
     type: File
     inputBinding:
       position: 0
 
 outputs:
-  - id: OUTPUT
+  - id: readgroups
     type: File
     outputBinding:
       glob: $(inputs.INPUT.basename + ".readgroups")

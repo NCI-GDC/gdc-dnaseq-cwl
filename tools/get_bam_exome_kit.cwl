@@ -15,7 +15,7 @@ inputs:
 
   - id: bam_library_capturekey
     type: File
-    format:
+    format: "edam:format_3464"
 
   - id: library
     type: string

@@ -10,17 +10,17 @@ requirements:
 class: CommandLineTool
 
 inputs:
-  - id: INPUT
+  - id: readgroups
     type: File
     inputBinding:
       loadContents: true
       valueFrom: null
 
 outputs:
-  - id: OUTPUT
+  - id: library
     type: File
     outputBinding:
-      glob: $(inputs.INPUT.basename + ".library")
+      glob: $(inputs.readgroups.basename + ".library")
 
 arguments:
   - valueFrom: |
@@ -42,7 +42,7 @@ arguments:
           return arr
         }
       
-        var lines = inputs.INPUT.contents.split('\n');
+        var lines = inputs.readgroups.contents.split('\n');
         var library_name_array = [];
         for (var i = 0; i < lines.length; i++) {
           var items = lines[i].replace("@RG\t", "");
@@ -66,6 +66,6 @@ arguments:
         }
       }
 
-stdout: $(inputs.INPUT.basename + ".library")
+stdout: $(inputs.readgroups.basename + ".library")
 
 baseCommand: [echo]
