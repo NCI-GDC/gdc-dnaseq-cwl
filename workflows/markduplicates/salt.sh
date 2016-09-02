@@ -141,3 +141,7 @@ $ dig +short gdc-accessors.osdc.io | sort
 10.64.80.111
 ...
 
+##2016-09-02
+salt -G 'cluster_name:DEADPOOL' cmd.run 'sed -i "s/172.17.29.16/172.17.52.27/g" /etc/hosts'
+salt -G 'cluster_name:WOLVERINE' cmd.run 'sed -i "s/172.17.29.16/172.17.52.27/g" /etc/hosts'
+salt -G 'cluster_name:CLAIRE' cmd.run 'sed -i "s/172.17.29.16/172.17.52.27/g" /etc/hosts'
