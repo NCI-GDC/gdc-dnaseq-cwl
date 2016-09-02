@@ -13,10 +13,6 @@ inputs:
   - id: bam
     type: string
 
-  - id: bam_library_capturekey
-    type: File
-    format: "edam:format_3464"
-
   - id: library
     type: string
 
@@ -31,7 +27,7 @@ stdout: $(inputs.library + ".kit")
 arguments:
   - valueFrom: |
       ${
-      var cmd = "exec(\"import json\\nwith open('" + inputs.bam_library_capturekey.path + "') as data_file: data = json.load(data_file)\\nprint(data['" + inputs.bam + "']['" + inputs.library + "'])\")";
+      var cmd = "exec(\"import json\\nwith open('/usr/local/share/bam_libraryname_capturekey.json') as data_file: data = json.load(data_file)\\nprint(data['" + inputs.bam + "']['" + inputs.library + "'])\")";
       return cmd
       }
 
