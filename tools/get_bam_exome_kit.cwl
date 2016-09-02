@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: python:3.5.2-alpine
+    dockerPull: quay.io/jeremiahsavage/gdc_bam_library_exomekit
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
@@ -31,4 +31,4 @@ arguments:
       return cmd
       }
 
-baseCommand: [python, -c]
+baseCommand: [python3, -c]
