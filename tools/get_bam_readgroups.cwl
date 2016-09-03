@@ -21,12 +21,12 @@ outputs:
   - id: readgroups
     type: File
     outputBinding:
-      glob: $(inputs.INPUT.basename + ".readgroups")
+      glob: $(inputs.bam.basename + ".readgroups")
 
-stdout: $(inputs.INPUT.basename + ".readgroups")
+stdout: $(inputs.bam.basename + ".readgroups")
 
 arguments:
-  - valueFrom: $(["/usr/local/bin/samtools", "view", "-H", inputs.INPUT.path, "|", "grep", '^@RG'].join(' '))
+  - valueFrom: $(["/usr/local/bin/samtools", "view", "-H", inputs.bam.path, "|", "grep", '^@RG'].join(' '))
     shellQuote: true
 
 baseCommand: [bash, -c]

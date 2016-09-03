@@ -14,20 +14,23 @@ inputs:
     type: string
 
   - id: library
-    type: string
+    type: File
+    inputBinding:
+      loadContents: true
+      valueFrom: null
 
 outputs:
   - id: exome_kit
     type: File
     outputBinding:
-      glob: $(inputs.library + ".kit")
+      glob: $(inputs.library.basename + ".kit")
 
-stdout: $(inputs.library + ".kit")
+stdout: $(inputs.library.basename + ".kit")
 
 arguments:
   - valueFrom: |
       ${
-      var cmd = "exec(\"import json\\nwith open('/usr/local/share/bam_libraryname_capturekey.json') as data_file: data = json.load(data_file)\\nprint(data['" + inputs.bam + "']['" + inputs.library + "'])\")";
+      var cmd = "exec(\"import json\\nwith open('/usr/local/share/bam_libraryname_capturekey.json') as data_file: data = json.load(data_file)\\nprint(data['" + inputs.bam + "']['" + inputs.library.contents.slice(0,-1) + "'])\")";
       return cmd
       }
 
