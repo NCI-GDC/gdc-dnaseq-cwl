@@ -95,6 +95,8 @@ inputs:
     inputBinding:
       prefix: REFERENCE_SEQUENCE=
       separate: false
+    secondaryFiles:
+      - .fai
 
   - id: SAMPLE_SIZE
     type: int
