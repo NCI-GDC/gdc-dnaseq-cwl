@@ -74,7 +74,7 @@ steps:
       - id: OUTPUT
         source: bam
         valueFrom: $(self.basename + ".metrics")
-      - id: REFERNCE_SEQUENCE
+      - id: REFERENCE_SEQUENCE
         source: fasta
       - id: TARGET_INTERVALS
         source: get_bait_target/target
