@@ -53,7 +53,9 @@ arguments:
         function to_rg() {
           var readgroup_str = "@RG";
           var readgroup_json = JSON.parse(inputs.readgroup_json_path.contents);
-          for (var key in readgroup_json) {
+          var keys = Object.keys(readgroup_json).sort();
+          for (var i = 0; i < keys.length; i++) {
+            var key = keys[i];
             var value = readgroup_json[key];
             readgroup_str = readgroup_str + "\\t" + key + ":" + value;
           }
