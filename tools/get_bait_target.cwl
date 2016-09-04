@@ -10,7 +10,7 @@ requirements:
 class: CommandLineTool
 
 inputs:
-  - id: capturekey
+  - id: exome_kit
     type: File
     inputBinding:
       loadContents: true
@@ -30,7 +30,7 @@ outputs:
 arguments:
   - valueFrom: |
       ${
-      var cmd="exec(\"import lzma; import json; import subprocess\\nwith open('/usr/local/share/bait_target_key_interval.json') as data_file: data = json.load(data_file)\\nbait = data['bait']['" + inputs.capturekey.contents.slice(0,-1) + "']\\ncmd=['unxz', '-c', '/usr/local/share/intervals/' + bait + '.xz', '>', bait]\\nshell_cmd=' '.join(cmd)\\nsubprocess.check_output(shell_cmd,shell=True)\\ntarget = data['target']['" + inputs.capturekey.contents.slice(0,-1) + "']\\ncmd=['unxz', '-c', '/usr/local/share/intervals/' + target + '.xz', '>', target]\\nshell_cmd=' '.join(cmd)\\nsubprocess.check_output(shell_cmd,shell=True)\")";
+      var cmd="exec(\"import lzma; import json; import subprocess\\nwith open('/usr/local/share/bait_target_key_interval.json') as data_file: data = json.load(data_file)\\nbait = data['bait']['" + inputs.exome_kit.contents.slice(0,-1) + "']\\ncmd=['unxz', '-c', '/usr/local/share/intervals/' + bait + '.xz', '>', bait]\\nshell_cmd=' '.join(cmd)\\nsubprocess.check_output(shell_cmd,shell=True)\\ntarget = data['target']['" + inputs.exome_kit.contents.slice(0,-1) + "']\\ncmd=['unxz', '-c', '/usr/local/share/intervals/' + target + '.xz', '>', target]\\nshell_cmd=' '.join(cmd)\\nsubprocess.check_output(shell_cmd,shell=True)\")";
       return cmd
       }
 
