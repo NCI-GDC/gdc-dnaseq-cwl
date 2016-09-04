@@ -16,6 +16,12 @@ inputs:
     inputBinding:
       prefix: --bam_path
 
+  - id: MODE
+    type: string
+    default: strict
+    inputBinding:
+      prefix: --mode
+
 outputs:
   - id: OUTPUT
     format: "edam:format_3464"
