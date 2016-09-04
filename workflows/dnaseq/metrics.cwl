@@ -41,7 +41,7 @@ steps:
     run: ../../tools/get_bam_library.cwl
     in:
       - id: readgroups
-        source: get_bam_readgroups/OUTPUT
+        source: get_bam_readgroups/readgroups
     out:
       - id: library
 
@@ -51,7 +51,7 @@ steps:
       - id: bam
         source: parent_bam
       - id: library
-        source: get_bam_library/OUTPUT
+        source: get_bam_library/library
     out:
       - id: exome_kit
 
@@ -87,6 +87,10 @@ steps:
       - id: bam
         source: bam
         valueFrom: $(self.basename)
+      - id: bam_library
+        source: get_bam_library/library
+      - id: exome_kit
+        source: get_bam_exome_kit/exome_kit
       - id: fasta
         source: fasta
         valueFrom: $(self.basename)
@@ -271,6 +275,7 @@ steps:
     in:
       - id: source_sqlite
         source: [
+          picard_collecthsmetrics_to_sqlite/sqlite,
           picard_collectmultiplemetrics_to_sqlite/sqlite,
           picard_collectoxogmetrics_to_sqlite/sqlite,
           picard_collectwgsmetrics_to_sqlite/sqlite,
