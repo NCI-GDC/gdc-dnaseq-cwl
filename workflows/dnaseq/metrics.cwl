@@ -46,7 +46,7 @@ steps:
       - id: library
 
   - id: get_bam_exome_kit
-    run: ../../tools/get_exome_kit.cwl
+    run: ../../tools/get_bam_exome_kit.cwl
     in:
       - id: bam
         source: parent_bam
