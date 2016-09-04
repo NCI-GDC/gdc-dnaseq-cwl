@@ -566,6 +566,9 @@ steps:
         source: reference_fasta_path
       - id: input_state
         valueFrom: "sorted_readgroup"
+      - id: parent_bam
+        source: bam_path
+        valueFrom: $(self.basename)
       - id: thread_count
         source: thread_count
       - id: uuid
@@ -596,6 +599,9 @@ steps:
         source: reference_fasta_path
       - id: input_state
         valueFrom: "sorted_readgroup"
+      - id: parent_bam
+        source: bam_path
+        valueFrom: $(self.basename)
       - id: thread_count
         source: thread_count
       - id: uuid
@@ -626,6 +632,9 @@ steps:
         source: reference_fasta_path
       - id: input_state
         valueFrom: "sorted_readgroup"
+      - id: parent_bam
+        source: bam_path
+        valueFrom: $(self.basename)
       - id: thread_count
         source: thread_count
       - id: uuid
@@ -656,6 +665,9 @@ steps:
         source: reference_fasta_path
       - id: input_state
         valueFrom: "sorted_readgroup"
+      - id: parent_bam
+        source: bam_path
+        valueFrom: $(self.basename)
       - id: thread_count
         source: thread_count
       - id: uuid
@@ -791,7 +803,7 @@ steps:
       - id: sqlite
 
   - id: metrics_markduplicates
-    run: metrics.cwl
+    run: mixed_library_metrics.cwl
     in:
       - id: bam
         source: picard_markduplicates/OUTPUT
