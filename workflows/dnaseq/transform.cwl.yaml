@@ -168,6 +168,8 @@ steps:
     in:
       - id: INPUT
         source: samtools_bamtobam/OUTPUT
+      - id: MODE
+        valueFrom: "lenient"
     out:
       - id: OUTPUT
 
