@@ -97,7 +97,7 @@ steps:
       - id: input_state
         source: input_state
       - id: metric_path
-        source: picard_collecthsmetrics/OUTPUT
+        source: picard_collecthsmetrics/METRIC_OUTPUT
       - id: uuid
         source: uuid
     out:
