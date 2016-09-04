@@ -5,21 +5,26 @@ cwlVersion: v1.0
 class: Workflow
 
 requirements:
+ - class: InlineJavascriptRequirement
  - class: StepInputExpressionRequirement
  - class: SubworkflowFeatureRequirement
 
 inputs:
-  - id: signpost_base_url
-    type: string
-  - id: endpoint_json
+  - id: aws_config
+    type: File
+  - id: aws_shared_credentials
     type: File
   - id: bam_signpost_id
     type: string
+  - id: db_cred_path
+    type: File
   - id: db_snp_signpost_id
     type: string
-  - id: reference_fa_signpost_id
+  - id: endpoint_json
+    type: File
+  - id: load_bucket
     type: string
-  - id: reference_fai_signpost_id
+  - id: load_s3cfg_section
     type: string
   - id: reference_amb_signpost_id
     type: string
@@ -27,37 +32,31 @@ inputs:
     type: string
   - id: reference_bwt_signpost_id
     type: string
+  - id: reference_fa_signpost_id
+    type: string
+  - id: reference_fai_signpost_id
+    type: string
   - id: reference_pac_signpost_id
     type: string
   - id: reference_sa_signpost_id
+    type: string
+  - id: signpost_base_url
     type: string
   - id: thread_count
     type: int
   - id: uuid
     type: string
-  - id: aws_config
-    type: File
-  - id: aws_shared_credentials
-    type: File
-  - id: db_cred_path
-    type: File
-  - id: load_s3cfg_section
-    type: string
-  - id: load_endpoint_url
-    type: string
-  - id: load_bucket
-    type: string
 
 outputs:
-  - id: bam_signpost_json
+  - id: extract_bam_signpost_output
     type: File
-    outputSource: extract_bam_signpost/output_json
-  - id: dnaseq_workflow_output_bam
-    type: File
-    outputSource: dnaseq_workflow/picard_markduplicates_output_bam
-  - id: dnaseq_workflow_output_sqlite
-    type: File
-    outputSource: dnaseq_workflow/merge_all_sqlite_destination_sqlite
+    outputSource: extract_bam_signpost/output
+  # - id: root_fasta_files_output
+  #   type: File
+  #   outputSource: root_fasta_files/output
+  # - id: transform_picard_markduplicates_output
+  #   type: File
+  #   outputSource: transform/picard_markduplicates_output
 
 steps:
   - id: extract_bam_signpost
@@ -188,7 +187,7 @@ steps:
       - id: base_url
         source: signpost_base_url
     out:
-      - id: output_json
+      - id: output
 
   - id: extract_ref_ann
     run: ../../tools/aws_s3_get_signpost.cwl.yaml
@@ -276,75 +275,75 @@ steps:
     out:
       - id: output
 
-  - id: root_fasta_files
-    run: ../../tools/root_reference_fasta.cwl.yaml
-    in:
-      - id: fasta_path
-        source: extract_ref_fa/output
-      - id: fasta_amb_path
-        source: extract_ref_amb/output
-      - id: fasta_ann_path
-        source: extract_ref_ann/output
-      - id: fasta_bwt_path
-        source: extract_ref_bwt/output
-      - id: fasta_fai_path
-        source: extract_ref_fai/output
-      - id: fasta_pac_path
-        source: extract_ref_pac/output
-      - id: fasta_sa_path
-        source: extract_ref_sa/output
-    out:
-      - id: output
+  # - id: root_fasta_files
+  #   run: ../../tools/root_reference_fasta.cwl.yaml
+  #   in:
+  #     - id: fasta_path
+  #       source: extract_ref_fa/output
+  #     - id: fasta_amb_path
+  #       source: extract_ref_amb/output
+  #     - id: fasta_ann_path
+  #       source: extract_ref_ann/output
+  #     - id: fasta_bwt_path
+  #       source: extract_ref_bwt/output
+  #     - id: fasta_fai_path
+  #       source: extract_ref_fai/output
+  #     - id: fasta_pac_path
+  #       source: extract_ref_pac/output
+  #     - id: fasta_sa_path
+  #       source: extract_ref_sa/output
+  #   out:
+  #     - id: output
 
-  - id: dnaseq_workflow
-    run: dnaseq_workflow.cwl.yaml
-    in:
-      - id: bam_path
-        source: extract_bam/output
-      - id: db_snp_path
-        source: extract_db_snp/output
-      - id: reference_fasta_path
-        source: root_fasta_files/output_fasta
-      - id: thread_count
-        source: thread_count
-      - id: uuid
-        source: uuid
-    out:
-      - id: picard_markduplicates_output_bam
-      - id: merge_all_sqlite_destination_sqlite
+  # - id: transform
+  #   run: transform.cwl.yaml
+  #   in:
+  #     - id: bam_path
+  #       source: extract_bam/output
+  #     - id: db_snp_path
+  #       source: extract_db_snp/output
+  #     - id: reference_fasta_path
+  #       source: root_fasta_files/output_fasta
+  #     - id: thread_count
+  #       source: thread_count
+  #     - id: uuid
+  #       source: uuid
+  #   out:
+  #     - id: picard_markduplicates_output
+  #     # - id: merge_all_sqlite_destination_sqlite
 
-  - id: load_bam
-    run: ../../tools/aws_s3_put.cwl.yaml
-    in:
-      - id: aws_config
-        source: aws_config
-      - id: aws_shared_credentials
-        source: aws_shared_credentials
-      - id: s3cfg_section
-        source: load_s3cfg_section
-      - id: endpoint_url
-        source: load_endpoint_url
-      - id: input_path
-        source: dnaseq_workflow/picard_markduplicates_output_bam
-      - id: s3uri
-        source: load_bucket
-    out:
-      - id: output
+  # - id: load_bam
+  #   run: ../../tools/aws_s3_put.cwl.yaml
+  #   in:
+  #     - id: aws_config
+  #       source: aws_config
+  #     - id: aws_shared_credentials
+  #       source: aws_shared_credentials
+  #     - id: s3cfg_section
+  #       source: load_s3cfg_section
+  #     - id: endpoint_url
+  #       source: load_endpoint_url
+  #     - id: input_path
+  #       source: dnaseq_workflow/picard_markduplicates_output_bam
+  #     - id: s3uri
+  #       source: load_bucket
+  #   out:
+  #     - id: output
 
-  - id: load_sqlite
-    run: ../../tools/aws_s3_put.cwl.yaml
-    in:
-      - id: aws_config
-        source: aws_config
-      - id: aws_shared_credentials
-        source: aws_shared_credentials
-      - id: endpoint_url
-        source: load_endpoint_url
-      - id: input_path
-        source: dnaseq_workflow/merge_all_sqlite_destination_sqlite
-      - id: s3cfg_section
-        source: load_s3cfg_section
-      - id: s3uri
-        source: load_bucket
-    out:
-      - id: output
+  # - id: load_sqlite
+  #   run: ../../tools/aws_s3_put.cwl.yaml
+  #   in:
+  #     - id: aws_config
+  #       source: aws_config
+  #     - id: aws_shared_credentials
+  #       source: aws_shared_credentials
+  #     - id: endpoint_url
+  #       source: load_endpoint_url
+  #     - id: input_path
+  #       source: dnaseq_workflow/merge_all_sqlite_destination_sqlite
+  #     - id: s3cfg_section
+  #       source: load_s3cfg_section
+  #     - id: s3uri
+  #       source: load_bucket
+  #   out:
+  #     - id: output

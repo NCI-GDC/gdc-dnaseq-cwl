@@ -14,28 +14,42 @@ inputs:
     type: File
     format: "edam:format_3016"
     inputBinding:
-      prefix: "DB_SNP="
+      prefix: DB_SNP=
       separate: false
 
   - id: INPUT
     type: File
     format: "edam:format_2572"
     inputBinding:
-      prefix: "INPUT="
+      prefix: INPUT=
+      separate: false
+
+  - id: METRIC_ACCUMULATION_LEVEL=
+    type: string
+    default: ALL_READS
+    inputBinding:
+      prefix: METRIC_ACCUMULATION_LEVEL=
       separate: false
 
   - id: REFERENCE_SEQUENCE
     type: File
     format: "edam:format_1929"
     inputBinding:
-      prefix: "REFERENCE_SEQUENCE="
+      prefix: REFERENCE_SEQUENCE=
+      separate: false
+
+  - id: TMP_DIR
+    type: string
+    default: .
+    inputBinding:
+      prefix: TMP_DIR=
       separate: false
 
   - id: VALIDATION_STRINGENCY
-    default: "STRICT"
+    default: STRICT
     type: string
     inputBinding:
-      prefix: "VALIDATION_STRINGENCY="
+      prefix: VALIDATION_STRINGENCY=
       separate: false
 
 outputs:
@@ -62,12 +76,6 @@ outputs:
       - ^.quality_yield_metrics
 
 arguments:
-  - valueFrom: "METRIC_ACCUMULATION_LEVEL=ALL_READS"
-
-  - valueFrom: $(inputs.INPUT.nameroot)
-    prefix: "OUTPUT="
-    separate: false
-
   - valueFrom: "PROGRAM=CollectAlignmentSummaryMetrics"
   - valueFrom: "PROGRAM=CollectBaseDistributionByCycle"
   - valueFrom: "PROGRAM=CollectGcBiasMetrics"
@@ -76,7 +84,9 @@ arguments:
   - valueFrom: "PROGRAM=CollectSequencingArtifactMetrics"
   - valueFrom: "PROGRAM=MeanQualityByCycle"
   - valueFrom: "PROGRAM=QualityScoreDistribution"
-    
-  - valueFrom: "TMP_DIR=."
+
+  - valueFrom: $(inputs.INPUT.nameroot)
+    prefix: OUTPUT=
+    separate: false
 
 baseCommand: [java, -jar, /usr/local/bin/picard.jar, CollectMultipleMetrics]

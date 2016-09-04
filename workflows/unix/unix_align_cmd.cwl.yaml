@@ -5,8 +5,10 @@ cwlVersion: v1.0
 class: CommandLineTool
 
 requirements:
-  - class: ShellCommandRequirement
+  - class: DockerRequirement
+    dockerPull: alpine
   - class: InlineJavascriptRequirement
+  - class: ShellCommandRequirement
 
 inputs:
   - id: fastq1_path

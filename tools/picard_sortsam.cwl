@@ -1,15 +1,22 @@
-#!/usr/bin/env cwl-runner
+ #!/usr/bin/env cwl-runner
 
 cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/picard
+    dockerPull: quay.io/jeremiahsavage/picard:1
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
 
 inputs:
+  - id: CREATE_INDEX
+    type: string
+    default: "true"
+    inputBinding:
+      prefix: CREATE_INDEX=
+      separate: false
+
   - id: INPUT
     type: File
     format: "edam:format_2572"
@@ -17,18 +24,17 @@ inputs:
       prefix: INPUT=
       separate: false
 
-  - id: METRIC_ACCUMULATION_LEVEL
+  - id: OUTPUT
     type: string
-    default: ALL_READS
     inputBinding:
-      prefix: METRIC_ACCUMULATION_LEVEL=
+      prefix: OUTPUT=
       separate: false
 
-  - id: REFERENCE_SEQUENCE
-    type: ["null", File]
-    format: "edam:format_1929"
+  - id: SORT_ORDER
+    type: string
+    default: "coordinate"
     inputBinding:
-      prefix: REFERENCE_SEQUENCE=
+      prefix: SORT_ORDER=
       separate: false
 
   - id: TMP_DIR
@@ -38,22 +44,18 @@ inputs:
       prefix: TMP_DIR=
       separate: false
 
-  - id: VALIDATION_STRINGENCY=
+  - id: VALIDATION_STRINGENCY
     type: string
-    default: STRICT
+    default: "STRICT"
     inputBinding:
       prefix: VALIDATION_STRINGENCY=
       separate: false
 
 outputs:
-  - id: OUTPUT
+  - id: SORTED_OUTPUT
     type: File
+    format: "edam:format_2572"
     outputBinding:
-      glob: $(inputs.INPUT.basename + ".metrics")
-
-arguments:
-  - valueFrom: $(inputs.INPUT.basename + ".metrics")
-    prefix: OUTPUT=
-    separate: false
-
-baseCommand: [java, -jar, /usr/local/bin/picard.jar, CollectAlignmentSummaryMetrics]
+      glob: $(inputs.OUTPUT)
+          
+baseCommand: [java, -jar, /usr/local/bin/picard.jar, SortSam]

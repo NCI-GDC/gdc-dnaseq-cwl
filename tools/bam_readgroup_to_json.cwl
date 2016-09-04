@@ -16,6 +16,12 @@ inputs:
     inputBinding:
       prefix: --bam_path
 
+  - id: MODE
+    type: string
+    default: strict
+    inputBinding:
+      prefix: --mode
+
 outputs:
   - id: OUTPUT
     format: "edam:format_3464"
@@ -24,7 +30,7 @@ outputs:
       items: File
     outputBinding:
       glob: "*.json"
-      outputEval: $( self.sort(function(a,b) { return a.path > b.path }) )
+      outputEval: $( self.sort(function(a,b) { return a.location > b.location }) )
 
   - id: log
     type: File

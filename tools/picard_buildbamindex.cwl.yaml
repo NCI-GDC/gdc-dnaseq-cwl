@@ -21,13 +21,6 @@ inputs:
       prefix: INPUT=
       separate: false
 
-  - id: OUTPUT
-    type: string
-    default: $(inputs.INPUT.nameroot + ".bai")
-    inputBinding:
-      prefix: OUTPUT=
-      separate: false
-
   - id: VALIDATION_STRINGENCY
     type: string
     default: STRICT
@@ -43,5 +36,10 @@ outputs:
       glob: $(inputs.INPUT.basename)
     secondaryFiles:
       - ^.bai
+
+arguments:
+  - valueFrom: $(inputs.INPUT.nameroot + ".bai")
+    prefix: OUTPUT=
+    separate: false
 
 baseCommand: [java, -jar, /usr/local/bin/picard.jar, BuildBamIndex]

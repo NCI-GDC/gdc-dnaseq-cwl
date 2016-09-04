@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/integrity_to_sqlite:1
+    dockerPull: quay.io/jeremiahsavage/integrity_to_sqlite
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
@@ -14,11 +14,6 @@ inputs:
     type: string
     inputBinding:
       prefix: "--input_state"
-
-  - id: load_bucket
-    type: string
-    inputBinding:
-      prefix: "--load_bucket"
 
   - id: ls_l_path
     type: File

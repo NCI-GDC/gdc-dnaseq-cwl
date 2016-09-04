@@ -14,7 +14,7 @@ inputs:
     type: File
     format: "edam:format_2572"
     inputBinding:
-      prefix: "INPUT="
+      prefix: INPUT=
       separate: false
 
   - id: MAX_OUTPUT
@@ -31,26 +31,31 @@ inputs:
       prefix: MODE=
       separate: false
 
+  - id: TMP_DIR
+    type: string
+    default: .
+    inputBinding:
+      prefix: TMP_DIR=
+      separate: false
+
   - id: VALIDATION_STRINGENCY
-    default: "STRICT"
+    default: STRICT
     type: string
     inputBinding:
-      prefix: "VALIDATION_STRINGENCY="
+      prefix: VALIDATION_STRINGENCY=
       separate: false
 
 outputs:
   - id: OUTPUT
     type: File
     outputBinding:
-      glob: $(inputs.INPUT.nameroot + ".metrics")
+      glob: $(inputs.INPUT.basename + ".metrics")
 
 arguments:
-  - valueFrom: $(inputs.INPUT.nameroot + ".metrics")
-    prefix: "OUTPUT="
+  - valueFrom: $(inputs.INPUT.basename + ".metrics")
+    prefix: OUTPUT=
     separate: false
-
-  - valueFrom: "TMP_DIR=."
-
+      
 successCodes: [0, 1]
 
 baseCommand: [java, -jar, /usr/local/bin/picard.jar, ValidateSamFile]

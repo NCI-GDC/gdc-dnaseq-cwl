@@ -10,18 +10,32 @@ requirements:
 class: CommandLineTool
 
 inputs:
+  - id: CREATE_INDEX
+    type: string
+    default: "true"
+    inputBinding:
+      prefix: CREATE_INDEX=
+      separate: false
+
   - id: INPUT
     type: File
     format: "edam:format_2572"
     inputBinding:
-      prefix: "INPUT="
+      prefix: INPUT=
+      separate: false
+
+  - id: TMP_DIR
+    default: .
+    type: string
+    inputBinding:
+      prefix: TMP_DIR=
       separate: false
 
   - id: VALIDATION_STRINGENCY
-    default: "STRICT"
+    default: STRICT
     type: string
     inputBinding:
-      prefix: "VALIDATION_STRINGENCY="
+      prefix: VALIDATION_STRINGENCY=
       separate: false
 
 outputs:
@@ -36,19 +50,15 @@ outputs:
   - id: METRICS
     type: File
     outputBinding:
-      glob: $(inputs.INPUT.nameroot + ".metrics")
+      glob: $(inputs.INPUT.basename + ".metrics")
 
-arguments:
-  - valueFrom: "CREATE_INDEX=true"
-
-  - valueFrom: $(inputs.INPUT.nameroot + ".metrics")
-    prefix: "METRICS_FILE="
-    separate: false
-
+arguments::
   - valueFrom: $(inputs.INPUT.basename)
-    prefix: "OUTPUT="
+    prefix: OUTPUT=
     separate: false
 
-  - valueFrom: "TMP_DIR=."
+  - valueFrom: $(inputs.INPUT.basename + ".metrics")
+    prefix: METRICS_FILE=
+    separate: false
 
 baseCommand: [java, -jar, /usr/local/bin/picard.jar, MarkDuplicates]
