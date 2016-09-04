@@ -740,7 +740,7 @@ steps:
         picard_mergesamfiles_pe/MERGED_OUTPUT,
         picard_mergesamfiles_se/MERGED_OUTPUT,
         picard_mergesamfiles_o1/MERGED_OUTPUT,
-        picard_mergesamfiles_02/MERGED_OUTPUT
+        picard_mergesamfiles_o2/MERGED_OUTPUT
         ]
       - id: OUTPUT
         source: bam_path
