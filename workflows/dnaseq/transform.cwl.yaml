@@ -556,56 +556,12 @@ steps:
     out:
       - id: SORTED_OUTPUT
 
-  - id: decider_merge_o1_o2_expression
-    run: ../../decider_merge_readgroup_parts_expression.cwl
-    in:
-      - id: sorted_orphan
-        source: picard_sortsam_o1
-      - id: sorted_pe
-        source: picard_sortsam_o2
-    out:
-      - id: to_merge_orphan
-
-  - id: picard_mergesamfiles_o1_o2
-    run: ../../tools/picard_mergesamfiles.cwl
-    scatter: 
-    in:
-      - id: INPUT
-        source: picard_sortsam_pe/SORTED_OUTPUT
-      - id: OUTPUT
-        source: bam_path
-        valueFrom: $(self.basename)
-    out:
-      - id: MERGED_OUTPUT
-
-  - id: decider_merge_o_pe_expression
-    run: ../../decider_merge_readgroups_parts_expression.cwl
-    in:
-      - id: sorted_orphan
-        source: picard_sortsam_o1
-      - id: sorted_pe
-        source: picard_sortsam_pe
-    out:
-      - id: to_merge_orphan
-
-  - id: picard_mergesamfiles_o_pe
-    run: ../../tools/picard_mergesamfiles.cwl
-    scatter:
-    in:
-      - id: INPUT
-        source: picard_sortsam_pe/SORTED_OUTPUT
-      - id: OUTPUT
-        source: bam_path
-        valueFrom: $(self.basename)
-    out:
-      - id: MERGED_OUTPUT
-
   - id: metrics_pe
     run: metrics.cwl
     scatter: metrics_pe/bam
     in:
       - id: bam
-        source: picard_mergesamfiles_o_pe/MERGED_OUTPUT
+        source: picard_sortsam_pe/SORTED_OUTPUT
       - id: db_snp_vcf
         source: db_snp_path
       - id: fasta
@@ -688,13 +644,37 @@ steps:
     out:
       - id: MERGED_OUTPUT
 
+  - id: picard_mergesamfiles_o1
+    run: ../../tools/picard_mergesamfiles.cwl
+    in:
+      - id: INPUT
+        source: picard_sortsam_o1/SORTED_OUTPUT
+      - id: OUTPUT
+        source: bam_path
+        valueFrom: $(self.basename)
+    out:
+      - id: MERGED_OUTPUT
+
+  - id: picard_mergesamfiles_o2
+    run: ../../tools/picard_mergesamfiles.cwl
+    in:
+      - id: INPUT
+        source: picard_sortsam_o2/SORTED_OUTPUT
+      - id: OUTPUT
+        source: bam_path
+        valueFrom: $(self.basename)
+    out:
+      - id: MERGED_OUTPUT
+
   - id: picard_mergesamfiles
     run: ../../tools/picard_mergesamfiles.cwl
     in:
       - id: INPUT
         source: [
         picard_mergesamfiles_pe/MERGED_OUTPUT,
-        picard_mergesamfiles_se/MERGED_OUTPUT
+        picard_mergesamfiles_se/MERGED_OUTPUT,
+        picard_mergesamfiles_o1/MERGED_OUTPUT,
+        picard_mergesamfiles_o2/MERGED_OUTPUT
         ]
       - id: OUTPUT
         source: bam_path
