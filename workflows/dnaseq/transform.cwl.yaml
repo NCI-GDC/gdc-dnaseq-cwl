@@ -734,7 +734,7 @@ steps:
       - id: input_state
         valueFrom: "markduplicates_readgroups"
       - id: metric_path
-        source: picard_validatesamfile_original/OUTPUT
+        source: picard_validatesamfile_markduplicates/OUTPUT
       - id: uuid
         source: uuid
     out:
