@@ -138,7 +138,6 @@ outputs:
     outputBinding:
       glob: $(inputs.INPUT.nameroot + ".quality_yield_metrics")
 
-
 arguments:
   - valueFrom: "PROGRAM=CollectAlignmentSummaryMetrics"
   - valueFrom: "PROGRAM=CollectBaseDistributionByCycle"
