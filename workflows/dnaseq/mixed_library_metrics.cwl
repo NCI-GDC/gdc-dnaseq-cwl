@@ -61,8 +61,6 @@ steps:
         valueFrom: $(self.basename)
       - id: input_state
         source: input_state
-      - id: metric_path
-        source: picard_collectmultiplemetrics/OUTPUT
       - id: uuid
         source: uuid
       - id: vcf
