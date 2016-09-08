@@ -123,7 +123,8 @@ outputs:
       items: File
     outputBinding:
       glob: "*_1.fq.gz"
-      outputEval: $( self.sort(function(a,b) { return a.location > b.location }) )
+      outputEval: |
+        ${ return self.sort(function(a,b) { return a.location > b.location ? 1 : (a.location < b.location ? -1 : 0) }) }
 
   - id: output_fastq2
     format: "edam:format_2182"
@@ -132,7 +133,8 @@ outputs:
       items: File
     outputBinding:
       glob: "*_2.fq.gz"
-      outputEval: $( self.sort(function(a,b) { return a.location > b.location }) )
+      outputEval: |
+        ${ return self.sort(function(a,b) { return a.location > b.location ? 1 : (a.location < b.location ? -1 : 0) }) }
 
   - id: output_fastq_o1
     format: "edam:format_2182"
@@ -141,7 +143,8 @@ outputs:
       items: File
     outputBinding:
       glob: "*_o1.fq.gz"
-      outputEval: $( self.sort(function(a,b) { return a.location > b.location }) )
+      outputEval: |
+        ${ return self.sort(function(a,b) { return a.location > b.location ? 1 : (a.location < b.location ? -1 : 0) }) }
 
   - id: output_fastq_o2
     format: "edam:format_2182"
@@ -150,7 +153,8 @@ outputs:
       items: File
     outputBinding:
       glob: "*_o2.fq.gz"
-      outputEval: $( self.sort(function(a,b) { return a.location > b.location }) )
+      outputEval: |
+        ${ return self.sort(function(a,b) { return a.location > b.location ? 1 : (a.location < b.location ? -1 : 0) }) }
 
   - id: output_fastq_s
     format: "edam:format_2182"
@@ -159,6 +163,7 @@ outputs:
       items: File
     outputBinding:
       glob: "*_s.fq.gz"
-      outputEval: $( self.sort(function(a,b) { return a.location > b.location }) )
+      outputEval: |
+        ${ return self.sort(function(a,b) { return a.location > b.location ? 1 : (a.location < b.location ? -1 : 0) }) }
 
 baseCommand: [/usr/local/bin/bamtofastq]

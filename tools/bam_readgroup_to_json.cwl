@@ -30,7 +30,8 @@ outputs:
       items: File
     outputBinding:
       glob: "*.json"
-      outputEval: $( self.sort(function(a,b) { return a.location > b.location }) )
+      outputEval: |
+        ${ return self.sort(function(a,b) { return a.location > b.location ? 1 : (a.location < b.location ? -1 : 0) }) }
 
   - id: log
     type: File

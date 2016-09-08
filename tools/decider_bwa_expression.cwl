@@ -86,7 +86,6 @@ expression: |
         }
       }
 
-      var readgroup_sorted = readgroup_array.sort(function(a,b) { return a.location > b.location } )
-
+      var readgroup_sorted = readgroup_array.sort(function(a,b) { return a.location > b.location ? 1 : (a.location < b.location ? -1 : 0) })
       return {'output_readgroup_paths': readgroup_sorted}
     }
