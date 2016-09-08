@@ -144,29 +144,29 @@ steps:
         source: db_snp_vcf
         valueFrom: $(self.basename)
       - id: alignment_summary_metrics
-        source: picard_collecthsmetrics/alignment_summary_metrics
+        source: picard_collectmultiplemetrics/alignment_summary_metrics
       - id: bait_bias_detail_metrics
-        source: picard_collecthsmetrics/bait_bias_detail_metrics
+        source: picard_collectmultiplemetrics/bait_bias_detail_metrics
       - id: bait_bias_summary_metrics
-        source: picard_collecthsmetrics/bait_bias_summary_metrics
+        source: picard_collectmultiplemetrics/bait_bias_summary_metrics
       - id: base_distribution_by_cycle_metrics
-        source: picard_collecthsmetrics/base_distribution_by_cycle_metrics
+        source: picard_collectmultiplemetrics/base_distribution_by_cycle_metrics
       - id: gc_bias_detail_metrics
-        source: picard_collecthsmetrics/gc_bias_detail_metrics
+        source: picard_collectmultiplemetrics/gc_bias_detail_metrics
       - id: gc_bias_summary_metrics
-        source: picard_collecthsmetrics/gc_bias_summary_metrics
+        source: picard_collectmultiplemetrics/gc_bias_summary_metrics
       - id: insert_size_metrics
-        source: picard_collecthsmetrics/insert_size_metrics
+        source: picard_collectmultiplemetrics/insert_size_metrics
       - id: pre_adapter_detail_metrics
-        source: picard_collecthsmetrics/pre_adapter_detail_metrics
+        source: picard_collectmultiplemetrics/pre_adapter_detail_metrics
       - id: pre_adapter_summary_metrics
-        source: picard_collecthsmetrics/pre_adapter_summary_metrics
+        source: picard_collectmultiplemetrics/pre_adapter_summary_metrics
       - id: quality_by_cycle_metrics
-        source: picard_collecthsmetrics/quality_by_cycle_metrics
+        source: picard_collectmultiplemetrics/quality_by_cycle_metrics
       - id: quality_distribution_metrics
-        source: picard_collecthsmetrics/quality_distribution_metrics
+        source: picard_collectmultiplemetrics/quality_distribution_metrics
       - id: quality_yield_metrics
-        source: picard_collecthsmetrics/quality_yield_metrics
+        source: picard_collectmultiplemetrics/quality_yield_metrics
     out:
       - id: log
       - id: sqlite
