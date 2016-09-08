@@ -66,7 +66,7 @@ inputs:
       prefix: --gc_bias.summary_metrics
 
   - id: insert_size_metrics
-    type: [null, File]
+    type: ["null", File]
     inputBinding:
       prefix: --insert_size_metrics
 

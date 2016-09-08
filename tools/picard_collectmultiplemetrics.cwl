@@ -94,12 +94,12 @@ outputs:
       glob: $(inputs.INPUT.nameroot + ".gc_bias.summary_metrics")
 
   - id: insert_size_histogram_pdf
-    type: [null, File]
+    type: ["null", File]
     outputBinding:
       glob: $(inputs.INPUT.nameroot + ".insert_size_histogram.pdf")
 
   - id: insert_size_metrics
-    type: [null, File]
+    type: ["null", File]
     outputBinding:
       glob: $(inputs.INPUT.nameroot + ".insert_size_metrics")
 
