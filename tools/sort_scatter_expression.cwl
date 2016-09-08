@@ -20,4 +20,7 @@ outputs:
       items: File
 
 expression: |
-  ${return inputs.INPUT.sort(function(a,b) { return a.basename > b.basename ? 1 : (a.basename < b.basename ? -1 : 0) })}
+  ${
+    var output = inputs.INPUT.sort(function(a,b) { return a.basename > b.basename ? 1 : (a.basename < b.basename ? -1 : 0) });
+    return {'OUTPUT': output}
+  }
