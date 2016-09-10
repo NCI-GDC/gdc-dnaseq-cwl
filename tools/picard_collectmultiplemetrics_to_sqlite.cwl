@@ -58,12 +58,12 @@ inputs:
   - id: gc_bias_detail_metrics
     type: File
     inputBinding:
-      prefix: --gc_bias.detail_metrics
+      prefix: --gc_bias_detail_metrics
 
   - id: gc_bias_summary_metrics
     type: File
     inputBinding:
-      prefix: --gc_bias.summary_metrics
+      prefix: --gc_bias_summary_metrics
 
   - id: insert_size_metrics
     type: ["null", File]
