@@ -14,7 +14,8 @@ inputs:
     type: boolean
     default: false
     inputBinding:
-      prefix: ASSUME_SORTED
+      prefix: ASSUME_SORTED=
+      separate: false
 
   - id: CREATE_INDEX
     type: string
