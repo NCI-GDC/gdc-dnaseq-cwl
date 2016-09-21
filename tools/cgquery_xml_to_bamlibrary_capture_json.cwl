@@ -39,8 +39,4 @@ outputs:
     outputBinding:
       glob: "phs000218_phs0004_phs000515_wxs_illumina_live_all_states_no_capture_per_library"
 
-arguments:
-  - valueFrom: $(["tar", "xvf", "/cgquery_xml.tar.xz", "&&", "/usr/local/bin/cgquery_xml_to_bamlibrary_capture_json", "-t", "cgquery_xml/phs000178_wxs_illumina_live_all_states.xml", "-g", "cgquery_xml/phs000218_phs0004_phs000515_wxs_illumina_live_all_states.xml"].join(' '))
-    shellQuote: true
-
-baseCommand: [bash, -c]
+baseCommand: ["tar", "xvf", "/cgquery_xml.tar.xz", "&&", "/usr/local/bin/cgquery_xml_to_bamlibrary_capture_json", "-t", "cgquery_xml/phs000178_wxs_illumina_live_all_states.xml", "-g", "cgquery_xml/phs000218_phs0004_phs000515_wxs_illumina_live_all_states.xml"]
