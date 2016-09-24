@@ -19,6 +19,8 @@ outputs:
       items: File
     outputBinding:
       glob: "*.baitIntervals.hg38.list.xz"
+      outputEval: |
+        ${ return self.sort(function(a,b) { return a.location > b.location ? 1 : (a.location < b.location ? -1 : 0) }) }
 
   - id: TARGET_INTERVAL_LIST
     type:
@@ -26,5 +28,7 @@ outputs:
       items: File
     outputBinding:
       glob: "*.targetIntervals.hg38.list.xz"
+      outputEval: |
+        ${ return self.sort(function(a,b) { return a.location > b.location ? 1 : (a.location < b.location ? -1 : 0) }) }
 
 baseCommand: [/usr/local/bin/main.sh]
