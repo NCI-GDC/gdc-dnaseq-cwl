@@ -13,11 +13,18 @@ inputs:
   []
 
 outputs:
-  - id: INTERVAL_LIST
+  - id: BAIT_INTERVAL_LIST
     type:
       type: array
       items: File
     outputBinding:
-      glob: "*.hg38.list.xz"
+      glob: "*.baitIntervals.hg38.list.xz"
+
+  - id: TARGET_INTERVAL_LIST
+    type:
+      type: array
+      items: File
+    outputBinding:
+      glob: "*.targetIntervals.hg38.list.xz"
 
 baseCommand: [/usr/local/bin/main.sh]
