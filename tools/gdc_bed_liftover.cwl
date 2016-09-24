@@ -18,6 +18,6 @@ outputs:
       type: array
       items: File
     outputBinding:
-      glob: ".list.xz"
+      glob: "*.hg38.list.xz"
 
 baseCommand: [/usr/local/bin/main.sh]
