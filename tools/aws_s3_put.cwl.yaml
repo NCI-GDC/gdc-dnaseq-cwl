@@ -53,9 +53,12 @@ outputs:
 arguments:
   - valueFrom: |
       ${
-      var endpoint_json = JSON.parse(inputs.endpoint_json.contents)
-      var endpoint_url = String(endpoint_json[inputs.s3cfg_section])
-      return endpoint_url
+      var endpoint_json = JSON.parse(inputs.endpoint_json.contents);
+      var endpoint_url = String(endpoint_json[inputs.s3cfg_section]);
+      var endpoint = endpoint_url.replace("http://","");
+      var cmd = ["dig", "+short", endpoint, "|", "grep", "-E", "'[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'", "|", "shuf", "-n1"];
+      var shell_cmd = "`" + cmd.join(' ') + "`";
+      return shell_cmd
       }
     prefix: --endpoint-url
     position: 1
