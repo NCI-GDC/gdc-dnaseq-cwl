@@ -308,7 +308,7 @@ steps:
     in:
       - id: source_sqlite
         source: [
-          picard_collecthsmetrics_to_sqlite/sqlite,
+#          picard_collecthsmetrics_to_sqlite/sqlite,
           picard_collectmultiplemetrics_to_sqlite/sqlite,
           picard_collectoxogmetrics_to_sqlite/sqlite,
           picard_collectwgsmetrics_to_sqlite/sqlite,
