@@ -29,7 +29,7 @@ outputs:
 
 steps:
   - id: queue_status
-    run: ../../tools/queue_status.cwl.yaml
+    run: ../../tools/queue_status.cwl
     in:
       - id: repo
         source: repo
@@ -48,7 +48,7 @@ steps:
       - id: sqlite
 
   - id: sqlite_to_postgres
-    run: ../../tools/sqlite_to_postgres_hirate.cwl.yaml
+    run: ../../tools/sqlite_to_postgres_hirate.cwl
     in:
       - id: ini_section
         source: ini_section
