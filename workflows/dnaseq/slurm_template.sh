@@ -57,6 +57,7 @@ function main()
     if [ $? -ne 0 ]
     then
         echo FAIL
+        exit 1
     fi
 
     #rm -rf ${job_dir}
