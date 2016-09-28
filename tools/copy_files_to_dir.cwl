@@ -48,10 +48,11 @@ outputs:
 arguments:
   - valueFrom: |
       ${
-         var cmd += "cp " + inputs.fasta.path + " " +  inputs.fasta_amb.path + " " + inputs.fasta_ann.path + " "
-                          + inputs.fasta_bwt.path + " " + inputs.fasta_fai.path + " " + inputs.fasta_pac.path + " "
-                          + inputs.fasta_sa.path + " .";
+         var cmd = "cp " + inputs.fasta.path + " " +  inputs.fasta_amb.path + " " + inputs.fasta_ann.path + " "
+                         + inputs.fasta_bwt.path + " " + inputs.fasta_fai.path + " " + inputs.fasta_pac.path + " "
+                         + inputs.fasta_sa.path + " .";
          return cmd
       }
+    shellQuote: false
 
 baseCommand: []
