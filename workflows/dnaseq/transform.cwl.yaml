@@ -678,7 +678,7 @@ steps:
         ]
       - id: OUTPUT
         source: bam_path
-        valueFrom: $(self.basename)
+        valueFrom: $(self.nameroot + "_gdc_realn.bam")
     out:
       - id: MERGED_OUTPUT
 
