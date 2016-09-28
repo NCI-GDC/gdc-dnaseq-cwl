@@ -10,9 +10,9 @@ requirements:
   - class: SubworkflowFeatureRequirement
 
 inputs:
-  - id: aws_config_file
+  - id: aws_config
     type: File
-  - id: aws_shared_credentials_file
+  - id: aws_shared_credentials
     type: File
   - id: bam_signpost_id
     type: string
@@ -84,10 +84,10 @@ steps:
   - id: etl
     run: etl.cwl
     in:
-      - id: aws_config_file
-        source: aws_config_file
-      - id: aws_shared_credentials_file
-        source: aws_shared_credentials_file
+      - id: aws_config
+        source: aws_config
+      - id: aws_shared_credentials
+        source: aws_shared_credentials
       - id: bam_signpost_id
         source: bam_signpost_id
       - id: db_cred_path
