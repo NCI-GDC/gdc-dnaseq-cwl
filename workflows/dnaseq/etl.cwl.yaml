@@ -60,7 +60,7 @@ outputs:
 
 steps:
   - id: extract_bam_signpost
-    run: ../../tools/get_signpost_json.cwl.yaml
+    run: ../../tools/get_signpost_json.cwl
     in:
       - id: signpost_id
         source: bam_signpost_id
@@ -70,7 +70,7 @@ steps:
       - id: output
 
   - id: extract_bam
-    run: ../../tools/aws_s3_get_signpost.cwl.yaml
+    run: ../../tools/aws_s3_get_signpost.cwl
     in:
       - id: aws_config
         source: aws_config
@@ -84,7 +84,7 @@ steps:
       - id: output
 
   - id: extract_db_snp_signpost
-    run: ../../tools/get_signpost_json.cwl.yaml
+    run: ../../tools/get_signpost_json.cwl
     in:
       - id: signpost_id
         source: db_snp_signpost_id
@@ -94,7 +94,7 @@ steps:
       - id: output
 
   - id: extract_db_snp
-    run: ../../tools/aws_s3_get_signpost.cwl.yaml
+    run: ../../tools/aws_s3_get_signpost.cwl
     in:
       - id: aws_config
         source: aws_config
@@ -108,7 +108,7 @@ steps:
       - id: output
 
   - id: extract_ref_fa_signpost
-    run: ../../tools/get_signpost_json.cwl.yaml
+    run: ../../tools/get_signpost_json.cwl
     in:
       - id: signpost_id
         source: reference_fa_signpost_id
@@ -118,7 +118,7 @@ steps:
       - id: output
 
   - id: extract_ref_fa
-    run: ../../tools/aws_s3_get_signpost.cwl.yaml
+    run: ../../tools/aws_s3_get_signpost.cwl
     in:
       - id: aws_config
         source: aws_config
@@ -132,7 +132,7 @@ steps:
       - id: output
 
   - id: extract_ref_fai_signpost
-    run: ../../tools/get_signpost_json.cwl.yaml
+    run: ../../tools/get_signpost_json.cwl
     in:
       - id: signpost_id
         source: reference_fai_signpost_id
@@ -142,7 +142,7 @@ steps:
       - id: output
 
   - id: extract_ref_fai
-    run: ../../tools/aws_s3_get_signpost.cwl.yaml
+    run: ../../tools/aws_s3_get_signpost.cwl
     in:
       - id: aws_config
         source: aws_config
@@ -156,7 +156,7 @@ steps:
       - id: output
 
   - id: extract_ref_amb_signpost
-    run: ../../tools/get_signpost_json.cwl.yaml
+    run: ../../tools/get_signpost_json.cwl
     in:
       - id: signpost_id
         source: reference_amb_signpost_id
@@ -166,7 +166,7 @@ steps:
       - id: output
 
   - id: extract_ref_amb
-    run: ../../tools/aws_s3_get_signpost.cwl.yaml
+    run: ../../tools/aws_s3_get_signpost.cwl
     in:
       - id: aws_config
         source: aws_config
@@ -180,7 +180,7 @@ steps:
       - id: output
 
   - id: extract_ref_ann_signpost
-    run: ../../tools/get_signpost_json.cwl.yaml
+    run: ../../tools/get_signpost_json.cwl
     in:
       - id: signpost_id
         source: reference_ann_signpost_id
@@ -190,7 +190,7 @@ steps:
       - id: output
 
   - id: extract_ref_ann
-    run: ../../tools/aws_s3_get_signpost.cwl.yaml
+    run: ../../tools/aws_s3_get_signpost.cwl
     in:
       - id: aws_config
         source: aws_config
@@ -204,7 +204,7 @@ steps:
       - id: output
 
   - id: extract_ref_bwt_signpost
-    run: ../../tools/get_signpost_json.cwl.yaml
+    run: ../../tools/get_signpost_json.cwl
     in:
       - id: signpost_id
         source: reference_bwt_signpost_id
@@ -214,7 +214,7 @@ steps:
       - id: output
 
   - id: extract_ref_bwt
-    run: ../../tools/aws_s3_get_signpost.cwl.yaml
+    run: ../../tools/aws_s3_get_signpost.cwl
     in:
       - id: aws_config
         source: aws_config
@@ -228,7 +228,7 @@ steps:
       - id: output
 
   - id: extract_ref_pac_signpost
-    run: ../../tools/get_signpost_json.cwl.yaml
+    run: ../../tools/get_signpost_json.cwl
     in:
       - id: signpost_id
         source: reference_pac_signpost_id
@@ -238,7 +238,7 @@ steps:
       - id: output
 
   - id: extract_ref_pac
-    run: ../../tools/aws_s3_get_signpost.cwl.yaml
+    run: ../../tools/aws_s3_get_signpost.cwl
     in:
       - id: aws_config
         source: aws_config
@@ -252,7 +252,7 @@ steps:
       - id: output
 
   - id: extract_ref_sa_signpost
-    run: ../../tools/get_signpost_json.cwl.yaml
+    run: ../../tools/get_signpost_json.cwl
     in:
       - id: signpost_id
         source: reference_sa_signpost_id
@@ -262,7 +262,7 @@ steps:
       - id: output
 
   - id: extract_ref_sa
-    run: ../../tools/aws_s3_get_signpost.cwl.yaml
+    run: ../../tools/aws_s3_get_signpost.cwl
     in:
       - id: aws_config
         source: aws_config
@@ -275,75 +275,115 @@ steps:
     out:
       - id: output
 
-  # - id: root_fasta_files
-  #   run: ../../tools/root_reference_fasta.cwl.yaml
-  #   in:
-  #     - id: fasta_path
-  #       source: extract_ref_fa/output
-  #     - id: fasta_amb_path
-  #       source: extract_ref_amb/output
-  #     - id: fasta_ann_path
-  #       source: extract_ref_ann/output
-  #     - id: fasta_bwt_path
-  #       source: extract_ref_bwt/output
-  #     - id: fasta_fai_path
-  #       source: extract_ref_fai/output
-  #     - id: fasta_pac_path
-  #       source: extract_ref_pac/output
-  #     - id: fasta_sa_path
-  #       source: extract_ref_sa/output
-  #   out:
-  #     - id: output
+  - id: root_fasta_files
+    run: ../../tools/copy_files_to_dir.cwl
+    in:
+      - id: fasta
+        source: extract_ref_fa/output
+      - id: fasta_amb
+        source: extract_ref_amb/output
+      - id: fasta_ann
+        source: extract_ref_ann/output
+      - id: fasta_bwt
+        source: extract_ref_bwt/output
+      - id: fasta_fai
+        source: extract_ref_fai/output
+      - id: fasta_pac
+        source: extract_ref_pac/output
+      - id: fasta_sa
+        source: extract_ref_sa/output
+    out:
+      - id: output
 
-  # - id: transform
-  #   run: transform.cwl.yaml
-  #   in:
-  #     - id: bam_path
-  #       source: extract_bam/output
-  #     - id: db_snp_path
-  #       source: extract_db_snp/output
-  #     - id: reference_fasta_path
-  #       source: root_fasta_files/output_fasta
-  #     - id: thread_count
-  #       source: thread_count
-  #     - id: uuid
-  #       source: uuid
-  #   out:
-  #     - id: picard_markduplicates_output
-  #     # - id: merge_all_sqlite_destination_sqlite
+  - id: transform
+    run: transform.cwl
+    in:
+      - id: bam_path
+        source: extract_bam/output
+      - id: db_snp_path
+        source: extract_db_snp/output
+      - id: reference_fasta_path
+        source: root_fasta_files/output_fasta
+      - id: thread_count
+        source: thread_count
+      - id: uuid
+        source: uuid
+    out:
+      - id: picard_markduplicates_output
+      - id: merge_all_sqlite_destination_sqlite
 
-  # - id: load_bam
-  #   run: ../../tools/aws_s3_put.cwl.yaml
-  #   in:
-  #     - id: aws_config
-  #       source: aws_config
-  #     - id: aws_shared_credentials
-  #       source: aws_shared_credentials
-  #     - id: s3cfg_section
-  #       source: load_s3cfg_section
-  #     - id: endpoint_url
-  #       source: load_endpoint_url
-  #     - id: input_path
-  #       source: dnaseq_workflow/picard_markduplicates_output_bam
-  #     - id: s3uri
-  #       source: load_bucket
-  #   out:
-  #     - id: output
+  - id: load_bam
+    run: ../../tools/aws_s3_put.cwl
+    in:
+      - id: aws_config
+        source: aws_config
+      - id: aws_shared_credentials
+        source: aws_shared_credentials
+      - id: endpoint_json
+        source: endpoint_json
+      - id: input
+        source: dnaseq_workflow/picard_markduplicates_output_bam
+      - id: s3cfg_section
+        source: load_s3cfg_section
+      - id: s3uri
+        source: load_bucket
+        valueFrom: |
+          ${
+          return self + '/' + inputs.uuid + '/';
+          }
+      - id: uuid
+        source: uuid
+        valueFrom: null
+    out:
+      - id: output
 
-  # - id: load_sqlite
-  #   run: ../../tools/aws_s3_put.cwl.yaml
-  #   in:
-  #     - id: aws_config
-  #       source: aws_config
-  #     - id: aws_shared_credentials
-  #       source: aws_shared_credentials
-  #     - id: endpoint_url
-  #       source: load_endpoint_url
-  #     - id: input_path
-  #       source: dnaseq_workflow/merge_all_sqlite_destination_sqlite
-  #     - id: s3cfg_section
-  #       source: load_s3cfg_section
-  #     - id: s3uri
-  #       source: load_bucket
-  #   out:
-  #     - id: output
+  - id: load_bai
+    run: ../../tools/aws_s3_put.cwl
+    in:
+      - id: aws_config
+        source: aws_config
+      - id: aws_shared_credentials
+        source: aws_shared_credentials
+      - id: endpoint_json
+        source: endpoint_json
+      - id: input
+        source: dnaseq_workflow/picard_markduplicates_output_bam
+        valueFrom: $(self.secondaryFiles[0])
+      - id: s3cfg_section
+        source: load_s3cfg_section
+      - id: s3uri
+        source: load_bucket
+        valueFrom: |
+          ${
+          return self + '/' + inputs.uuid + '/';
+          }
+      - id: uuid
+        source: uuid
+        valueFrom: null
+    out:
+      - id: output
+
+  - id: load_sqlite
+    run: ../../tools/aws_s3_put.cwl
+    in:
+      - id: aws_config
+        source: aws_config
+      - id: aws_shared_credentials
+        source: aws_shared_credentials
+      - id: endpoint_json
+        source: endpoint_json
+      - id: input
+        source: dnaseq_workflow/merge_all_sqlite_destination_sqlite
+      - id: s3cfg_section
+        source: load_s3cfg_section
+      - id: s3uri
+        source: load_bucket
+        valueFrom: |
+          ${
+          return self + '/' + inputs.uuid + '/';
+          }
+      - id: uuid
+        source: uuid
+        valueFrom: null
+    out:
+      - id: output
