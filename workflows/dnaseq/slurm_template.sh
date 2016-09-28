@@ -54,6 +54,10 @@ function main()
     activate_virtualenv ${virtualenv_name}
 
     runner ${cache_dir} ${cwl_path} ${job_dir} ${json_path} ${tmp_dir}
+    if [ $? -ne 0 ]
+    then
+        echo FAIL
+    fi
 
     #rm -rf ${job_dir}
 }
