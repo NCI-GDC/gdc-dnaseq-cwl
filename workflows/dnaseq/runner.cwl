@@ -52,8 +52,6 @@ inputs:
     type: string
   - id: thread_count
     type: int
-  - id: start_token
-    type: File
   - id: uuid
     type: string
 
