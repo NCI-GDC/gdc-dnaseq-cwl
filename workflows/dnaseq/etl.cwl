@@ -50,13 +50,13 @@ inputs:
     type: string
 
 outputs:
-  - id: token
-    type: File
-    outputSource: generate_token/token
-  - id: harmonized_bam_url
+  - id: harmonized_bam
     type: string
     outputSource: transform/picard_markduplicates_output
     valueFrom: $(inputs.load_bucket + self.basename)
+  - id: token
+    type: File
+    outputSource: generate_token/token
 
 steps:
   - id: extract_bam_signpost
@@ -303,7 +303,7 @@ steps:
       - id: db_snp_path
         source: extract_db_snp/output
       - id: reference_fasta_path
-        source: root_fasta_files/output_fasta
+        source: root_fasta_files/output
       - id: thread_count
         source: thread_count
       - id: uuid
@@ -322,15 +322,12 @@ steps:
       - id: endpoint_json
         source: endpoint_json
       - id: input
-        source: dnaseq_workflow/picard_markduplicates_output_bam
+        source: transform/picard_markduplicates_output
       - id: s3cfg_section
         source: load_s3cfg_section
       - id: s3uri
         source: load_bucket
-        valueFrom: |
-          ${
-          return self + '/' + inputs.uuid + '/';
-          }
+        valueFrom: $(self + inputs.uuid + "/")
       - id: uuid
         source: uuid
         valueFrom: null
@@ -347,16 +344,13 @@ steps:
       - id: endpoint_json
         source: endpoint_json
       - id: input
-        source: dnaseq_workflow/picard_markduplicates_output_bam
+        source: transform/picard_markduplicates_output
         valueFrom: $(self.secondaryFiles[0])
       - id: s3cfg_section
         source: load_s3cfg_section
       - id: s3uri
         source: load_bucket
-        valueFrom: |
-          ${
-          return self + '/' + inputs.uuid + '/';
-          }
+        valueFrom: $(self + inputs.uuid + "/")
       - id: uuid
         source: uuid
         valueFrom: null
@@ -373,22 +367,19 @@ steps:
       - id: endpoint_json
         source: endpoint_json
       - id: input
-        source: dnaseq_workflow/merge_all_sqlite_destination_sqlite
+        source: transform/merge_all_sqlite_destination_sqlite
       - id: s3cfg_section
         source: load_s3cfg_section
       - id: s3uri
         source: load_bucket
-        valueFrom: |
-          ${
-          return self + '/' + inputs.uuid + '/';
-          }
+        valueFrom: $(self + inputs.uuid + "/")
       - id: uuid
         source: uuid
         valueFrom: null
     out:
       - id: output
 
-  - id: generate_load_token
+  - id: generate_token
     run: ../../tools/generate_load_token.cwl
     in:
       - id: load1
