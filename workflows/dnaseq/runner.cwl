@@ -55,9 +55,10 @@ inputs:
   - id: uuid
     type: string
 
-output:
+outputs:
   - id: token
-    source: status_complete/token
+    type: File
+    outputSource: status_complete/token
 
 steps:
   - id: status_running
@@ -123,7 +124,7 @@ steps:
         source: uuid
     out:
       - id: token
-      - id: harmonized_bam_url
+      - id: harmonized_bam_uri
 
   - id: status_complete
     run: ../status/status_postgres_workflow.cwl
@@ -137,7 +138,7 @@ steps:
       - id: repo_hash
         source: repo_hash
       - id: s3_url
-        source: etl/harmonized_bam_url
+        source: etl/harmonized_bam_uri
       - id: status
         valueFrom: "COMPLETE"
       - id: table_name
