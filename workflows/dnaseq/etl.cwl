@@ -50,10 +50,9 @@ inputs:
     type: string
 
 outputs:
-  - id: harmonized_bam
+  - id: harmonized_bam_uri
     type: string
-    outputSource: transform/picard_markduplicates_output
-    valueFrom: $(inputs.load_bucket + self.basename)
+    outputSource: generate_s3load_path/output
   - id: token
     type: File
     outputSource: generate_token/token
@@ -390,3 +389,14 @@ steps:
         source: load_sqlite/output
     out:
       - id: token
+
+  - id: generate_s3load_path
+    run: ../../tools/generate_s3load_path.cwl
+    in:
+      - id: load_bucket
+        source: load_bucket
+      - id: filename
+        source: transform/picard_markduplicates_output
+        valueFrom: $(self.basename)
+    out:
+      - id: output
