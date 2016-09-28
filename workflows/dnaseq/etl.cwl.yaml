@@ -48,15 +48,9 @@ inputs:
     type: string
 
 outputs:
-  - id: extract_bam_signpost_output
+  - id: token
     type: File
-    outputSource: extract_bam_signpost/output
-  # - id: root_fasta_files_output
-  #   type: File
-  #   outputSource: root_fasta_files/output
-  # - id: transform_picard_markduplicates_output
-  #   type: File
-  #   outputSource: transform/picard_markduplicates_output
+    outputSource: generate_token/token
 
 steps:
   - id: extract_bam_signpost
@@ -387,3 +381,15 @@ steps:
         valueFrom: null
     out:
       - id: output
+
+  - id: generate_token
+    run: ../../tools/generate_token.cwl
+    in:
+      - id: load1
+        source:
+      - id: load2
+        source:
+      - id: load3
+        source:
+    out:
+      - id: token

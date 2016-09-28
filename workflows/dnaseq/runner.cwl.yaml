@@ -1,6 +1,6 @@
 #!/usr/bin/env cwl-runner
 
-cwlVersion: "cwl:draft-3"
+cwlVersion: v1.0
 
 class: Workflow
 
@@ -10,72 +10,106 @@ requirements:
   - class: SubworkflowFeatureRequirement
 
 inputs:
-  - id: bam_s3url
-    type: string
-  - id: db_snp_s3url
-    type: string
-  - id: reference_fasta_s3url
-    type: string
-  - id: db_cred_s3url
-    type: string
-  - id: thread_count
-    type: int
-  - id: uuid
-    type: string
   - id: aws_config_file
     type: File
   - id: aws_shared_credentials_file
     type: File
-  - id: extract_s3cfg_section
+  - id: bam_signpost_id
     type: string
-  - id: extract_endpoint_url
+  - id: db_cred_path
+    type: File
+  - id: db_snp_signpost_id
+    type: string
+  - id: endpoint_json
+    type: File
+  - id: load_bucket
     type: string
   - id: load_s3cfg_section
     type: string
-  - id: load_endpoint_url
+  - id: reference_amb_signpost_id
     type: string
-  - id: load_bucket
+  - id: reference_ann_signpost_id
+    type: string
+  - id: reference_bwt_signpost_id
+    type: string
+  - id: reference_fa_signpost_id
+    type: string
+  - id: reference_fai_signpost_id
+    type: string
+  - id: reference_pac_signpost_id
+    type: string
+  - id: reference_sa_signpost_id
+    type: string
+  - id: signpost_base_url
+    type: string
+  - id: thread_count
+    type: int
+  - id: start_token
+    type: File
+  - id: uuid
     type: string
 
 output:
-  - id: cwl_json_output
-    source: "#etl/dnaseq_workflow_output_sqlite"
+  - id: token
+    source: status_complete/token
 
 steps:
   - id: status_running
-    run: ../../tools/queue_status.cwl.yaml
-    inputs:
+    run: ../status/status_postgres_workflow.cwl
+    in:
+      - id: status
+        valueFrom: "RUNNING"
+    out:
+      - id: token
       
   - id: etl
-    run: etl.cwl.yaml
-    inputs:
-      - id: bam_s3url
-        source: "#bam_s3url"
-      - id: db_snp_s3url
-        source: "#db_snp_s3url"
-      - id: reference_fasta_s3url
-        source: "#reference_fasta_s3url"
-      - id: db_cred_s3url
-        source: "#db_cred_s3url"
-      - id: thread_count
-        source: "#thread_count"
-      - id: uuid
-        source: "#uuid"
+    run: etl.cwl
+    in:
       - id: aws_config_file
-        source: "#aws_config_file"
+        source: aws_config_file
       - id: aws_shared_credentials_file
-        source: "#aws_shared_credentials_file"
-      - id: extract_s3cfg_section
-        source: "#extract_s3cfg_section"
-      - id: extract_endpoint_url
-        source: "#extract_endpoint_url"
-      - id: load_s3cfg_section
-        source: "#load_s3cfg_section"
-      - id: load_endpoint_url
-        source: "#load_endpoint_url"
+        source: aws_shared_credentials_file
+      - id: bam_signpost_id
+        source: bam_signpost_id
+      - id: db_cred_path
+        source: db_cred_path
+      - id: db_snp_signpost_id
+        source: db_snp_signpost_id
+      - id: endpoint_json
+        source: endpoint_json
       - id: load_bucket
-        source: "#load_bucket"
-    outputs:
-      - id: output
-      - id: bin_time
+        source: load_bucket
+      - id: load_s3cfg_section
+        source: load_s3cfg_section
+      - id: reference_amb_signpost_id
+        source: reference_amb_signpost_id
+      - id: reference_ann_signpost_id
+        source: reference_ann_signpost_id
+      - id: reference_bwt_signpost_id
+        source: reference_bwt_signpost_id
+      - id: reference_fa_signpost_id
+        source: reference_fa_signpost_id
+      - id: reference_fai_signpost_id
+        source: reference_fai_signpost_id
+      - id: reference_pac_signpost_id
+        source: reference_pac_signpost_id
+      - id: reference_sa_signpost_id
+        source: reference_sa_signpost_id
+      - id: signpost_base_url
+        source: signpost_base_url
+      - id: thread_count
+        source: thread_count
+      - id: start_token
+        source: status_running/token
+      - id: uuid
+        source: uuid
+    out:
+      - id: token
 
+  - id: status_complete
+    run: ../status/status_postgres_workflow.cwl
+    in:
+      - id: status
+        valueFrom: "COMPLETE"
+      - id: token
+        source: etl/token

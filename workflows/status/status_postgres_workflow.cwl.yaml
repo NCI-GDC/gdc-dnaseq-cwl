@@ -23,7 +23,7 @@ inputs:
     type: string
 
 outputs:
-  - id: sqlite_to_postgres_log
+  - id: token
     type: File
     outputSource: sqlite_to_postgres/log
 
