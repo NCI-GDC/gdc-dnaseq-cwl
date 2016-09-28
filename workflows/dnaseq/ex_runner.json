@@ -28,7 +28,7 @@
     "reference_pac_signpost_id": "274875c3-922f-4a18-9333-29195189999b",
     "reference_sa_signpost_id": "c9d4a9ec-751f-469a-b75c-0834f8685c19",
     "repo": "https://github.com/NCI-GDC/cocleaning-cwl/",
-    "repo_hash": "af8e75f18db61b17f996c640d913f849154711b2",
+    "repo_hash": "f7d7cfd7274fc155760e510d88e9d9993d36dabd",
     "signpost_base_url": "signpost.service.consul/v0/did/",
     "status_table_name": "wgs_330_status",
     "thread_count": 8,
