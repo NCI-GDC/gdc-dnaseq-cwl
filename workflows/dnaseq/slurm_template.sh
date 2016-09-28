@@ -18,9 +18,9 @@ UUID=XX_UUID_XX
 
 ##FAIL VARIABLE
 CWL_STATUS_PATH=${HOME}/cocleaning-cwl/workflows/status/status_postgres_workflow.cwl
-GIT_REPO=""
-GIT_REPO_HASH=""
-TABLE_NAME=
+GIT_REPO=XX_GIT_REPO_XX
+GIT_REPO_HASH=XX_GIT_REPO_HASH_XX
+TABLE_NAME=XX_TABLE_NAME_XX
 
 function activate_virtualenv()
 {
