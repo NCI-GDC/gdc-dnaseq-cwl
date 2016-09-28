@@ -51,6 +51,10 @@ outputs:
   - id: token
     type: File
     outputSource: generate_token/token
+  - id: harmonized_bam_url
+    type: string
+    outputSource: transform/picard_markduplicates_output
+    valueFrom: $(inputs.load_bucket + '/' + self.basename)
 
 steps:
   - id: extract_bam_signpost
@@ -382,14 +386,14 @@ steps:
     out:
       - id: output
 
-  - id: generate_token
-    run: ../../tools/generate_token.cwl
+  - id: generate_load_token
+    run: ../../tools/generate_load_token.cwl
     in:
       - id: load1
-        source:
+        source: load_bam/output
       - id: load2
-        source:
+        source: load_bai/output
       - id: load3
-        source:
+        source: load_sqlite/output
     out:
       - id: token

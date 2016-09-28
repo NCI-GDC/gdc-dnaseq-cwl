@@ -18,6 +18,8 @@ inputs:
     type: string
   - id: db_cred_path
     type: File
+  - id: db_cred_section
+    type: string
   - id: db_snp_signpost_id
     type: string
   - id: endpoint_json
@@ -40,7 +42,13 @@ inputs:
     type: string
   - id: reference_sa_signpost_id
     type: string
+  - id: repo
+    type: string
+  - id: repo_hash
+    type: string
   - id: signpost_base_url
+    type: string
+  - id: status_table_name
     type: string
   - id: thread_count
     type: int
@@ -57,11 +65,23 @@ steps:
   - id: status_running
     run: ../status/status_postgres_workflow.cwl
     in:
+      - id: ini_section
+        source: db_cred_section
+      - id: postgres_creds_path
+        source: db_cred_path
+      - id: repo
+        source: repo
+      - id: repo_hash
+        source: repo_hash
       - id: status
         valueFrom: "RUNNING"
+      - id: table_name
+        source: status_table_name
+      - id: uuid
+        source: uuid
     out:
       - id: token
-      
+
   - id: etl
     run: etl.cwl
     in:
@@ -105,11 +125,26 @@ steps:
         source: uuid
     out:
       - id: token
+      - id: harmonized_bam_url
 
   - id: status_complete
     run: ../status/status_postgres_workflow.cwl
     in:
+      - id: ini_section
+        source: db_cred_section
+      - id: postgres_creds_path
+        source: db_cred_path
+      - id: repo
+        source: repo
+      - id: repo_hash
+        source: repo_hash
+      - id: s3_url
+        source: 
       - id: status
         valueFrom: "COMPLETE"
+      - id: table_name
+        source: status_table_name
+      - id: uuid
+        source: uuid
+    out:
       - id: token
-        source: etl/token
