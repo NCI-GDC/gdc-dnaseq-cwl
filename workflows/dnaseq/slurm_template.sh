@@ -58,7 +58,7 @@ function status_fail()
     if [ $? -ne 0 ]
     then
         echo FAIL TO FAIL
-        exit 9
+        exit 1
     fi
 }
 
