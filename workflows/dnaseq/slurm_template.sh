@@ -18,6 +18,7 @@ UUID=XX_UUID_XX
 
 ##FAIL VARIABLE
 CWL_STATUS_PATH=${HOME}/cocleaning-cwl/workflows/status/status_postgres_workflow.cwl
+DB_CRED_PATH=${HOME}/connect_jhsavage_test.ini
 GIT_REPO=XX_GIT_REPO_XX
 GIT_REPO_HASH=XX_GIT_REPO_HASH_XX
 TABLE_NAME=XX_TABLE_NAME_XX
@@ -66,6 +67,7 @@ function main()
 {
     local cwl_runner_path=${CWL_RUNNER_PATH}
     local cwl_status_path=${CWL_STATUS_PATH}
+    local db_cred_path=${DB_CRED_PATH}
     local json_path=${JSON_PATH}
     local repo=${REPO}
     local repo_hash=${REPO_HASH}
