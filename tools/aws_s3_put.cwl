@@ -38,7 +38,10 @@ inputs:
     type: string
 
 outputs:
-  []
+  - id: output
+    type: File
+    outputBinding:
+      glob: "output"
 
 arguments:
   - valueFrom: |
@@ -54,4 +57,6 @@ arguments:
       }
     position: 0
 
+stdout: "output"
+    
 baseCommand: [bash, -c]
