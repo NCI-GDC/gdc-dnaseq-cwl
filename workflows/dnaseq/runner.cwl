@@ -139,7 +139,7 @@ steps:
       - id: repo_hash
         source: repo_hash
       - id: s3_url
-        source: 
+        source: etl/harmonized_bam_url
       - id: status
         valueFrom: "COMPLETE"
       - id: table_name
