@@ -42,6 +42,8 @@ inputs:
     type: string
   - id: signpost_base_url
     type: string
+  - id: start_token
+    type: File
   - id: thread_count
     type: int
   - id: uuid
