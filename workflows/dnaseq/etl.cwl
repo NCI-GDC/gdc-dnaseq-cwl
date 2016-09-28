@@ -56,7 +56,7 @@ outputs:
   - id: harmonized_bam_url
     type: string
     outputSource: transform/picard_markduplicates_output
-    valueFrom: $(inputs.load_bucket + '/' + self.basename)
+    valueFrom: $(inputs.load_bucket + self.basename)
 
 steps:
   - id: extract_bam_signpost
