@@ -2,7 +2,6 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --workdir=XX_SCRATCH_DIR_XX
-#SBATCH --cpus-per-task=XX_THREAD_COUNT_XX
 #SBATCH --mem=18000
 
 ##ENV VARIABLE
@@ -12,16 +11,17 @@ TMP_DIR=${SCRATCH_DIR}/tmp/tmp
 VIRTUALENV_NAME=jhs_cwl
 
 ##JOB VARIABLE
+BAM_SIGNPOST_ID=XX_BAM_SIGNPOST_ID_XX
 CWL_RUNNER_PATH=${HOME}/cocleaning-cwl/workflows/dnaseq/runner.cwl
-JSON_PATH=${HOME}/runner_json/ex_runner.json
+JSON_PATH=XX_JSON_PATH_XX
 UUID=XX_UUID_XX
 
 ##FAIL VARIABLE
 CWL_STATUS_PATH=${HOME}/cocleaning-cwl/workflows/status/status_postgres_workflow.cwl
-DB_CRED_PATH=${HOME}/connect_jhsavage_test.ini
-GIT_REPO=XX_GIT_REPO_XX
-GIT_REPO_HASH=XX_GIT_REPO_HASH_XX
-TABLE_NAME=XX_TABLE_NAME_XX
+DB_CRED_PATH=${HOME}/connect_jhsavage.ini
+DB_TABLE_NAME=XX_DB_TABLE_NAME_XX
+GIT_REPO=https://github.com/NCI-GDC/cocleaning-cwl
+GIT_REPO_HASH=XX_REPO_HASH_XX
 
 function activate_virtualenv()
 {
@@ -45,17 +45,19 @@ function runner()
 
 function status_fail()
 {
-    local cache_dir=${1}
-    local cwl_status_path=${2}
-    local db_cred_path=${3}
-    local ini_section=${4}
-    local job_dir=${5}
-    local repo=${7}
-    local repo_hash=${8}
-    local tmp_dir=${9}
-    local uuid=${10}
+    local bam_signpost_id=${1}
+    local cache_dir=${2}
+    local cwl_status_path=${3}
+    local db_cred_path=${4}
+    local db_table_name=${5}
+    local ini_section=${6}
+    local job_dir=${7}
+    local repo=${8}
+    local repo_hash=${9}
+    local tmp_dir=${10}
+    local uuid=${11}
 
-    cwltool --debug --cachedir ${cache_dir} --tmpdir-prefix ${tmp_dir} --enable-net --custom-net host --outdir ${job_dir} ${cwl_status_path} --ini_section ${ini_section} --postgres_creds_path ${db_cred_path} --repo ${repo} --repo_hash ${repo_hash} --status FAIL --table_name wgs_330_status --uuid ${uuid}
+    cwltool --debug --cachedir ${cache_dir} --tmpdir-prefix ${tmp_dir} --enable-net --custom-net host --outdir ${job_dir} ${cwl_status_path} --ini_section ${ini_section} --postgres_creds_path ${db_cred_path} --repo ${repo} --repo_hash ${repo_hash} --status FAIL --table_name ${db_table_name} --uuid ${uuid}
     if [ $? -ne 0 ]
     then
         echo FAIL TO FAIL
@@ -65,9 +67,11 @@ function status_fail()
 
 function main()
 {
+    local bam_signpost_id=${BAM_SIGNPOST_ID}
     local cwl_runner_path=${CWL_RUNNER_PATH}
     local cwl_status_path=${CWL_STATUS_PATH}
     local db_cred_path=${DB_CRED_PATH}
+    local db_table_name=${DB_TABLE_NAME}
     local json_path=${JSON_PATH}
     local repo=${REPO}
     local repo_hash=${REPO_HASH}
@@ -88,8 +92,8 @@ function main()
     if [ $? -ne 0 ]
     then
         echo FAIL
-        status_fail ${cache_dir} ${cwl_status_path} ${db_cred_path} ${ini_section} ${job_dir} \
-                    ${repo} ${repo_hash} ${tmp_dir} ${uuid}
+        status_fail ${bam_signpost_id} ${cache_dir} ${cwl_status_path} ${db_cred_path} ${db_table_name} ${ini_section} \
+                    ${job_dir} ${repo} ${repo_hash} ${tmp_dir} ${uuid}
         exit 1
     fi
 
