@@ -10,6 +10,11 @@ requirements:
 class: CommandLineTool
 
 inputs:
+  - id: input_signpost_id
+    type: string
+    inputBinding:
+      prefix: --input_signpost_id
+
   - id: repo
     type: string
     inputBinding:
