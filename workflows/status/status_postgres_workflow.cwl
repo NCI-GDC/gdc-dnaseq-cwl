@@ -7,6 +7,8 @@ class: Workflow
 inputs:
   - id: ini_section
     type: string
+  - id: input_signpost_id
+    type: string
   - id: postgres_creds_path
     type: File
   - id: repo
@@ -31,6 +33,8 @@ steps:
   - id: queue_status
     run: ../../tools/queue_status.cwl
     in:
+      - id: input_signpost_id
+        source: input_signpost_id
       - id: repo
         source: repo
       - id: repo_hash
