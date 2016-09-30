@@ -30,19 +30,12 @@ inputs:
 
   - id: input
     type: File
-    inputBinding:
-      position: 98
 
   - id: s3cfg_section
     type: string
-    inputBinding:
-      prefix: --profile
-      position: 0
     
   - id: s3uri
     type: string
-    inputBinding:
-      position: 99
 
 outputs:
   - id: output
@@ -53,14 +46,17 @@ outputs:
 arguments:
   - valueFrom: |
       ${
-      var endpoint_json = JSON.parse(inputs.endpoint_json.contents)
-      var endpoint_url = String(endpoint_json[inputs.s3cfg_section])
-      return endpoint_url
+      var endpoint_json = JSON.parse(inputs.endpoint_json.contents);
+      var endpoint_url = String(endpoint_json[inputs.s3cfg_section]);
+      var endpoint = endpoint_url.replace("http://","");
+      var dig_cmd = ["dig", "+short", endpoint, "|", "grep", "-E", "'[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'", "|", "shuf", "-n1"];
+      var shell_dig = "http://" + "`" + dig_cmd.join(' ') + "`";
+      var cmd = ["aws", "s3", "cp", "--profile", inputs.s3cfg_section, "--endpoint-url", shell_dig, inputs.input.path, inputs.s3uri];
+      var shell_cmd = cmd.join(' ');
+      return shell_cmd
       }
-    prefix: --endpoint-url
-    position: 1
-
+    position: 0
 
 stdout: "output"
-
-baseCommand: [aws, s3, cp]
+    
+baseCommand: [bash, -c]

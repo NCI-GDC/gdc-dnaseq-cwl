@@ -21,7 +21,9 @@ inputs:
 
 outputs:
   - id: exome_kit
-    type: File
+    type:
+      type: array
+      item: File
     outputBinding:
       glob: $(inputs.library.basename + ".kit")
 

@@ -7,6 +7,8 @@ class: Workflow
 inputs:
   - id: ini_section
     type: string
+  - id: input_signpost_id
+    type: string
   - id: postgres_creds_path
     type: File
   - id: repo
@@ -23,14 +25,16 @@ inputs:
     type: string
 
 outputs:
-  - id: sqlite_to_postgres_log
+  - id: token
     type: File
     outputSource: sqlite_to_postgres/log
 
 steps:
   - id: queue_status
-    run: ../../tools/queue_status.cwl.yaml
+    run: ../../tools/queue_status.cwl
     in:
+      - id: input_signpost_id
+        source: input_signpost_id
       - id: repo
         source: repo
       - id: repo_hash
@@ -48,7 +52,7 @@ steps:
       - id: sqlite
 
   - id: sqlite_to_postgres
-    run: ../../tools/sqlite_to_postgres_hirate.cwl.yaml
+    run: ../../tools/sqlite_to_postgres_hirate.cwl
     in:
       - id: ini_section
         source: ini_section

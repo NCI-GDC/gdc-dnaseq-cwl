@@ -678,7 +678,7 @@ steps:
         ]
       - id: OUTPUT
         source: bam_path
-        valueFrom: $(self.basename)
+        valueFrom: $(self.basename.slice(0,-4) + "_gdc_realn.bam")
     out:
       - id: MERGED_OUTPUT
 
