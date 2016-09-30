@@ -39,7 +39,6 @@ function runner()
     local json_path=${4}
     local tmp_dir=${5}
 
-    echo cwltool --debug --cachedir ${cache_dir} --tmpdir-prefix ${tmp_dir} --enable-net --custom-net host --outdir ${job_dir} ${cwl_path} ${json_path}
     cwltool --debug --cachedir ${cache_dir} --tmpdir-prefix ${tmp_dir} --enable-net --custom-net host --outdir ${job_dir} ${cwl_path} ${json_path}
 }
 
