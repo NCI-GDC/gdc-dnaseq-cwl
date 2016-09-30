@@ -21,5 +21,5 @@ outputs:
 expression: |
   ${
     var output = inputs.load_bucket + inputs.filename;
-    return {'OUTPUT': output}
+    return {'output': output}
   }
