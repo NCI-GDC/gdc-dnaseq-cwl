@@ -84,9 +84,7 @@ function main()
     mkdir -p ${cache_dir}
     mkdir -p ${job_dir}
     mkdir -p ${tmp_dir}
-
     activate_virtualenv ${virtualenv_name}
-
     runner ${cache_dir} ${cwl_runner_path} ${job_dir} ${json_path} ${tmp_dir}
     if [ $? -ne 0 ]
     then
@@ -95,8 +93,7 @@ function main()
                     ${job_dir} ${repo} ${repo_hash} ${tmp_dir} ${uuid}
         exit 1
     fi
-
-    #rm -rf ${job_dir}
+    rm -rf ${job_dir}
 }
 
 main "$@"
