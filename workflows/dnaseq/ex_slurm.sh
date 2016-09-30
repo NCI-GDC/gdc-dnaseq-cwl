@@ -21,7 +21,7 @@ CWL_STATUS_PATH=${HOME}/cocleaning-cwl/workflows/status/status_postgres_workflow
 DB_CRED_PATH=${HOME}/connect_jhsavage_test.ini
 DB_TABLE_NAME=wgs_330_status
 GIT_REPO=https://github.com/NCI-GDC/cocleaning-cwl
-GIT_REPO_HASH=88db0c50ec6fffeb11ef328c2742dfe19f8c7845
+GIT_REPO_HASH=393704572ad4109bc5cca8942c294cad1678ce7b
 
 function activate_virtualenv()
 {
