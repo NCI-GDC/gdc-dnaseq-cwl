@@ -66,6 +66,8 @@ steps:
     in:
       - id: ini_section
         source: db_cred_section
+      - id: input_signpost_id
+        source: bam_signpost_id
       - id: postgres_creds_path
         source: db_cred_path
       - id: repo
@@ -131,6 +133,8 @@ steps:
     in:
       - id: ini_section
         source: db_cred_section
+      - id: input_signpost_id
+        source: bam_signpost_id
       - id: postgres_creds_path
         source: db_cred_path
       - id: repo
