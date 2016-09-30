@@ -13,7 +13,7 @@ VIRTUALENV_NAME=jhs_cwl
 ##JOB VARIABLE
 BAM_SIGNPOST_ID=fe73fd64-9913-4fee-bdc7-4a2de2e14606
 CWL_RUNNER_PATH=${HOME}/cocleaning-cwl/workflows/dnaseq/runner.cwl
-JSON_PATH=${HOME}/runner_json/ex_runner.json
+JSON_PATH=${HOME}/cocleaning-cwl/workflows/dnaseq/ex_runner.json
 UUID=XX_UUID_XX
 
 ##FAIL VARIABLE
