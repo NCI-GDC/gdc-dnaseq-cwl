@@ -1,3 +1,5 @@
+OUT OF DATE AND OBSOLETE INSTRUCTIONS. NEED TO UPDATE.
+
 To run DNASeq harmonization workflow
 ------------------------------------
 TL;DR
