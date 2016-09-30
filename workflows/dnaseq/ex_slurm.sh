@@ -82,11 +82,9 @@ function main()
     local tmp_dir=${scratch_dir}/${uuid}/tmp
 
     mkdir -p ${cache_dir}
-    mkdir -p ${job_dir}
     mkdir -p ${tmp_dir}
 
     activate_virtualenv ${virtualenv_name}
-
     runner ${cache_dir} ${cwl_runner_path} ${job_dir} ${json_path} ${tmp_dir}
     if [ $? -ne 0 ]
     then
