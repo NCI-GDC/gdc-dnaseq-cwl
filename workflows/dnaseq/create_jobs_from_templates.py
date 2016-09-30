@@ -33,9 +33,12 @@ def get_parameter_from_file_name(file_name, parameter):
     if response.status_code == 200:
         response_data = response.json()['data']
         count = response_data['pagination']['count']
-        if count != 1:
+        if count == 0:
+            return None
+        if count > 1:
+            print('file_name: %s' % file_name)
             print('response_data:%s' % response_data)
-            print('count != 1: %s' % count)
+            print('count > 1: %s' % count)
             sys.exit(1)
         else:
             parameter_value = response_data['hits'][0][parameter]
@@ -43,7 +46,7 @@ def get_parameter_from_file_name(file_name, parameter):
     sys.exit(1)
     return
 
-def generate_runner(bam_file_name, db_table_name, job_uuid, repo_hash, s3_load_bucket,
+def generate_runner(bam_file_name, db_table_name, gdc_src_id, job_uuid, repo_hash, s3_load_bucket,
                     json_template_path):
     job_json = job_uuid + '.json'
     f_open = open(job_json, 'w')
@@ -51,6 +54,13 @@ def generate_runner(bam_file_name, db_table_name, job_uuid, repo_hash, s3_load_b
         for line in read_open:
             if 'XX_BAM_SIGNPOST_ID_XX' in line:
                 bam_signpost_id = get_parameter_from_file_name(bam_file_name, 'file_id')
+                if bam_signpost_id is None:
+                    bam_signpost_id = gdc_src_id
+                elif bam_signpost_id != gdc_src_id:
+                    print('bam_signpost_id: %s' % bam_signpost_id)
+                    print('gdc_src_id: %s' % gdc_src_id)
+                    print('bam_file_name: %s' % bam_file_name)
+                    sys.exit(1)
                 newline = line.replace('XX_BAM_SIGNPOST_ID_XX', bam_signpost_id)
                 f_open.write(newline)
             elif 'XX_DB_TABLE_NAME_XX' in line:
@@ -70,7 +80,7 @@ def generate_runner(bam_file_name, db_table_name, job_uuid, repo_hash, s3_load_b
     f_open.close()
     return
 
-def generate_slurm(bam_file_name, db_table_name, job_uuid, node_json_dir, repo_hash, scratch_dir, 
+def generate_slurm(bam_file_name, db_table_name, gdc_src_id, job_uuid, node_json_dir, repo_hash, scratch_dir, 
                    slurm_template_path):
     job_slurm = job_uuid + '.sh'
     f_open = open(job_slurm, 'w')
@@ -78,6 +88,13 @@ def generate_slurm(bam_file_name, db_table_name, job_uuid, node_json_dir, repo_h
         for line in read_open:
             if 'XX_BAM_SIGNPOST_ID_XX' in line:
                 bam_signpost_id = get_parameter_from_file_name(bam_file_name, 'file_id')
+                if bam_signpost_id is None:
+                    bam_signpost_id = gdc_src_id
+                elif bam_signpost_id != gdc_src_id:
+                    print('bam_signpost_id: %s' % bam_signpost_id)
+                    print('gdc_src_id: %s' % gdc_src_id)
+                    print('bam_file_name: %s' % bam_file_name)
+                    sys.exit(1)
                 newline = line.replace('XX_BAM_SIGNPOST_ID_XX', bam_signpost_id)
                 f_open.write(newline)
             elif 'XX_DB_TABLE_NAME_XX' in line:
@@ -101,13 +118,13 @@ def generate_slurm(bam_file_name, db_table_name, job_uuid, node_json_dir, repo_h
     f_open.close()
     return
 
-def setup_job(bam_file_name, db_table_name, node_json_dir, repo_hash, s3_load_bucket, scratch_dir,
+def setup_job(bam_file_name, db_table_name, gdc_src_id, node_json_dir, repo_hash, s3_load_bucket, scratch_dir,
               json_template_path, slurm_template_path):
     job_uuid = str(uuid.uuid4())
 
-    generate_runner(bam_file_name, db_table_name, job_uuid, repo_hash, s3_load_bucket,
+    generate_runner(bam_file_name, db_table_name, gdc_src_id, job_uuid, repo_hash, s3_load_bucket,
                     json_template_path)
-    generate_slurm(bam_file_name, db_table_name, job_uuid, node_json_dir, repo_hash, scratch_dir, 
+    generate_slurm(bam_file_name, db_table_name, gdc_src_id, job_uuid, node_json_dir, repo_hash, scratch_dir, 
                    slurm_template_path)
     return
 
@@ -125,6 +142,9 @@ def main():
     parser.add_argument('--db_table_name',
                         required = True
     )
+    parser.add_argument('--job_table_path',
+                        required = True
+    )    
     parser.add_argument('--json_template_path',
                         required = True
     )
@@ -147,6 +167,7 @@ def main():
     args = parser.parse_args()
 
     db_table_name = args.db_table_name
+    job_table_path = args.job_table_path
     json_template_path = args.json_template_path
     node_json_dir = args.node_json_dir
     repo_hash = args.repo_hash
@@ -160,11 +181,13 @@ def main():
                 header_key_dict = read_header(job_line)
             else:
                 job_split = job_line.strip().split('\t')
+                cat = job_split[header_key_dict['cat']]
+                gdc_src_id = job_split[header_key_dict['gdc_src_id']]
                 s3_location = job_split[header_key_dict['location']]
                 gdc_realign_file_name = os.path.basename(s3_location)
                 bam_file_name = gdc_realign_file_name.replace('_gdc_realn','')
                 if cat == 'realign_needed':
-                    setup_job(bam_file_name, db_table_name, node_json_dir, repo_hash, s3_load_bucket, scratch_dir,
+                    setup_job(bam_file_name, db_table_name, gdc_src_id, node_json_dir, repo_hash, s3_load_bucket, scratch_dir,
                               json_template_path, slurm_template_path)
                 
 
