@@ -2,6 +2,7 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --workdir=XX_SCRATCH_DIR_XX
+#SBATCH --cpus-per-task=40
 #SBATCH --mem=18000
 
 ##ENV VARIABLE
