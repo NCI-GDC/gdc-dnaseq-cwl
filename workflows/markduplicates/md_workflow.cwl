@@ -196,29 +196,6 @@ steps:
         valueFrom: $(self.basename)
       - id: input_state
         valueFrom: "markduplicates_readgroups"
-      - id: metric_path
-        source: picard_collectmultiplemetrics/OUTPUT
-      - id: uuid
-        source: uuid
-      - id: vcf
-        source: vcf_path
-        valueFrom: $(self.basename)
-    out:
-      - id: log
-      - id: sqlite
-
-  - id: picard_collectoxogmetrics_to_sqlite
-    run: ../../tools/picard_collectoxogmetrics_to_sqlite.cwl
-    in:
-    in:
-      - id: bam
-        source: bam_path
-        valueFrom: $(self.basename)
-      - id: fasta
-        source: fasta_path
-        valueFrom: $(self.basename)
-      - id: input_state
-        valueFrom: "markduplicates_readgroups"
       - id: uuid
         source: uuid
       - id: vcf
@@ -248,6 +225,29 @@ steps:
         source: picard_collectmultiplemetrics/quality_distribution_metrics
       - id: quality_yield_metrics
         source: picard_collectmultiplemetrics/quality_yield_metrics
+    out:
+      - id: log
+      - id: sqlite
+
+  - id: picard_collectoxogmetrics_to_sqlite
+    run: ../../tools/picard_collectoxogmetrics_to_sqlite.cwl
+    in:
+    in:
+      - id: bam
+        source: bam_path
+        valueFrom: $(self.basename)
+      - id: fasta
+        source: fasta_path
+        valueFrom: $(self.basename)
+      - id: input_state
+        valueFrom: "markduplicates_readgroups"
+      - id: metric_path
+        source: picard_collectoxogmetrics/OUTPUT
+      - id: uuid
+        source: uuid
+      - id: vcf
+        source: vcf_path
+        valueFrom: $(self.basename)
     out:
       - id: log
       - id: sqlite
