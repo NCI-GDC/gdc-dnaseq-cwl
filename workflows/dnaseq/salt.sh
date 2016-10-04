@@ -7,7 +7,7 @@ mkdir wgs_330
 mkdir wgs_330_slurm
 mkdir wgs_330_json
 cd wgs_330
-python ~/code/cocleaning-cwl/workflows/dnaseq/create_jobs_from_templates.py --db_table_name wgs_330_status --job_table_path ~/qcfail_realign_table.txt --json_template_path ~/code/cocleaning-cwl/workflows/dnaseq/runner_template.json --node_json_dir /home/ubuntu/wgs_330_json --repo_hash ffd9d22cda4fc98902b4db7d3bfcb68996514d2f --s3_load_bucket tcga_wgs_alignment_4 --scratch_dir /mnt/SCRATCH --slurm_template_path ~/code/cocleaning-cwl/workflows/dnaseq/slurm_template.sh
+python ~/code/cocleaning-cwl/workflows/dnaseq/create_jobs_from_templates.py --db_table_name wgs_330_status --job_table_path ~/qcfail_realign_table.txt --json_template_path ~/code/cocleaning-cwl/workflows/dnaseq/runner_template.json --node_json_dir /home/ubuntu/wgs_330_json --repo_hash 2b942b5fb5ac5ffcac9a829d374c9d2d4737ba56 --s3_load_bucket tcga_wgs_alignment_4 --scratch_dir /mnt/SCRATCH --slurm_template_path ~/code/cocleaning-cwl/workflows/dnaseq/slurm_template.sh
 mv *.json ../wgs_330_json
 mv *.sh ../wgs_330_slurm
 cd ../

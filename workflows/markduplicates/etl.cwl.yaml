@@ -40,7 +40,7 @@ outputs:
 
 steps:
   - id: extract_bam
-    run: ../../tools/aws_s3_get_signpost.cwl.yaml
+    run: ../../tools/aws_s3_get_signpost.cwl
     in:
       - id: aws_config
         source: aws_config
@@ -54,7 +54,7 @@ steps:
       - id: output
 
   - id: extract_db_snp_signpost
-    run: ../../tools/get_signpost_json.cwl.yaml
+    run: ../../tools/get_signpost_json.cwl
     in:
       - id: signpost_id
         source: db_snp_signpost_id
@@ -64,7 +64,7 @@ steps:
       - id: output
 
   - id: extract_db_snp
-    run: ../../tools/aws_s3_get_signpost.cwl.yaml
+    run: ../../tools/aws_s3_get_signpost.cwl
     in:
       - id: aws_config
         source: aws_config
@@ -78,7 +78,7 @@ steps:
       - id: output
 
   - id: extract_ref_fa_signpost
-    run: ../../tools/get_signpost_json.cwl.yaml
+    run: ../../tools/get_signpost_json.cwl
     in:
       - id: signpost_id
         source: reference_fa_signpost_id
@@ -88,7 +88,7 @@ steps:
       - id: output
 
   - id: extract_ref_fa
-    run: ../../tools/aws_s3_get_signpost.cwl.yaml
+    run: ../../tools/aws_s3_get_signpost.cwl
     in:
       - id: aws_config
         source: aws_config
@@ -102,7 +102,7 @@ steps:
       - id: output
 
   - id: transform
-    run: md_workflow.cwl.yaml
+    run: md_workflow.cwl
     in:
       - id: alignment_last_step
         source: alignment_last_step
@@ -121,7 +121,7 @@ steps:
       - id: merge_all_sqlite_destination_sqlite
 
   - id: load_bam
-    run: ../../tools/aws_s3_put.cwl.yaml
+    run: ../../tools/aws_s3_put.cwl
     in:
       - id: aws_config
         source: aws_config
@@ -157,7 +157,7 @@ steps:
       - id: output
 
   - id: load_bai
-    run: ../../tools/aws_s3_put.cwl.yaml
+    run: ../../tools/aws_s3_put.cwl
     in:
       - id: aws_config
         source: aws_config
@@ -194,7 +194,7 @@ steps:
       - id: output
 
   - id: load_sqlite
-    run: ../../tools/aws_s3_put.cwl.yaml
+    run: ../../tools/aws_s3_put.cwl
     in:
       - id: aws_config
         source: aws_config
