@@ -90,8 +90,7 @@ function main()
     if [ $? -ne 0 ]
     then
         echo FAIL
-        status_fail ${bam_signpost_id} ${cache_dir} ${cwl_status_path} ${db_cred_path} ${db_table_name} ${ini_section} \
-                    ${job_dir} ${repo} ${repo_hash} ${tmp_dir} ${uuid}
+        status_fail ${bam_signpost_id} ${cache_dir} ${cwl_status_path} ${db_cred_path} ${db_table_name} ${ini_section} ${job_dir} ${repo} ${repo_hash} ${tmp_dir} ${uuid}
         exit 1
     fi
     rm -rf ${job_dir}
