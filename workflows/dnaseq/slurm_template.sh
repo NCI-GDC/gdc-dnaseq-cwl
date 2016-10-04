@@ -47,7 +47,7 @@ function status_fail()
 {
     local bam_signpost_id=${1}
     local cache_dir=${2}
-    local cwl_status_path=${3}
+    local cwl_path=${3}
     local db_cred_path=${4}
     local db_table_name=${5}
     local ini_section=${6}
@@ -57,7 +57,7 @@ function status_fail()
     local tmp_dir=${10}
     local uuid=${11}
 
-    cwltool --debug --cachedir ${cache_dir} --tmpdir-prefix ${tmp_dir} --enable-net --custom-net host --outdir ${job_dir} ${cwl_status_path} --ini_section ${ini_section} --input_signpost_id ${bam_signpost_id} --postgres_creds_path ${db_cred_path} --repo ${repo} --repo_hash ${repo_hash} --status FAIL --table_name ${db_table_name} --uuid ${uuid}
+    cwltool --debug --cachedir ${cache_dir} --tmpdir-prefix ${tmp_dir} --enable-net --custom-net host --outdir ${job_dir} ${cwl_path} --ini_section ${ini_section} --input_signpost_id ${bam_signpost_id} --postgres_creds_path ${db_cred_path} --repo ${repo} --repo_hash ${repo_hash} --status FAIL --table_name ${db_table_name} --uuid ${uuid}
     if [ $? -ne 0 ]
     then
         echo FAIL TO FAIL
