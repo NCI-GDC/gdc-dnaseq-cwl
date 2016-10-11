@@ -34,7 +34,7 @@ def generate_runner(db_table_name, gdc_src_id, job_uuid, repo_hash,
                 newline = line.replace('XX_REPO_HASH_XX', repo_hash)
                 f_open.write(newline)
             elif 'XX_RESOURCE_CORE_COUNT_XX' in line:
-                newline = line.replace('XX_RESOURCE_CORE_COUNT_XX', str(resource_core_count))
+                newline = line.replace('XX_RESOURCE_CORE_COUNT_XX', str(slurm_core))
                 f_open.write(newline)
             elif 'XX_UUID_XX' in line:
                 newline = line.replace('XX_UUID_XX', job_uuid)
@@ -65,7 +65,7 @@ def generate_slurm(db_table_name, gdc_src_id, job_uuid, node_json_dir,
                 newline = line.replace('XX_REPO_HASH_XX', repo_hash)
                 f_open.write(newline)
             elif 'XX_RESOURCE_CORE_COUNT_XX' in line:
-                newline = line.replace('XX_RESOURCE_CORE_COUNT_XX', str(resource_core_count))
+                newline = line.replace('XX_RESOURCE_CORE_COUNT_XX', str(slurm_core))
                 f_open.write(newline)
             elif 'XX_RESOURCE_MEMORY_MEBIBYTES_XX' in line:
                 memory_mebibytes = math.ceil(resource_memory_bytes / 1024 / 1024)
