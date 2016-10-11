@@ -2,8 +2,9 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --workdir=XX_SCRATCH_DIR_XX
-#SBATCH --cpus-per-task=40
-#SBATCH --mem=18000
+#SBATCH --cpus-per-task=XX_RESOURCE_CORE_COUNT_XX
+#SBATCH --mem=XX_RESOURCE_MEMORY_MEBIBYTES_XX
+##SBATCH## --tmp=XX_RESOURCE_DISK_MEBIBYTES_XX
 
 ##ENV VARIABLE
 SCRATCH_DIR=XX_SCRATCH_DIR_XX
@@ -20,6 +21,7 @@ UUID=XX_UUID_XX
 ##FAIL VARIABLE
 CWL_STATUS_PATH=${HOME}/cocleaning-cwl/workflows/status/status_postgres_workflow.cwl
 DB_CRED_PATH=${HOME}/connect_jhsavage.ini
+DB_CRED_SECTION=DEFAULT
 DB_TABLE_NAME=XX_DB_TABLE_NAME_XX
 GIT_REPO=https://github.com/NCI-GDC/cocleaning-cwl
 GIT_REPO_HASH=XX_REPO_HASH_XX
@@ -49,11 +51,11 @@ function status_fail()
     local cache_dir=${2}
     local cwl_path=${3}
     local db_cred_path=${4}
-    local db_table_name=${5}
-    local ini_section=${6}
-    local job_dir=${7}
-    local repo=${8}
-    local repo_hash=${9}
+    local db_cred_section=${5}
+    local db_table_name=${6}
+    local git_repo=${7}
+    local git_repo_hash=${8}
+    local job_dir=${9}
     local tmp_dir=${10}
     local uuid=${11}
 
@@ -71,10 +73,11 @@ function main()
     local cwl_runner_path=${CWL_RUNNER_PATH}
     local cwl_status_path=${CWL_STATUS_PATH}
     local db_cred_path=${DB_CRED_PATH}
+    local db_cred_section=${DB_CRED_SECTION}
     local db_table_name=${DB_TABLE_NAME}
     local json_path=${JSON_PATH}
-    local repo=${REPO}
-    local repo_hash=${REPO_HASH}
+    local repo=${GIT_REPO}
+    local repo_hash=${GIT_REPO_HASH}
     local scratch_dir=${SCRATCH_DIR}
     local uuid=${UUID}
     local virtualenv_name=${VIRTUALENV_NAME}
@@ -90,7 +93,7 @@ function main()
     if [ $? -ne 0 ]
     then
         echo FAIL
-        status_fail ${bam_signpost_id} ${cache_dir} ${cwl_status_path} ${db_cred_path} ${db_table_name} ${ini_section} ${job_dir} ${repo} ${repo_hash} ${tmp_dir} ${uuid}
+        status_fail ${bam_signpost_id} ${cache_dir} ${cwl_status_path} ${db_cred_path} ${db_cred_section} ${db_table_name} ${git_repo} ${git_repo_hash} ${job_dir} ${tmp_dir} ${uuid}
         exit 1
     fi
     rm -rf ${job_dir}
