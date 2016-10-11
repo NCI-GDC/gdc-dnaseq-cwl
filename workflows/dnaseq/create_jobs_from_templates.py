@@ -74,7 +74,7 @@ def generate_runner(bam_file_name, db_table_name, gdc_src_id, job_uuid, repo_has
                 newline = line.replace('XX_REPO_HASH_XX', repo_hash)
                 f_open.write(newline)
             elif 'XX_RESOURCE_CORE_COUNT_XX' in line:
-                newline = line.replace('XX_RESOURCE_CORE_COUNT_XX', resource_core_count)
+                newline = line.replace('XX_RESOURCE_CORE_COUNT_XX', str(resource_core_count))
                 f_open.write(newline)
             elif 'XX_UUID_XX' in line:
                 newline = line.replace('XX_UUID_XX', job_uuid)
@@ -113,15 +113,15 @@ def generate_slurm(bam_file_name, db_table_name, gdc_src_id, job_uuid, node_json
                 newline = line.replace('XX_REPO_HASH_XX', repo_hash)
                 f_open.write(newline)
             elif 'XX_RESOURCE_CORE_COUNT_XX' in line:
-                newline = line.replace('XX_RESOURCE_CORE_COUNT_XX', resource_core_count)
+                newline = line.replace('XX_RESOURCE_CORE_COUNT_XX', str(resource_core_count))
                 f_open.write(newline)
             elif 'XX_RESOURCE_MEMORY_MEBIBYTES_XX' in line:
                 memory_mebibytes = resource_memory_bytes / 1024 / 1024
-                newline = line.replace('XX_RESOURCE_MEMORY_MEBIBYTES_XX', memory_mebibytes)
+                newline = line.replace('XX_RESOURCE_MEMORY_MEBIBYTES_XX', str(memory_mebibytes))
                 f_open.write(newline)
             elif 'XX_RESOURCE_DISK_MEBIBYTES_XX' in line:
                 disk_mebibytes = resource_disk_bytes / 1024 / 1024
-                newline = line.replace('XX_RESOURCE_DISK_MEBIBYTES_XX', disk_mebibytes)
+                newline = line.replace('XX_RESOURCE_DISK_MEBIBYTES_XX', str(disk_mebibytes))
                 f_open.write(newline)
             elif 'XX_SCRATCH_DIR_XX' in line:
                 newline = line.replace('XX_SCRATCH_DIR_XX', scratch_dir)
