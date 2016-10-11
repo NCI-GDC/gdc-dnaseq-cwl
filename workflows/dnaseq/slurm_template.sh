@@ -76,8 +76,8 @@ function main()
     local db_cred_section=${DB_CRED_SECTION}
     local db_table_name=${DB_TABLE_NAME}
     local json_path=${JSON_PATH}
-    local repo=${GIT_REPO}
-    local repo_hash=${GIT_REPO_HASH}
+    local git_repo=${GIT_REPO}
+    local git_repo_hash=${GIT_REPO_HASH}
     local scratch_dir=${SCRATCH_DIR}
     local uuid=${UUID}
     local virtualenv_name=${VIRTUALENV_NAME}
