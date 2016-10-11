@@ -52,8 +52,8 @@ s3cmd -c ~/.s3cfg.ceph put 1.0_gdc_e.tar.gz s3://bioinformatics_scratch/jhsavage
 
 
 salt -G 'cluster_name:WOLVERINE' cmd.run runas=ubuntu 'rm -rf /mnt/SCRATCH/*'
-salt -G 'cluster_name:WOLVERINE' cmd.run runas=ubuntu 'rm -rf /home/ubuntu/cocleaning-cwl /home/ubuntu/aws_jhsavage_credentials /home/ubuntu/jhsavage_endpoint.json /home/ubuntu/rw_json'
-salt -G 'cluster_name:WOLVERINE' cmd.run runas=ubuntu 'rm -rf /home/ubuntu/.virtualenvs'
+salt -G 'cluster_name:WOLVERINE' cmd.run runas=ubuntu 'rm -rf /home/ubuntu/cocleaning-cwl'
+salt -G 'cluster_name:WOLVERINE' cmd.run runas=ubuntu 'rm -rf /home/ubuntu/wgs_753*'
 #http://unix.stackexchange.com/questions/138751/unattended-upgrades-and-modified-configuration-files
 salt -G 'cluster_name:WOLVERINE' cmd.run 'echo "Dpkg::Options {
    "--force-confdef";
