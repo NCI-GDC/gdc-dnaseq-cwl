@@ -7,7 +7,7 @@ mkdir wgs_330
 mkdir wgs_330_slurm
 mkdir wgs_330_json
 cd wgs_330
-python ~/code/cocleaning-cwl/workflows/dnaseq/create_jobs_from_templates.py --db_table_name wgs_330_status --job_table_path ~/qcfail_realign_table.txt --json_template_path ~/code/cocleaning-cwl/workflows/dnaseq/runner_template.json --node_json_dir /home/ubuntu/wgs_330_json --repo_hash 5ac52b9655e14cad425274010d871bf6105babda --resource_core_count 40 --resource_disk_bytes 1539316278886 --resource_memory_bytes 42949672960  --s3_load_bucket tcga_wgs_alignment_4 --scratch_dir /mnt/SCRATCH --slurm_template_path ~/code/cocleaning-cwl/workflows/dnaseq/slurm_template.sh
+python ~/code/cocleaning-cwl/workflows/dnaseq/create_jobs_from_templates.py --db_table_name wgs_330_status --job_table_path ~/qcfail_realign_table.txt --json_template_path ~/code/cocleaning-cwl/workflows/dnaseq/runner_template.json --node_json_dir /home/ubuntu/wgs_330_json --repo_hash 5ac52b9655e14cad425274010d871bf6105babda --resource_core_count 40 --resource_disk_bytes 1539316278886 --resource_memory_bytes 42949672960  --s3_load_bucket s3://tcga_wgs_alignment_4 --scratch_dir /mnt/SCRATCH --slurm_template_path ~/code/cocleaning-cwl/workflows/dnaseq/slurm_template.sh
 mv *.json ../wgs_330_json
 mv *.sh ../wgs_330_slurm
 cd ../
