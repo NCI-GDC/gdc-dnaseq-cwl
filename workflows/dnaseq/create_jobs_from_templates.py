@@ -46,8 +46,9 @@ def get_parameter_from_file_name(file_name, parameter):
     sys.exit(1)
     return
 
-def generate_runner(bam_file_name, db_table_name, gdc_src_id, job_uuid, repo_hash, s3_load_bucket,
-                    json_template_path):
+def generate_runner(bam_file_name, db_table_name, gdc_src_id, job_uuid, repo_hash,
+                    resource_core_count, resource_disk_bytes, resource_memory_bytes,
+                    s3_load_bucket, json_template_path):
     job_json = job_uuid + '.json'
     f_open = open(job_json, 'w')
     with open(json_template_path, 'r') as read_open:
@@ -72,6 +73,9 @@ def generate_runner(bam_file_name, db_table_name, gdc_src_id, job_uuid, repo_has
             elif 'XX_REPO_HASH_XX' in line:
                 newline = line.replace('XX_REPO_HASH_XX', repo_hash)
                 f_open.write(newline)
+            elif 'XX_RESOURCE_CORE_COUNT_XX' in line:
+                newline = line.replace('XX_RESOURCE_CORE_COUNT_XX', resource_core_count)
+                f_open.write(newline)
             elif 'XX_UUID_XX' in line:
                 newline = line.replace('XX_UUID_XX', job_uuid)
                 f_open.write(newline)
@@ -80,8 +84,9 @@ def generate_runner(bam_file_name, db_table_name, gdc_src_id, job_uuid, repo_has
     f_open.close()
     return
 
-def generate_slurm(bam_file_name, db_table_name, gdc_src_id, job_uuid, node_json_dir, repo_hash, scratch_dir, 
-                   slurm_template_path):
+def generate_slurm(bam_file_name, db_table_name, gdc_src_id, job_uuid, node_json_dir,
+                   resource_core_count, resource_disk_bytes, resource_memory_bytes,
+                   repo_hash, scratch_dir, slurm_template_path):
     job_slurm = job_uuid + '.sh'
     f_open = open(job_slurm, 'w')
     with open(slurm_template_path, 'r') as read_open:
@@ -107,6 +112,17 @@ def generate_slurm(bam_file_name, db_table_name, gdc_src_id, job_uuid, node_json
             elif 'XX_REPO_HASH_XX' in line:
                 newline = line.replace('XX_REPO_HASH_XX', repo_hash)
                 f_open.write(newline)
+            elif 'XX_RESOURCE_CORE_COUNT_XX' in line:
+                newline = line.replace('XX_RESOURCE_CORE_COUNT_XX', resource_core_count)
+                f_open.write(newline)
+            elif 'XX_RESOURCE_MEMORY_MEBIBYTES_XX' in line:
+                memory_mebibytes = resource_memory_bytes / 1024 / 1024
+                newline = line.replace('XX_RESOURCE_MEMORY_MEBIBYTES_XX', memory_mebibytes)
+                f_open.write(newline)
+            elif 'XX_RESOURCE_DISK_MEBIBYTES_XX' in line:
+                disk_mebibytes = resource_disk_bytes / 1024 / 1024
+                newline = line.replace('XX_RESOURCE_DISK_MEBIBYTES_XX', disk_mebibytes)
+                f_open.write(newline)
             elif 'XX_SCRATCH_DIR_XX' in line:
                 newline = line.replace('XX_SCRATCH_DIR_XX', scratch_dir)
                 f_open.write(newline)
@@ -118,8 +134,9 @@ def generate_slurm(bam_file_name, db_table_name, gdc_src_id, job_uuid, node_json
     f_open.close()
     return
 
-def setup_job(bam_file_name, db_table_name, gdc_src_id, node_json_dir, repo_hash, s3_load_bucket, scratch_dir,
-              json_template_path, slurm_template_path):
+def setup_job(bam_file_name, db_table_name, gdc_src_id, node_json_dir, repo_hash,
+              resource_core_count, resource_disk_bytes, resource_memory_bytes,
+              s3_load_bucket, scratch_dir, json_template_path, slurm_template_path):
     job_uuid = str(uuid.uuid4())
 
     generate_runner(bam_file_name, db_table_name, gdc_src_id, job_uuid, repo_hash, s3_load_bucket,
@@ -154,6 +171,18 @@ def main():
     parser.add_argument('--repo_hash',
                         required = True
     )
+    parser.add_argument('--resource_core_count',
+                        type = int,
+                        required = True
+    )
+    parser.add_argument('--resource_disk_bytes',
+                        type = int,
+                        required = True
+    )
+    parser.add_argument('--resource_memory_bytes',
+                        type = int,
+                        required = True
+    )
     parser.add_argument('--s3_load_bucket',
                         required = True
     )
@@ -171,6 +200,9 @@ def main():
     json_template_path = args.json_template_path
     node_json_dir = args.node_json_dir
     repo_hash = args.repo_hash
+    resource_core_count = args.resource_core_count
+    resource_disk_bytes = args.resource_disk_bytes
+    resource_memory_bytes = args.resource_memory_bytes
     s3_load_bucket = args.s3_load_bucket
     scratch_dir = args.scratch_dir
     slurm_template_path = args.slurm_template_path
@@ -187,8 +219,9 @@ def main():
                 gdc_realign_file_name = os.path.basename(s3_location)
                 bam_file_name = gdc_realign_file_name.replace('_gdc_realn','')
                 if cat == 'realign_needed':
-                    setup_job(bam_file_name, db_table_name, gdc_src_id, node_json_dir, repo_hash, s3_load_bucket, scratch_dir,
-                              json_template_path, slurm_template_path)
+                    setup_job(bam_file_name, db_table_name, gdc_src_id, node_json_dir, repo_hash,
+                              resource_core_count, resource_disk_bytes, resource_memory_bytes,
+                              s3_load_bucket, scratch_dir, json_template_path, slurm_template_path)
                 
 
 if __name__=='__main__':
