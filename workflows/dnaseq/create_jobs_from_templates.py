@@ -2,6 +2,7 @@
 
 import argparse
 import logging
+import math
 import os
 import sys
 import uuid
@@ -17,7 +18,6 @@ def read_header(header_line):
 def get_parameter_from_file_name(file_name, parameter):
     import json
     import requests
-    import uuid
     endpoint = 'https://gdc-api.nci.nih.gov/legacy/files'
     filter = {
         "op": "in",
@@ -116,11 +116,11 @@ def generate_slurm(bam_file_name, db_table_name, gdc_src_id, job_uuid, node_json
                 newline = line.replace('XX_RESOURCE_CORE_COUNT_XX', str(resource_core_count))
                 f_open.write(newline)
             elif 'XX_RESOURCE_MEMORY_MEBIBYTES_XX' in line:
-                memory_mebibytes = resource_memory_bytes / 1024 / 1024
+                memory_mebibytes = math.ceil(resource_memory_bytes / 1024 / 1024)
                 newline = line.replace('XX_RESOURCE_MEMORY_MEBIBYTES_XX', str(memory_mebibytes))
                 f_open.write(newline)
             elif 'XX_RESOURCE_DISK_MEBIBYTES_XX' in line:
-                disk_mebibytes = resource_disk_bytes / 1024 / 1024
+                disk_mebibytes = math.ceil(resource_disk_bytes / 1024 / 1024)
                 newline = line.replace('XX_RESOURCE_DISK_MEBIBYTES_XX', str(disk_mebibytes))
                 f_open.write(newline)
             elif 'XX_SCRATCH_DIR_XX' in line:
@@ -139,10 +139,12 @@ def setup_job(bam_file_name, db_table_name, gdc_src_id, node_json_dir, repo_hash
               s3_load_bucket, scratch_dir, json_template_path, slurm_template_path):
     job_uuid = str(uuid.uuid4())
 
-    generate_runner(bam_file_name, db_table_name, gdc_src_id, job_uuid, repo_hash, s3_load_bucket,
-                    json_template_path)
-    generate_slurm(bam_file_name, db_table_name, gdc_src_id, job_uuid, node_json_dir, repo_hash, scratch_dir, 
-                   slurm_template_path)
+    generate_runner(bam_file_name, db_table_name, gdc_src_id, job_uuid, repo_hash,
+                    resource_core_count, resource_disk_bytes, resource_memory_bytes,
+                    s3_load_bucket, json_template_path)
+    generate_slurm(bam_file_name, db_table_name, gdc_src_id, job_uuid, node_json_dir,
+                   resource_core_count, resource_disk_bytes, resource_memory_bytes,
+                   repo_hash, scratch_dir, slurm_template_path)
     return
 
 def main():
