@@ -16,7 +16,7 @@ def read_header(header_line):
 
 def generate_runner(db_table_name, gdc_src_id, job_uuid, repo_hash,
                     resource_core_count, resource_disk_bytes, resource_memory_bytes,
-                    s3_load_bucket, json_template_path):
+                    s3_load_bucket, slurm_core, json_template_path):
     job_json = job_uuid + '.json'
     f_open = open(job_json, 'w')
     with open(json_template_path, 'r') as read_open:
@@ -46,7 +46,7 @@ def generate_runner(db_table_name, gdc_src_id, job_uuid, repo_hash,
 
 def generate_slurm(db_table_name, gdc_src_id, job_uuid, node_json_dir,
                    resource_core_count, resource_disk_bytes, resource_memory_bytes,
-                   repo_hash, scratch_dir, slurm_template_path):
+                   repo_hash, scratch_dir, slurm_core, slurm_template_path):
     job_slurm = job_uuid + '.sh'
     f_open = open(job_slurm, 'w')
     with open(slurm_template_path, 'r') as read_open:
@@ -88,15 +88,16 @@ def generate_slurm(db_table_name, gdc_src_id, job_uuid, node_json_dir,
 
 def setup_job(db_table_name, gdc_src_id, node_json_dir, repo_hash,
               resource_core_count, resource_disk_bytes, resource_memory_bytes,
-              s3_load_bucket, scratch_dir, json_template_path, slurm_template_path):
+              s3_load_bucket, scratch_dir, slurm_core,
+              json_template_path, slurm_template_path):
     job_uuid = str(uuid.uuid4())
 
     generate_runner(bam_signpost_id, db_table_name, gdc_src_id, job_uuid, repo_hash,
                     resource_core_count, resource_disk_bytes, resource_memory_bytes,
-                    s3_load_bucket, json_template_path)
+                    s3_load_bucket, slurm_core, json_template_path)
     generate_slurm(bam_signpost_id, db_table_name, gdc_src_id, job_uuid, node_json_dir,
                    resource_core_count, resource_disk_bytes, resource_memory_bytes,
-                   repo_hash, scratch_dir, slurm_template_path)
+                   repo_hash, scratch_dir, slurm_core, slurm_template_path)
     return
 
 def main():
@@ -171,10 +172,10 @@ def main():
                 imported_filesize = job_split[header_key_dict['imported_filesize']]
                 size_gb = job_split[header_key_dict['size_gb']]
                 slurm_core = job_split[header_key_dict['slurm_core']]
-                if cat == 'realign_needed':
-                    setup_job(db_table_name, gdc_src_id, node_json_dir, repo_hash,
-                              resource_core_count, resource_disk_bytes, resource_memory_bytes,
-                              s3_load_bucket, scratch_dir, json_template_path, slurm_template_path)
+                setup_job(db_table_name, gdc_src_id, node_json_dir, repo_hash,
+                          resource_core_count, resource_disk_bytes, resource_memory_bytes,
+                          s3_load_bucket, scratch_dir, slurm_core,
+                          json_template_path, slurm_template_path)
                 
 
 if __name__=='__main__':
