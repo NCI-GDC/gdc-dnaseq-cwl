@@ -3,15 +3,32 @@ salt -G 'cluster_name:WOLVERINE' cmd.run runas=ubuntu "sed -i 's/kh11-9.osdc.io/
 
 # on workstation, prep cwl, slurm and json job files
 workon p3
-mkdir wgs_753
-mkdir wgs_753_slurm
-mkdir wgs_753_json
-cd wgs_753
-python ~/code/cocleaning-cwl/workflows/dnaseq/create_jobs_from_templates.py --db_table_name wgs_753_status --job_table_path ~/qcfail_realign_table.txt --json_template_path ~/code/cocleaning-cwl/workflows/dnaseq/runner_template.json --node_json_dir /home/ubuntu/wgs_753_json --repo_hash 7dd74936770bd9b2f0a968755b65ed8c4e48ae5e --resource_core_count 40 --resource_disk_bytes 1539316278886 --resource_memory_bytes 42949672960  --s3_load_bucket s3://tcga_wgs_alignment_4 --scratch_dir /mnt/SCRATCH --slurm_template_path ~/code/cocleaning-cwl/workflows/dnaseq/slurm_template.sh
-mv *.json ../wgs_753_json
-mv *.sh ../wgs_753_slurm
+head -n1 wgs753.txt > wgs753_dp.txt && grep dp_ wgs753.txt | sed 's/dp_//g' >> wgs753_dp.txt
+grep -v dp_ wgs753.txt | grep -v too_big > wgs753_cl.txt
+
+#cl
+mkdir wgs_753_cl
+mkdir wgs_753_cl_slurm
+mkdir wgs_753_cl_json
+cd wgs_753_cl
+python ~/code/cocleaning-cwl/workflows/dnaseq/create_jobs_from_templates.py --db_table_name wgs_753_status --job_table_path ~/wgs753_cl.txt --json_template_path ~/code/cocleaning-cwl/workflows/dnaseq/runner_template.json --node_json_dir /home/ubuntu/wgs_753_json --repo_hash 7dd74936770bd9b2f0a968755b65ed8c4e48ae5e --resource_core_count 40 --resource_disk_bytes 1539316278886 --resource_memory_bytes 42949672960  --s3_load_bucket s3://tcga_wgs_alignment_4 --scratch_dir /mnt/SCRATCH --slurm_template_path ~/code/cocleaning-cwl/workflows/dnaseq/slurm_template.sh
+mv *.json ../wgs_753_cl_json
+mv *.sh ../wgs_753_cl_slurm
 cd ../
-rmdir wgs_753
+rmdir wgs_753_cl
+
+#dp
+mkdir wgs_753_dp
+mkdir wgs_753_dp_slurm
+mkdir wgs_753_dp_json
+cd wgs_753_dp
+python ~/code/cocleaning-cwl/workflows/dnaseq/create_jobs_from_templates.py --db_table_name wgs_753_status --job_table_path ~/wgs753_dp.txt --json_template_path ~/code/cocleaning-cwl/workflows/dnaseq/runner_template.json --node_json_dir /home/ubuntu/wgs_753_json --repo_hash 7dd74936770bd9b2f0a968755b65ed8c4e48ae5e --resource_core_count 40 --resource_disk_bytes 1539316278886 --resource_memory_bytes 42949672960  --s3_load_bucket s3://tcga_wgs_alignment_4 --scratch_dir /mnt/SCRATCH --slurm_template_path ~/code/cocleaning-cwl/workflows/dnaseq/slurm_template.sh
+mv *.json ../wgs_753_dp_json
+mv *.sh ../wgs_753_dp_slurm
+cd ../
+rmdir wgs_753_dp
+
+
 rsync -av --progress wgs_753* jer:/mnt/SCRATCH/
 rsync -av --progress ~/code/cocleaning-cwl jer:/mnt/SCRATCH/
 
