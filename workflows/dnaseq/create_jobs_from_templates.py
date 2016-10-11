@@ -92,10 +92,10 @@ def setup_job(db_table_name, gdc_src_id, node_json_dir, repo_hash,
               json_template_path, slurm_template_path):
     job_uuid = str(uuid.uuid4())
 
-    generate_runner(bam_signpost_id, db_table_name, gdc_src_id, job_uuid, repo_hash,
+    generate_runner(db_table_name, gdc_src_id, job_uuid, repo_hash,
                     resource_core_count, resource_disk_bytes, resource_memory_bytes,
                     s3_load_bucket, slurm_core, json_template_path)
-    generate_slurm(bam_signpost_id, db_table_name, gdc_src_id, job_uuid, node_json_dir,
+    generate_slurm(db_table_name, gdc_src_id, job_uuid, node_json_dir,
                    resource_core_count, resource_disk_bytes, resource_memory_bytes,
                    repo_hash, scratch_dir, slurm_core, slurm_template_path)
     return
