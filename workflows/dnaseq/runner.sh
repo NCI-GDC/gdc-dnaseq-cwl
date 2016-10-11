@@ -10,4 +10,5 @@ do
     #echo ${gdc_src_id}
     sbatch_file=`grep -l ${gdc_src_id} *`
     echo sbatch ${sbatch_file}
+    sbatch ${sbatch_file}
 done < ../wgs753_wv.txt
