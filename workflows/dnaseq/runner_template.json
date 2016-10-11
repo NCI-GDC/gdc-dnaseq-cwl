@@ -31,6 +31,6 @@
     "repo_hash": "XX_REPO_HASH_XX",
     "signpost_base_url": "signpost.service.consul/v0/did/",
     "status_table_name": "XX_DB_TABLE_NAME_XX",
-    "thread_count": 8,
+    "thread_count": XX_RESOURCE_CORE_COUNT_XX,
     "uuid": "XX_UUID_XX"
 }
