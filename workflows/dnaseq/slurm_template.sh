@@ -59,7 +59,7 @@ function status_fail()
     local tmp_dir=${10}
     local uuid=${11}
 
-    cwltool --debug --cachedir ${cache_dir} --tmpdir-prefix ${tmp_dir} --enable-net --custom-net host --outdir ${job_dir} ${cwl_path} --ini_section ${ini_section} --input_signpost_id ${bam_signpost_id} --postgres_creds_path ${db_cred_path} --repo ${git_repo} --repo_hash ${git_repo_hash} --status FAIL --table_name ${db_table_name} --uuid ${uuid}
+    cwltool --debug --cachedir ${cache_dir} --tmpdir-prefix ${tmp_dir} --enable-net --custom-net host --outdir ${job_dir} ${cwl_path} --ini_section ${db_cred_section} --input_signpost_id ${bam_signpost_id} --postgres_creds_path ${db_cred_path} --repo ${git_repo} --repo_hash ${git_repo_hash} --status FAIL --table_name ${db_table_name} --uuid ${uuid}
     if [ $? -ne 0 ]
     then
         echo FAIL TO FAIL
