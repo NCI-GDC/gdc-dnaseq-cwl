@@ -23,7 +23,7 @@ CWL_STATUS_PATH=${HOME}/cocleaning-cwl/workflows/status/status_postgres_workflow
 DB_CRED_PATH=${HOME}/connect_jhsavage.ini
 DB_CRED_SECTION=DEFAULT
 DB_TABLE_NAME=XX_DB_TABLE_NAME_XX
-GIT_REPO=https://github.com/NCI-GDC/cocleaning-cwl
+GIT_REPO=https://github.com/NCI-GDC/cocleaning-cwl/
 GIT_REPO_HASH=XX_REPO_HASH_XX
 
 function activate_virtualenv()
