@@ -398,5 +398,7 @@ steps:
       - id: filename
         source: transform/picard_markduplicates_output
         valueFrom: $(self.basename)
+      - id: uuid
+        source: uuid
     out:
       - id: output

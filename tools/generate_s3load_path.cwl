@@ -14,12 +14,15 @@ inputs:
   - id: filename
     type: string
 
+  - id: uuid
+    type: string
+
 outputs:
   - id: output
     type: string
 
 expression: |
   ${
-    var output = inputs.load_bucket + inputs.filename;
+    var output = inputs.load_bucket + "/" + inputs.uuid + "/" + inputs.filename;
     return {'output': output}
   }
