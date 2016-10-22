@@ -9,7 +9,7 @@ TL;DR
         $ nohup cwltool --tmpdir-prefix /mnt/SCRATCH/tmp/ --tmp-outdir-prefix /mnt/SCRATCH/tmp/  --debug ~/cocleaning-cwl/workflows/dnaseq/dnaseq_workflow.cwl.yaml  ~/cocleaning-cwl/workflows/dnaseq/genoMel.json &
 
 ---
-0. Fix up Docker
+0. prep scratch dir, store docker in scratch, add user to docker group, install debs
 
         $ sudo su
         ## ensure following lines in /etc/apt/apt.conf.d/01Proxy:
@@ -17,11 +17,8 @@ TL;DR
                   Acquire::https::Proxy "http://cloud-proxy:3128";
         # mkdir /mnt/SCRATCH
         # chown 777 /mnt/SCRATCH
-        # aptitude install apt-transport-https ca-certificates
-        # export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128
-        # apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
-        # echo "deb https://apt.dockerproject.org/repo ubuntu-trusty main" > /etc/apt/sources.list.d/docker.list
-        # aptitude update && aptitude install docker-engine -y
+        # aptitude update
+        # aptitude install apt-transport-https ca-certificates python-dev libffi-dev libssl-dev htop s3cmd virtualenvwrapper nodejs
         # mkdir /mnt/SCRATCH/docker
         # chown ubuntu /home/ubuntu/.dockercfg
         # gpasswd -a ubuntu docker
@@ -31,17 +28,7 @@ TL;DR
         # exit
         $ exit (only gain group access to docker when exit/login)
 
-1. On VM, ensure `virtualenvwrapper` and `nodejs` are installed:
-
-        $ sudo su -
-        # apt-get update && apt-get install virtualenvwrapper nodejs -y
-        # exit
-
 2. configure `virtualenvwrapper`
-
-        $ grep virtualenvwrapper.sh ~/.bashrc
-
-  * if there is no result:
 
   ```
         $ echo "source /usr/share/virtualenvwrapper/virtualenvwrapper.sh" >> ~/.bashrc
@@ -72,23 +59,24 @@ TL;DR
 
 7. get the CDIS patched version of cwltool
 
-        $ wget https://github.com/jeremiahsavage/cwltool/archive/0.1.tar.gz
+        $ wget https://github.com/jeremiahsavage/cwltool/archive/1.0_gdc_e.tar.gz
 
 8. install cwltool and its dependencies
 
-        $ pip install 0.1.tar.gz --no-cache-dir
+        $ pip install 1.0_gdc_e.tar.gz --no-cache-dir
 
 9. get the DNASeq CWL Workflow
 
         $ cd ${HOME}
-        $ git clone git@github.com:NCI-GDC/cocleaning-cwl.git
-        $ cd cocleaning-cwl/
-        $ git checkout feat/dnaseq_workflow
+        $ git clone https://github.com/NCI-GDC/cocleaning-cwl.git
 
-10. Make dir to store harmonized data
+10. The essential workflow to perform DNASeq BAM harmonization is
 
-        $ mkdir -p /mnt/SCRATCH/genoMel_harmon
-        $ cd /mnt/SCRATCH/genoMel_harmon
+        cocleaning-cwl/workflows/dnaseq/transform.cwl
+        
+    , and an example input file is
+    
+        cocleaning-cwl/workflows/dnaseq/ex_transform.json
 
 11. Run workflow
 
