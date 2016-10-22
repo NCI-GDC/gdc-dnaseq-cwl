@@ -6,7 +6,7 @@ requirements:
   - class: ShellCommandRequirement
   - class: InlineJavascriptRequirement
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/awscli
+    dockerPull: quay.io/ncigdc/awscli
 
 inputs:
   - id: endpoint-url

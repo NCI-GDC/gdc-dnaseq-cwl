@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/cgquery_xml_to_bamlibrary_capture_json
+    dockerPull: quay.io/ncigdc/cgquery_xml_to_bamlibrary_capture_json
   - class: InlineJavascriptRequirement
   - class: ShellCommandRequirement
 

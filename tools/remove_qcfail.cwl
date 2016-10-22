@@ -14,7 +14,7 @@ requirements:
   - import: node-engine.cwl
   - import: envvar-global.cwl
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/remove_qcfailed_mapped
+    dockerPull: quay.io/ncigdc/remove_qcfailed_mapped
 
 class: CommandLineTool
 

@@ -10,7 +10,7 @@ requirements:
   - import: node-engine.cwl
   - import: envvar-global.cwl
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/sra_hs_lookup
+    dockerPull: quay.io/ncigdc/sra_hs_lookup
 
 class: CommandLineTool
 

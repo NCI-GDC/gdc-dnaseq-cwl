@@ -4,7 +4,7 @@ cwlVersion: "cwl:draft-3"
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/remove_duplicate_fastq_matepair
+    dockerPull: quay.io/ncigdc/remove_duplicate_fastq_matepair
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool

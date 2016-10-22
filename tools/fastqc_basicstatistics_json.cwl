@@ -5,7 +5,7 @@ cwlVersion: v1.0
 requirements:
   - class: InlineJavascriptRequirement
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/fastqc_to_json
+    dockerPull: quay.io/ncigdc/fastqc_to_json
 
 class: CommandLineTool
 

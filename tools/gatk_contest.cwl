@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/cocleaning:3.6
+    dockerPull: quay.io/ncigdc/cocleaning:3.6
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool

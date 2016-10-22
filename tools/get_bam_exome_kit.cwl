@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/gdc_bam_library_exomekit
+    dockerPull: quay.io/ncigdc/gdc_bam_library_exomekit
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool

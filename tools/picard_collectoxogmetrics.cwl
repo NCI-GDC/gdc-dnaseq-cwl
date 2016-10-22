@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/picard:1
+    dockerPull: quay.io/ncigdc/picard:1
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool

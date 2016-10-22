@@ -12,7 +12,7 @@ description: |
 requirements:
   - class: InlineJavascriptRequirement
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/picard_tool
+    dockerPull: quay.io/ncigdc/picard_tool
 
 class: CommandLineTool
 

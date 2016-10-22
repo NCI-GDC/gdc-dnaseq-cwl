@@ -4,7 +4,7 @@ cwlVersion: "cwl:draft-3"
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/bam_add_eof
+    dockerPull: quay.io/ncigdc/bam_add_eof
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool

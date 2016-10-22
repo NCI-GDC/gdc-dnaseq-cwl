@@ -12,7 +12,7 @@ requirements:
   - $import: envvar-global.cwl
   - class: InlineJavascriptRequirement
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/bamutil_tool
+    dockerPull: quay.io/ncigdc/bamutil_tool
 
 class: CommandLineTool
 

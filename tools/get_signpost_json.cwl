@@ -6,7 +6,7 @@ class: CommandLineTool
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/curl:1
+    dockerPull: quay.io/ncigdc/curl:1
   - class: InlineJavascriptRequirement
 
 inputs:

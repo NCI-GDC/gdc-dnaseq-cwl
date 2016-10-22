@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/gdc_bed_liftover
+    dockerPull: quay.io/ncigdc/gdc_bed_liftover
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool

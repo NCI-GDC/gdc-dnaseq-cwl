@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/jeremiahsavage/integrity_to_sqlite
+    dockerPull: quay.io/ncigdc/integrity_to_sqlite
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
