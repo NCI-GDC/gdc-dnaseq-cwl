@@ -94,7 +94,8 @@ After completing numbered installation steps below, these 3 steps will suffice t
         $ mkdir /mnt/SCRATCH/hg38\_reference
         $ cd /mnt/SCRATCH/hg38\_reference
 
-    dbsnp vcf (two choices)
+    dbsnp vcf (two choices):
+
     (1) original data generation:
 
         $ wget ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/hg38bundle/dbsnp_144.hg38.vcf.gz
