@@ -24,9 +24,9 @@ After completing numbered installation steps below, these 3 steps will suffice t
         $ sudo mount /dev/vdb /mnt
         $ sudo mkdir /mnt/SCRATCH
         $ sudo chown 777 /mnt/SCRATCH
-        
+
 2. prep docker
-        
+
         create a dir for image storage (will store ~12GiB of images):
         $ mkdir /mnt/SCRATCH/docker
 
@@ -45,7 +45,7 @@ After completing numbered installation steps below, these 3 steps will suffice t
         $ echo "source /usr/share/virtualenvwrapper/virtualenvwrapper.sh" >> ~/.bashrc
         $ exit
 
-4. enable proxy to access pypi.org
+4. log back in. If needed, enable proxy to access pypi.org
 
         $ export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128;
 
@@ -65,19 +65,23 @@ After completing numbered installation steps below, these 3 steps will suffice t
 
         $ pip install --upgrade pip
 
-8. get the CDIS patched version of cwltool
+8. enable SSL connections
+
+        $ pip install 'requests[security]'  --no-cache-dir
+
+9. get the CDIS patched version of cwltool
 
         $ wget https://github.com/jeremiahsavage/cwltool/archive/1.0_gdc_e.tar.gz
 
-8. install cwltool and its dependencies
+10. install cwltool and its dependencies
 
         $ pip install 1.0_gdc_e.tar.gz --no-cache-dir
 
-9. get the DNASeq CWL Workflow
+11. get the DNASeq CWL Workflow
 
         $ git clone https://github.com/NCI-GDC/cocleaning-cwl.git
 
-10. The essential workflow to perform DNASeq BAM harmonization is
+12. The essential workflow to perform DNASeq BAM harmonization is
 
         cocleaning-cwl/workflows/dnaseq/transform.cwl
 
@@ -85,6 +89,6 @@ After completing numbered installation steps below, these 3 steps will suffice t
 
         cocleaning-cwl/workflows/dnaseq/ex_transform.json
 
-11. Run workflow
+13. Run workflow
 
         $  cwltool --tmpdir-prefix /mnt/SCRATCH/tmp/ --tmp-outdir-prefix /mnt/SCRATCH/tmp/  --debug ~/cocleaning-cwl/workflows/dnaseq/dnaseq_workflow.cwl.yaml  ~/cocleaning-cwl/workflows/dnaseq/genoMel.json
