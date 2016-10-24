@@ -82,7 +82,7 @@ After completing numbered installation steps below, these 3 steps will suffice t
 
         $ git clone https://github.com/NCI-GDC/cocleaning-cwl.git
 
-12. The essential workflow to perform DNASeq BAM harmonization is
+12. The workflow to perform DNASeq BAM harmonization is
 
         cocleaning-cwl/workflows/dnaseq/transform.cwl
 
