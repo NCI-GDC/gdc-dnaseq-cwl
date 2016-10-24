@@ -28,7 +28,7 @@
     "reference_sa_signpost_id": "c9d4a9ec-751f-469a-b75c-0834f8685c19",
     "signpost_base_url": "signpost.service.consul/v0/did/",
     "start_token": {
-        "cllas": "File",
+        "class": "File",
         "path": "/home/ubuntu/connect_jhsavage_test.ini"
     },
     "thread_count": 8,
