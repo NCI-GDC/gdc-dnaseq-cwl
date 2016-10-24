@@ -116,6 +116,7 @@ After completing numbered installation steps below, these 3 steps will suffice t
 
 13. Get example data
 
+        # Single readgroup BAM which maps with `bwa mem`:
         $ mkdir /mnt/SCRATCH/NA12878_chr20_lowcvg/
         $ cd /mnt/SCRATCH/
         $ wget ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/phase3/data/NA12878/alignment/NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211.bam
