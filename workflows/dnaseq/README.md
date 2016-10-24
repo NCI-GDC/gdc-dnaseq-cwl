@@ -91,8 +91,10 @@ After completing numbered installation steps below, these 3 steps will suffice t
 
 13. get reference files
 
-        $ mkdir /mnt/SCRATCH/hg38\_reference
-        $ cd /mnt/SCRATCH/hg38\_reference
+```
+        $ mkdir /mnt/SCRATCH/hg38_reference
+        $ cd /mnt/SCRATCH/hg38_reference
+```
 
     dbsnp vcf (two choices):
 
@@ -131,7 +133,7 @@ After completing numbered installation steps below, these 3 steps will suffice t
         $ nohup cwltool --debug --tmpdir-prefix . --cachedir . ~/cocleaning-cwl/workflows/dnaseq/transform.cwl ~/cocleaning-cwl/workflows/dnaseq/NA12878_chr20_lowcvg_transform.json &
 
 
-16. Other example data (alter `NA12878\_chr20\_lowcvg_transform.json` as needed)
+16. Other example data (alter `NA12878_chr20_lowcvg_transform.json` as needed)
 
         1 readgroup BAM with `bwa aln`
         ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase1/data/NA12889/alignment/NA12889.chrom20.ILLUMINA.bwa.CEU.low_coverage.20101123.bam
