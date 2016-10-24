@@ -10,28 +10,28 @@ After completing numbered installation steps below, these 3 steps will suffice t
 
 0. install needed packages
 
-```
+
         if you have a proxy, enable for apt:
         $ echo 'Acquire::http::Proxy "http://cloud-proxy:3128";' >> /etc/apt/apt.conf.d/01Proxy
         $ echo 'Acquire::https::Proxy "http://cloud-proxy:3128";' >> /etc/apt/apt.conf.d/01Proxy
 
         $ sudo aptitude update
         $ sudo aptitude install apt-transport-https ca-certificates htop libffi-dev libssl-dev nodejs python-dev virtualenvwrapper
-```
+
 
 1. prep storage
 
-```
+
         $ sudo mkfs.ext4 /dev/vdb
         $ sudo rm -rf /mnt
         $ sudo mount /dev/vdb /mnt
         $ sudo mkdir /mnt/SCRATCH
         $ sudo chown 777 /mnt/SCRATCH
-```
+
 
 2. prep docker
 
-```
+
         create a dir for image storage (will store ~12GiB of images):
         $ mkdir /mnt/SCRATCH/docker
 
@@ -44,7 +44,7 @@ After completing numbered installation steps below, these 3 steps will suffice t
         $ sudo echo "export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128" >> /etc/default/docker
         $ sudo service docker restart
         $ exit (non-root only gain group access to docker when exit/login - make sure you are ENTIRELY logged out of VM before proceeding)
-```
+
 
 3. log back in. configure `virtualenvwrapper`
 
