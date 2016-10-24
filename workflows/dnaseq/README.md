@@ -117,15 +117,27 @@ After completing numbered installation steps below, these 3 steps will suffice t
         $ wget https://gdc-api.nci.nih.gov/data/964cbdac-1043-4fae-b068-c3a65d992f6b
         tar xvf 964cbdac-1043-4fae-b068-c3a65d992f6b
 
-13. Get example data
+14. Get example data (1 readgroup BAM which uses `bwa mem`
 
         Single readgroup BAM which maps with `bwa mem`:
         $ mkdir /mnt/SCRATCH/NA12878_chr20_lowcvg/
         $ cd /mnt/SCRATCH/
         $ wget ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/phase3/data/NA12878/alignment/NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211.bam
-        
-13. Run workflow
+
+15. Run workflow
 
         $ mkdir /mnt/SCRATCH/NA12878_chr20_lowcvg/harmonize/
         $ cd /mnt/SCRATCH/NA12878_chr20_lowcvg/harmonize/
         $ nohup cwltool --debug --tmpdir-prefix . --cachedir . ~/cocleaning-cwl/workflows/dnaseq/transform.cwl ~/cocleaning-cwl/workflows/dnaseq/NA12878_chr20_lowcvg_transform.json &
+
+
+16. Other example data (alter NA12878\_chr20\_lowcvg_transform.json as needed)
+
+        1 readgroup BAM with `bwa aln`
+        ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase1/data/NA12889/alignment/NA12889.chrom20.ILLUMINA.bwa.CEU.low_coverage.20101123.bam
+
+        22 Readgroup which uses `bwa mem`
+        ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase3/data/NA11829/alignment/NA11829.chrom20.ILLUMINA.bwa.CEU.low_coverage.20130415.bam
+
+        16 Readgroup bam which uses both `bwa aln` and `bwa mem`
+        ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase1/data/NA11829/alignment/NA11829.chrom20.ILLUMINA.bwa.CEU.low_coverage.20101123.bam
