@@ -13,9 +13,9 @@ After completing numbered installation steps below, these 3 steps will suffice t
         if you have a proxy, enable for apt:
         $ echo 'Acquire::http::Proxy "http://cloud-proxy:3128";' >> /etc/apt/apt.conf.d/01Proxy
         $ echo 'Acquire::https::Proxy "http://cloud-proxy:3128";' >> /etc/apt/apt.conf.d/01Proxy
-        
-        $ sudo  aptitude update
-        $ sudo aptitude install apt-transport-https ca-certificates python-dev libffi-dev libssl-dev htop s3cmd virtualenvwrapper nodejs
+
+        $ sudo aptitude update
+        $ sudo aptitude install apt-transport-https ca-certificates htop libffi-dev libssl-dev nodejs python-dev virtualenvwrapper
 
 1. prep storage
 
@@ -26,7 +26,6 @@ After completing numbered installation steps below, these 3 steps will suffice t
         $ sudo chown 777 /mnt/SCRATCH
         
 2. prep docker
-
         
         create a dir for image storage (will store ~12GiB of images):
         $ mkdir /mnt/SCRATCH/docker
@@ -42,7 +41,6 @@ After completing numbered installation steps below, these 3 steps will suffice t
         $ exit (non-root only gain group access to docker when exit/login - make sure you are ENTIRELY logged out of VM before proceeding)
 
 3. log back in. configure `virtualenvwrapper`
-
 
         $ echo "source /usr/share/virtualenvwrapper/virtualenvwrapper.sh" >> ~/.bashrc
         $ exit
@@ -60,10 +58,8 @@ After completing numbered installation steps below, these 3 steps will suffice t
         $ workon cwl
 
   * To deactive a virtualenv (don't do this now, just FYI)
-  
 
         $ deactivate
-
 
 7. upgrade pip
 
@@ -84,9 +80,9 @@ After completing numbered installation steps below, these 3 steps will suffice t
 10. The essential workflow to perform DNASeq BAM harmonization is
 
         cocleaning-cwl/workflows/dnaseq/transform.cwl
-        
+
     and an example input file is
-    
+
         cocleaning-cwl/workflows/dnaseq/ex_transform.json
 
 11. Run workflow
