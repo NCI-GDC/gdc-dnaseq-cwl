@@ -95,28 +95,30 @@ After completing numbered installation steps below, these 3 steps will suffice t
         $ cd /mnt/SCRATCH/hg38\_reference
 
     dbsnp vcf (two choices)
-    original data generation:
+    (1) original data generation:
 
         $ wget ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/hg38bundle/dbsnp_144.hg38.vcf.gz
         $ gunzip dbsnp_144.hg38.vcf.gz
         $ sed -i 's/\(^[1-9,X,Y,M]\)/chr\1/g' dbsnp_144.hg38.vcf
         $ gzip dbsnp_144.hg38.vcf
 
-    pull modified data from gdc:
+     or (2) pull modified data from gdc:
 
         $ wget https://gdc-api.nci.nih.gov/data/4ba1c087-ec80-47c4-a9d5-e9bb9933fef4 -O dbsnp_144.hg38.vcf.gz
 
     reference genome:
-    $ wget https://gdc-api.nci.nih.gov/data/62f23fad-0f24-43fb-8844-990d531947cf
-    tar xvf 62f23fad-0f24-43fb-8844-990d531947cf
 
-    bwa indexed genome
-    $ wget https://gdc-api.nci.nih.gov/data/964cbdac-1043-4fae-b068-c3a65d992f6b
-    tar xvf 964cbdac-1043-4fae-b068-c3a65d992f6b
+        $ wget https://gdc-api.nci.nih.gov/data/62f23fad-0f24-43fb-8844-990d531947cf
+        tar xvf 62f23fad-0f24-43fb-8844-990d531947cf
+
+    bwa indexed genome:
+
+        $ wget https://gdc-api.nci.nih.gov/data/964cbdac-1043-4fae-b068-c3a65d992f6b
+        tar xvf 964cbdac-1043-4fae-b068-c3a65d992f6b
 
 13. Get example data
 
-        # Single readgroup BAM which maps with `bwa mem`:
+        Single readgroup BAM which maps with `bwa mem`:
         $ mkdir /mnt/SCRATCH/NA12878_chr20_lowcvg/
         $ cd /mnt/SCRATCH/
         $ wget ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/phase3/data/NA12878/alignment/NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211.bam
