@@ -3,11 +3,11 @@ To run DNASeq harmonization workflow
 After completing numbered installation steps below, these 3 steps will suffice to run workflows:
 
         $ workon cwl
-        $ cd /mnt/SCRATCH/genoMel_harmon
-        $ nohup cwltool --tmpdir-prefix /mnt/SCRATCH/tmp/ --tmp-outdir-prefix /mnt/SCRATCH/tmp/  --debug ~/cocleaning-cwl/workflows/dnaseq/dnaseq_workflow.cwl.yaml  ~/cocleaning-cwl/workflows/dnaseq/genoMel.json &
+        $ cd /mnt/SCRATCH/dnaseq_example
+        $ nohup cwltool --tmpdir-prefix /mnt/SCRATCH/tmp/ --tmp-outdir-prefix /mnt/SCRATCH/tmp/  --debug ~/cocleaning-cwl/workflows/dnaseq/transform.cwl  ~/cocleaning-cwl/workflows/dnaseq/ex_transform.json &
 
 ---
-0. prep scratch dir for storing docker images and workflow tmp data, store docker in scratch, add user to docker group, install debs
+
 0. install needed packages
 
         if you have a proxy, enable for apt:
