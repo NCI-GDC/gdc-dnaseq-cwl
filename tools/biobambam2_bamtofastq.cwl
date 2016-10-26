@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/biobambam
+    dockerPull: quay.io/ncigdc/biobambam:1
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
