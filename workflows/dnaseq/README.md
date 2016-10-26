@@ -136,8 +136,8 @@ After completing numbered installation steps below, these 3 steps will suffice t
         1 readgroup BAM with `bwa aln`
         ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase1/data/NA12889/alignment/NA12889.chrom20.ILLUMINA.bwa.CEU.low_coverage.20101123.bam
 
-        22 readgroup which uses `bwa mem`
+        22 readgroup BAM which uses `bwa mem`
         ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase3/data/NA11829/alignment/NA11829.chrom20.ILLUMINA.bwa.CEU.low_coverage.20130415.bam
 
-        16 readgroup bam which uses both `bwa aln` and `bwa mem`
+        16 readgroup BAM which uses both `bwa aln` and `bwa mem`
         ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase1/data/NA11829/alignment/NA11829.chrom20.ILLUMINA.bwa.CEU.low_coverage.20101123.bam
