@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/bam_reheader
+    dockerPull: quay.io/ncigdc/bam_reheader:1
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
