@@ -5,7 +5,7 @@ cwlVersion: v1.0
 class: CommandLineTool
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/awscli
+    dockerPull: quay.io/ncigdc/awscli:1
   - class: EnvVarRequirement
     envDef:
       - envName: "AWS_CONFIG_FILE"
