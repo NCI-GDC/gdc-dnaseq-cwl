@@ -73,7 +73,7 @@ After completing numbered installation steps below, these 3 steps will suffice t
 
         $ pip install 'requests[security]'  --no-cache-dir
 
-9. get the CDIS patched version of cwltool
+9. get the CDIS tested version of cwltool
 
         $ wget https://github.com/jeremiahsavage/cwltool/archive/1.0_gdc_f.tar.gz
 
