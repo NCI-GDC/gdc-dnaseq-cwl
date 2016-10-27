@@ -100,7 +100,7 @@ After completing numbered installation steps below, these 3 steps will suffice t
 
     dbsnp vcf (two choices):
 
-    (1) original data generation:
+    (1) modified data generation:
 
         $ wget ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/hg38bundle/dbsnp_144.hg38.vcf.gz
         $ gunzip dbsnp_144.hg38.vcf.gz
