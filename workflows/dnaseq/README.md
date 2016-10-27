@@ -91,7 +91,7 @@ After completing numbered installation steps below, these 3 steps will suffice t
 
     and an example input file is
 
-        cocleaning-cwl/workflows/dnaseq/ex_transform.json
+        cocleaning-cwl/workflows/dnaseq/NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211.json.json
 
 13. get reference files
 
