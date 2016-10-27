@@ -4,7 +4,7 @@ After completing numbered installation steps below, these 3 steps will suffice t
 
         $ workon cwl
         $ cd /mnt/SCRATCH/dnaseq_example
-        $ nohup cwltool --debug --tmpdir-prefix . --cachedir . ~/cocleaning-cwl/workflows/dnaseq/transform.cwl ~/cocleaning-cwl/workflows/dnaseq/NA12878_chr20_lowcvg_transform.json &
+        $ nohup cwltool --debug --tmpdir-prefix tmp/ --cachedir cache/ ~/cocleaning-cwl/workflows/dnaseq/transform.cwl ~/cocleaning-cwl/workflows/dnaseq/NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211.json &
 
 ---
 
