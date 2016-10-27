@@ -788,7 +788,7 @@ steps:
           merge_fastqc_db_o2_sqlite/destination_sqlite,
           merge_metrics_pe/destination_sqlite,
           merge_metrics_se/destination_sqlite,
-#          metrics_markduplicates/merge_sqlite_destination_sqlite,
+          metrics_markduplicates/merge_sqlite_destination_sqlite,
           picard_markduplicates_to_sqlite/sqlite,
           integrity/merge_sqlite_destination_sqlite
         ]
