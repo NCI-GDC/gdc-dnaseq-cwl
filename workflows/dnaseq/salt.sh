@@ -12,7 +12,7 @@ mkdir wgs_753_cl
 mkdir wgs_753_cl_slurm
 mkdir wgs_753_cl_json
 cd wgs_753_cl
-python ~/code/cocleaning-cwl/workflows/dnaseq/create_jobs_from_templates.py --db_table_name wgs_753_status --job_table_path ~/wgs753_cl.txt --json_template_path ~/code/cocleaning-cwl/workflows/dnaseq/runner_template.json --node_json_dir /home/ubuntu/wgs_753_cl_json --repo_hash b56ceccd8f1cde626dd7d232d239464dc25ec1af --resource_core_count 40 --resource_disk_bytes 1539316278886 --resource_memory_bytes 42949672960  --s3_load_bucket s3://tcga_wgs_alignment_5 --scratch_dir /mnt/SCRATCH --slurm_template_path ~/code/cocleaning-cwl/workflows/dnaseq/slurm_template.sh
+python ~/code/cocleaning-cwl/workflows/dnaseq/create_jobs_from_templates.py --db_table_name wgs_753_status --job_table_path ~/wgs753_cl.txt --json_template_path ~/code/cocleaning-cwl/workflows/dnaseq/runner_template.json --node_json_dir /home/ubuntu/wgs_753_cl_json --repo_hash eb8810482f39f6513ee0dd14f75c167e0cf997d6 --resource_core_count 40 --resource_disk_bytes 1539316278886 --resource_memory_bytes 42949672960  --s3_load_bucket s3://tcga_wgs_alignment_5 --scratch_dir /mnt/SCRATCH --slurm_template_path ~/code/cocleaning-cwl/workflows/dnaseq/slurm_template.sh
 mv *.json ../wgs_753_cl_json
 mv *.sh ../wgs_753_cl_slurm
 cd ../
@@ -23,7 +23,7 @@ mkdir wgs_753_dp
 mkdir wgs_753_dp_slurm
 mkdir wgs_753_dp_json
 cd wgs_753_dp
-python ~/code/cocleaning-cwl/workflows/dnaseq/create_jobs_from_templates.py --db_table_name wgs_753_status --job_table_path ~/wgs753_dp.txt --json_template_path ~/code/cocleaning-cwl/workflows/dnaseq/runner_template.json --node_json_dir /home/ubuntu/wgs_753_dp_json --repo_hash b56ceccd8f1cde626dd7d232d239464dc25ec1af --resource_core_count 40 --resource_disk_bytes 1539316278886 --resource_memory_bytes 42949672960  --s3_load_bucket s3://tcga_wgs_alignment_5 --scratch_dir /mnt/SCRATCH --slurm_template_path ~/code/cocleaning-cwl/workflows/dnaseq/slurm_template.sh
+python ~/code/cocleaning-cwl/workflows/dnaseq/create_jobs_from_templates.py --db_table_name wgs_753_status --job_table_path ~/wgs753_dp.txt --json_template_path ~/code/cocleaning-cwl/workflows/dnaseq/runner_template.json --node_json_dir /home/ubuntu/wgs_753_dp_json --repo_hash eb8810482f39f6513ee0dd14f75c167e0cf997d6 --resource_core_count 40 --resource_disk_bytes 1539316278886 --resource_memory_bytes 42949672960  --s3_load_bucket s3://tcga_wgs_alignment_5 --scratch_dir /mnt/SCRATCH --slurm_template_path ~/code/cocleaning-cwl/workflows/dnaseq/slurm_template.sh
 mv *.json ../wgs_753_dp_json
 mv *.sh ../wgs_753_dp_slurm
 cd ../
@@ -35,7 +35,7 @@ mkdir wgs_753_wv
 mkdir wgs_753_wv_slurm
 mkdir wgs_753_wv_json
 cd wgs_753_wv
-python ~/code/cocleaning-cwl/workflows/dnaseq/create_jobs_from_templates.py --db_table_name wgs_753_status --job_table_path ~/wgs753_wv.txt --json_template_path ~/code/cocleaning-cwl/workflows/dnaseq/runner_template.json --node_json_dir /home/ubuntu/wgs_753_wv_json --repo_hash b56ceccd8f1cde626dd7d232d239464dc25ec1af --resource_core_count 40 --resource_disk_bytes 1539316278886 --resource_memory_bytes 42949672960  --s3_load_bucket s3://tcga_wgs_alignment_5 --scratch_dir /mnt/SCRATCH --slurm_template_path ~/code/cocleaning-cwl/workflows/dnaseq/slurm_template.sh
+python ~/code/cocleaning-cwl/workflows/dnaseq/create_jobs_from_templates.py --db_table_name wgs_753_status --job_table_path ~/wgs753_wv.txt --json_template_path ~/code/cocleaning-cwl/workflows/dnaseq/runner_template.json --node_json_dir /home/ubuntu/wgs_753_wv_json --repo_hash eb8810482f39f6513ee0dd14f75c167e0cf997d6 --resource_core_count 40 --resource_disk_bytes 1539316278886 --resource_memory_bytes 42949672960  --s3_load_bucket s3://tcga_wgs_alignment_5 --scratch_dir /mnt/SCRATCH --slurm_template_path ~/code/cocleaning-cwl/workflows/dnaseq/slurm_template.sh
 mv *.json ../wgs_753_wv_json
 mv *.sh ../wgs_753_wv_slurm
 cd ../
