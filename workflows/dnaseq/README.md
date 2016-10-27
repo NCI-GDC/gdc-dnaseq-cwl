@@ -49,7 +49,7 @@ After completing numbered installation steps below, these 3 steps will suffice t
         $ echo "source /usr/share/virtualenvwrapper/virtualenvwrapper.sh" >> ~/.bashrc
         $ exit
 
-4. log back in. If needed, enable proxy to access pypi.org
+4. log back in. If needed, enable proxy to access pypi.org and github.com
 
         $ export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128;
 
