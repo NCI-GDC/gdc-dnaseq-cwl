@@ -136,14 +136,14 @@ After completing numbered installation steps below, these 3 steps will suffice t
 
 16. Other example data
 
-        16 readgroup BAM which uses `bwa aln` (PE, SE and o1 reads)
+        16 readgroup BAM which uses `bwa aln` (all readgroup reads < 70bp; PE, SE and o1 reads)
         ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase1/data/NA12889/alignment/NA12889.chrom20.ILLUMINA.bwa.CEU.low_coverage.20101123.bam
         use cocleaning-cwl/workflows/dnaseq/NA12889.chrom20.ILLUMINA.bwa.CEU.low_coverage.20101123.json
 
-        22 readgroup BAM which uses `bwa mem` (PE, SE and o1 reads)
+        22 readgroup BAM which uses `bwa mem` (all readgroup reads > 70bp; PE, SE and o1 reads)
         ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase3/data/NA11829/alignment/NA11829.chrom20.ILLUMINA.bwa.CEU.low_coverage.20130415.bam
         use cocleaning-cwl/workflows/dnaseq/NA11829.chrom20.ILLUMINA.bwa.CEU.low_coverage.20130415.json
 
-        16 readgroup BAM which uses both `bwa aln` and `bwa mem` (PE, SE and o1 reads)
+        16 readgroup BAM which uses both `bwa aln` and `bwa mem` (some readgroup reads < 70bp, some > 70bp; PE, SE and o1 reads)
         ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase1/data/NA11829/alignment/NA11829.chrom20.ILLUMINA.bwa.CEU.low_coverage.20101123.bam
         use cocleaning-cwl/workflows/dnaseq/NA11829.chrom20.ILLUMINA.bwa.CEU.low_coverage.20101123.json
