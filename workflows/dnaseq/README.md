@@ -31,7 +31,7 @@ After completing numbered installation steps below, these 3 steps will suffice t
         $ mkdir /mnt/SCRATCH/docker
 
         enable docker storage in dir:
-        $ sudo echo "DOCKER_OPTS=\"--dns 8.8.8.8 --dns 8.8.4.4 -g /mnt/SCRATCH/docker/\"" >> /etc/default/docker
+        $ sudo echo "DOCKER_OPTS=\"-g /mnt/SCRATCH/docker/\"" >> /etc/default/docker
 
         enable non-root user to run docker:
         $ sudo gpasswd -a ubuntu docker
