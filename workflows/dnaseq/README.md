@@ -120,24 +120,27 @@ After completing numbered installation steps below, these 3 steps will suffice t
 
 14. Get example data: 1 readgroup BAM which uses `bwa mem`
 
-        Single readgroup BAM which maps with `bwa mem`:
-        $ mkdir /mnt/SCRATCH/NA12878_chr20_lowcvg/
+        Single readgroup BAM which maps with `bwa mem`, and contains Paired-End reads (SRR622461_1.fq.gz, SRR622461_2.fq.gz), Single-End (SRR622461_s.fq.gz) reads, and Orphaned (SRR622461_o1.fq.gz) reads, all of which are mapped to the harmonized BAM
         $ cd /mnt/SCRATCH/
         $ wget ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/phase3/data/NA12878/alignment/NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211.bam
 
 15. Run workflow
 
-        $ mkdir /mnt/SCRATCH/NA12878_chr20_lowcvg/harmonize/
-        $ cd /mnt/SCRATCH/NA12878_chr20_lowcvg/harmonize/
-        $ nohup cwltool --debug --tmpdir-prefix . --cachedir . ~/cocleaning-cwl/workflows/dnaseq/transform.cwl ~/cocleaning-cwl/workflows/dnaseq/NA12878_chr20_lowcvg_transform.json &
+        $ mkdir /mnt/SCRATCH/NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211
+        $ cd /mnt/SCRATCH/NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211/
+        $ mkdir tmp cache
+        $ nohup cwltool --debug --tmpdir-prefix tmp/ --cachedir cache/ ~/cocleaning-cwl/workflows/dnaseq/transform.cwl ~/cocleaning-cwl/workflows/dnaseq/NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211.json &
 
-16. Other example data (alter `NA12878_chr20_lowcvg_transform.json` as needed)
+16. Other example data
 
         1 readgroup BAM with `bwa aln`
         ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase1/data/NA12889/alignment/NA12889.chrom20.ILLUMINA.bwa.CEU.low_coverage.20101123.bam
+        use cocleaning-cwl/workflows/dnaseq/NA12889.chrom20.ILLUMINA.bwa.CEU.low_coverage.20101123.json
 
         22 readgroup BAM which uses `bwa mem`
         ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase3/data/NA11829/alignment/NA11829.chrom20.ILLUMINA.bwa.CEU.low_coverage.20130415.bam
+        use cocleaning-cwl/workflows/dnaseq/NA11829.chrom20.ILLUMINA.bwa.CEU.low_coverage.20130415.json
 
         16 readgroup BAM which uses both `bwa aln` and `bwa mem`
         ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase1/data/NA11829/alignment/NA11829.chrom20.ILLUMINA.bwa.CEU.low_coverage.20101123.bam
+        use cocleaning-cwl/workflows/dnaseq/NA11829.chrom20.ILLUMINA.bwa.CEU.low_coverage.20101123.json
