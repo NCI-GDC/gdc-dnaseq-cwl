@@ -253,7 +253,7 @@ steps:
         valueFrom: $(self.basename)
       - id: input_state
         valueFrom: "original"
-      - id: metrics_path
+      - id: metric_path
         source: picard_collectalignmentsummarymetrics/OUTPUT
       - id: uuid
         source: uuid
