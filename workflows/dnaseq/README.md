@@ -75,11 +75,11 @@ After completing numbered installation steps below, these 3 steps will suffice t
 
 9. get the CDIS patched version of cwltool
 
-        $ wget https://github.com/jeremiahsavage/cwltool/archive/1.0_gdc_e.tar.gz
+        $ wget https://github.com/jeremiahsavage/cwltool/archive/1.0_gdc_f.tar.gz
 
 10. install cwltool and its dependencies
 
-        $ pip install 1.0_gdc_e.tar.gz --no-cache-dir
+        $ pip install 1.0_gdc_f.tar.gz --no-cache-dir
 
 11. get the DNASeq CWL Workflow
 
