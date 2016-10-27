@@ -57,7 +57,7 @@ After completing numbered installation steps below, these 3 steps will suffice t
 
         $ mkvirtualenv --python /usr/bin/python2 cwl
 
-6. When virtualenv is first created (3), the vitualenv will be activated. To activate virtualenv on later login sessions:
+6. When virtualenv is first created, the vitualenv will be activated. To activate virtualenv on later login sessions:
 
         $ workon cwl
 
