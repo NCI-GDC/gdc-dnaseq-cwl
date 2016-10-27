@@ -740,23 +740,23 @@ steps:
     out:
       - id: sqlite
 
-  # - id: metrics_markduplicates
-  #   run: mixed_library_metrics.cwl
-  #   in:
-  #     - id: bam
-  #       source: picard_markduplicates/OUTPUT
-  #     - id: db_snp_vcf
-  #       source: db_snp_path
-  #     - id: fasta
-  #       source: reference_fasta_path
-  #     - id: input_state
-  #       valueFrom: "markduplicates_readgroups"
-  #     - id: thread_count
-  #       source: thread_count
-  #     - id: uuid
-  #       source: uuid
-  #   out:
-  #     - id: merge_sqlite_destination_sqlite
+  - id: metrics_markduplicates
+    run: mixed_library_metrics.cwl
+    in:
+      - id: bam
+        source: picard_markduplicates/OUTPUT
+      - id: db_snp_vcf
+        source: db_snp_path
+      - id: fasta
+        source: reference_fasta_path
+      - id: input_state
+        valueFrom: "markduplicates_readgroups"
+      - id: thread_count
+        source: thread_count
+      - id: uuid
+        source: uuid
+    out:
+      - id: merge_sqlite_destination_sqlite
 
   - id: integrity
     run: integrity.cwl
