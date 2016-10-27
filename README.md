@@ -75,7 +75,7 @@ After completing numbered installation steps below, these 3 steps will suffice t
 
 9. get the CDIS tested version of cwltool
 
-        $ wget https://github.com/jeremiahsavage/cwltool/archive/1.0_gdc_f.tar.gz
+        $ wget https://github.com/NCI-GDC/cwltool/archive/1.0_gdc_f.tar.gz
 
 10. install cwltool and its dependencies
 
@@ -100,7 +100,7 @@ After completing numbered installation steps below, these 3 steps will suffice t
 
     dbsnp vcf (two choices):
 
-    (1) original data generation:
+    (1) modified data generation:
 
         $ wget ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/hg38bundle/dbsnp_144.hg38.vcf.gz
         $ gunzip dbsnp_144.hg38.vcf.gz
@@ -136,14 +136,14 @@ After completing numbered installation steps below, these 3 steps will suffice t
 
 16. Other example data
 
-        1 readgroup BAM with `bwa aln`
+        16 readgroup BAM with `bwa aln` (PE, SE and o1 reads)
         ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase1/data/NA12889/alignment/NA12889.chrom20.ILLUMINA.bwa.CEU.low_coverage.20101123.bam
         use cocleaning-cwl/workflows/dnaseq/NA12889.chrom20.ILLUMINA.bwa.CEU.low_coverage.20101123.json
 
-        22 readgroup BAM which uses `bwa mem`
+        22 readgroup BAM which uses `bwa mem` (PE, SE and o1 reads)
         ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase3/data/NA11829/alignment/NA11829.chrom20.ILLUMINA.bwa.CEU.low_coverage.20130415.bam
         use cocleaning-cwl/workflows/dnaseq/NA11829.chrom20.ILLUMINA.bwa.CEU.low_coverage.20130415.json
 
-        16 readgroup BAM which uses both `bwa aln` and `bwa mem`
+        16 readgroup BAM which uses both `bwa aln` and `bwa mem` (PE, SE and o1 reads)
         ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase1/data/NA11829/alignment/NA11829.chrom20.ILLUMINA.bwa.CEU.low_coverage.20101123.bam
         use cocleaning-cwl/workflows/dnaseq/NA11829.chrom20.ILLUMINA.bwa.CEU.low_coverage.20101123.json
