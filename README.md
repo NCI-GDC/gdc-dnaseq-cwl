@@ -136,7 +136,7 @@ After completing numbered installation steps below, these 3 steps will suffice t
 
 16. Other example data
 
-        16 readgroup BAM with `bwa aln` (PE, SE and o1 reads)
+        16 readgroup BAM which uses `bwa aln` (PE, SE and o1 reads)
         ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase1/data/NA12889/alignment/NA12889.chrom20.ILLUMINA.bwa.CEU.low_coverage.20101123.bam
         use cocleaning-cwl/workflows/dnaseq/NA12889.chrom20.ILLUMINA.bwa.CEU.low_coverage.20101123.json
 
