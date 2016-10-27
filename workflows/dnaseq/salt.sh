@@ -12,7 +12,7 @@ mkdir wgs_753_cl
 mkdir wgs_753_cl_slurm
 mkdir wgs_753_cl_json
 cd wgs_753_cl
-python ~/code/cocleaning-cwl/workflows/dnaseq/create_jobs_from_templates.py --db_table_name wgs_753_status --job_table_path ~/wgs753_cl.txt --json_template_path ~/code/cocleaning-cwl/workflows/dnaseq/runner_template.json --node_json_dir /home/ubuntu/wgs_753_cl_json --repo_hash d8004759f8dd9110454d93c959938d22395de7f5 --resource_core_count 40 --resource_disk_bytes 1539316278886 --resource_memory_bytes 42949672960  --s3_load_bucket s3://tcga_wgs_alignment_5 --scratch_dir /mnt/SCRATCH --slurm_template_path ~/code/cocleaning-cwl/workflows/dnaseq/slurm_template.sh
+python ~/code/cocleaning-cwl/workflows/dnaseq/create_jobs_from_templates.py --db_table_name wgs_753_status --job_table_path ~/wgs753_cl.txt --json_template_path ~/code/cocleaning-cwl/workflows/dnaseq/runner_template.json --node_json_dir /home/ubuntu/wgs_753_cl_json --repo_hash fd9e107821bd2cb5cf8443e188eeb6e524888878 --resource_core_count 40 --resource_disk_bytes 1539316278886 --resource_memory_bytes 42949672960  --s3_load_bucket s3://tcga_wgs_alignment_5 --scratch_dir /mnt/SCRATCH --slurm_template_path ~/code/cocleaning-cwl/workflows/dnaseq/slurm_template.sh
 mv *.json ../wgs_753_cl_json
 mv *.sh ../wgs_753_cl_slurm
 cd ../
@@ -23,7 +23,7 @@ mkdir wgs_753_dp
 mkdir wgs_753_dp_slurm
 mkdir wgs_753_dp_json
 cd wgs_753_dp
-python ~/code/cocleaning-cwl/workflows/dnaseq/create_jobs_from_templates.py --db_table_name wgs_753_status --job_table_path ~/wgs753_dp.txt --json_template_path ~/code/cocleaning-cwl/workflows/dnaseq/runner_template.json --node_json_dir /home/ubuntu/wgs_753_dp_json --repo_hash d8004759f8dd9110454d93c959938d22395de7f5 --resource_core_count 40 --resource_disk_bytes 1539316278886 --resource_memory_bytes 42949672960  --s3_load_bucket s3://tcga_wgs_alignment_5 --scratch_dir /mnt/SCRATCH --slurm_template_path ~/code/cocleaning-cwl/workflows/dnaseq/slurm_template.sh
+python ~/code/cocleaning-cwl/workflows/dnaseq/create_jobs_from_templates.py --db_table_name wgs_753_status --job_table_path ~/wgs753_dp.txt --json_template_path ~/code/cocleaning-cwl/workflows/dnaseq/runner_template.json --node_json_dir /home/ubuntu/wgs_753_dp_json --repo_hash fd9e107821bd2cb5cf8443e188eeb6e524888878 --resource_core_count 40 --resource_disk_bytes 1539316278886 --resource_memory_bytes 42949672960  --s3_load_bucket s3://tcga_wgs_alignment_5 --scratch_dir /mnt/SCRATCH --slurm_template_path ~/code/cocleaning-cwl/workflows/dnaseq/slurm_template.sh
 mv *.json ../wgs_753_dp_json
 mv *.sh ../wgs_753_dp_slurm
 cd ../
@@ -35,7 +35,7 @@ mkdir wgs_753_wv
 mkdir wgs_753_wv_slurm
 mkdir wgs_753_wv_json
 cd wgs_753_wv
-python ~/code/cocleaning-cwl/workflows/dnaseq/create_jobs_from_templates.py --db_table_name wgs_753_status --job_table_path ~/wgs753_wv.txt --json_template_path ~/code/cocleaning-cwl/workflows/dnaseq/runner_template.json --node_json_dir /home/ubuntu/wgs_753_wv_json --repo_hash d8004759f8dd9110454d93c959938d22395de7f5 --resource_core_count 40 --resource_disk_bytes 1539316278886 --resource_memory_bytes 42949672960  --s3_load_bucket s3://tcga_wgs_alignment_5 --scratch_dir /mnt/SCRATCH --slurm_template_path ~/code/cocleaning-cwl/workflows/dnaseq/slurm_template.sh
+python ~/code/cocleaning-cwl/workflows/dnaseq/create_jobs_from_templates.py --db_table_name wgs_753_status --job_table_path ~/wgs753_wv.txt --json_template_path ~/code/cocleaning-cwl/workflows/dnaseq/runner_template.json --node_json_dir /home/ubuntu/wgs_753_wv_json --repo_hash fd9e107821bd2cb5cf8443e188eeb6e524888878 --resource_core_count 40 --resource_disk_bytes 1539316278886 --resource_memory_bytes 42949672960  --s3_load_bucket s3://tcga_wgs_alignment_5 --scratch_dir /mnt/SCRATCH --slurm_template_path ~/code/cocleaning-cwl/workflows/dnaseq/slurm_template.sh
 mv *.json ../wgs_753_wv_json
 mv *.sh ../wgs_753_wv_slurm
 cd ../
@@ -110,7 +110,6 @@ salt -G 'cluster_name:DEADPOOL' cmd.run 'apt-get update &&  apt-get upgrade -y &
 salt -G 'cluster_name:DEADPOOL' cmd.run runas=ubuntu 'docker rmi -f $(docker images -q)'
 salt -G 'cluster_name:DEADPOOL' cmd.run runas=ubuntu 'rm -rf /home/ubuntu/.virtualenvs'
 salt -G 'cluster_name:DEADPOOL' cmd.run runas=ubuntu 'bash -c "export http_proxy=http://cloud-proxy:3128 && export https_proxy=http://cloud-proxy:3128 && source /usr/share/virtualenvwrapper/virtualenvwrapper.sh && mkvirtualenv --python /usr/bin/python2 jhs_cwl && pip install --upgrade pip && pip install --upgrade ndg-httpsclient && pip install --upgrade requests[security]"'
-salt -G 'cluster_name:DEADPOOL' cmd.run runas=ubuntu 'bash -c "export http_proxy=http://cloud-proxy:3128 && export https_proxy=http://cloud-proxy:3128 && source /usr/share/virtualenvwrapper/virtualenvwrapper.sh && workon jhs_cwl && pip install --upgrade awscli"'
 salt -G 'cluster_name:DEADPOOL' cmd.run runas=ubuntu 'cd /home/ubuntu && s3cmd -c ~/.s3cfg.ceph get --force s3://bioinformatics_scratch/jhsavage_salt/1.0_gdc_f.tar.gz'
 salt -G 'cluster_name:DEADPOOL' cmd.run runas=ubuntu 'bash -c "export http_proxy=http://cloud-proxy:3128 && export https_proxy=http://cloud-proxy:3128 && source /usr/share/virtualenvwrapper/virtualenvwrapper.sh && workon jhs_cwl && pip install /home/ubuntu/1.0_gdc_f.tar.gz --no-cache-dir && rm /home/ubuntu/1.0_gdc_f.tar.gz"'
 salt -G 'cluster_name:DEADPOOL' cmd.run runas=ubuntu 'rm -rf /mnt/SCRATCH/*'
@@ -140,7 +139,6 @@ salt -G 'cluster_name:CLAIRE' cmd.run runas=ubuntu 'rm -rf /mnt/SCRATCH/*'
 salt -G 'cluster_name:CLAIRE' cmd.run runas=ubuntu 'rm -rf /home/ubuntu/cocleaning-cwl'
 salt -G 'cluster_name:CLAIRE' cmd.run runas=ubuntu 'rm -rf /home/ubuntu/wgs_753*'
 salt -G 'cluster_name:CLAIRE' cmd.run runas=ubuntu 'bash -c "export http_proxy=http://cloud-proxy:3128 && export https_proxy=http://cloud-proxy:3128 && source /usr/share/virtualenvwrapper/virtualenvwrapper.sh && mkvirtualenv --python /usr/bin/python2 jhs_cwl && pip install --upgrade pip && pip install --upgrade ndg-httpsclient --no-cache-dir && pip install --upgrade requests[security]" --no-cache-dir'
-salt -G 'cluster_name:CLAIRE' cmd.run runas=ubuntu 'bash -c "export http_proxy=http://cloud-proxy:3128 && export https_proxy=http://cloud-proxy:3128 && source /usr/share/virtualenvwrapper/virtualenvwrapper.sh && workon jhs_cwl && pip install --upgrade awscli"'
 salt -G 'cluster_name:CLAIRE' cmd.run runas=ubuntu 'cd /home/ubuntu && s3cmd -c ~/.s3cfg.ceph get --force s3://bioinformatics_scratch/jhsavage_salt/1.0_gdc_f.tar.gz'
 salt -G 'cluster_name:CLAIRE' cmd.run runas=ubuntu 'bash -c "export http_proxy=http://cloud-proxy:3128 && export https_proxy=http://cloud-proxy:3128 && source /usr/share/virtualenvwrapper/virtualenvwrapper.sh && workon jhs_cwl && pip install /home/ubuntu/1.0_gdc_f.tar.gz --no-cache-dir && rm /home/ubuntu/1.0_gdc_f.tar.gz"'
 salt -G 'cluster_name:CLAIRE' cmd.run runas=ubuntu "sed -i 's/kh11-9.osdc.io/gdc-cephb-objstore.osdc.io/g' /home/ubuntu/.s3cfg.ceph"
