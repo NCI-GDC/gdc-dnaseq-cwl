@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: ubuntu:xenial-20160809
+    dockerPull: ubuntu:xenial-20161010
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
