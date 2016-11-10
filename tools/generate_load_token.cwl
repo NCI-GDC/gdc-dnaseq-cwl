@@ -5,7 +5,7 @@ cwlVersion: v1.0
 class: CommandLineTool
 requirements:
   - class: DockerRequirement
-    dockerPull: ubuntu:xenial-20160923.1
+    dockerPull: ubuntu:xenial-20161010
 
 inputs:
   - id: load1
