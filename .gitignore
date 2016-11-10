@@ -1,2 +1,26 @@
 .vagrant
 .DS_Store
+
+#SSH
+.ssh/
+!*.pub
+id_rsa
+id_dsa
+
+#SSL
+*.key
+*.crt
+
+#GDC related files
+gdc-user-token.*
+
+#Python
+*.pyc
+
+#OpenStack
+admin_auth
+.novarc
+
+#s3 creds
+.s3cfg
+.aws/
