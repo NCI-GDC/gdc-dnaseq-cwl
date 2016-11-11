@@ -31,13 +31,13 @@ After completing numbered installation steps below, these 3 steps will suffice t
         $ mkdir /mnt/SCRATCH/docker
 
         enable docker storage in scratch dir:
-        $ sudo echo "DOCKER_OPTS=\"-g /mnt/SCRATCH/docker/\"" >> /etc/default/docker
+        $ sudo sh -c "echo "DOCKER_OPTS=\"-g /mnt/SCRATCH/docker/\"" >> /etc/default/docker"
 
         enable non-root user to run docker:
         $ sudo gpasswd -a ubuntu docker
 
         if you have a proxy, enable for docker:
-        $ sudo echo "export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128" >> /etc/default/docker
+        $ sudo sh -c "echo "export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128" >> /etc/default/docker"
         
         restart docker service
         $ sudo service docker restart
