@@ -11,8 +11,8 @@ After completing numbered installation steps below, these 3 steps will suffice t
 0. install needed packages
 
         if you have a proxy, enable for apt:
-        $ sudo echo 'Acquire::http::Proxy "http://cloud-proxy:3128";' >> /etc/apt/apt.conf.d/01Proxy
-        $ sudo echo 'Acquire::https::Proxy "http://cloud-proxy:3128";' >> /etc/apt/apt.conf.d/01Proxy
+        $ sudo sh -c "echo 'Acquire::http::Proxy "http://cloud-proxy:3128";' >> /etc/apt/apt.conf.d/01Proxy"
+        $ sudo sh -c "echo 'Acquire::https::Proxy "http://cloud-proxy:3128";' >> /etc/apt/apt.conf.d/01Proxy"
 
         $ sudo aptitude update
         $ sudo aptitude install apt-transport-https ca-certificates htop libffi-dev libssl-dev nodejs python-dev virtualenvwrapper
