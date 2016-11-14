@@ -23,7 +23,7 @@ After completing numbered installation steps below, these 3 steps will suffice t
         $ sudo rm -rf /mnt
         $ sudo mount /dev/vdb /mnt
         $ sudo mkdir /mnt/SCRATCH
-        $ sudo chown 777 /mnt/SCRATCH
+        $ sudo chmod 777 /mnt/SCRATCH
 
 2. prep docker
 
