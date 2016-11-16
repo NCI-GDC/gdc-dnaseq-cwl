@@ -147,3 +147,11 @@ After completing numbered installation steps below, these 3 steps will suffice t
         16 readgroup BAM which uses both `bwa aln` and `bwa mem` (some readgroup reads < 70bp, some > 70bp; PE, SE and o1 reads)
         ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase1/data/NA11829/alignment/NA11829.chrom20.ILLUMINA.bwa.CEU.low_coverage.20101123.bam
         use cocleaning-cwl/workflows/dnaseq/NA11829.chrom20.ILLUMINA.bwa.CEU.low_coverage.20101123.json
+
+17. Resources required for successful workflow completion
+
+        * Storage: 7-10X initial BAM size. That is, if the input BAM to be harmonized is 1GiB, then 7-10GiB of stoarge will be required, as cwltool does not remove intermediate files during workflow processing. This is in addition to storage required for reference files, and docker images.
+        
+        * CPU: The workflow will operate with any number of cores. It is tested with 8 cores.
+        
+        * RAM: Most BAM files will harmonize with less than 20GiB of RAM, but in some cases up to 50GiB of RAM is required during the MarkDuplicates step.
