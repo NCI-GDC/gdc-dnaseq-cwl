@@ -11,8 +11,8 @@ After completing numbered installation steps below, these 3 steps will suffice t
 0. install needed packages
 
         if you have a proxy, enable for apt:
-        $ sudo echo 'Acquire::http::Proxy "http://cloud-proxy:3128";' >> /etc/apt/apt.conf.d/01Proxy
-        $ sudo echo 'Acquire::https::Proxy "http://cloud-proxy:3128";' >> /etc/apt/apt.conf.d/01Proxy
+        $ sudo sh -c "echo 'Acquire::http::Proxy "http://cloud-proxy:3128";' >> /etc/apt/apt.conf.d/01Proxy"
+        $ sudo sh -c "echo 'Acquire::https::Proxy "http://cloud-proxy:3128";' >> /etc/apt/apt.conf.d/01Proxy"
 
         $ sudo aptitude update
         $ sudo aptitude install apt-transport-https ca-certificates htop libffi-dev libssl-dev nodejs python-dev virtualenvwrapper
@@ -23,7 +23,7 @@ After completing numbered installation steps below, these 3 steps will suffice t
         $ sudo rm -rf /mnt
         $ sudo mount /dev/vdb /mnt
         $ sudo mkdir /mnt/SCRATCH
-        $ sudo chown 777 /mnt/SCRATCH
+        $ sudo chmod 777 /mnt/SCRATCH
 
 2. prep docker
 
@@ -31,13 +31,13 @@ After completing numbered installation steps below, these 3 steps will suffice t
         $ mkdir /mnt/SCRATCH/docker
 
         enable docker storage in scratch dir:
-        $ sudo echo "DOCKER_OPTS=\"-g /mnt/SCRATCH/docker/\"" >> /etc/default/docker
+        $ sudo sh -c "echo "DOCKER_OPTS=\"-g /mnt/SCRATCH/docker/\"" >> /etc/default/docker"
 
         enable non-root user to run docker:
         $ sudo gpasswd -a ubuntu docker
 
         if you have a proxy, enable for docker:
-        $ sudo echo "export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128" >> /etc/default/docker
+        $ sudo sh -c "echo "export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128" >> /etc/default/docker"
         
         restart docker service
         $ sudo service docker restart
@@ -147,3 +147,11 @@ After completing numbered installation steps below, these 3 steps will suffice t
         16 readgroup BAM which uses both `bwa aln` and `bwa mem` (some readgroup reads < 70bp, some > 70bp; PE, SE and o1 reads)
         ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase1/data/NA11829/alignment/NA11829.chrom20.ILLUMINA.bwa.CEU.low_coverage.20101123.bam
         use cocleaning-cwl/workflows/dnaseq/NA11829.chrom20.ILLUMINA.bwa.CEU.low_coverage.20101123.json
+
+17. Resources required for successful workflow completion
+
+        * Storage: 7-10X initial BAM size. That is, if the input BAM to be harmonized is 1GiB, then 7-10GiB of stoarge will be required, as cwltool does not remove intermediate files during workflow processing. This is in addition to storage required for reference files, and docker images.
+        
+        * CPU: The workflow will operate with any number of cores. It is tested with 8 cores.
+        
+        * RAM: Most BAM files will harmonize with less than 20GiB of RAM, but in some cases up to 50GiB of RAM is required during the MarkDuplicates step.
