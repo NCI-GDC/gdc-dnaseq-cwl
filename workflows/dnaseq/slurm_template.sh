@@ -14,16 +14,16 @@ VIRTUALENV_NAME=jhs_cwl
 
 ##JOB VARIABLE
 BAM_SIGNPOST_ID=XX_BAM_SIGNPOST_ID_XX
-CWL_RUNNER_PATH=${HOME}/cocleaning-cwl/workflows/dnaseq/runner.cwl
+CWL_RUNNER_PATH=${HOME}/gdc-dnaseq-cwl/workflows/dnaseq/runner.cwl
 JSON_PATH=XX_JSON_PATH_XX
 UUID=XX_UUID_XX
 
 ##FAIL VARIABLE
-CWL_STATUS_PATH=${HOME}/cocleaning-cwl/workflows/status/status_postgres_workflow.cwl
+CWL_STATUS_PATH=${HOME}/gdc-dnaseq-cwl/workflows/status/status_postgres_workflow.cwl
 DB_CRED_PATH=${HOME}/connect_jhsavage.ini
 DB_CRED_SECTION=DEFAULT
 DB_TABLE_NAME=XX_DB_TABLE_NAME_XX
-GIT_REPO=https://github.com/NCI-GDC/cocleaning-cwl/
+GIT_REPO=https://github.com/NCI-GDC/gdc-dnaseq-cwl/
 GIT_REPO_HASH=XX_REPO_HASH_XX
 
 function activate_virtualenv()

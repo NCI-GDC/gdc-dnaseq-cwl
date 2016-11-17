@@ -4,7 +4,7 @@ After completing numbered installation steps below, these 3 steps will suffice t
 
         $ workon cwl
         $ cd /mnt/SCRATCH/dnaseq_example
-        $ nohup cwltool --debug --tmpdir-prefix tmp/ --cachedir cache/ ~/cocleaning-cwl/workflows/dnaseq/transform.cwl ~/cocleaning-cwl/workflows/dnaseq/NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211.json &
+        $ nohup cwltool --debug --tmpdir-prefix tmp/ --cachedir cache/ ~/gdc-dnaseq-cwl/workflows/dnaseq/transform.cwl ~/gdc-dnaseq-cwl/workflows/dnaseq/NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211.json &
 
 ---
 
@@ -83,15 +83,15 @@ After completing numbered installation steps below, these 3 steps will suffice t
 
 11. get the DNASeq CWL Workflow
 
-        $ git clone https://github.com/NCI-GDC/cocleaning-cwl.git
+        $ git clone https://github.com/NCI-GDC/gdc-dnaseq-cwl.git
 
 12. The workflow to perform DNASeq BAM harmonization is
 
-        cocleaning-cwl/workflows/dnaseq/transform.cwl
+        gdc-dnaseq-cwl/workflows/dnaseq/transform.cwl
 
     and an example input file is
 
-        cocleaning-cwl/workflows/dnaseq/NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211.json
+        gdc-dnaseq-cwl/workflows/dnaseq/NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211.json
 
 13. get reference files
 
@@ -132,21 +132,21 @@ After completing numbered installation steps below, these 3 steps will suffice t
         $ mkdir /mnt/SCRATCH/NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211
         $ cd /mnt/SCRATCH/NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211/
         $ mkdir tmp cache
-        $ nohup cwltool --debug --tmpdir-prefix tmp/ --cachedir cache/ ~/cocleaning-cwl/workflows/dnaseq/transform.cwl ~/cocleaning-cwl/workflows/dnaseq/NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211.json &
+        $ nohup cwltool --debug --tmpdir-prefix tmp/ --cachedir cache/ ~/gdc-dnaseq-cwl/workflows/dnaseq/transform.cwl ~/gdc-dnaseq-cwl/workflows/dnaseq/NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211.json &
 
 16. Other example data
 
         16 readgroup BAM which uses `bwa aln` (all readgroup reads < 70bp; PE, SE and o1 reads)
         ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase1/data/NA12889/alignment/NA12889.chrom20.ILLUMINA.bwa.CEU.low_coverage.20101123.bam
-        use cocleaning-cwl/workflows/dnaseq/NA12889.chrom20.ILLUMINA.bwa.CEU.low_coverage.20101123.json
+        use gdc-dnaseq-cwl/workflows/dnaseq/NA12889.chrom20.ILLUMINA.bwa.CEU.low_coverage.20101123.json
 
         22 readgroup BAM which uses `bwa mem` (all readgroup reads > 70bp; PE, SE and o1 reads)
         ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase3/data/NA11829/alignment/NA11829.chrom20.ILLUMINA.bwa.CEU.low_coverage.20130415.bam
-        use cocleaning-cwl/workflows/dnaseq/NA11829.chrom20.ILLUMINA.bwa.CEU.low_coverage.20130415.json
+        use gdc-dnaseq-cwl/workflows/dnaseq/NA11829.chrom20.ILLUMINA.bwa.CEU.low_coverage.20130415.json
 
         16 readgroup BAM which uses both `bwa aln` and `bwa mem` (some readgroup reads < 70bp, some > 70bp; PE, SE and o1 reads)
         ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase1/data/NA11829/alignment/NA11829.chrom20.ILLUMINA.bwa.CEU.low_coverage.20101123.bam
-        use cocleaning-cwl/workflows/dnaseq/NA11829.chrom20.ILLUMINA.bwa.CEU.low_coverage.20101123.json
+        use gdc-dnaseq-cwl/workflows/dnaseq/NA11829.chrom20.ILLUMINA.bwa.CEU.low_coverage.20101123.json
 
 17. Resources required for successful workflow completion
 
