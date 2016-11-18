@@ -1,5 +1,7 @@
 To run DNASeq harmonization workflow
 ------------------------------------
+The current workflow will harmonize WGS and WXS BAMs, and generate picard and samtools metrics (stored in a sqlite file) on the harmonized BAM. WGS metrics (picard CollectWgsMetrics) is currently implemented, and WXS (picard CollectHsMetrics) is in development.
+
 After completing numbered installation steps below, these 3 steps will suffice to run workflows:
 
         $ workon cwl
@@ -15,7 +17,7 @@ After completing numbered installation steps below, these 3 steps will suffice t
         $ sudo sh -c "echo 'Acquire::https::Proxy "http://cloud-proxy:3128";' >> /etc/apt/apt.conf.d/01Proxy"
 
         $ sudo aptitude update
-        $ sudo aptitude install apt-transport-https ca-certificates htop libffi-dev libssl-dev nodejs python-dev virtualenvwrapper
+        $ sudo aptitude install apt-transport-https ca-certificates docker-engine htop libffi-dev libssl-dev nodejs python-dev virtualenvwrapper
 
 1. prep storage
 
