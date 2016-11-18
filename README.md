@@ -9,7 +9,7 @@ After completing numbered installation steps below, these 3 steps will suffice t
         $ nohup cwltool --debug --tmpdir-prefix tmp/ --cachedir cache/ ~/gdc-dnaseq-cwl/workflows/dnaseq/transform.cwl ~/gdc-dnaseq-cwl/workflows/dnaseq/NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211.json &
 
 ---
-The following steps are tested on Ubuntu 14.04. Newer Ubuntu versions, and other Linux distributions use a different method of configuration, which is beyond the scope of this document.
+The following steps are tested on Ubuntu 14.04. Newer Ubuntu versions, and other Linux distributions use a different method of configuration, which is beyond the scope of this document. Running the cwl workflow (step 16), will cause the docker images to be pulled as each cwl step is executed. A description of each of the tools is at the bottom of this document.
 
 0. install needed packages
 
@@ -158,3 +158,5 @@ The following steps are tested on Ubuntu 14.04. Newer Ubuntu versions, and other
         * CPU: The workflow will operate with any number of cores. It is tested with 8 cores.
         
         * RAM: Most BAM files will harmonize with less than 20GiB of RAM, but in some cases up to 50GiB of RAM is required during the MarkDuplicates step.
+
+---
