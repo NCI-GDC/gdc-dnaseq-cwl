@@ -1,5 +1,7 @@
 To run DNASeq harmonization workflow
 ------------------------------------
+The currently workflow will harmonize WGS and WXS BAMs, and generate picard and samtools metrics on the harmonized BAM (stored in a sqlite file). WGS metrics (picard CollectWgsMetrics) is currently implemented, and WXS (picard CollectHsMetrics) is in development.
+
 After completing numbered installation steps below, these 3 steps will suffice to run workflows:
 
         $ workon cwl
