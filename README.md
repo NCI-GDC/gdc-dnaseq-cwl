@@ -160,3 +160,68 @@ The following steps are tested on Ubuntu 14.04. Newer Ubuntu versions, and other
         * RAM: Most BAM files will harmonize with less than 20GiB of RAM, but in some cases up to 50GiB of RAM is required during the MarkDuplicates step.
 
 ---
+Dockers used for DNASeq harmonization (transform.cwl)
+
+        https://quay.io/repository/ncigdc/bam_readgroup_to_json
+        https://github.com/NCI-GDC/bam_readgroup_to_json
+        Used to convert each readgroup of a BAM to a json file.
+
+        https://quay.io/repository/ncigdc/bam_reheader
+        https://github.com/NCI-GDC/bam_reheader
+        Used to reheader a BAM file so it contains gdc reference assembly name (GRCh38.d1.vd1), Species (Homo sapiens), and M5 (MD5 of each contig).
+
+        https://quay.io/repository/ncigdc/biobambam
+        https://github.com/NCI-GDC/biobambam_docker
+        Contains biobambam. Currently used for bamtofastq step.
+
+        https://quay.io/repository/ncigdc/bwa
+        https://github.com/NCI-GDC/bwa_docker
+        Mapper used for WGS/WXS.
+
+        https://quay.io/repository/ncigdc/fastq_remove_duplicate_qname
+        https://github.com/NCI-GDC/fastq_remove_duplicate_qname
+        Some BAM files from Broad contain multiple entries of the same read. This tool removes such duplicates.
+
+        https://quay.io/repository/ncigdc/fastqc
+        https://github.com/NCI-GDC/fastqc_docker
+        Get basic metrics on fastq files.
+
+        https://quay.io/repository/ncigdc/fastqc_db
+        https://github.com/NCI-GDC/fastqc_db
+        Converts fastqc metrics to sqlite.
+
+        https://quay.io/repository/ncigdc/fastqc_to_json
+        https://github.com/NCI-GDC/fastqc_to_json
+        Converts subset of fastqc metrics to json to be used for bwa step.
+
+        https://quay.io/repository/ncigdc/integrity_to_sqlite
+        https://github.com/NCI-GDC/integrity_to_sqlite
+        Converts md5, sha256 and file byte size to sqlite.
+
+        https://quay.io/repository/ncigdc/merge_sqlite
+        https://github.com/NCI-GDC/merge_sqlite
+        Merges an arbitrary number of sqlite files into a single sqlite file.
+
+        https://quay.io/repository/ncigdc/picard
+        https://github.com/NCI-GDC/picard_docker
+        Picard is used in the core workflow (BAM validation, sorting, merging, markduplicates), and for metrics (BAM CollectHsMetris, CollectWgsMetrics, CollectMultipleMetrics, CollectOxoGMetrics).
+
+        https://quay.io/repository/ncigdc/picard_metrics_sqlite
+        https://github.com/NCI-GDC/picard_metrics_sqlite
+        Converts picard metrics to sqlite.
+
+        https://quay.io/repository/ncigdc/queue_status
+        https://github.com/NCI-GDC/queue_status
+        Run at the start and end of each job. Records current time, job uuid, software version, job status, and final s3 uri.
+
+        https://quay.io/repository/ncigdc/readgroup_json_db
+        https://github.com/NCI-GDC/readgroup_json_db
+        Convert readgroup json to sqlite.
+
+        https://quay.io/repository/ncigdc/samtools
+        https://github.com/NCI-GDC/samtools_docker
+        Used to compress bwa SAM to BAM. Also used to collect metrics (flagstat, idxstats, stats).
+
+        https://quay.io/repository/ncigdc/samtools_metrics_sqlite
+        https://github.com/NCI-GDC/samtools_metrics_sqlite
+        Converts samtools metrics to sqlite.
