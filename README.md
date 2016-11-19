@@ -162,13 +162,16 @@ The following steps are tested on Ubuntu 14.04. Newer Ubuntu versions, and other
 ---
 Docker tools used for DNASeq harmonization workflow (transform.cwl)
 
+
 #### Used to convert each readgroup of a BAM to a json file.
 * (https://quay.io/repository/ncigdc/bam_readgroup_to_json)
 * (https://github.com/NCI-GDC/bam_readgroup_to_json)
 
+
 #### Used to reheader a BAM file so it contains gdc reference assembly name (GRCh38.d1.vd1), Species (Homo sapiens), and M5 (MD5 of each contig).
 * (https://quay.io/repository/ncigdc/bam_reheader)
 * (https://github.com/NCI-GDC/bam_reheader)
+
 
         https://quay.io/repository/ncigdc/biobambam
         https://github.com/NCI-GDC/biobambam_docker
