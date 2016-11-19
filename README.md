@@ -160,7 +160,7 @@ The following steps are tested on Ubuntu 14.04. Newer Ubuntu versions, and other
         * RAM: Most BAM files will harmonize with less than 20GiB of RAM, but in some cases up to 50GiB of RAM is required during the MarkDuplicates step.
 
 ---
-#### Docker tools used for DNASeq harmonization workflow (transform.cwl)
+#### Docker tools used for DNASeq harmonization workflow (workflows/dnaseq/transform.cwl)
 
 
 https://quay.io/repository/ncigdc/bam_readgroup_to_json  
