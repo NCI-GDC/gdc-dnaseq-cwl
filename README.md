@@ -185,7 +185,7 @@ Mapper used for WGS/WXS.
 
 https://quay.io/repository/ncigdc/fastq_remove_duplicate_qname  
 https://github.com/NCI-GDC/fastq_remove_duplicate_qname  
-Some BAM files from Broad contain multiple entries of the same read. This tool removes such duplicates.
+Some BAM files contain multiple entries of the same read. This tool removes such duplicates.
 
 
 https://quay.io/repository/ncigdc/fastqc  
