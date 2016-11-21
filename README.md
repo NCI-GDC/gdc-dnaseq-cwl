@@ -145,7 +145,7 @@ The following steps are tested on Ubuntu 14.04. Newer Ubuntu versions, and other
         $ mkdir /mnt/SCRATCH/ccle
         $ cd /mnt/SCRATCH/ccle
         $ mkdir tmp cache
-        $ nohup cwltool --debug --tmpdir-prefix tmp/ --cachedir cache/ ~/gdc-dnaseq-cwl/workflows/dnaseq/transform.cwl ~/gdc-dnaseq-cwl/workflows/dnaseq/NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211.json &
+        $ nohup cwltool --debug --tmpdir-prefix tmp/ --cachedir cache/ ~/gdc-dnaseq-cwl/workflows/dnaseq/transform.cwl ~/gdc-dnaseq-cwl/workflows/dnaseq/ccle_transform.json &
         
 17. Other example data
 
