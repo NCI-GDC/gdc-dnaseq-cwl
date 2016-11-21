@@ -74,7 +74,7 @@ The following steps are tested on Ubuntu 14.04. Newer Ubuntu versions, and other
 
 8. enable SSL connections
 
-        $ pip install 'requests[security]'  --no-cache-dir
+        $ pip install 'requests[security]' --no-cache-dir
 
 9. get the CDIS tested version of cwltool
 
@@ -137,7 +137,17 @@ The following steps are tested on Ubuntu 14.04. Newer Ubuntu versions, and other
         $ mkdir tmp cache
         $ nohup cwltool --debug --tmpdir-prefix tmp/ --cachedir cache/ ~/gdc-dnaseq-cwl/workflows/dnaseq/transform.cwl ~/gdc-dnaseq-cwl/workflows/dnaseq/NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211.json &
 
-16. Other example data
+16. CCLE example data
+
+        22 readgroup BAM which uses `bwa mem` (all readgroup reads > 70bp; PE and SE reads)
+        $ cd /mnt/SCRATCH/
+        $ wget https://gdc-api.nci.nih.gov/data/5a8a9f0b-9121-42c0-a38d-c6510e2065c1 -O C835.HCC1143.2.bam
+        $ mkdir /mnt/SCRATCH/ccle
+        $ cd /mnt/SCRATCH/ccle
+        $ mkdir tmp cache
+        $ nohup cwltool --debug --tmpdir-prefix tmp/ --cachedir cache/ ~/gdc-dnaseq-cwl/workflows/dnaseq/transform.cwl ~/gdc-dnaseq-cwl/workflows/dnaseq/NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211.json &
+        
+17. Other example data
 
         16 readgroup BAM which uses `bwa aln` (all readgroup reads < 70bp; PE, SE and o1 reads)
         ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase1/data/NA12889/alignment/NA12889.chrom20.ILLUMINA.bwa.CEU.low_coverage.20101123.bam
@@ -151,7 +161,7 @@ The following steps are tested on Ubuntu 14.04. Newer Ubuntu versions, and other
         ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase1/data/NA11829/alignment/NA11829.chrom20.ILLUMINA.bwa.CEU.low_coverage.20101123.bam
         use gdc-dnaseq-cwl/workflows/dnaseq/NA11829.chrom20.ILLUMINA.bwa.CEU.low_coverage.20101123.json
 
-17. Resources required for successful workflow completion
+18. Resources required for successful workflow completion
 
         * Storage: 7-10X initial BAM size. That is, if the input BAM to be harmonized is 1GiB, then 7-10GiB of stoarge will be required, as cwltool does not remove intermediate files during workflow processing. This is in addition to storage required for reference files, and docker images.
         
