@@ -25,7 +25,7 @@ outputs:
     
 steps:
   - id: index_bam
-    run: unix_initialworkdirrequirement.cwl.yaml
+    run: unix_initialworkdirrequirement.cwl
     in:
       - id: INPUT
         source: INPUT
@@ -33,7 +33,7 @@ steps:
       - id: OUTPUT
 
   - id: bamtofastq
-    run: unix_bamtofastq_cmd.cwl.yaml
+    run: unix_bamtofastq_cmd.cwl
     in:
       - id: bam
         source: index_bam/OUTPUT
