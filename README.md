@@ -17,6 +17,10 @@ The following steps are tested on Ubuntu 14.04. Newer Ubuntu versions, and other
         $ sudo sh -c "echo 'Acquire::http::Proxy "http://cloud-proxy:3128";' >> /etc/apt/apt.conf.d/01Proxy"
         $ sudo sh -c "echo 'Acquire::https::Proxy "http://cloud-proxy:3128";' >> /etc/apt/apt.conf.d/01Proxy"
 
+        Ubuntu uses older docker 1.9 as the docker.io package. We have tested with a more recent version of docker (1.12) provdied by docker.com,
+        as described https://docs.docker.com/engine/installation/linux/ubuntulinux/ which provides the docker-engine package.
+        $ echo "deb https://apt.dockerproject.org/repo ubuntu-trusty main" | sudo tee /etc/apt/sources.list.d/docker.list
+
         $ sudo aptitude update
         $ sudo aptitude install apt-transport-https ca-certificates docker-engine htop libffi-dev libssl-dev nodejs python-dev virtualenvwrapper
 

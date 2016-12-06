@@ -20,7 +20,7 @@ outputs:
 
 steps:
   - id: bamtoreadgroup
-    run: unix_bamreadgroup_cmd.cwl.yaml
+    run: unix_bamreadgroup_cmd.cwl
     in:
       - id: bam_path
         source: bam_path
@@ -28,7 +28,7 @@ steps:
       - id: output_readgroup
 
   - id: bamtofastq
-    run: unix_bamtofastq_cmd.cwl.yaml
+    run: unix_bamtofastq_cmd.cwl
     in:
       - id: bam_path
         source: bam_path
@@ -37,7 +37,7 @@ steps:
       - id: output_fastq2
 
   - id: align
-    run: unix_align_cmd.cwl.yaml
+    run: unix_align_cmd.cwl
     scatter: [align/fastq1_path, align/fastq2_path, align/readgroup_path]
     scatterMethod: "dotproduct"
     in:
