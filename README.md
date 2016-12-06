@@ -19,6 +19,9 @@ The following steps are tested on Ubuntu 14.04. Newer Ubuntu versions, and other
 
         Ubuntu uses older docker 1.9 as the docker.io package. We have tested with a more recent version of docker (1.12) provdied by docker.com,
         as described https://docs.docker.com/engine/installation/linux/ubuntulinux/ which provides the docker-engine package.
+        $ sudo apt-key adv \
+               --keyserver hkp://ha.pool.sks-keyservers.net:80 \
+               --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
         $ echo "deb https://apt.dockerproject.org/repo ubuntu-trusty main" | sudo tee /etc/apt/sources.list.d/docker.list
 
         $ sudo aptitude update
