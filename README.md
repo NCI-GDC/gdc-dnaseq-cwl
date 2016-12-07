@@ -89,7 +89,7 @@ The following steps are tested on Ubuntu 14.04. Newer Ubuntu versions, and other
 
 10. install cwltool and its dependencies
 
-        $ pip install 1.0_gdc_f.tar.gz --no-cache-dir
+        $ pip install 1.0_gdc_g.tar.gz --no-cache-dir
 
 11. get the DNASeq CWL Workflow
 
