@@ -85,7 +85,7 @@ The following steps are tested on Ubuntu 14.04. Newer Ubuntu versions, and other
 
 9. get the CDIS tested version of cwltool
 
-        $ wget https://github.com/NCI-GDC/cwltool/archive/1.0_gdc_f.tar.gz
+        $ wget https://github.com/NCI-GDC/cwltool/archive/1.0_gdc_g.tar.gz
 
 10. install cwltool and its dependencies
 
