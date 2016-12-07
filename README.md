@@ -44,7 +44,9 @@ The following steps are tested on Ubuntu 14.04. Newer Ubuntu versions, and other
         $ sudo bash -c 'echo DOCKER_OPTS=\"-g /mnt/SCRATCH/docker/\" >> /etc/default/docker'
 
         enable non-root user to run docker:
-        $ sudo gpasswd -a ubuntu docker
+        $ sudo gpasswd -a <user-name> docker
+        where <user-name> is the output of
+        $ whoami
 
         if you have a proxy, enable for docker:
         $ sudo bash -c 'echo "export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128" >> /etc/default/docker'
