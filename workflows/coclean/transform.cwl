@@ -104,7 +104,7 @@ steps:
       - id: log_to_file
         valueFrom: $(uuid + "_pr.log")
       - id: num_cpu_threads_per_data_thread
-        source: num_thread
+        source: num_threads
       - id: reference_sequence
         source: reference_sequence
     outputs:
