@@ -5,7 +5,9 @@ cwlVersion: v1.0
 class: Workflow
 
 requirements:
+  - class: InlineJavascriptRequirement
   - class: ScatterFeatureRequirement
+  - class: StepInputExpressionRequirement
 
 inputs:
   - id: input_file
@@ -39,11 +41,11 @@ steps:
       - id: known
         source: known_indel
       - id: log_to_file
-        valueFrom: $(uuid + "_rtc.log")
+        valueFrom: $(inputs.uuid + "_rtc.log")
       - id: num_threads
         source: num_threads
       - id: out
-        valueFrom: $(uuid + ".intervals")
+        valueFrom: $(inputs.uuid + ".intervals")
       - id: reference_sequence
         source: reference_sequence
     out:
@@ -57,7 +59,7 @@ steps:
       - id: knownAlleles
         source: known_indel
       - id: log_to_file
-        valueFrom: $(uuid + "_ir.log")
+        valueFrom: $(inputs.uuid + "_ir.log")
       - id: num_threads
         source: num_threads
       - id: reference_sequence
@@ -76,7 +78,7 @@ steps:
       - id: knownSites
         source: known_snp
       - id: log_to_file
-        valueFrom: $(uuid + "_bqsr.log")
+        valueFrom: $(inputs.uuid + "_bqsr.log")
       - id: num_cpu_threads_per_data_thread
         source: num_threads
       - id: reference_sequence
@@ -102,7 +104,7 @@ steps:
       - id: input_file
         source: gatk_indelrealigner/output_bam
       - id: log_to_file
-        valueFrom: $(uuid + "_pr.log")
+        valueFrom: $(inputs.uuid + "_pr.log")
       - id: num_cpu_threads_per_data_thread
         source: num_threads
       - id: reference_sequence
