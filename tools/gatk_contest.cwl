@@ -4,14 +4,14 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/cocleaning:3.6
+    dockerPull: quay.io/ncigdc/cocleaning-tool:3.7
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
 
 inputs:
   - id: base_report
-    type: string
+    type: ["null", string]
     inputBinding:
       prefix: --base_report
 
@@ -28,7 +28,7 @@ inputs:
       prefix: --genotype_mode
 
   - id: genotypes
-    type: File
+    type: ["null", File]
     format: "edam:format_3016"
     inputBinding:
       prefix: --genotypes
@@ -38,6 +38,8 @@ inputs:
     format: "edam:format_2572"
     inputBinding:
       prefix: -I
+    secondaryFiles:
+      - ^.bai
 
   - id: lane_level_contamination
     type: string
@@ -45,33 +47,32 @@ inputs:
     inputBinding:
       prefix: --lane_level_contamination
 
-  - id: genotype_mode
-    type: string
-    default: HARD_THRESHOLD
-    inputBinding:
-      prefix: --genotype_mode
-
   - id: out
     type: string
     inputBinding:
       prefix: --out
 
-  - id: popFile
+  - id: popfile
     type: File
     format: "edam:format_3016"
     inputBinding:
-      prefix: --popFile
+      prefix: --popfile
+    secondaryFiles:
+      - .tbi
 
   - id: REFERENCE_SEQUENCE
     type: File
     format: "edam:format_1929"
     inputBinding:
       prefix: -R
+    secondaryFiles:
+      - .fai
+      - ^.dict
 
 outputs:
   - id: OUTPUT
     type: File
     outputBinding:
-      glob: $(inputs.output)
+      glob: $(inputs.out)
 
 baseCommand: [java, -jar, /usr/local/bin/GenomeAnalysisTK.jar, -T, ContEst]

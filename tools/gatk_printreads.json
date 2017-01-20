@@ -1,0 +1,17 @@
+{
+    "BQSR": {
+        "class": "File",
+        "path" : "/mnt/SCRATCH/coclean/run/C509.TCGA-62-8398-01A-11D-2323-08.5_gdc_realn.chrY_bqsr.grp"
+    },
+    "input_file": {
+        "class": "File",
+        "path" : "/mnt/SCRATCH/coclean/run/C509.TCGA-62-8398-01A-11D-2323-08.5_gdc_realn.chrY.bam"
+    },
+    "log_to_file": "/mnt/SCRATCH/coclean/run/C509.TCGA-62-8398-01A-11D-2323-08.5_gdc_realn.chrY.bam.printreads.log",
+    "out": "C509.TCGA-62-8398-01A-11D-2323-08.5_gdc_realn.chrY.bam",
+    "num_cpu_threads_per_data_thread": 8,
+    "reference_sequence" : {
+        "class": "File",
+        "path": "/mnt/SCRATCH/hg38_reference/GRCh38.d1.vd1.fa"
+    }
+}
