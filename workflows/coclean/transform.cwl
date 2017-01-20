@@ -64,7 +64,7 @@ steps:
         source: num_threads
       - id: reference_sequence
         source: reference_sequence
-      - id: target_intervals
+      - id: targetIntervals
         source: gatk_realignertargetcreator/output_intervals
     out:
       - id: output_bam
