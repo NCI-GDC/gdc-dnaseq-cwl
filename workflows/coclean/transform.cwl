@@ -28,7 +28,7 @@ outputs:
     type:
       type: array
       items: File
-    source: gatk_printreads/output_bam
+    outputSource: gatk_printreads/output_bam
     
 steps:
   - id: gatk_realignertargetcreator
@@ -69,8 +69,8 @@ steps:
 
   - id: gatk_baserecalibrator
     run: ../../tools/gatk_baserecalibrator.cwl
-    scatter: gatk_baserecalibrator/bam_path
-    inputs:
+    scatter: input_file
+    in:
       - id: input_file
         source: gatk_indelrealigner/output_bam
       - id: knownSites
@@ -81,31 +81,31 @@ steps:
         source: num_threads
       - id: reference_sequence
         source: reference_sequence
-    outputs:
+    out:
       - id: output_grp
 
   - id: sort_bqsr_grp
     run: ../../tools/sort_bqsr_grp.cwl
-    inputs:
+    in:
       - id: input_grp
         source: gatk_baserecalibrator/output_grp
-    outputs:
+    out:
       - id: output_grp
 
   - id: gatk_printreads
     run: ../../tools/gatk_printreads.cwl
-    scatter: [gatk_indelrealigner/output_bam, sort_bqsr_grp/output_grp]
+    scatter: [BQSR, input_file]
     scatterMethod: "dotproduct"
-    inputs:
+    in:
       - id: BQSR
         source: sort_bqsr_grp/output_grp
       - id: input_file
-        source: gatk_baserecalibrator/output_bam
+        source: gatk_indelrealigner/output_bam
       - id: log_to_file
         valueFrom: $(uuid + "_pr.log")
       - id: num_cpu_threads_per_data_thread
         source: num_threads
       - id: reference_sequence
         source: reference_sequence
-    outputs:
+    out:
       - id: output_bam
