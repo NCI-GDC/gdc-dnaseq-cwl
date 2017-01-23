@@ -119,12 +119,6 @@ inputs:
     inputBinding:
       prefix: --num_cpu_threads_per_data_thread
 
-  - id: out
-    type: string
-    default: $(input_file)
-    inputBinding:
-      prefix: --out
-
   - id: --quantizing_levels
     type: int
     default: 16
@@ -136,18 +130,6 @@ inputs:
     default: false
     inputBinding:
       prefix: --run_without_dbsnp_potentially_ruining_quality
-
-  - id: solid_nocall_strategy
-    type: string
-    default: THROW_EXCEPTION
-    inputBinding:
-      prefix: --solid_nocall_strategy
-
-  - id: solid_recal_mode
-    type: string
-    default: SET_Q_ZERO
-    inputBinding:
-      prefix: --solid_recal_mode
 
   - id: sort_by_all_columns
     type: boolean
@@ -168,11 +150,16 @@ outputs:
   - id: output_grp
     type: File
     outputBinding:
-      glob: $(inputs.out)
+      glob: $(inputs.input_file.nameroot + "_bqsr.grp")
 
   - id: output_log
     type: File
     outputBinding:
       glob: $(inputs.log_to_file)
+
+arguments:
+  - valueFrom: $(inputs.input_file.nameroot + "_bqsr.grp")
+    prefix: --out
+    separate: true
 
 baseCommand: [java, -jar, /usr/local/bin/GenomeAnalysisTK.jar, -T, BaseRecalibrator]
