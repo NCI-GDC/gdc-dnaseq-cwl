@@ -23,6 +23,17 @@ inputs:
     secondaryFiles:
       - ^.bai
 
+  - id: log_to_file
+    type: string
+    inputBinding:
+      prefix: --log_to_file
+
+  - id: --logging_level
+    default: INFO
+    type: string
+    inputBinding:
+      prefix: --logging_level
+
   - id: num_cpu_threads_per_data_thread
     type: int
     default: 1
@@ -35,12 +46,6 @@ inputs:
     inputBinding:
       prefix: --number
     
-  - id: out
-    type: string
-    default: $(input_file)
-    inputBinding:
-      prefix: --out
-
   - id: platform
     type: ["null", string]
     inputBinding:
@@ -81,7 +86,7 @@ outputs:
     format: "edam:format_2572"
     type: File
     outputBinding:
-      glob: $(inputs.out)
+      glob: $(inputs.input_file.basename)
     secondaryFiles:
       - ^.bai
 
@@ -89,5 +94,10 @@ outputs:
     type: File
     outputBinding:
       glob: $(inputs.log_to_file)
+
+arguments:
+  - valueFrom: $(inputs.input_file.basename)
+    prefix: --out
+    separate: true
 
 baseCommand: [java, -jar, /usr/local/bin/GenomeAnalysisTK.jar, -T, PrintReads]
