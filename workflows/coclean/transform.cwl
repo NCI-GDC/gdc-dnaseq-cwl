@@ -41,11 +41,13 @@ steps:
       - id: known
         source: known_indel
       - id: log_to_file
-        valueFrom: $(inputs.uuid + "_rtc.log")
+        source: uuid
+        valueFrom: $(self + "_rtc.log")
       - id: num_threads
         source: num_threads
       - id: out
-        valueFrom: $(inputs.uuid + ".intervals")
+        source: uuid
+        valueFrom: $(self + ".intervals")
       - id: reference_sequence
         source: reference_sequence
     out:
@@ -59,7 +61,8 @@ steps:
       - id: knownAlleles
         source: known_indel
       - id: log_to_file
-        valueFrom: $(inputs.uuid + "_ir.log")
+        source: uuid
+        valueFrom: $(self + "_ir.log")
       - id: num_threads
         source: num_threads
       - id: reference_sequence
@@ -78,7 +81,8 @@ steps:
       - id: knownSites
         source: known_snp
       - id: log_to_file
-        valueFrom: $(inputs.uuid + "_bqsr.log")
+        source: uuid
+        valueFrom: $(self + "_bqsr.log" )
       - id: num_cpu_threads_per_data_thread
         source: num_threads
       - id: reference_sequence
@@ -104,7 +108,8 @@ steps:
       - id: input_file
         source: gatk_indelrealigner/output_bam
       - id: log_to_file
-        valueFrom: $(inputs.uuid + "_pr.log")
+        source: uuid
+        valueFrom: $(self + "_pr.log")
       - id: num_cpu_threads_per_data_thread
         source: num_threads
       - id: reference_sequence
