@@ -29,13 +29,13 @@ inputs:
 
   - id: genotypes
     type: ["null", File]
-    format: "edam:format_3016"
+    #format: "edam:format_3016"
     inputBinding:
       prefix: --genotypes
 
   - id: INPUT
     type: File
-    format: "edam:format_2572"
+    #format: "edam:format_2572"
     inputBinding:
       prefix: -I
     secondaryFiles:
@@ -54,7 +54,7 @@ inputs:
 
   - id: popfile
     type: File
-    format: "edam:format_3016"
+    #format: "edam:format_3016"
     inputBinding:
       prefix: --popfile
     secondaryFiles:
@@ -62,7 +62,7 @@ inputs:
 
   - id: REFERENCE_SEQUENCE
     type: File
-    format: "edam:format_1929"
+    #format: "edam:format_1929"
     inputBinding:
       prefix: -R
     secondaryFiles:

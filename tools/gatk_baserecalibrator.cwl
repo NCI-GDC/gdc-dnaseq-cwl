@@ -39,7 +39,7 @@ inputs:
       prefix: --indels_context_size
 
   - id: input_file
-    format: "edam:format_2572"
+    #format: "edam:format_2572"
     type: File
     inputBinding:
       prefix: --input_file
@@ -53,7 +53,7 @@ inputs:
       prefix: --insertions_default_quality
 
   - id: knownSites
-    format: "edam:format_3016"
+    #format: "edam:format_3016"
     type: File
     inputBinding:
       prefix: --knownSites
@@ -138,7 +138,7 @@ inputs:
       prefix: --sort_by_all_columns
 
   - id: reference_sequence
-    format: "edam:format_1929"
+    #format: "edam:format_1929"
     type: File
     inputBinding:
       prefix: --reference_sequence

@@ -23,7 +23,7 @@ inputs:
       prefix: --entropyThreshold
 
   - id: input_file
-    format: "edam:format_2572"
+    #format: "edam:format_2572"
     type:
       type: array
       items: File
@@ -33,7 +33,7 @@ inputs:
         - ^.bai
 
   - id: knownAlleles
-    format: "edam:format_3016"
+    #format: "edam:format_3016"
     type: File
     inputBinding:
       prefix: --knownAlleles
@@ -106,7 +106,7 @@ inputs:
       prefix: --nWayOut
 
   - id: reference_sequence
-    format: "edam:format_1929"
+    #format: "edam:format_1929"
     type: File
     inputBinding:
       prefix: --reference_sequence
@@ -121,7 +121,7 @@ inputs:
 
 outputs:
   - id: output_bam
-    format: "edam:format_2572"
+    #format: "edam:format_2572"
     type:
       type: array
       items: File

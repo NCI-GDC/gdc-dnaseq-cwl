@@ -11,7 +11,7 @@ class: CommandLineTool
 
 inputs:
   - id: input_file
-    format: "edam:format_2572"
+    #format: "edam:format_2572"
     type:
       type: array
       items: File
@@ -21,7 +21,7 @@ inputs:
         - ^.bai
 
   - id: known
-    format: "edam:format_3016"
+    #format: "edam:format_3016"
     type: File
     inputBinding:
       prefix: --known
@@ -75,7 +75,7 @@ inputs:
       prefix: --windowSize
 
   - id: reference_sequence
-    format: "edam:format_1929"
+    #format: "edam:format_1929"
     type: File
     inputBinding:
       prefix: --reference_sequence
