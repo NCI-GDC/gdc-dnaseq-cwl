@@ -48,12 +48,23 @@ outputs:
 arguments:
   - valueFrom: |
       ${
+      function include(arr,obj) {
+        return (arr.indexOf(obj) != -1)
+      }
+
       var signpost_json = JSON.parse(inputs.signpost_json.contents);
       var signpost_url = String(signpost_json.urls.slice(0));
       var signpost_path = signpost_url.slice(5);
       var signpost_array = signpost_path.split('/');
       var signpost_root = signpost_array[0];
-      var profile = signpost_root.split('.')[0];
+
+      if (include(signpost_root,"ceph")) {
+        var profile = "ceph";
+      } else if (include(signpost_root,"cleversafe")) {
+        var profile = "cleversafe";
+      } else {
+        var profile = signpost_root.split('.')[0];
+      }
 
       var endpoint_json = JSON.parse(inputs.endpoint_json.contents);
       var endpoint_url = String(endpoint_json[profile]);
@@ -64,13 +75,24 @@ arguments:
 
   - valueFrom: |
       ${
+      function include(arr,obj) {
+        return (arr.indexOf(obj) != -1)
+      }
+
       var signpost_json = JSON.parse(inputs.signpost_json.contents);
       var signpost_url = String(signpost_json.urls.slice(0));
       var signpost_path = signpost_url.slice(5);
       var signpost_array = signpost_path.split('/');
       var signpost_root = signpost_array[0];
-      var profile = signpost_root.split('.')[0];
-      return profile
+
+      if (include(signpost_root,"ceph")) {
+        return "ceph"
+      } else if (include(signpost_root,"cleversafe")) {
+        return "cleversafe"
+      } else {
+        var profile = signpost_root.split('.')[0];
+        return profile
+      }
       }
     prefix: --profile
     position: 1
