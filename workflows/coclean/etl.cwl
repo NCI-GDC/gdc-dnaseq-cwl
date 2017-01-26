@@ -383,6 +383,15 @@ steps:
     out:
       - id: uuid
 
+  - id: emit_uuid
+    run: ../../tools/emit_file_string.cwl
+    scatter: input
+    in:
+      - id: input
+        source: get_uuid/uuid
+    out:
+      - id: output
+
   - id: load_bam
     run: ../../tools/aws_s3_put.cwl
     scatter: [input, bam_uuid]
@@ -400,9 +409,9 @@ steps:
         source: load_s3cfg_section
       - id: s3uri
         source: load_bucket
-        valueFrom: $(self + "/" + inputs.bam_uuid + "/")
+        valueFrom: $(self + "/" + inputs.bam_uuid.contents + "/")
       - id: bam_uuid
-        source: get_uuid/uuid
+        source: emit_uuid/output
         valueFrom: null
     out:
       - id: output
@@ -425,9 +434,9 @@ steps:
         source: load_s3cfg_section
       - id: s3uri
         source: load_bucket
-        valueFrom: $(self + "/" + inputs.bam_uuid + "/")
+        valueFrom: $(self + "/" + inputs.bam_uuid.contents + "/")
       - id: bam_uuid
-        source: get_uuid/uuid
+        source: emit_uuid/output
         valueFrom: null
     out:
       - id: output
