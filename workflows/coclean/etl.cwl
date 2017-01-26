@@ -374,9 +374,18 @@ steps:
     out:
       - id: gatk_printreads_output_bam
 
+  - id: get_uuid
+    run: ../../tools/get_uuid.cwl
+    scatter: input
+    in:
+      - id: input
+        source: transform/gatk_printreads_output_bam
+    out:
+      - id: uuid
+
   - id: load_bam
     run: ../../tools/aws_s3_put.cwl
-    scatter: input
+    scatter: [input, bam_uuid]
     in:
       - id: aws_config
         source: aws_config
@@ -390,16 +399,16 @@ steps:
         source: load_s3cfg_section
       - id: s3uri
         source: load_bucket
-        valueFrom: $(self + "/" + inputs.uuid + "/")
-      - id: uuid
-        source: uuid
+        valueFrom: $(self + "/" + inputs.bam_uuid + "/")
+      - id: bam_uuid
+        source: get_uuid/uuid
         valueFrom: null
     out:
       - id: output
 
   - id: load_bai
     run: ../../tools/aws_s3_put.cwl
-    scatter: input
+    scatter: [input, bam_uuid]
     in:
       - id: aws_config
         source: aws_config
@@ -414,9 +423,9 @@ steps:
         source: load_s3cfg_section
       - id: s3uri
         source: load_bucket
-        valueFrom: $(self + "/" + inputs.uuid + "/")
-      - id: uuid
-        source: uuid
+        valueFrom: $(self + "/" + inputs.bam_uuid + "/")
+      - id: bam_uuid
+        source: get_uuid/uuid
         valueFrom: null
     out:
       - id: output
