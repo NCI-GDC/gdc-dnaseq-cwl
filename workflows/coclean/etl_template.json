@@ -27,6 +27,6 @@
     "start_token": {
         "class": "File",
         "path" : "/home/ubuntu/endpoint.json"        
-    }
-    "uuid" : "XX_UUID_XX"
+    },
+    "uuid": "XX_UUID_XX"
 }
