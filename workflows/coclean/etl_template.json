@@ -24,7 +24,7 @@
     "reference_fa_signpost_id": "ed96790c-3eb5-4aa2-8f46-702d503e64e4",
     "reference_fai_signpost_id": "10283433-bcec-46bc-bfd5-5215428853ea",
     "signpost_base_url": "signpost.service.consul/v0/did/",
-    "start_token" {
+    "start_token": {
         "class": "File",
         "path" : "/home/ubuntu/endpoint.json"        
     }
