@@ -17,7 +17,7 @@
     "known_indel_signpost_id": "1e2fed0a-c429-4295-b1d1-6e0df68a14b8",
     "known_snp_index_signpost_id": "df35a362-e9bb-47a1-b79c-24463ea9e218",
     "known_snp_signpost_id": "4ba1c087-ec80-47c4-a9d5-e9bb9933fef4",
-    "load_bucket": "s3://bioinformatics_scratch/maydeletetest/",
+    "load_bucket": "s3://bioinformatics_scratch/maydeletetest",
     "load_s3cfg_section": "ceph",
     "num_threads": 8,
     "reference_dict_signpost_id": "cf9768de-12ec-4afb-9af2-1b6ba3e07c0d",
