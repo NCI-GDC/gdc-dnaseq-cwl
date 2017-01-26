@@ -19,5 +19,5 @@ outputs:
 stdout: output
 
 arguments:
-  - valueFrom: "ip addr list eth0 | grep inet | cut -d' ' -f6 | cut -d/ -f1 | head -n1"
+  - valueFrom: "ip addr list eth0 | grep 'inet ' | cut -d' ' -f6 | cut -d/ -f1"
     shellQuote: false
