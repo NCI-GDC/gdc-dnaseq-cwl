@@ -5,7 +5,6 @@ cwlVersion: v1.0
 requirements:
   - class: DockerRequirement
     dockerPull: python:3.6.0-slim
-  - class: ShellCommandRequirement
 
 class: CommandLineTool
 
@@ -20,7 +19,5 @@ outputs:
       glob: uuid
 
 stdout: uuid
-      
-arguments:
-  - valueFrom: "python3 -c 'import uuid; print(uuid.uuid4());'"
-    shellQuote: false
+
+baseCommand: [bash, -c, python3 -c 'import uuid; import sys; sys.stdout.write(str(uuid.uuid4()));']
