@@ -15,4 +15,4 @@ outputs:
 
 stdout: output
 
-baseCommand: "hostname"
+baseCommand: [bash, -c, printf %s $(hostname)]
