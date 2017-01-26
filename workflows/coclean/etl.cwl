@@ -386,6 +386,7 @@ steps:
   - id: load_bam
     run: ../../tools/aws_s3_put.cwl
     scatter: [input, bam_uuid]
+    scatterMethod: "dotproduct"
     in:
       - id: aws_config
         source: aws_config
@@ -409,6 +410,7 @@ steps:
   - id: load_bai
     run: ../../tools/aws_s3_put.cwl
     scatter: [input, bam_uuid]
+    scatterMethod: "dotproduct"
     in:
       - id: aws_config
         source: aws_config
