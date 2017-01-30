@@ -120,8 +120,6 @@ steps:
         valueFrom: "RUNNING"
       - id: table_name
         source: status_table_name
-      - id: uuid
-        source: get_run_uuid/uuid
     out:
       - id: token
 
@@ -144,39 +142,45 @@ steps:
         source: load_bucket
       - id: load_s3cfg_section
         source: load_s3cfg_section
-      - id: reference_amb_signpost_id
-        source: reference_amb_signpost_id
-      - id: reference_ann_signpost_id
-        source: reference_ann_signpost_id
-      - id: reference_bwt_signpost_id
-        source: reference_bwt_signpost_id
+      - id: reference_dict_signpost_id
+        source: reference_dict_signpost_id
       - id: reference_fa_signpost_id
         source: reference_fa_signpost_id
       - id: reference_fai_signpost_id
         source: reference_fai_signpost_id
-      - id: reference_pac_signpost_id
-        source: reference_pac_signpost_id
-      - id: reference_sa_signpost_id
-        source: reference_sa_signpost_id
       - id: signpost_base_url
         source: signpost_base_url
-      - id: thread_count
-        source: thread_count
+      - id: num_threads
+        source: num_threads
       - id: start_token
         source: status_running/token
       - id: uuid
         source: get_run_uuid/uuid
     out:
-      - id: bam_uri
+      - id: s3_bam_url
       - id: token
 
+  - id: get_uuid_from_s3_bam_url
+    run: ../../tools/get_uuid_from_se_bam_url.cwl
+    scatter: s3_bam_url
+    in:
+      id: s3_bam_url
+      source: etl/s3_bam_url
+    out:
+      id: s3_bam_uuid
+      id: s3_bam_url
+
   - id: status_complete
-    run: ../status/status_postgres_workflow.cwl
+    run: status_postgres_workflow.cwl
     in:
       - id: bam_normal_signpost_id
         source: bam_normal_signpost_id
       - id: bam_tumor_signpost_id
         source: bam_tumor_signpost_id
+      - id: bam_normal_uuid
+        source: bam_normal_uuid
+      - id: bam_tumor_uuid
+        source: bam_tumor_uuid
       - id: hostname
         source: get_hostname/hostname
       - id: host_ipaddress
@@ -199,13 +203,15 @@ steps:
         source: repo
       - id: repo_hash
         source: repo_hash
-      - id: s3_url
+      - id: s3_bam_normal_url
+        source: etl/bam_uri
+      - id: s3_bam_tumor_url
         source: etl/bam_uri
       - id: status
         valueFrom: "COMPLETE"
       - id: table_name
         source: status_table_name
-      - id: uuid
+      - id: run_uuid
         source: get_run_uuid/uuid
     out:
       - id: token
