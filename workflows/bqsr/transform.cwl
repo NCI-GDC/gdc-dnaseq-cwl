@@ -17,7 +17,7 @@ inputs:
     type: File
   - id: num_threads
     type: int
-  - id: uuid
+  - id: run_uuid
     type: string
     
 outputs:
@@ -34,7 +34,7 @@ steps:
       - id: knownSites
         source: known_snp
       - id: log_to_file
-        source: uuid
+        source: run_uuid
         valueFrom: $(self + "_bqsr.log" )
       - id: num_cpu_threads_per_data_thread
         source: num_threads
@@ -51,7 +51,7 @@ steps:
       - id: input_file
         source: input_file
       - id: log_to_file
-        source: uuid
+        source: run_uuid
         valueFrom: $(self + "_pr.log")
       - id: num_cpu_threads_per_data_thread
         source: num_threads
