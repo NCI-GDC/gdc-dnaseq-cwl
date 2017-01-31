@@ -9,8 +9,7 @@ requirements:
 class: CommandLineTool
 
 inputs:
-  - id: input
-    type: File
+  []
 
 outputs:
   - id: uuid
