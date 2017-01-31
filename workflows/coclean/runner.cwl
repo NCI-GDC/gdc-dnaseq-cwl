@@ -157,18 +157,11 @@ steps:
       - id: uuid
         source: get_run_uuid/uuid
     out:
-      - id: s3_bam_url
+      - id: bam_normal_uuid
+      - id: bam_tumor_uuid
+      - id: s3_bam_normal_url
+      - id: s3_bam_tumor_url
       - id: token
-
-  - id: get_uuid_from_s3_bam_url
-    run: ../../tools/get_uuid_from_se_bam_url.cwl
-    scatter: s3_bam_url
-    in:
-      id: s3_bam_url
-      source: etl/s3_bam_url
-    out:
-      id: s3_bam_uuid
-      id: s3_bam_url
 
   - id: status_complete
     run: status_postgres_workflow.cwl
