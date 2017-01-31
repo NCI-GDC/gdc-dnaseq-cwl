@@ -23,10 +23,10 @@
     "reference_dict_signpost_id": "cf9768de-12ec-4afb-9af2-1b6ba3e07c0d",
     "reference_fa_signpost_id": "ed96790c-3eb5-4aa2-8f46-702d503e64e4",
     "reference_fai_signpost_id": "10283433-bcec-46bc-bfd5-5215428853ea",
+    "run_uuid": "XX_UUID_XX",
     "signpost_base_url": "signpost.service.consul/v0/did/",
     "start_token": {
         "class": "File",
         "path" : "/home/ubuntu/endpoint.json"        
-    },
-    "uuid": "XX_UUID_XX"
+    }
 }
