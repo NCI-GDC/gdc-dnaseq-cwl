@@ -116,6 +116,8 @@ steps:
         source: repo
       - id: repo_hash
         source: repo_hash
+      - id: run_uuid
+        source: get_run_uuid/uuid
       - id: status
         valueFrom: "RUNNING"
       - id: table_name
@@ -171,9 +173,9 @@ steps:
       - id: bam_tumor_signpost_id
         source: bam_tumor_signpost_id
       - id: bam_normal_uuid
-        source: bam_normal_uuid
+        source: etl/bam_normal_uuid
       - id: bam_tumor_uuid
-        source: bam_tumor_uuid
+        source: etl/bam_tumor_uuid
       - id: hostname
         source: get_hostname/hostname
       - id: host_ipaddress
@@ -196,15 +198,15 @@ steps:
         source: repo
       - id: repo_hash
         source: repo_hash
+      - id: run_uuid
+        source: get_run_uuid/uuid
       - id: s3_bam_normal_url
-        source: etl/bam_uri
+        source: etl/s3_bam_normal_url
       - id: s3_bam_tumor_url
-        source: etl/bam_uri
+        source: etl/s3_bam_tumor_url
       - id: status
         valueFrom: "COMPLETE"
       - id: table_name
         source: status_table_name
-      - id: run_uuid
-        source: get_run_uuid/uuid
     out:
       - id: token
