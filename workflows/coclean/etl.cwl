@@ -7,7 +7,6 @@ class: Workflow
 requirements:
   - class: InlineJavascriptRequirement
   - class: MultipleInputFeatureRequirement
-  - class: ScatterFeatureRequirement
   - class: StepInputExpressionRequirement
   - class: SubworkflowFeatureRequirement
 
@@ -100,7 +99,6 @@ steps:
 
   - id: emit_bam_normal_uuid
     run: ../../tools/emit_file_string.cwl
-    scatter: input
     in:
       - id: input
         source: get_bam_normal_uuid/uuid
@@ -155,7 +153,6 @@ steps:
 
   - id: emit_bam_tumor_uuid
     run: ../../tools/emit_file_string.cwl
-    scatter: input
     in:
       - id: input
         source: get_bam_tumor_uuid/uuid
@@ -555,7 +552,6 @@ steps:
 
   - id: generate_s3_tumor_path
     run: ../../tools/generate_s3load_path.cwl
-    scatter: filename
     in:
       - id: load_bucket
         source: load_bucket
