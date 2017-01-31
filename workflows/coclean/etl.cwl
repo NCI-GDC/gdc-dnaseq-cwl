@@ -417,7 +417,7 @@ steps:
       - id: filearray
         source: transform/gatk_printreads_output_bam
       - id: filename
-        source: extract_bam_normal
+        source: extract_bam_normal/output
         valueFrom: $(self.basename)
     out:
       - id: output
@@ -428,7 +428,7 @@ steps:
       - id: filearray
         source: transform/gatk_printreads_output_bam
       - id: filename
-        source: extract_bam_tumor
+        source: extract_bam_tumor/output
         valueFrom: $(self.basename)
     out:
       - id: output
