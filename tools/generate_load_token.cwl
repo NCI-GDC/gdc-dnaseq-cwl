@@ -12,10 +12,22 @@ inputs:
     type: File
 
   - id: load2
-    type: File
+    type: ["null", File]
 
   - id: load3
-    type: File
+    type: ["null", File]
+
+  - id: load4
+    type: ["null", File]
+
+  - id: load5
+    type: ["null", File]
+
+  - id: load6
+    type: ["null", File]
+
+  - id: load7
+    type: ["null", File]
 
 outputs:
   - id: token
