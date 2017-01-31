@@ -64,28 +64,28 @@ steps:
     in:
       []
     out:
-      id: uuid
+      - id: uuid
 
   - id: get_hostname
     run: ../tools/get_hostname.cwl
     in:
       []
     out:
-      id: hostname
+      - id: hostname
 
   - id: get_host_ipaddress
     run: ../tools/get_host_ipaddress.cwl
     in:
       []
     out:
-      id: ipaddress
+      - id: ipaddress
 
   - id: get_host_mac
     run: ../tools/get_host_mac.cwl
     in:
       []
     out:
-      id: mac
+      - id: mac
 
   - id: status_running
     run: status_postgres_workflow.cwl
