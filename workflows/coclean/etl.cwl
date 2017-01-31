@@ -42,20 +42,27 @@ inputs:
     type: string
   - id: reference_fai_signpost_id
     type: string
+  - id: run_uuid
+    type: string
   - id: signpost_base_url
     type: string
   - id: start_token
     type: File
-  - id: uuid
-    type: string
 
 outputs:
-  - id: bam_uri
-    type:
-      type: array
-      items: string
-    outputSource: generate_s3load_path/output
-  - id: token
+  - id: bam_normal_uuid
+    type: string
+    outputSource: emit_bam_normal_uuid/output
+  - id: bam_tumor_uuid
+    type: string
+    outputSource: emit_bam_tumor_uuid/output
+  - id: s3_bam_normal_url
+    type: File
+    outputSource: generate_s3_normal_path/output
+  - id: s3_bam_tumor_url
+    type: File
+    outputSource: generate_s3_tumor_path/output
+  - id: end_token
     type: File
     outputSource: generate_token/token
 
@@ -81,6 +88,22 @@ steps:
         source: extract_bam_normal_signpost/output
       - id: endpoint_json
         source: endpoint_json
+    out:
+      - id: output
+
+  - id: get_bam_normal_uuid
+    run: ../../tools/get_uuid.cwl
+    in:
+      []
+    out:
+      - id: uuid
+
+  - id: emit_bam_normal_uuid
+    run: ../../tools/emit_file_string.cwl
+    scatter: input
+    in:
+      - id: input
+        source: get_bam_normal_uuid/uuid
     out:
       - id: output
 
@@ -119,6 +142,23 @@ steps:
         source: extract_bam_tumor_signpost/output
       - id: endpoint_json
         source: endpoint_json
+    out:
+      - id: output
+
+
+  - id: get_bam_tumor_uuid
+    run: ../../tools/get_uuid.cwl
+    in:
+      []
+    out:
+      - id: uuid
+
+  - id: emit_bam_tumor_uuid
+    run: ../../tools/emit_file_string.cwl
+    scatter: input
+    in:
+      - id: input
+        source: get_bam_tumor_uuid/uuid
     out:
       - id: output
 
@@ -370,32 +410,34 @@ steps:
       - id: num_threads
         source: num_threads
       - id: uuid
-        source: uuid
+        source: run_uuid
     out:
       - id: gatk_printreads_output_bam
 
-  - id: get_uuid
-    run: ../../tools/get_uuid.cwl
-    scatter: input
+  - id: get_transform_normal_bam_bai
+    run: ../../tools/get_file_from_array.cwl
     in:
-      - id: input
+      - id: filearray
         source: transform/gatk_printreads_output_bam
-    out:
-      - id: uuid
-
-  - id: emit_uuid
-    run: ../../tools/emit_file_string.cwl
-    scatter: input
-    in:
-      - id: input
-        source: get_uuid/uuid
+      - id: filename
+        source: extract_bam_normal
+        valueFrom: $(self.basename)
     out:
       - id: output
 
-  - id: load_bam
+  - id: get_transform_tumor_bam_bai
+    run: ../../tools/get_file_from_array.cwl
+    in:
+      - id: filearray
+        source: transform/gatk_printreads_output_bam
+      - id: filename
+        source: extract_bam_tumor
+        valueFrom: $(self.basename)
+    out:
+      - id: output
+
+  - id: load_bam_normal
     run: ../../tools/aws_s3_put.cwl
-    scatter: [input, bam_uuid]
-    scatterMethod: "dotproduct"
     in:
       - id: aws_config
         source: aws_config
@@ -404,22 +446,20 @@ steps:
       - id: endpoint_json
         source: endpoint_json
       - id: input
-        source: transform/gatk_printreads_output_bam
+        source: get_transform_normal_bam_bai/output
       - id: s3cfg_section
         source: load_s3cfg_section
       - id: s3uri
         source: load_bucket
         valueFrom: $(self + "/" + inputs.bam_uuid.contents + "/")
       - id: bam_uuid
-        source: emit_uuid/output
+        source: emit_bam_normal_uuid/output
         valueFrom: null
     out:
       - id: output
 
-  - id: load_bai
+  - id: load_bai_normal
     run: ../../tools/aws_s3_put.cwl
-    scatter: [input, bam_uuid]
-    scatterMethod: "dotproduct"
     in:
       - id: aws_config
         source: aws_config
@@ -428,7 +468,7 @@ steps:
       - id: endpoint_json
         source: endpoint_json
       - id: input
-        source: transform/gatk_printreads_output_bam
+        source: get_transform_normal_bam_bai/output
         valueFrom: $(self.secondaryFiles[0])
       - id: s3cfg_section
         source: load_s3cfg_section
@@ -436,7 +476,52 @@ steps:
         source: load_bucket
         valueFrom: $(self + "/" + inputs.bam_uuid.contents + "/")
       - id: bam_uuid
-        source: emit_uuid/output
+        source: emit_bam_normal_uuid/output
+        valueFrom: null
+    out:
+      - id: output
+
+  - id: load_bam_tumor
+    run: ../../tools/aws_s3_put.cwl
+    in:
+      - id: aws_config
+        source: aws_config
+      - id: aws_shared_credentials
+        source: aws_shared_credentials
+      - id: endpoint_json
+        source: endpoint_json
+      - id: input
+        source: get_transform_tumor_bam_bai/output
+      - id: s3cfg_section
+        source: load_s3cfg_section
+      - id: s3uri
+        source: load_bucket
+        valueFrom: $(self + "/" + inputs.bam_uuid.contents + "/")
+      - id: bam_uuid
+        source: emit_bam_tumor_uuid/output
+        valueFrom: null
+    out:
+      - id: output
+
+  - id: load_bai_tumor
+    run: ../../tools/aws_s3_put.cwl
+    in:
+      - id: aws_config
+        source: aws_config
+      - id: aws_shared_credentials
+        source: aws_shared_credentials
+      - id: endpoint_json
+        source: endpoint_json
+      - id: input
+        source: get_transform_tumor_bam_bai/output
+        valueFrom: $(self.secondaryFiles[0])
+      - id: s3cfg_section
+        source: load_s3cfg_section
+      - id: s3uri
+        source: load_bucket
+        valueFrom: $(self + "/" + inputs.bam_uuid.contents + "/")
+      - id: bam_uuid
+        source: emit_bam_tumor_uuid/output
         valueFrom: null
     out:
       - id: output
@@ -445,22 +530,39 @@ steps:
     run: generate_load_token.cwl
     in:
       - id: load1
-        source: load_bam/output
+        source: load_bai_normal/output
       - id: load2
-        source: load_bai/output
+        source: load_bai_tumor/output
+      - id: load3
+        source: load_bam_normal/output
+      - id: load4
+        source: load_bam_tumor/output
     out:
       - id: token
 
-  - id: generate_s3load_path
+  - id: generate_s3_normal_path
+    run: ../../tools/generate_s3load_path.cwl
+    in:
+      - id: load_bucket
+        source: load_bucket
+      - id: filename
+        source: get_transform_normal_bam_bai/output
+        valueFrom: $(self.basename)
+      - id: uuid
+        source: emit_bam_normal_uuid/output
+    out:
+      - id: output
+
+  - id: generate_s3_tumor_path
     run: ../../tools/generate_s3load_path.cwl
     scatter: filename
     in:
       - id: load_bucket
         source: load_bucket
       - id: filename
-        source: transform/gatk_printreads_output_bam
+        source: get_transform_tumor_bam_bai/output
         valueFrom: $(self.basename)
       - id: uuid
-        source: uuid
+        source: emit_bam_tumor_uuid/output
     out:
       - id: output
