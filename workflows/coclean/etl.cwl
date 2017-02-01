@@ -524,7 +524,7 @@ steps:
       - id: output
 
   - id: generate_token
-    run: generate_load_token.cwl
+    run: ../../tools/generate_load_token.cwl
     in:
       - id: load1
         source: load_bai_normal/output

@@ -9,7 +9,7 @@ requirements:
 
 inputs:
   - id: load1
-    type: File
+    type: ["null", File]
 
   - id: load2
     type: ["null", File]
