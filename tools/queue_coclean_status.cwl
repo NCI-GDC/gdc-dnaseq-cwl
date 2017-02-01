@@ -80,15 +80,15 @@ inputs:
     inputBinding:
       prefix: --run_uuid
 
-  - id: s3_normal_bam_url
+  - id: s3_bam_normal_url
     type: ["null", string]
     inputBinding:
-      prefix: --s3_normal_bam_url
+      prefix: --s3_bam_normal_url
 
-  - id: s3_tumor_bam_url
+  - id: s3_bam_tumor_url
     type: ["null", string]
     inputBinding:
-      prefix: --s3_tumor_bam_url
+      prefix: --s3_bam_tumor_url
 
   - id: status
     type: string
