@@ -66,6 +66,36 @@ outputs:
     outputSource: generate_s3_tumor_path/output
 
 steps:
+  - id: get_bam_normal_uuid
+    run: ../../tools/get_uuid.cwl
+    in:
+      []
+    out:
+      - id: uuid
+
+  - id: emit_bam_normal_uuid
+    run: ../../tools/emit_file_string.cwl
+    in:
+      - id: input
+        source: get_bam_normal_uuid/uuid
+    out:
+      - id: output
+
+  - id: get_bam_tumor_uuid
+    run: ../../tools/get_uuid.cwl
+    in:
+      []
+    out:
+      - id: uuid
+
+  - id: emit_bam_tumor_uuid
+    run: ../../tools/emit_file_string.cwl
+    in:
+      - id: input
+        source: get_bam_tumor_uuid/uuid
+    out:
+      - id: output
+
   - id: extract_bam_normal_signpost
     run: ../../tools/get_signpost_json.cwl
     in:
@@ -87,21 +117,6 @@ steps:
         source: extract_bam_normal_signpost/output
       - id: endpoint_json
         source: endpoint_json
-    out:
-      - id: output
-
-  - id: get_bam_normal_uuid
-    run: ../../tools/get_uuid.cwl
-    in:
-      []
-    out:
-      - id: uuid
-
-  - id: emit_bam_normal_uuid
-    run: ../../tools/emit_file_string.cwl
-    in:
-      - id: input
-        source: get_bam_normal_uuid/uuid
     out:
       - id: output
 
@@ -140,22 +155,6 @@ steps:
         source: extract_bam_tumor_signpost/output
       - id: endpoint_json
         source: endpoint_json
-    out:
-      - id: output
-
-
-  - id: get_bam_tumor_uuid
-    run: ../../tools/get_uuid.cwl
-    in:
-      []
-    out:
-      - id: uuid
-
-  - id: emit_bam_tumor_uuid
-    run: ../../tools/emit_file_string.cwl
-    in:
-      - id: input
-        source: get_bam_tumor_uuid/uuid
     out:
       - id: output
 
@@ -448,7 +447,7 @@ steps:
         source: load_s3cfg_section
       - id: s3uri
         source: load_bucket
-        valueFrom: $(self + "/" + inputs.bam_uuid.contents + "/")
+        valueFrom: $(self + "/" + inputs.bam_uuid + "/")
       - id: bam_uuid
         source: emit_bam_normal_uuid/output
         valueFrom: null
@@ -471,7 +470,7 @@ steps:
         source: load_s3cfg_section
       - id: s3uri
         source: load_bucket
-        valueFrom: $(self + "/" + inputs.bam_uuid.contents + "/")
+        valueFrom: $(self + "/" + inputs.bam_uuid + "/")
       - id: bam_uuid
         source: emit_bam_normal_uuid/output
         valueFrom: null
@@ -493,7 +492,7 @@ steps:
         source: load_s3cfg_section
       - id: s3uri
         source: load_bucket
-        valueFrom: $(self + "/" + inputs.bam_uuid.contents + "/")
+        valueFrom: $(self + "/" + inputs.bam_uuid + "/")
       - id: bam_uuid
         source: emit_bam_tumor_uuid/output
         valueFrom: null
@@ -516,7 +515,7 @@ steps:
         source: load_s3cfg_section
       - id: s3uri
         source: load_bucket
-        valueFrom: $(self + "/" + inputs.bam_uuid.contents + "/")
+        valueFrom: $(self + "/" + inputs.bam_uuid + "/")
       - id: bam_uuid
         source: emit_bam_tumor_uuid/output
         valueFrom: null
