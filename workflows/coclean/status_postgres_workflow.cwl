@@ -14,11 +14,11 @@ inputs:
   - id: bam_tumor_uuid
     type: ["null", string]
   - id: hostname
-    type: File
+    type: string
   - id: host_ipaddress
-    type: File
+    type: string
   - id: host_mac
-    type: File
+    type: string
   - id: ini_section
     type: string
   - id: known_indel_signpost_id
@@ -81,6 +81,8 @@ steps:
         source: repo
       - id: repo_hash
         source: repo_hash
+      - id: run_uuid
+        source: run_uuid
       - id: s3_bam_normal_url
         source: s3_bam_normal_url
       - id: s3_bam_tumor_url

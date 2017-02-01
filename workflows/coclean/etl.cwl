@@ -59,10 +59,10 @@ outputs:
     type: File
     outputSource: generate_token/token
   - id: s3_bam_normal_url
-    type: File
+    type: string
     outputSource: generate_s3_normal_path/output
   - id: s3_bam_tumor_url
-    type: File
+    type: string
     outputSource: generate_s3_tumor_path/output
 
 steps:

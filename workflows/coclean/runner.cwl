@@ -87,6 +87,38 @@ steps:
     out:
       - id: output
 
+  - id: emit_run_uuid
+    run: ../../tools/emit_file_string.cwl
+    in:
+      - id: input
+        source: get_run_uuid/uuid
+    out:
+      - id: output
+
+  - id: emit_hostname
+    run: ../../tools/emit_file_string.cwl
+    in:
+      - id: input
+        source: get_hostname/output
+    out:
+      - id: output
+
+  - id: emit_host_ipaddress
+    run: ../../tools/emit_file_string.cwl
+    in:
+      - id: input
+        source: get_host_ipaddress/output
+    out:
+      - id: output
+
+  - id: emit_host_mac
+    run: ../../tools/emit_file_string.cwl
+    in:
+      - id: input
+        source: get_host_mac/output
+    out:
+      - id: output
+
   - id: status_running
     run: status_postgres_workflow.cwl
     in:
@@ -95,11 +127,11 @@ steps:
       - id: bam_tumor_signpost_id
         source: bam_tumor_signpost_id
       - id: hostname
-        source: get_hostname/output
+        source: emit_hostname/output
       - id: host_ipaddress
-        source: get_host_ipaddress/output
+        source: emit_host_ipaddress/output
       - id: host_mac
-        source: get_host_mac/output
+        source: emit_host_mac/output
       - id: ini_section
         source: db_cred_section
       - id: known_indel_signpost_id
@@ -117,7 +149,7 @@ steps:
       - id: repo_hash
         source: repo_hash
       - id: run_uuid
-        source: get_run_uuid/uuid
+        source: emit_run_uuid/output
       - id: status
         valueFrom: "RUNNING"
       - id: table_name
@@ -159,7 +191,7 @@ steps:
       - id: reference_fai_signpost_id
         source: reference_fai_signpost_id
       - id: run_uuid
-        source: get_run_uuid/uuid
+        source: emit_run_uuid/output
       - id: signpost_base_url
         source: signpost_base_url
       - id: start_token
@@ -183,11 +215,11 @@ steps:
       - id: bam_tumor_uuid
         source: etl/bam_tumor_uuid
       - id: hostname
-        source: get_hostname/output
+        source: emit_hostname/output
       - id: host_ipaddress
-        source: get_host_ipaddress/output
+        source: emit_host_ipaddress/output
       - id: host_mac
-        source: get_host_mac/output
+        source: emit_host_mac/output
       - id: ini_section
         source: db_cred_section
       - id: known_indel_signpost_id
@@ -205,7 +237,7 @@ steps:
       - id: repo_hash
         source: repo_hash
       - id: run_uuid
-        source: get_run_uuid/uuid
+        source: emit_run_uuid/output
       - id: s3_bam_normal_url
         source: etl/s3_bam_normal_url
       - id: s3_bam_tumor_url
