@@ -55,15 +55,15 @@ outputs:
   - id: bam_tumor_uuid
     type: string
     outputSource: emit_bam_tumor_uuid/output
+  - id: end_token
+    type: File
+    outputSource: generate_token/token
   - id: s3_bam_normal_url
     type: File
     outputSource: generate_s3_normal_path/output
   - id: s3_bam_tumor_url
     type: File
     outputSource: generate_s3_tumor_path/output
-  - id: end_token
-    type: File
-    outputSource: generate_token/token
 
 steps:
   - id: extract_bam_normal_signpost

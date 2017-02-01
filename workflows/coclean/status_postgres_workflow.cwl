@@ -35,6 +35,8 @@ inputs:
     type: string
   - id: repo_hash
     type: string
+  - id: run_uuid
+    type: string
   - id: s3_bam_normal_url
     type: ["null", string]
   - id: s3_bam_tumor_url
@@ -54,21 +56,19 @@ steps:
     run: ../../tools/queue_coclean_status.cwl
     in:
       - id: bam_normal_signpost_id
-        source: bam_signpost_id
-      - id: bam_normal_uuid
-        source: bam_normal_uuid
+        source: bam_normal_signpost_id
       - id: bam_tumor_signpost_id
         source: bam_tumor_signpost_id
+      - id: bam_normal_uuid
+        source: bam_normal_uuid
       - id: bam_tumor_uuid
         source: bam_tumor_uuid
       - id: hostname
         source: hostname
-      - id: host_ipadress
-        source: host_ipadress
+      - id: host_ipaddress
+        source: host_ipaddress
       - id: host_mac
         source: host_mac
-      - id: input_signpost_id
-        source: input_signpost_id
       - id: known_indel_signpost_id
         source: known_indel_signpost_id
       - id: known_snp_signpost_id
@@ -103,6 +103,6 @@ steps:
       - id: source_sqlite_path
         source: queue_status/sqlite
       - id: uuid
-        source: uuid
+        source: run_uuid
     out:
       - id: log
