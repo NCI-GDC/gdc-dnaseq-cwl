@@ -58,28 +58,28 @@ steps:
     in:
       []
     out:
-      id: uuid
+      - id: uuid
 
   - id: get_hostname
     run: ../../tools/get_hostname.cwl
     in:
       []
     out:
-      id: output
+      - id: output
 
   - id: get_host_ipaddress
     run: ../../tools/get_host_ipaddress.cwl
     in:
       []
     out:
-      id: output
+      - id: output
 
   - id: get_host_mac
     run: ../../tools/get_host_mac.cwl
     in:
       []
     out:
-      id: output
+      - id: output
 
   - id: emit_run_uuid
     run: ../../tools/emit_file_string.cwl
@@ -127,13 +127,13 @@ steps:
       - id: ini_section
         source: db_cred_section
       - id: known_snp_signpost_id
-        type: string
+        source: known_snp_signpost_id
       - id: num_threads
         source: num_threads
       - id: postgres_creds_path
         source: db_cred_path
       - id: reference_fa_signpost_id
-        type: string
+        source: reference_fa_signpost_id
       - id: repo
         source: repo
       - id: repo_hash
@@ -201,13 +201,13 @@ steps:
       - id: ini_section
         source: db_cred_section
       - id: known_snp_signpost_id
-        type: string
+        source: known_snp_signpost_id
       - id: num_threads
         source: num_threads
       - id: postgres_creds_path
         source: db_cred_path
       - id: reference_fa_signpost_id
-        type: string
+        source: reference_fa_signpost_id
       - id: repo
         source: repo
       - id: repo_hash

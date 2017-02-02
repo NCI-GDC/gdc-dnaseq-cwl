@@ -26,7 +26,7 @@
     "reference_fa_signpost_id": "ed96790c-3eb5-4aa2-8f46-702d503e64e4",
     "reference_fai_signpost_id": "10283433-bcec-46bc-bfd5-5215428853ea",
     "repo": "https://github.com/NCI-GDC/gdc-dnaseq-cwl",
-    "repo_hash": "XX_REPO_HASH_XX",
+    "repo_hash": "d0de51fa727c1f8996865a04b0e56811a4bd6a8e",
     "signpost_base_url": "signpost.service.consul/v0/did/",
     "status_table_name": "maydeletetest_bqsr"
 }

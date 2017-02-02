@@ -7,7 +7,7 @@ class: Workflow
 inputs:
   - id: bam_signpost_id
     type: string
-  - id: bam__uuid
+  - id: bam_uuid
     type: ["null", string]
   - id: hostname
     type: string
@@ -16,8 +16,6 @@ inputs:
   - id: host_mac
     type: string
   - id: ini_section
-    type: string
-  - id: known_indel_signpost_id
     type: string
   - id: known_snp_signpost_id
     type: string
@@ -59,8 +57,6 @@ steps:
         source: host_ipaddress
       - id: host_mac
         source: host_mac
-      - id: known_indel_signpost_id
-        source: known_indel_signpost_id
       - id: known_snp_signpost_id
         source: known_snp_signpost_id
       - id: num_threads
