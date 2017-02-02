@@ -68,7 +68,7 @@ inputs:
   - id: s3_bam_url
     type: ["null", string]
     inputBinding:
-      prefix: --s3_normal_bam_url
+      prefix: --s3_bam_url
 
   - id: status
     type: string
