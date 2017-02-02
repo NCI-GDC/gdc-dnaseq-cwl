@@ -13,14 +13,12 @@ TMP_DIR=${SCRATCH_DIR}/tmp/tmp
 VIRTUALENV_NAME=cwl
 
 ##JOB VARIABLE
-BAM_NORMAL_SIGNPOST_ID=XX_BAM_NORMAL_SIGNPOST_ID_XX
-BAM_TUMOR_SIGNPOST_ID=XX_BAM_TUMOR_SIGNPOST_ID_XX
-CWL_RUNNER_PATH=${HOME}/gdc-dnaseq-cwl/workflows/coclean/runner.cwl
+BAM_NORMAL_SIGNPOST_ID=XX_BAM_SIGNPOST_ID_XX
+CWL_RUNNER_PATH=${HOME}/gdc-dnaseq-cwl/workflows/bqsr/runner.cwl
 JSON_PATH=XX_JSON_PATH_XX
-UUID=XX_UUID_XX
 
 ##FAIL VARIABLE
-CWL_STATUS_PATH=${HOME}/gdc-dnaseq-cwl/workflows/status/status_postgres_workflow.cwl
+CWL_STATUS_PATH=${HOME}/gdc-dnaseq-cwl/workflows/bqsr/status_postgres_workflow.cwl
 DB_CRED_PATH=${HOME}/XX_DB_CRED_PATH_XX
 DB_CRED_SECTION=XX_DB_CRED_SECTION_XX
 DB_TABLE_NAME=XX_DB_TABLE_NAME_XX
@@ -43,7 +41,7 @@ function runner()
     local json_path=${4}
     local tmp_dir=${5}
 
-    cwltool --debug --cachedir ${cache_dir} --tmpdir-prefix ${tmp_dir} --custom-net host --outdir ${job_dir} ${cwl_path} ${json_path}
+    cwltool --debug --tmp-outdir-prefix ${cache_dir} --tmpdir-prefix ${tmp_dir} --custom-net host --outdir ${job_dir} ${cwl_path} ${json_path}
 }
 
 function status_fail()
@@ -61,7 +59,7 @@ function status_fail()
     local tmp_dir=${11}
     local uuid=${12}
 
-    cwltool --debug --cachedir ${cache_dir} --tmpdir-prefix ${tmp_dir} --custom-net host --outdir ${job_dir} ${cwl_path} --ini_section ${db_cred_section} --input_signpost_id ${bam_signpost_id} --postgres_creds_path ${db_cred_path} --repo ${git_repo} --repo_hash ${git_repo_hash} --status FAIL --table_name ${db_table_name} --uuid ${uuid}
+    cwltool --debug --tmp-outdir-prefix ${cache_dir} --tmpdir-prefix ${tmp_dir} --custom-net host --outdir ${job_dir} ${cwl_path} --ini_section ${db_cred_section} --input_signpost_id ${bam_signpost_id} --postgres_creds_path ${db_cred_path} --repo ${git_repo} --repo_hash ${git_repo_hash} --status FAIL --table_name ${db_table_name} --uuid ${uuid}
     if [ $? -ne 0 ]
     then
         echo FAIL TO FAIL
@@ -71,8 +69,7 @@ function status_fail()
 
 function main()
 {
-    local bam_normal_signpost_id=${BAM_NORMAL_SIGNPOST_ID}
-    local bam_tumor_signpost_id=${BAM_TUMOR_SIGNPOST_ID}
+    local bam_signpost_id=${BAM_SIGNPOST_ID}
     local cwl_runner_path=${CWL_RUNNER_PATH}
     local cwl_status_path=${CWL_STATUS_PATH}
     local db_cred_path=${DB_CRED_PATH}
@@ -82,7 +79,7 @@ function main()
     local git_repo=${GIT_REPO}
     local git_repo_hash=${GIT_REPO_HASH}
     local scratch_dir=${SCRATCH_DIR}
-    local uuid=${UUID}
+
     local virtualenv_name=${VIRTUALENV_NAME}
     local cache_dir=${scratch_dir}/${uuid}/cache
     local job_dir=${scratch_dir}/${uuid}/
@@ -96,7 +93,7 @@ function main()
     if [ $? -ne 0 ]
     then
         echo FAIL
-        status_fail ${bam_normal_signpost_id} ${bam_tumor_signpost_id} ${cache_dir} ${cwl_status_path} ${db_cred_path} ${db_cred_section} ${db_table_name} ${git_repo} ${git_repo_hash} ${job_dir} ${tmp_dir} ${uuid}
+        status_fail ${bam_signpost_id} ${cache_dir} ${cwl_status_path} ${db_cred_path} ${db_cred_section} ${db_table_name} ${git_repo} ${git_repo_hash} ${job_dir} ${tmp_dir}
         exit 1
     fi
     rm -rf ${job_dir}
