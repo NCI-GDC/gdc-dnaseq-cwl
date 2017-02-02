@@ -54,28 +54,28 @@ outputs:
 
 steps:
   - id: get_run_uuid
-    run: ../tools/get_uuid.cwl
+    run: ../../tools/get_uuid.cwl
     in:
       []
     out:
       id: uuid
 
   - id: get_hostname
-    run: ../tools/get_hostname.cwl
+    run: ../../tools/get_hostname.cwl
     in:
       []
     out:
       id: output
 
   - id: get_host_ipaddress
-    run: ../tools/get_host_ipaddress.cwl
+    run: ../../tools/get_host_ipaddress.cwl
     in:
       []
     out:
       id: output
 
   - id: get_host_mac
-    run: ../tools/get_host_mac.cwl
+    run: ../../tools/get_host_mac.cwl
     in:
       []
     out:
