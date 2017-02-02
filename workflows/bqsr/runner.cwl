@@ -219,6 +219,6 @@ steps:
       - id: table_name
         source: status_table_name
       - id: run_uuid
-        source: get_run_uuid/uuid
+        source: emit_run_uuid/output
     out:
       - id: token
