@@ -186,7 +186,7 @@ steps:
       - id: token
 
   - id: status_complete
-    run: ../status/status_postgres_workflow.cwl
+    run: status_postgres_workflow.cwl
     in:
       - id: bam_signpost_id
         source: bam_signpost_id
