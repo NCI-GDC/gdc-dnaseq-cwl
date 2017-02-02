@@ -41,7 +41,7 @@ inputs:
       prefix: --known_snp_signpost_id
 
   - id: num_threads
-    type: string
+    type: int
     inputBinding:
       prefix: --num_threads
 
