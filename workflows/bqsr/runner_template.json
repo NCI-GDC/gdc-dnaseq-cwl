@@ -1,25 +1,22 @@
 {
     "aws_config": {
-            "class": "File",
+        "class": "File",
         "path" : "/home/ubuntu/.aws/config"
     },
     "aws_shared_credentials": {
             "class": "File",
             "path" : "/home/ubuntu/XX_AWS_SHARED_CREDENTIALS_XX"
     },
-    "bam_normal_signpost_id": "XX_BAM_NORMAL_SIGNPOST_ID_XX",
-    "bam_tumor_signpost_id": "XX_BAM_TUMOR_SIGNPOST_ID_XX",
+    "bam_signpost_id": "XX_BAM_SIGNPOST_ID_XX",
     "db_cred_path": {
         "class": "File",
-        "path": "XX_DB_CRED_PATH_XX"
+        "path": "/home/ubuntu/XX_DB_CRED_PATH_XX"
     },
     "db_cred_section": "DEFAULT",
     "endpoint_json": {
         "class": "File",
         "path" : "/home/ubuntu/endpoint.json"
     },
-    "known_indel_index_signpost_id": "1e46e8c5-9207-4682-9954-9d9ed2c7442a",
-    "known_indel_signpost_id": "1e2fed0a-c429-4295-b1d1-6e0df68a14b8",
     "known_snp_index_signpost_id": "df35a362-e9bb-47a1-b79c-24463ea9e218",
     "known_snp_signpost_id": "4ba1c087-ec80-47c4-a9d5-e9bb9933fef4",
     "load_bucket": "XX_LOAD_BUCKET_XX",
@@ -32,5 +29,4 @@
     "repo_hash": "XX_REPO_HASH_XX",
     "signpost_base_url", "signpost.service.consul/v0/did/",
     "status_table_name": "XX_STATUS_TABLE_NAME_XX",
-    "uuid" : "XX_UUID_XX"
 }
