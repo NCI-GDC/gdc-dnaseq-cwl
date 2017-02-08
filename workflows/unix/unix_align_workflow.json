@@ -1,6 +1,6 @@
 {
     "bam_path" : {
         "class": "File",
-        "path" : "/home/ubuntu/gdc-dnaseq-cwl/workflows/unix/test.bam"
+        "path" : "test.bam"
     }
 }
