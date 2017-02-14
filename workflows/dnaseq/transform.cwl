@@ -80,7 +80,7 @@ steps:
 
   - id: remove_duplicate_fastq1
     run: ../../tools/fastq_remove_duplicate_qname.cwl
-    scatter: remove_duplicate_fastq1/INPUT
+    scatter: INPUT
     in:
       - id: INPUT
         source: biobambam_bamtofastq/output_fastq1
@@ -89,7 +89,7 @@ steps:
 
   - id: remove_duplicate_fastq2
     run: ../../tools/fastq_remove_duplicate_qname.cwl
-    scatter: remove_duplicate_fastq2/INPUT
+    scatter: INPUT
     in:
       - id: INPUT
         source: biobambam_bamtofastq/output_fastq2
@@ -98,7 +98,7 @@ steps:
 
   - id: remove_duplicate_fastq_o1
     run: ../../tools/fastq_remove_duplicate_qname.cwl
-    scatter: remove_duplicate_fastq_o1/INPUT
+    scatter: INPUT
     in:
       - id: INPUT
         source: biobambam_bamtofastq/output_fastq_o1
@@ -107,7 +107,7 @@ steps:
 
   - id: remove_duplicate_fastq_o2
     run: ../../tools/fastq_remove_duplicate_qname.cwl
-    scatter: remove_duplicate_fastq_o2/INPUT
+    scatter: INPUT
     in:
       - id: INPUT
         source: biobambam_bamtofastq/output_fastq_o2
@@ -116,7 +116,7 @@ steps:
 
   - id: remove_duplicate_fastq_s
     run: ../../tools/fastq_remove_duplicate_qname.cwl
-    scatter: remove_duplicate_fastq_s/INPUT
+    scatter: INPUT
     in:
       - id: INPUT
         source: biobambam_bamtofastq/output_fastq_s
@@ -175,7 +175,7 @@ steps:
 
   - id: readgroup_json_db
     run: ../../tools/readgroup_json_db.cwl
-    scatter: readgroup_json_db/json_path
+    scatter: json_path
     in:
       - id: json_path
         source: bam_readgroup_to_json/OUTPUT
@@ -198,7 +198,7 @@ steps:
 
   - id: fastqc1
     run: ../../tools/fastqc.cwl
-    scatter: fastqc1/INPUT
+    scatter: INPUT
     in:
       - id: INPUT
         source: sort_scattered_fastq1/OUTPUT
@@ -209,7 +209,7 @@ steps:
 
   - id: fastqc2
     run: ../../tools/fastqc.cwl
-    scatter: fastqc2/INPUT
+    scatter: INPUT
     in:
       - id: INPUT
         source: sort_scattered_fastq2/OUTPUT
@@ -220,7 +220,7 @@ steps:
 
   - id: fastqc_s
     run: ../../tools/fastqc.cwl
-    scatter: fastqc_s/INPUT
+    scatter: INPUT
     in:
       - id: INPUT
         source: sort_scattered_fastq_s/OUTPUT
@@ -231,7 +231,7 @@ steps:
 
   - id: fastqc_o1
     run: ../../tools/fastqc.cwl
-    scatter: fastqc_o1/INPUT
+    scatter: INPUT
     in:
       - id: INPUT
         source: sort_scattered_fastq_o1/OUTPUT
@@ -242,7 +242,7 @@ steps:
 
   - id: fastqc_o2
     run: ../../tools/fastqc.cwl
-    scatter: fastqc_o2/INPUT
+    scatter: INPUT
     in:
       - id: INPUT
         source: sort_scattered_fastq_o2/OUTPUT
@@ -253,7 +253,7 @@ steps:
 
   - id: fastqc_db1
     run: ../../tools/fastqc_db.cwl
-    scatter: fastqc_db1/INPUT
+    scatter: INPUT
     in:
       - id: INPUT
         source: fastqc1/OUTPUT
@@ -265,7 +265,7 @@ steps:
 
   - id: fastqc_db2
     run: ../../tools/fastqc_db.cwl
-    scatter: fastqc_db2/INPUT
+    scatter: INPUT
     in:
       - id: INPUT
         source: fastqc2/OUTPUT
@@ -277,7 +277,7 @@ steps:
 
   - id: fastqc_db_s
     run: ../../tools/fastqc_db.cwl
-    scatter: fastqc_db_s/INPUT
+    scatter: INPUT
     in:
       - id: INPUT
         source: fastqc_s/OUTPUT
@@ -289,7 +289,7 @@ steps:
 
   - id: fastqc_db_o1
     run: ../../tools/fastqc_db.cwl
-    scatter: fastqc_db_o1/INPUT
+    scatter: INPUT
     in:
       - id: INPUT
         source: fastqc_o1/OUTPUT
@@ -301,7 +301,7 @@ steps:
 
   - id: fastqc_db_o2
     run: ../../tools/fastqc_db.cwl
-    scatter: fastqc_db_o2/INPUT
+    scatter: INPUT
     in:
       - id: INPUT
         source: fastqc_o2/OUTPUT
@@ -440,7 +440,7 @@ steps:
 
   - id: bwa_pe
     run: ../../tools/bwa_pe.cwl
-    scatter: [bwa_pe/fastq1, bwa_pe/fastq2, bwa_pe/readgroup_json_path]
+    scatter: [fastq1, fastq2, readgroup_json_path]
     scatterMethod: "dotproduct"
     in:
       - id: fasta
@@ -460,7 +460,7 @@ steps:
 
   - id: bwa_se
     run: ../../tools/bwa_se.cwl
-    scatter: [bwa_se/fastq, bwa_se/readgroup_json_path]
+    scatter: [fastq, readgroup_json_path]
     scatterMethod: "dotproduct"
     in:
       - id: fasta
@@ -478,7 +478,7 @@ steps:
 
   - id: bwa_o1
     run: ../../tools/bwa_se.cwl
-    scatter: [bwa_o1/fastq, bwa_o1/readgroup_json_path]
+    scatter: [fastq, readgroup_json_path]
     scatterMethod: "dotproduct"
     in:
       - id: fasta
@@ -496,7 +496,7 @@ steps:
 
   - id: bwa_o2
     run: ../../tools/bwa_se.cwl
-    scatter: [bwa_o2/fastq, bwa_o2/readgroup_json_path]
+    scatter: [fastq, readgroup_json_path]
     scatterMethod: "dotproduct"
     in:
       - id: fasta
@@ -514,7 +514,7 @@ steps:
 
   - id: picard_sortsam_pe
     run: ../../tools/picard_sortsam.cwl
-    scatter: picard_sortsam_pe/INPUT
+    scatter: INPUT
     in:
       - id: INPUT
         source: bwa_pe/OUTPUT
@@ -525,7 +525,7 @@ steps:
 
   - id: picard_sortsam_se
     run: ../../tools/picard_sortsam.cwl
-    scatter: picard_sortsam_se/INPUT
+    scatter: INPUT
     in:
       - id: INPUT
         source: bwa_se/OUTPUT
@@ -536,7 +536,7 @@ steps:
 
   - id: picard_sortsam_o1
     run: ../../tools/picard_sortsam.cwl
-    scatter: picard_sortsam_o1/INPUT
+    scatter: INPUT
     in:
       - id: INPUT
         source: bwa_o1/OUTPUT
@@ -547,7 +547,7 @@ steps:
 
   - id: picard_sortsam_o2
     run: ../../tools/picard_sortsam.cwl
-    scatter: picard_sortsam_o2/INPUT
+    scatter: INPUT
     in:
       - id: INPUT
         source: bwa_o2/OUTPUT
@@ -558,7 +558,7 @@ steps:
 
   - id: metrics_pe
     run: metrics.cwl
-    scatter: metrics_pe/bam
+    scatter: bam
     in:
       - id: bam
         source: picard_sortsam_pe/SORTED_OUTPUT
@@ -591,7 +591,7 @@ steps:
 
   - id: metrics_se
     run: metrics.cwl
-    scatter: metrics_se/bam
+    scatter: bam
     in:
       - id: bam
         source: picard_sortsam_se/SORTED_OUTPUT
