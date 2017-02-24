@@ -1,0 +1,9 @@
+bam_url: ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/phase3/data/NA12878/alignment/NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211.bam
+bam_name: NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211.bam
+dbsnp_url: https://gdc-api.nci.nih.gov/data/4ba1c087-ec80-47c4-a9d5-e9bb9933fef4
+dbsnp_name: dbsnp_144.hg38.vcf.gz
+fasta_url: https://gdc-api.nci.nih.gov/data/62f23fad-0f24-43fb-8844-990d531947cf
+fasta_name: GRCh38.d1.vd1.fa.tar.gz
+fasta_bwa_url: https://gdc-api.nci.nih.gov/data/964cbdac-1043-4fae-b068-c3a65d992f6b
+fasta_bwa_name: GRCh38.d1.vd1_BWA.tar.gz
+thread_count: 8
