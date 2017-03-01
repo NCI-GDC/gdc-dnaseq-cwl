@@ -7,5 +7,6 @@
     "fasta_name": "GRCh38.d1.vd1.fa.tar.gz",
     "fasta_bwa_url": "https://gdc-api.nci.nih.gov/data/964cbdac-1043-4fae-b068-c3a65d992f6b",
     "fasta_bwa_name": "GRCh38.d1.vd1_BWA.tar.gz",
-    "thread_count": 8
+    "thread_count": 8,
+    "uuid": "123e4567-e89b-12d3-a456-426655440000"
 }

@@ -28,6 +28,8 @@ inputs:
     type: string
   - id: thread_count
     type: int
+  - id: uuid
+    type: string
 
 outputs:
   - id: harmonized_bam
@@ -38,21 +40,6 @@ outputs:
     outputSource: transform/merge_all_sqlite_destination_sqlite
 
 steps:
-  - id: get_run_uuid
-    run: ../../tools/get_uuid.cwl
-    in:
-      []
-    out:
-      - id: uuid
-
-  - id: emit_run_uuid
-    run: ../../tools/emit_file_string.cwl
-    in:
-      - id: input
-        source: get_run_uuid/uuid
-    out:
-      - id: output
-
   - id: extract_curl_bam
     run: ../../tools/curl.cwl
     in:
@@ -143,7 +130,7 @@ steps:
       - id: thread_count
         source: thread_count
       - id: uuid
-        source: emit_run_uuid/output
+        source: uuid
     out:
       - id: picard_markduplicates_output
       - id: merge_all_sqlite_destination_sqlite
