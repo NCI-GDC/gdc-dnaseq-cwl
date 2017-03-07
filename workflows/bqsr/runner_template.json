@@ -21,7 +21,7 @@
     "known_snp_signpost_id": "4ba1c087-ec80-47c4-a9d5-e9bb9933fef4",
     "load_bucket": "XX_LOAD_BUCKET_XX",
     "load_s3cfg_section", "ceph",
-    "num_threads": XX_NUM_THREADS_XX,
+    "num_threads": XX_RESOURCE_CORE_COUNT_XX,
     "reference_dict_signpost_id", "cf9768de-12ec-4afb-9af2-1b6ba3e07c0d",
     "reference_fa_signpost_id", "ed96790c-3eb5-4aa2-8f46-702d503e64e4",
     "reference_fai_signpost_id", "10283433-bcec-46bc-bfd5-5215428853ea",

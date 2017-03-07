@@ -7,6 +7,8 @@ import os
 import sys
 import uuid
 
+NUM_CPU = 40
+
 def read_header(header_line):
     header_split = header_line.strip().split('\t')
     header_key_dict = dict()
@@ -14,14 +16,13 @@ def read_header(header_line):
         header_key_dict[header_column] = i
     return header_key_dict
 
-def generate_runner(db_table_name, gdc_src_id, job_uuid, repo_hash,
-                    resource_core_count, resource_disk_bytes, resource_memory_bytes,
+def generate_runner(db_table_name, input_gdc_id, repo_hash,
                     s3_load_bucket, slurm_core, json_template_path):
-    job_json = job_uuid + '.json'
+    job_json = input_gdc_id + '_bqsr_wgs.json'
     f_open = open(job_json, 'w')
     with open(json_template_path, 'r') as read_open:
         for line in read_open:
-            if 'XX_BAM_SIGNPOST_ID_XX' in line:
+            if 'XX_INPUT_SIGNPOST_ID_XX' in line:
                 newline = line.replace('XX_BAM_SIGNPOST_ID_XX', gdc_src_id)
                 f_open.write(newline)
             elif 'XX_DB_TABLE_NAME_XX' in line:
@@ -36,22 +37,18 @@ def generate_runner(db_table_name, gdc_src_id, job_uuid, repo_hash,
             elif 'XX_RESOURCE_CORE_COUNT_XX' in line:
                 newline = line.replace('XX_RESOURCE_CORE_COUNT_XX', str(resource_core_count))
                 f_open.write(newline)
-            elif 'XX_UUID_XX' in line:
-                newline = line.replace('XX_UUID_XX', job_uuid)
-                f_open.write(newline)
             else:
                 f_open.write(line)
     f_open.close()
     return
 
-def generate_slurm(db_table_name, gdc_src_id, job_uuid, node_json_dir,
-                   resource_core_count, resource_disk_bytes, resource_memory_bytes,
+def generate_slurm(db_table_name, input_gdc_id, node_json_dir,
                    repo_hash, scratch_dir, slurm_core, slurm_template_path):
-    job_slurm = job_uuid + '.sh'
+    job_slurm = input_gdc_id + '_bqsr_wgs.sh'
     f_open = open(job_slurm, 'w')
     with open(slurm_template_path, 'r') as read_open:
         for line in read_open:
-            if 'XX_BAM_SIGNPOST_ID_XX' in line:
+            if 'XX_INPUT_SIGNPOST_ID_XX' in line:
                 newline = line.replace('XX_BAM_SIGNPOST_ID_XX', gdc_src_id)
                 f_open.write(newline)
             elif 'XX_DB_TABLE_NAME_XX' in line:
@@ -67,36 +64,21 @@ def generate_slurm(db_table_name, gdc_src_id, job_uuid, node_json_dir,
             elif 'XX_RESOURCE_CORE_COUNT_XX' in line:
                 newline = line.replace('XX_RESOURCE_CORE_COUNT_XX', str(resource_core_count))
                 f_open.write(newline)
-            elif 'XX_RESOURCE_MEMORY_MEBIBYTES_XX' in line:
-                memory_mebibytes = math.ceil(resource_memory_bytes / 1024 / 1024)
-                newline = line.replace('XX_RESOURCE_MEMORY_MEBIBYTES_XX', str(memory_mebibytes))
-                f_open.write(newline)
-            elif 'XX_RESOURCE_DISK_MEBIBYTES_XX' in line:
-                disk_mebibytes = math.ceil(resource_disk_bytes / 1024 / 1024)
-                newline = line.replace('XX_RESOURCE_DISK_MEBIBYTES_XX', str(disk_mebibytes))
-                f_open.write(newline)
             elif 'XX_SCRATCH_DIR_XX' in line:
                 newline = line.replace('XX_SCRATCH_DIR_XX', scratch_dir)
-                f_open.write(newline)
-            elif 'XX_UUID_XX' in line:
-                newline = line.replace('XX_UUID_XX', job_uuid)
                 f_open.write(newline)
             else:
                 f_open.write(line)
     f_open.close()
     return
 
-def setup_job(db_table_name, gdc_src_id, node_json_dir, repo_hash,
-              resource_core_count, resource_disk_bytes, resource_memory_bytes,
+def setup_job(db_table_name, input_gdc_id, node_json_dir, repo_hash,
               s3_load_bucket, scratch_dir, slurm_core,
               json_template_path, slurm_template_path):
-    job_uuid = str(uuid.uuid4())
 
-    generate_runner(db_table_name, gdc_src_id, job_uuid, repo_hash,
-                    resource_core_count, resource_disk_bytes, resource_memory_bytes,
+    generate_runner(db_table_name, input_gdc_id, repo_hash,
                     s3_load_bucket, slurm_core, json_template_path)
-    generate_slurm(db_table_name, gdc_src_id, job_uuid, node_json_dir,
-                   resource_core_count, resource_disk_bytes, resource_memory_bytes,
+    generate_slurm(db_table_name, input_gdc_id, node_json_dir,
                    repo_hash, scratch_dir, slurm_core, slurm_template_path)
     return
 
@@ -126,15 +108,7 @@ def main():
     parser.add_argument('--repo_hash',
                         required = True
     )
-    parser.add_argument('--resource_core_count',
-                        type = int,
-                        required = True
-    )
-    parser.add_argument('--resource_disk_bytes',
-                        type = int,
-                        required = True
-    )
-    parser.add_argument('--resource_memory_bytes',
+    parser.add_argument('--scratch_disk_bytes',
                         type = int,
                         required = True
     )
@@ -164,16 +138,16 @@ def main():
 
     with open(job_table_path, 'r') as job_table_open:
         for job_line in job_table_open:
-            if job_line.startswith('imported_gdc_id'):
+            if job_line.startswith('aligned_gdc_id'):
                 header_key_dict = read_header(job_line)
             else:
                 job_split = job_line.strip().split('\t')
-                gdc_src_id = job_split[header_key_dict['imported_gdc_id']]
-                imported_filesize = job_split[header_key_dict['imported_filesize']]
-                size_gb = job_split[header_key_dict['size_gb']]
-                slurm_core = job_split[header_key_dict['slurm_core']]
-                setup_job(db_table_name, gdc_src_id, node_json_dir, repo_hash,
-                          resource_core_count, resource_disk_bytes, resource_memory_bytes,
+                input_gdc_id = job_split[header_key_dict['aligned_gdc_id']]
+                input_filesize = job_split[header_key_dict['aligned_filesize']]
+                required_storage = 2 * int(aligned_filesize)
+                fraction_of_resources = required_storage / scratch_disk_bytes
+                slurm_core = math.ceil(fraction_of_resources * NUM_CPU)
+                setup_job(db_table_name, input_gdc_id, node_json_dir, repo_hash,
                           s3_load_bucket, scratch_dir, slurm_core,
                           json_template_path, slurm_template_path)
                 
