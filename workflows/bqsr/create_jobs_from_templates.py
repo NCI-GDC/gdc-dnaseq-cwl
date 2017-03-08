@@ -16,17 +16,13 @@ def read_header(header_line):
         header_key_dict[header_column.strip()] = i
     return header_key_dict
 
-def generate_runner(aws_shared_credentials, db_cred,
-                    db_table_name, input_gdc_id, repo_hash,
+def generate_runner(db_cred, db_table_name, input_gdc_id, repo_hash,
                     s3_load_bucket, slurm_core, json_template_path):
     job_json = input_gdc_id + '_bqsr_wgs.json'
     f_open = open(job_json, 'w')
     with open(json_template_path, 'r') as read_open:
         for line in read_open:
-            if 'XX_AWS_SHARED_CREDENTIALS_XX' in line:
-                newline = line.replace('XX_AWS_SHARED_CREDENTIALS_XX', aws_shared_credentials)
-                f_open.write(newline)
-            elif 'XX_DB_CRED_XX' in line:
+            if 'XX_DB_CRED_XX' in line:
                 newline = line.replace('XX_DB_CRED_XX', db_cred)
                 f_open.write(newline)
             elif 'XX_INPUT_GDC_ID_XX' in line:
@@ -49,18 +45,14 @@ def generate_runner(aws_shared_credentials, db_cred,
     f_open.close()
     return
 
-def generate_slurm(aws_shared_credentials, db_cred,
-                   db_table_name, input_gdc_id, node_json_dir,
+def generate_slurm(db_cred, db_table_name, input_gdc_id, node_json_dir,
                    repo_hash, scratch_dir, slurm_core, slurm_template_path):
     job_slurm = input_gdc_id + '_bqsr_wgs.sh'
     job_json = input_gdc_id + '_bqsr_wgs.json'
     f_open = open(job_slurm, 'w')
     with open(slurm_template_path, 'r') as read_open:
         for line in read_open:
-            if 'XX_AWS_SHARED_CREDENTIALS_XX' in line:
-                newline = line.replace('XX_AWS_SHARED_CREDENTIALS_XX', aws_shared_credentials)
-                f_open.write(newline)
-            elif 'XX_DB_CRED_XX' in line:
+            if 'XX_DB_CRED_XX' in line:
                 newline = line.replace('XX_DB_CRED_XX', db_cred)
                 f_open.write(newline)
             elif 'XX_DB_TABLE_NAME_XX' in line:
@@ -87,16 +79,13 @@ def generate_slurm(aws_shared_credentials, db_cred,
     f_open.close()
     return
 
-def setup_job(aws_shared_credentials, db_cred,
-              db_table_name, input_gdc_id, node_json_dir, repo_hash,
+def setup_job(db_cred, db_table_name, input_gdc_id, node_json_dir, repo_hash,
               s3_load_bucket, scratch_dir, slurm_core,
               json_template_path, slurm_template_path):
 
-    generate_runner(aws_shared_credentials, db_cred,
-                    db_table_name, input_gdc_id, repo_hash,
+    generate_runner(db_cred, db_table_name, input_gdc_id, repo_hash,
                     s3_load_bucket, slurm_core, json_template_path)
-    generate_slurm(aws_shared_credentials, db_cred,
-                   db_table_name, input_gdc_id, node_json_dir,
+    generate_slurm(db_cred, db_table_name, input_gdc_id, node_json_dir,
                    repo_hash, scratch_dir, slurm_core, slurm_template_path)
     return
 
@@ -111,9 +100,6 @@ def main():
     )
     parser.set_defaults(level = logging.INFO)
 
-    parser.add_argument('--aws_shared_credentials',
-                        required = True
-    )
     parser.add_argument('--db_cred',
                         required = True
     )
@@ -148,7 +134,6 @@ def main():
 
     args = parser.parse_args()
 
-    aws_shared_credentials = args.aws_shared_credentials
     db_cred = args.db_cred
     db_table_name = args.db_table_name
     job_table_path = args.job_table_path
@@ -171,8 +156,7 @@ def main():
                 required_storage = 2 * int(input_filesize)
                 fraction_of_resources = required_storage / scratch_disk_bytes
                 slurm_core = math.ceil(fraction_of_resources * NUM_CPU)
-                setup_job(aws_shared_credentials, db_cred,
-                          db_table_name, input_gdc_id, node_json_dir, repo_hash,
+                setup_job(db_cred, db_table_name, input_gdc_id, node_json_dir, repo_hash,
                           s3_load_bucket, scratch_dir, slurm_core,
                           json_template_path, slurm_template_path)
                 
