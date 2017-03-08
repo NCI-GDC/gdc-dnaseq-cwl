@@ -7,10 +7,10 @@
             "class": "File",
             "path" : "/home/ubuntu/XX_AWS_SHARED_CREDENTIALS_XX"
     },
-    "bam_signpost_id": "XX_BAM_SIGNPOST_ID_XX",
+    "bam_signpost_id": "XX_INPUT_GDC_ID_XX",
     "db_cred_path": {
         "class": "File",
-        "path": "/home/ubuntu/XX_DB_CRED_PATH_XX"
+        "path": "/home/ubuntu/XX_DB_CRED_XX"
     },
     "db_cred_section": "DEFAULT",
     "endpoint_json": {
