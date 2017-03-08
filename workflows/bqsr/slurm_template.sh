@@ -79,9 +79,9 @@ function main()
     local scratch_dir=${SCRATCH_DIR}
 
     local virtualenv_name=${VIRTUALENV_NAME}
-    local cache_dir=${scratch_dir}/${uuid}/cache
-    local job_dir=${scratch_dir}/${uuid}/
-    local tmp_dir=${scratch_dir}/${uuid}/tmp
+    local cache_dir=${scratch_dir}/${input_gdc_id}/cache
+    local job_dir=${scratch_dir}/${input_gdc_id}/
+    local tmp_dir=${scratch_dir}/${input_gdc_id}/tmp
 
     mkdir -p ${cache_dir}
     mkdir -p ${job_dir}
