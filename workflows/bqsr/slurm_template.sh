@@ -41,6 +41,7 @@ function runner()
     local json_path=${4}
     local tmp_dir=${5}
 
+    export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128;
     cwltool --debug --tmp-outdir-prefix ${cache_dir} --tmpdir-prefix ${tmp_dir} --custom-net host --outdir ${job_dir} ${cwl_path} ${json_path}
 }
 
@@ -57,6 +58,7 @@ function status_fail()
     local job_dir=${9}
     local tmp_dir=${10}
 
+    export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128;
     cwltool --debug --tmp-outdir-prefix ${cache_dir} --tmpdir-prefix ${tmp_dir} --custom-net host --outdir ${job_dir} ${cwl_path} --ini_section ${db_cred_section} --bam_signpost_id ${input_gdc_id} --postgres_creds_path ${db_cred_path} --repo ${git_repo} --repo_hash ${git_repo_hash} --status FAIL --table_name ${db_table_name}
     if [ $? -ne 0 ]
     then
