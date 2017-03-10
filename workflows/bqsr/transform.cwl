@@ -26,11 +26,19 @@ outputs:
     outputSource: gatk_printreads/output_bam
     
 steps:
+  - id: picard_buildbamindex
+    run: ../../tools/picard_buildbamindex.cwl
+    in:
+      - id: INPUT
+        source: input_file
+    out:
+      - id: OUTPUT
+
   - id: gatk_baserecalibrator
     run: ../../tools/gatk_baserecalibrator.cwl
     in:
       - id: input_file
-        source: input_file
+        source: picard_buildbamindex/OUTPUT
       - id: knownSites
         source: known_snp
       - id: log_to_file

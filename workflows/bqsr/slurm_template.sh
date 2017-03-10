@@ -57,7 +57,7 @@ function status_fail()
     local job_dir=${9}
     local tmp_dir=${10}
 
-    cwltool --debug --tmp-outdir-prefix ${cache_dir} --tmpdir-prefix ${tmp_dir} --custom-net host --outdir ${job_dir} ${cwl_path} --ini_section ${db_cred_section} --input_signpost_id ${input_gdc_id} --postgres_creds_path ${db_cred_path} --repo ${git_repo} --repo_hash ${git_repo_hash} --status FAIL --table_name ${db_table_name}
+    cwltool --debug --tmp-outdir-prefix ${cache_dir} --tmpdir-prefix ${tmp_dir} --custom-net host --outdir ${job_dir} ${cwl_path} --ini_section ${db_cred_section} --bam_signpost_id ${input_gdc_id} --postgres_creds_path ${db_cred_path} --repo ${git_repo} --repo_hash ${git_repo_hash} --status FAIL --table_name ${db_table_name}
     if [ $? -ne 0 ]
     then
         echo FAIL TO FAIL

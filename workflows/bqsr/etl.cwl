@@ -93,20 +93,6 @@ steps:
     out:
       - id: output
 
-  - id: extract_bai
-    run: ../../tools/aws_s3_get_bai_signpost.cwl
-    in:
-      - id: aws_config
-        source: aws_config
-      - id: aws_shared_credentials
-        source: aws_shared_credentials
-      - id: signpost_json
-        source: extract_bam_signpost/output
-      - id: endpoint_json
-        source: endpoint_json
-    out:
-      - id: output
-
   - id: extract_known_snp_signpost
     run: ../../tools/get_signpost_json.cwl
     in:
@@ -249,21 +235,11 @@ steps:
     out:
       - id: output
 
-  - id: root_bam
-    run: ../../tools/root_bam_coclean.cwl
-    in:
-      - id: bam
-        source: extract_bam/output
-      - id: bam_index
-        source: extract_bai/output
-    out:
-      - id: output
-
   - id: transform
     run: transform.cwl
     in:
       - id: input_file
-        source: root_bam/output
+        source: extract_bam/output
       - id: known_snp
         source: root_known_snp/output
       - id: reference_sequence
