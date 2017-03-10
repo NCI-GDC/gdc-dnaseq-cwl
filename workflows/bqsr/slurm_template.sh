@@ -14,11 +14,11 @@ VIRTUALENV_NAME=p2
 
 ##JOB VARIABLE
 INPUT_GDC_ID=XX_INPUT_GDC_ID_XX
-CWL_RUNNER_PATH=${HOME}/gdc-dnaseq-cwl/workflows/bqsr/runner.cwl
+CWL_RUNNER_PATH=https://raw.githubusercontent.com/NCI-GDC/gdc-dnaseq-cwl/featdev/coclean-modern/workflows/bqsr/runner.cwl
 JSON_PATH=XX_JSON_PATH_XX
 
 ##FAIL VARIABLE
-CWL_STATUS_PATH=${HOME}/gdc-dnaseq-cwl/workflows/bqsr/status_postgres_workflow.cwl
+CWL_STATUS_PATH=https://raw.githubusercontent.com/NCI-GDC/gdc-dnaseq-cwl/featdev/coclean-modern/workflows/bqsr/status_postgres_workflow.cwl
 DB_CRED_PATH=${HOME}/XX_DB_CRED_XX
 DB_CRED_SECTION=DEFAULT
 DB_TABLE_NAME=XX_DB_TABLE_NAME_XX
