@@ -63,6 +63,7 @@ function status_fail()
     if [ $? -ne 0 ]
     then
         echo FAIL TO FAIL
+        rm -rf ${job_dir}
         exit 1
     fi
 }
@@ -94,6 +95,7 @@ function main()
     then
         echo FAIL
         status_fail ${cache_dir} ${cwl_status_path} ${db_cred_path} ${db_cred_section} ${db_table_name} ${git_repo} ${git_repo_hash} ${input_gdc_id} ${job_dir} ${tmp_dir}
+        rm -rf ${job_dir}
         exit 1
     fi
     rm -rf ${job_dir}
