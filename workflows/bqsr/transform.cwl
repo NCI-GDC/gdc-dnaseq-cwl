@@ -31,6 +31,8 @@ steps:
     in:
       - id: INPUT
         source: input_file
+      - id: workflows/bqsr/
+        valueFrom: "LENIENT"
     out:
       - id: OUTPUT
 
