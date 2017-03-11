@@ -31,7 +31,7 @@ steps:
     in:
       - id: INPUT
         source: input_file
-      - id: workflows/bqsr/
+      - id: VALIDATION_STRINGENCY
         valueFrom: "LENIENT"
     out:
       - id: OUTPUT
