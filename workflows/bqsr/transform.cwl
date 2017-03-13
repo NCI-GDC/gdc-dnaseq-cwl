@@ -59,7 +59,7 @@ steps:
       - id: BQSR
         source: gatk_baserecalibrator/output_grp
       - id: input_file
-        source: input_file
+        source: picard_buildbamindex/OUTPUT
       - id: log_to_file
         source: run_uuid
         valueFrom: $(self + "_pr.log")
