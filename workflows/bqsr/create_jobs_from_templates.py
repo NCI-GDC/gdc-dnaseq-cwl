@@ -38,7 +38,7 @@ def generate_runner(db_cred, db_table_name, input_gdc_id, repo_hash,
                 newline = line.replace('XX_REPO_HASH_XX', repo_hash)
                 f_open.write(newline)
             elif 'XX_RESOURCE_CORE_COUNT_XX' in line:
-                newline = line.replace('XX_RESOURCE_CORE_COUNT_XX', str(slurm_core))
+                newline = line.replace('XX_RESOURCE_CORE_COUNT_XX', str(slurm_core*2))
                 f_open.write(newline)
             else:
                 f_open.write(line)
@@ -46,7 +46,7 @@ def generate_runner(db_cred, db_table_name, input_gdc_id, repo_hash,
     return
 
 def generate_slurm(db_cred, db_table_name, input_gdc_id, node_json_dir,
-                   repo_hash, scratch_dir, slurm_core, slurm_template_path):
+                   repo_hash, scratch_dir, slurm_core, slurm_storage_gibibytes, slurm_template_path):
     job_slurm = input_gdc_id + '_bqsr_wgs.sh'
     job_json = input_gdc_id + '_bqsr_wgs.json'
     f_open = open(job_slurm, 'w')
@@ -71,6 +71,9 @@ def generate_slurm(db_cred, db_table_name, input_gdc_id, node_json_dir,
             elif 'XX_RESOURCE_CORE_COUNT_XX' in line:
                 newline = line.replace('XX_RESOURCE_CORE_COUNT_XX', str(slurm_core))
                 f_open.write(newline)
+            elif 'XX_RESOURCE_DISK_GIBIBYTES_XX' in line:
+                newline = line.replace('XX_RESOURCE_DISK_GIBIBYTES_XX', str(slurm_storage_gibibytes))
+                f_open.write(newline)
             elif 'XX_SCRATCH_DIR_XX' in line:
                 newline = line.replace('XX_SCRATCH_DIR_XX', scratch_dir)
                 f_open.write(newline)
@@ -80,13 +83,13 @@ def generate_slurm(db_cred, db_table_name, input_gdc_id, node_json_dir,
     return
 
 def setup_job(db_cred, db_table_name, input_gdc_id, node_json_dir, repo_hash,
-              s3_load_bucket, scratch_dir, slurm_core,
+              s3_load_bucket, scratch_dir, slurm_core, slurm_storage_gibibytes,
               json_template_path, slurm_template_path):
 
     generate_runner(db_cred, db_table_name, input_gdc_id, repo_hash,
                     s3_load_bucket, slurm_core, json_template_path)
     generate_slurm(db_cred, db_table_name, input_gdc_id, node_json_dir,
-                   repo_hash, scratch_dir, slurm_core, slurm_template_path)
+                   repo_hash, scratch_dir, slurm_core, slurm_storage_gibibytes, slurm_template_path)
     return
 
 def main():
@@ -118,7 +121,7 @@ def main():
     parser.add_argument('--repo_hash',
                         required = True
     )
-    parser.add_argument('--scratch_disk_bytes',
+    parser.add_argument('--slurm_disk_gibibytes',
                         type = int,
                         required = True
     )
@@ -142,7 +145,7 @@ def main():
     repo_hash = args.repo_hash
     s3_load_bucket = args.s3_load_bucket
     scratch_dir = args.scratch_dir
-    scratch_disk_bytes = args.scratch_disk_bytes
+    slurm_disk_gibibytes = args.slurm_disk_gibibytes
     slurm_template_path = args.slurm_template_path
 
     with open(job_table_path, 'r') as job_table_open:
@@ -152,14 +155,16 @@ def main():
             else:
                 job_split = job_line.strip().split(',')
                 input_gdc_id = job_split[header_key_dict['aligned_gdc_id']]
-                input_filesize = job_split[header_key_dict['aligned_filesize']]
-                required_storage = 2 * int(input_filesize)
-                fraction_of_resources = required_storage / scratch_disk_bytes
+                input_filesize = int(job_split[header_key_dict['aligned_filesize']])
+                slurm_storage_gibibytes = math.ceil(2 * (input_filesize / (1024**3)))
+                if slurm_storage_gibibytes > slurm_disk_gibibytes:
+                    sys.exit(1)
+                fraction_of_resources = slurm_storage_gibibytes / slurm_disk_gibibytes
                 slurm_core = math.ceil(fraction_of_resources * NUM_CPU)
                 setup_job(db_cred, db_table_name, input_gdc_id, node_json_dir, repo_hash,
-                          s3_load_bucket, scratch_dir, slurm_core,
+                          s3_load_bucket, scratch_dir, slurm_core, slurm_storage_gibibytes,
                           json_template_path, slurm_template_path)
-                
+
 
 if __name__=='__main__':
     main()
