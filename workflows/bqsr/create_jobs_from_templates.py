@@ -69,10 +69,10 @@ def generate_slurm(db_cred, db_table_name, input_gdc_id, node_json_dir,
                 newline = line.replace('XX_REPO_HASH_XX', repo_hash)
                 f_open.write(newline)
             elif 'XX_RESOURCE_CORE_COUNT_XX' in line:
-                newline = line.replace('XX_RESOURCE_CORE_COUNT_XX', str(slurm_core))
+                newline = line.replace('XX_RESOURCE_CORE_COUNT_XX', str(int(slurm_core)))
                 f_open.write(newline)
             elif 'XX_RESOURCE_DISK_GIBIBYTES_XX' in line:
-                newline = line.replace('XX_RESOURCE_DISK_GIBIBYTES_XX', str(slurm_storage_gibibytes))
+                newline = line.replace('XX_RESOURCE_DISK_GIBIBYTES_XX', str(int(slurm_storage_gibibytes)))
                 f_open.write(newline)
             elif 'XX_SCRATCH_DIR_XX' in line:
                 newline = line.replace('XX_SCRATCH_DIR_XX', scratch_dir)
