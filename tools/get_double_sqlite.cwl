@@ -24,7 +24,7 @@ stdout: output.txt
 
 outputs:
   - id: result
-    type: int
+    type: double
     outputBinding:
       glob: output.txt
       loadContents: true
