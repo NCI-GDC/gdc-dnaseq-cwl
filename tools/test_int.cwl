@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: ubuntu:xenial-20161010
+    dockerPull: quay.io/ncigdc/bc
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
@@ -19,7 +19,7 @@ inputs:
 arguments:
   - valueFrom: |
       ${
-        return "if [ " + inputs.expected_value + " -eq " + inputs.test_value + " ]; then exit 0 ; else exit 1 ; fi";
+        return "if (( $(echo \"" + inputs.expected_value + " == " + inputs.test_value + "\" | bc -l) )); then exit 0 ; else exit 1 ; fi";
       }
 
 outputs:
