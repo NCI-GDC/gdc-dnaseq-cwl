@@ -14,10 +14,10 @@ sql_average_quality_samtools_stats: select "average quality" from samtools_stats
 exp_average_quality_samtools_stats: 34.3
 sql_bases_duplicated_samtools_stats: select "bases duplicated" from samtools_stats where input_state = "markduplicates_readgroups";
 exp_bases_duplicated_samtools_stats: 19719543
-sql_pairs_diff_chr_samtools_stas: select "pairs on different chromosomes" from samtools_stats where input_state = "markduplicates_readgroups";
-exp_pairs_diff_chr_samtools_stas: 36383
+sql_pairs_diff_chr_samtools_stats: select "pairs on different chromosomes" from samtools_stats where input_state = "markduplicates_readgroups";
+exp_pairs_diff_chr_samtools_stats: 36383
 sql_pairs_other_orient_samtools_stats: select "pairs with other orientation" from samtools_stats where input_state = "markduplicates_readgroups";
-exp_pairs_other_orient_samtools_stat: 1810
+exp_pairs_other_orient_samtools_stats: 1810
 sql_raw_total_seq_samtools_stats: select "raw total sequences" from samtools_stats where input_state = "markduplicates_readgroups";
 exp_raw_total_seq_samtools_stats: 3241645
 sql_reads_mq0_samtools_stats: select "reads MQ0" from samtools_stats where input_state = "markduplicates_readgroups";
