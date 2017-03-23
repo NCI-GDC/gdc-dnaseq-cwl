@@ -30,6 +30,6 @@ outputs:
     outputBinding:
       glob: output.txt
       loadContents: true
-      outputEval: "$(Boolean(self[0].contents))"
+      outputEval: "$(Boolean(parseInt(self[0].contents)))"
 
 baseCommand: [bash, -c]
