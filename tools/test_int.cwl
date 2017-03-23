@@ -16,13 +16,20 @@ inputs:
   - id: test_value
     type: int
 
+stdout: output.txt
+
 arguments:
   - valueFrom: |
       ${
-        return "if (( $(echo \"" + inputs.expected_value + " == " + inputs.test_value + "\" | bc -l) )); then exit 0 ; else exit 1 ; fi";
+        return "if (( $(echo \"" + inputs.expected_value + " == " + inputs.test_value + "\" | bc -l) )); then printf 1 ; else printf 0 ; fi";
       }
 
 outputs:
-  []
+  - id: result
+    type: boolean
+    outputBinding:
+      glob: output.txt
+      loadContents: true
+      outputEval: "$(Boolean(self[0].contents))"
 
 baseCommand: [bash, -c]
