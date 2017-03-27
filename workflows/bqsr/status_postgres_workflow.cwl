@@ -29,11 +29,11 @@ inputs:
     type: File
   - id: reference_fa_signpost_id
     type: string
-  - id: repo
-    type: string
-  - id: repo_hash
-    type: string
   - id: run_uuid
+    type: string
+  - id: runner_path
+    type: string
+  - id: runner_repo_hash
     type: string
   - id: s3_bam_url
     type: ["null", string]
@@ -71,10 +71,10 @@ steps:
         source: num_threads
       - id: reference_fa_signpost_id
         source: reference_fa_signpost_id
-      - id: repo
-        source: repo
-      - id: repo_hash
-        source: repo_hash
+      - id: runner_path
+        source: runner_path
+      - id: runner_repo_hash
+        source: runner_repo_hash
       - id: run_uuid
         source: run_uuid
       - id: s3_bam_url
