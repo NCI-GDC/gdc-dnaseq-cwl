@@ -18,14 +18,6 @@ INPUT_GDC_ID=XX_INPUT_GDC_ID_XX
 CWL_RUNNER_PATH=https://raw.githubusercontent.com/NCI-GDC/gdc-dnaseq-cwl/featdev/coclean-modern/workflows/bqsr/runner.cwl
 JSON_PATH=XX_JSON_PATH_XX
 
-##FAIL VARIABLE
-CWL_STATUS_PATH=https://raw.githubusercontent.com/NCI-GDC/gdc-dnaseq-cwl/featdev/coclean-modern/workflows/bqsr/status_postgres_workflow.cwl
-DB_CRED_PATH=${HOME}/XX_DB_CRED_XX
-DB_CRED_SECTION=DEFAULT
-DB_TABLE_NAME=XX_DB_TABLE_NAME_XX
-GIT_REPO=https://github.com/NCI-GDC/gdc-dnaseq-cwl
-GIT_REPO_HASH=XX_REPO_HASH_XX
-
 function activate_virtualenv()
 {
     local virtualenv_name=${1}
@@ -44,29 +36,6 @@ function runner()
 
     export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128;
     cwltool --debug --rm-tmpdir --rm-container --tmp-outdir-prefix ${cache_dir} --tmpdir-prefix ${tmp_dir} --custom-net host --outdir ${job_dir} ${cwl_path} ${json_path}
-}
-
-function status_fail()
-{
-    local cache_dir=${1}
-    local cwl_path=${2}
-    local db_cred_path=${3}
-    local db_cred_section=${4}
-    local db_table_name=${5}
-    local git_repo=${6}
-    local git_repo_hash=${7}
-    local input_gdc_id=${8}
-    local job_dir=${9}
-    local tmp_dir=${10}
-
-    export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128;
-    cwltool --debug --tmp-outdir-prefix ${cache_dir} --tmpdir-prefix ${tmp_dir} --custom-net host --outdir ${job_dir} ${cwl_path} --ini_section ${db_cred_section} --bam_signpost_id ${input_gdc_id} --postgres_creds_path ${db_cred_path} --repo ${git_repo} --repo_hash ${git_repo_hash} --status FAIL --table_name ${db_table_name}
-    if [ $? -ne 0 ]
-    then
-        echo FAIL TO FAIL
-        rm -rf ${job_dir}
-        exit 1
-    fi
 }
 
 function main()
@@ -94,8 +63,7 @@ function main()
     runner ${cache_dir} ${cwl_runner_path} ${job_dir} ${json_path} ${tmp_dir}
     if [ $? -ne 0 ]
     then
-        echo FAIL
-        status_fail ${cache_dir} ${cwl_status_path} ${db_cred_path} ${db_cred_section} ${db_table_name} ${git_repo} ${git_repo_hash} ${input_gdc_id} ${job_dir} ${tmp_dir}
+        echo FAIL_RUNNER
         rm -rf ${job_dir}
         exit 1
     fi
