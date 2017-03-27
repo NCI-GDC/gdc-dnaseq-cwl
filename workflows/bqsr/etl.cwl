@@ -23,6 +23,8 @@ inputs:
     type: string
   - id: known_snp_signpost_id
     type: string
+  - id: job_creation_uuid
+    type: string
   - id: load_bucket
     type: string
   - id: load_s3cfg_section
@@ -252,6 +254,30 @@ steps:
       - id: gatk_printreads_output_bam
       - id: integrity_sqlite
 
+  - id: job_creation_uuid_sqlite
+    run: ../../tools/table_string_sqlite_cell.cwl
+    in:
+      - id: table_name
+        valueFrom: "job_creation_uuid"
+      - id: cell_value
+        source: job_creation_uuid
+    out:
+      - id: sqlite
+
+  - id: wmerge_sqlite
+    run: ../../tools/merge_sqlite.cwl
+    in:
+      - id: source_sqlite
+        source: [
+          transform/integrity_sqlite,
+          job_creation_uuid_sqlite/sqlite
+        ]
+      - id: uuid
+        source: uuid
+    out:
+      - id: destination_sqlite
+      - id: log
+w        
   - id: load_bam
     run: ../../tools/aws_s3_put.cwl
     in:
@@ -307,7 +333,7 @@ steps:
       - id: endpoint_json
         source: endpoint_json
       - id: input
-        source: transform/integrity_sqlite
+        source: transform/destination_sqlite
       - id: s3cfg_section
         source: load_s3cfg_section
       - id: s3uri
