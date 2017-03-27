@@ -17,6 +17,10 @@ inputs:
     type: string
   - id: ini_section
     type: string
+  - id: job_creation_uuid
+    type: string
+  - id: job_path
+    type: string
   - id: known_snp_signpost_id
     type: string
   - id: num_threads
@@ -57,6 +61,10 @@ steps:
         source: host_ipaddress
       - id: host_mac
         source: host_mac
+      - id: job_creation_uuid
+        source: job_creation_uuid
+      - id: job_path
+        source: job_path
       - id: known_snp_signpost_id
         source: known_snp_signpost_id
       - id: num_threads
