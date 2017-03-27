@@ -250,6 +250,7 @@ steps:
         source: run_uuid
     out:
       - id: gatk_printreads_output_bam
+      - id: integrity_sqlite
 
   - id: load_bam
     run: ../../tools/aws_s3_put.cwl
@@ -296,6 +297,28 @@ steps:
     out:
       - id: output
 
+  - id: load_sqlite
+    run: ../../tools/aws_s3_put.cwl
+    in:
+      - id: aws_config
+        source: aws_config
+      - id: aws_shared_credentials
+        source: aws_shared_credentials
+      - id: endpoint_json
+        source: endpoint_json
+      - id: input
+        source: transform/integrity_sqlite
+      - id: s3cfg_section
+        source: load_s3cfg_section
+      - id: s3uri
+        source: load_bucket
+        valueFrom: $(self + "/" + inputs.bam_uuid + "/")
+      - id: bam_uuid
+        source: emit_bam_uuid/output
+        valueFrom: null
+    out:
+      - id: output
+
   - id: generate_token
     run: ../../tools/generate_load_token.cwl
     in:
@@ -303,6 +326,8 @@ steps:
         source: load_bam/output
       - id: load2
         source: load_bai/output
+      - id: load3
+        source: load_sqlite/output
     out:
       - id: token
 

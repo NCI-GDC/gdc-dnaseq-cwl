@@ -24,6 +24,9 @@ outputs:
   - id: gatk_printreads_output_bam
     type: File
     outputSource: gatk_printreads/output_bam
+  - id: integrity_sqlite
+    type: File
+    outputSource: integrity/merge_sqlite_destination_sqlite
     
 steps:
   - id: picard_buildbamindex
@@ -69,3 +72,18 @@ steps:
         source: reference_sequence
     out:
       - id: output_bam
+
+  - id: integrity
+    run: integrity.cwl
+    in:
+      - id: bai_path
+        source: gatk_printreads/output_bam
+        valueFrom: $(self.secondaryFiles[0])
+      - id: bam_path
+        source: gatk_printsreads/output_bam
+      - id: input_state
+        valueFrom: "gatk_baserecalibrator"
+      - id: uuid
+        source: run_uuid
+    out:
+      - id: merge_sqlite_destination_sqlite
