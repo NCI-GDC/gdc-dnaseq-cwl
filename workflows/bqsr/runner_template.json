@@ -18,6 +18,7 @@
         "path" : "/home/ubuntu/endpoint.json"
     },
     "job_creation_uuid": "XX_JOB_CREATION_UUID_XX",
+    "job_path": "XX_JOB_PATH_XX",
     "known_snp_index_signpost_id": "df35a362-e9bb-47a1-b79c-24463ea9e218",
     "known_snp_signpost_id": "4ba1c087-ec80-47c4-a9d5-e9bb9933fef4",
     "load_bucket": "XX_LOAD_BUCKET_XX",
@@ -26,8 +27,8 @@
     "reference_dict_signpost_id": "cf9768de-12ec-4afb-9af2-1b6ba3e07c0d",
     "reference_fa_signpost_id": "ed96790c-3eb5-4aa2-8f46-702d503e64e4",
     "reference_fai_signpost_id": "10283433-bcec-46bc-bfd5-5215428853ea",
-    "repo": "https://github.com/NCI-GDC/gdc-dnaseq-cwl",
-    "repo_hash": "XX_REPO_HASH_XX",
+    "runner_path": "XX_RUNNER_PATH_XX",
+    "runner_repo_hash": "XX_REPO_HASH_XX",
     "signpost_base_url": "signpost.service.consul/v0/did/",
     "status_table_name": "XX_STATUS_TABLE_NAME_XX",
 }
