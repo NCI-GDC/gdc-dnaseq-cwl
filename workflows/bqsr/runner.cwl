@@ -22,6 +22,8 @@ inputs:
     type: string
   - id: endpoint_json
     type: File
+  - id: job_creation_uuid
+    type: string
   - id: known_snp_index_signpost_id
     type: string
   - id: known_snp_signpost_id
@@ -162,6 +164,8 @@ steps:
         source: known_snp_index_signpost_id
       - id: known_snp_signpost_id
         source: known_snp_signpost_id
+      - id: job_creation_uuid
+        source: job_creation_uuid
       - id: load_bucket
         source: load_bucket
       - id: load_s3cfg_section
@@ -200,6 +204,8 @@ steps:
         source: emit_host_mac/output
       - id: ini_section
         source: db_cred_section
+      - id: job_creation_uuid
+        source: job_creation_uuid
       - id: known_snp_signpost_id
         source: known_snp_signpost_id
       - id: num_threads

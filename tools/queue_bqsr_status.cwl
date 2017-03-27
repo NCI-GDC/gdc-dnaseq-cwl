@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/queue_bqsr_status
+    dockerPull: quay.io/ncigdc/queue_bqsr_status:1
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
@@ -34,6 +34,11 @@ inputs:
     type: string
     inputBinding:
       prefix: --host_mac
+
+  - id: job_creation_uuid
+    type: string
+    inputBinding:
+      prefix: --job_creation_uuid
 
   - id: known_snp_signpost_id
     type: string

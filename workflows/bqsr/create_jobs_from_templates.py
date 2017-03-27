@@ -52,21 +52,12 @@ def generate_slurm(db_cred, db_table_name, input_gdc_id, node_json_dir,
     f_open = open(job_slurm, 'w')
     with open(slurm_template_path, 'r') as read_open:
         for line in read_open:
-            if 'XX_DB_CRED_XX' in line:
-                newline = line.replace('XX_DB_CRED_XX', db_cred)
-                f_open.write(newline)
-            elif 'XX_DB_TABLE_NAME_XX' in line:
-                newline = line.replace('XX_DB_TABLE_NAME_XX', db_table_name)
-                f_open.write(newline)
-            elif 'XX_INPUT_GDC_ID_XX' in line:
+            if 'XX_INPUT_GDC_ID_XX' in line:
                 newline = line.replace('XX_INPUT_GDC_ID_XX', input_gdc_id)
                 f_open.write(newline)
             elif 'XX_JSON_PATH_XX' in line:
                 json_path = os.path.join(node_json_dir, job_json)
                 newline = line.replace('XX_JSON_PATH_XX', json_path)
-                f_open.write(newline)
-            elif 'XX_REPO_HASH_XX' in line:
-                newline = line.replace('XX_REPO_HASH_XX', repo_hash)
                 f_open.write(newline)
             elif 'XX_RESOURCE_CORE_COUNT_XX' in line:
                 newline = line.replace('XX_RESOURCE_CORE_COUNT_XX', str(int(slurm_core)))
@@ -82,10 +73,12 @@ def generate_slurm(db_cred, db_table_name, input_gdc_id, node_json_dir,
     f_open.close()
     return
 
-def setup_job(db_cred, db_table_name, input_gdc_id, node_json_dir, repo_hash,
-              s3_load_bucket, scratch_dir, slurm_core, slurm_storage_gibibytes,
-              json_template_path, slurm_template_path):
+def setup_job(db_cred, db_table_name, http_json_base,
+                          input_gdc_id, job_table_path, json_template_path,
+                          repo_hash, s3_load_bucket, scratch_dir,
+                          slurm_core, slurm_disk_gibibytes, slurm_template_path):
 
+    
     generate_runner(db_cred, db_table_name, input_gdc_id, repo_hash,
                     s3_load_bucket, slurm_core, json_template_path)
     generate_slurm(db_cred, db_table_name, input_gdc_id, node_json_dir,
@@ -109,20 +102,16 @@ def main():
     parser.add_argument('--db_table_name',
                         required = True
     )
+    parser.add_argument('--http_json_base_url',
+                        required = True
+    )        
     parser.add_argument('--job_table_path',
                         required = True
     )    
     parser.add_argument('--json_template_path',
                         required = True
     )
-    parser.add_argument('--node_json_dir',
-                        required = True
-    )
     parser.add_argument('--repo_hash',
-                        required = True
-    )
-    parser.add_argument('--slurm_disk_gibibytes',
-                        type = int,
                         required = True
     )
     parser.add_argument('--s3_load_bucket',
@@ -131,22 +120,25 @@ def main():
     parser.add_argument('--scratch_dir',
                         required = True
     )
+    parser.add_argument('--slurm_disk_gibibytes',
+                        type = int,
+                        required = True
+    )
     parser.add_argument('--slurm_template_path',
                         required = True
     )
 
     args = parser.parse_args()
 
-    db_cred = args.db_cred
-    db_table_name = args.db_table_name
     job_table_path = args.job_table_path
     json_template_path = args.json_template_path
-    node_json_dir = args.node_json_dir
+    http_json_base_url = args.http_json_base_url
     repo_hash = args.repo_hash
-    s3_load_bucket = args.s3_load_bucket
     scratch_dir = args.scratch_dir
     slurm_disk_gibibytes = args.slurm_disk_gibibytes
     slurm_template_path = args.slurm_template_path
+
+    job_creation_uuid = str(uuid.uuid4())
 
     with open(job_table_path, 'r') as job_table_open:
         for job_line in job_table_open:
@@ -161,9 +153,10 @@ def main():
                     sys.exit(1)
                 fraction_of_resources = slurm_storage_gibibytes / slurm_disk_gibibytes
                 slurm_core = math.ceil(fraction_of_resources * NUM_CPU)
-                setup_job(db_cred, db_table_name, input_gdc_id, node_json_dir, repo_hash,
-                          s3_load_bucket, scratch_dir, slurm_core, slurm_storage_gibibytes,
-                          json_template_path, slurm_template_path)
+                setup_job(db_cred, db_table_name, http_json_base_url,
+                          input_gdc_id, job_table_path, json_template_path,
+                          repo_hash, s3_load_bucket, scratch_dir,
+                          slurm_core, slurm_disk_gibibytes, slurm_template_path)
 
 
 if __name__=='__main__':

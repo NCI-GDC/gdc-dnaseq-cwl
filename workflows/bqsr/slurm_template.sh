@@ -42,12 +42,7 @@ function main()
 {
     local cwl_runner_path=${CWL_RUNNER_PATH}
     local cwl_status_path=${CWL_STATUS_PATH}
-    local db_cred_path=${DB_CRED_PATH}
-    local db_cred_section=${DB_CRED_SECTION}
-    local db_table_name=${DB_TABLE_NAME}
     local json_path=${JSON_PATH}
-    local git_repo=${GIT_REPO}
-    local git_repo_hash=${GIT_REPO_HASH}
     local input_gdc_id=${INPUT_GDC_ID}
     local scratch_dir=${SCRATCH_DIR}
 
