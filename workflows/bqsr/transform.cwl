@@ -80,7 +80,7 @@ steps:
         source: gatk_printreads/output_bam
         valueFrom: $(self.secondaryFiles[0])
       - id: bam_path
-        source: gatk_printsreads/output_bam
+        source: gatk_printreads/output_bam
       - id: input_state
         valueFrom: "gatk_baserecalibrator"
       - id: uuid
