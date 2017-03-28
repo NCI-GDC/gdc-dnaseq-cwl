@@ -277,7 +277,7 @@ steps:
     out:
       - id: destination_sqlite
       - id: log
-w        
+
   - id: load_bam
     run: ../../tools/aws_s3_put.cwl
     in:
