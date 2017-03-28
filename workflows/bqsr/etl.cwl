@@ -273,7 +273,7 @@ steps:
           job_creation_uuid_sqlite/sqlite
         ]
       - id: uuid
-        source: uuid
+        source: run_uuid
     out:
       - id: destination_sqlite
       - id: log
