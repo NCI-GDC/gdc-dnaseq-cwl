@@ -93,13 +93,13 @@ def setup_job(db_cred, db_table_name, http_json_base_url,
               scratch_dir, slurm_core, slurm_disk_gibibytes, slurm_mem_mebibytes,
               slurm_template_path):
 
-    job_json = '/'.join(job_creation_uuid, 'cwl', input_gdc_id + '_bqsr_wgs.json')
-    job_slurm = '/'.join(job_creation_uuid, 'slurm', input_gdc_id + '_bqsr_wgs.sh')
-    json_path = '/'.join(http_json_base_url,job_creation_uuid,job_json)
+    job_json = '/'.join((job_creation_uuid, 'cwl', input_gdc_id + '_bqsr_wgs.json'))
+    job_slurm = '/'.join((job_creation_uuid, 'slurm', input_gdc_id + '_bqsr_wgs.sh'))
+    json_path = '/'.join((http_json_base_url,job_creation_uuid,job_json))
 
     generate_runner(db_cred, db_table_name, input_gdc_id, job_creation_uuid, job_json,
                     json_path, json_template_path, runner_cwl_path, runner_repo_hash,
-                    s3_load_bucket, slurm_core)
+                    s3_load_bucket, slurm_core, slurm_disk_gibibytes, slurm_mem_mebibytes)
     generate_slurm(input_gdc_id, job_slurm, json_path, scratch_dir, slurm_core,
                    slurm_disk_gibibytes, slurm_mem_mebibytes, slurm_template_path)
     return
@@ -159,12 +159,15 @@ def main():
 
     args = parser.parse_args()
 
+    db_cred = args.db_cred
+    db_table_name = args.db_table_name
     job_table_path = args.job_table_path
     json_template_path = args.json_template_path
     num_cores = args.num_cores
     http_json_base_url = args.http_json_base_url
-    runner_cwl_hash = args.runner_cwl_hash
+    runner_cwl_path = args.runner_cwl_path
     runner_repo_hash = args.runner_repo_hash
+    s3_load_bucket = args.s3_load_bucket
     scratch_dir = args.scratch_dir
     slurm_disk_gibibytes = args.slurm_disk_gibibytes
     slurm_mem_mebibytes = args.slurm_mem_mebibytes
@@ -172,8 +175,8 @@ def main():
 
     job_creation_uuid = str(uuid.uuid4())
 
-    cwl_dir = '/'.join(job_creation_uuid,'cwl')
-    slurm_dir = '/'.join(job_creation_uuid, 'slurm')
+    cwl_dir = '/'.join((job_creation_uuid, 'cwl'))
+    slurm_dir = '/'.join((job_creation_uuid, 'slurm'))
 
     if not os.path.exists(job_creation_uuid):
         os.makedirs(job_creation_uuid)
