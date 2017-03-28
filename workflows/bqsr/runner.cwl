@@ -42,9 +42,9 @@ inputs:
     type: string
   - id: reference_fai_signpost_id
     type: string
-  - id: repo
+  - id: runner_cwl_path
     type: string
-  - id: repo_hash
+  - id: runner_repo_hash
     type: string
   - id: slurm_resource_core_count
     type: int
