@@ -264,7 +264,7 @@ steps:
     out:
       - id: sqlite
 
-  - id: wmerge_sqlite
+  - id: merge_sqlite
     run: ../../tools/merge_sqlite.cwl
     in:
       - id: source_sqlite
