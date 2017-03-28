@@ -27,6 +27,9 @@ def generate_runner(db_cred, db_table_name, input_gdc_id, job_creation_uuid, job
             elif 'XX_INPUT_GDC_ID_XX' in line:
                 newline = line.replace('XX_INPUT_GDC_ID_XX', input_gdc_id)
                 f_open.write(newline)
+            elif 'XX_JOB_CREATION_UUID_XX' in line:
+                newline = line.replace('XX_JOB_CREATION_UUID_XX', job_creation_uuid)
+                f_open.write(newline)
             elif 'XX_JOB_PATH_XX' in line:
                 newline = line.replace('XX_JOB_PATH_XX', json_path)
                 f_open.write(newline)
@@ -37,13 +40,13 @@ def generate_runner(db_cred, db_table_name, input_gdc_id, job_creation_uuid, job
                 newline = line.replace('XX_NUM_THREADS_XX', str(slurm_core*2))
                 f_open.write(newline)
             elif 'XX_SLURM_RESOURCE_CORE_COUNT_XX' in line:
-                newline = line.replace('XX_RESOURCE_CORE_COUNT_XX', str(slurm_core))
+                newline = line.replace('XX_SLURM_RESOURCE_CORE_COUNT_XX', str(slurm_core))
                 f_open.write(newline)
             elif 'XX_SLURM_RESOURCE_DISK_GIBIBYTES_XX' in line:
-                newline = line.replace('XX_RESOURCE_DISK_GIBIBYTES_XX', str(slurm_disk_gibibytes))
+                newline = line.replace('XX_SLURM_RESOURCE_DISK_GIBIBYTES_XX', str(slurm_disk_gibibytes))
                 f_open.write(newline)
             elif 'XX_SLURM_RESOURCE_MEM_MEBIBYTES_XX' in line:
-                newline = line.replace('XX_RESOURCE_MEM_MEBIBYTES_XX', str(slurm_mem_mebibytes))
+                newline = line.replace('XX_SLURM_RESOURCE_MEM_MEBIBYTES_XX', str(slurm_mem_mebibytes))
                 f_open.write(newline)
             elif 'XX_RUNNER_CWL_PATH_XX' in line:
                 newline = line.replace('XX_RUNNER_CWL_PATH_XX', runner_cwl_path)
@@ -95,7 +98,7 @@ def setup_job(db_cred, db_table_name, http_json_base_url,
 
     job_json = '/'.join((job_creation_uuid, 'cwl', input_gdc_id + '_bqsr_wgs.json'))
     job_slurm = '/'.join((job_creation_uuid, 'slurm', input_gdc_id + '_bqsr_wgs.sh'))
-    json_path = '/'.join((http_json_base_url,job_creation_uuid,job_json))
+    json_path = '/'.join((http_json_base_url,job_json))
 
     generate_runner(db_cred, db_table_name, input_gdc_id, job_creation_uuid, job_json,
                     json_path, json_template_path, runner_cwl_path, runner_repo_hash,
@@ -201,7 +204,7 @@ def main():
                 setup_job(db_cred, db_table_name, http_json_base_url,
                           input_gdc_id, job_table_path, job_creation_uuid,
                           json_template_path, runner_cwl_path, runner_repo_hash, s3_load_bucket,
-                          scratch_dir, slurm_core, slurm_disk_gibibytes, slurm_mem_mebibytes,
+                          scratch_dir, slurm_core, slurm_storage_gibibytes, slurm_mem_mebibytes,
                           slurm_template_path)
 
 

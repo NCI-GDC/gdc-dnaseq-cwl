@@ -24,6 +24,8 @@ inputs:
     type: File
   - id: job_creation_uuid
     type: string
+  - id: job_path
+    type: string
   - id: known_snp_index_signpost_id
     type: string
   - id: known_snp_signpost_id
@@ -44,6 +46,12 @@ inputs:
     type: string
   - id: repo_hash
     type: string
+  - id: slurm_resource_core_count
+    type: int
+  - id: slurm_resource_disk_gibibytes
+    type: int
+  - id: slurm_resource_mem_mebibytes
+    type: int
   - id: signpost_base_url
     type: string
   - id: status_table_name
@@ -128,6 +136,10 @@ steps:
         source: emit_host_mac/output
       - id: ini_section
         source: db_cred_section
+      - id: job_creation_uuid
+        source: job_creation_uuid
+      - id: job_path
+        source: job_path
       - id: known_snp_signpost_id
         source: known_snp_signpost_id
       - id: num_threads
@@ -136,12 +148,18 @@ steps:
         source: db_cred_path
       - id: reference_fa_signpost_id
         source: reference_fa_signpost_id
-      - id: repo
-        source: repo
-      - id: repo_hash
-        source: repo_hash
       - id: run_uuid
         source: emit_run_uuid/output
+      - id: runner_cwl_path
+        source: runner_cwl_path
+      - id: runner_repo_hash
+        source: runner_repo_hash
+      - id: slurm_resource_core_count
+        source: slurm_resource_core_count
+      - id: slurm_resource_disk_gibibytes
+        source: slurm_resource_disk_gibibytes
+      - id: slurm_resource_mem_mebibytes
+        source: slurm_resource_mem_mebibytes
       - id: status
         valueFrom: "RUNNING"
       - id: table_name
@@ -164,8 +182,6 @@ steps:
         source: known_snp_index_signpost_id
       - id: known_snp_signpost_id
         source: known_snp_signpost_id
-      - id: job_creation_uuid
-        source: job_creation_uuid
       - id: load_bucket
         source: load_bucket
       - id: load_s3cfg_section
@@ -206,6 +222,8 @@ steps:
         source: db_cred_section
       - id: job_creation_uuid
         source: job_creation_uuid
+      - id: job_path
+        source: job_path
       - id: known_snp_signpost_id
         source: known_snp_signpost_id
       - id: num_threads
@@ -214,17 +232,23 @@ steps:
         source: db_cred_path
       - id: reference_fa_signpost_id
         source: reference_fa_signpost_id
-      - id: repo
-        source: repo
-      - id: repo_hash
-        source: repo_hash
+      - id: run_uuid
+        source: emit_run_uuid/output
+      - id: runner_cwl_path
+        source: runner_cwl_path
+      - id: runner_repo_hash
+        source: runner_repo_hash
       - id: s3_bam_url
         source: etl/s3_bam_url
+      - id: slurm_resource_core_count
+        source: slurm_resource_core_count
+      - id: slurm_resource_disk_gibibytes
+        source: slurm_resource_disk_gibibytes
+      - id: slurm_resource_mem_mebibytes
+        source: slurm_resource_mem_mebibytes
       - id: status
         valueFrom: "COMPLETE"
       - id: table_name
         source: status_table_name
-      - id: run_uuid
-        source: emit_run_uuid/output
     out:
       - id: token

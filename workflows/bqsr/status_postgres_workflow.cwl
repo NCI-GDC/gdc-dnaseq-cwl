@@ -31,12 +31,18 @@ inputs:
     type: string
   - id: run_uuid
     type: string
-  - id: runner_path
+  - id: runner_cwl_path
     type: string
   - id: runner_repo_hash
     type: string
   - id: s3_bam_url
     type: ["null", string]
+  - id: slurm_resource_core_count
+    type: int
+  - id: slurm_resource_disk_gibibytes
+    type: int
+  - id: slurm_resource_mem_mebibytes
+    type: int
   - id: status
     type: string
   - id: table_name
@@ -71,14 +77,20 @@ steps:
         source: num_threads
       - id: reference_fa_signpost_id
         source: reference_fa_signpost_id
-      - id: runner_path
-        source: runner_path
+      - id: runner_cwl_path
+        source: runner_cwl_path
       - id: runner_repo_hash
         source: runner_repo_hash
       - id: run_uuid
         source: run_uuid
       - id: s3_bam_url
         source: s3_bam_url
+      - id: slurm_resource_core_count
+        source: slurm_resource_core_count
+      - id: slurm_resource_disk_gibibytes
+        source: slurm_resource_disk_gibibytes
+      - id: slurm_resource_mem_mebibytes
+        source: slurm_resource_mem_mebibytes
       - id: status
         source: status
       - id: table_name

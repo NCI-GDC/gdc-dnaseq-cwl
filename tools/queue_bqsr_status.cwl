@@ -55,15 +55,15 @@ inputs:
     inputBinding:
       prefix: --reference_fa_signpost_id
 
-  - id: repo
+  - id: runner_cwl_path
     type: string
     inputBinding:
-      prefix: --repo
+      prefix: --runner_cwl_path
 
-  - id: repo_hash
+  - id: runner_repo_hash
     type: string
     inputBinding:
-      prefix: --repo_hash
+      prefix: --runner_repo_hash
 
   - id: run_uuid
     type: string
@@ -74,6 +74,21 @@ inputs:
     type: ["null", string]
     inputBinding:
       prefix: --s3_bam_url
+
+  - id: slurm_resource_core_count
+    type: int
+    inputBinding:
+      prefix: --slurm_resource_core_count
+
+  - id: slurm_resource_disk_gibibytes
+    type: int
+    inputBinding:
+      prefix: --slurm_resource_disk_gibibytes
+
+  - id: slurm_resource_mem_mebibytes
+    type: int
+    inputBinding:
+      prefix: --slurm_resource_mem_mebibytes
 
   - id: status
     type: string
