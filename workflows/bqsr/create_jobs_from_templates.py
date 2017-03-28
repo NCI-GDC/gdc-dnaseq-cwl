@@ -93,8 +93,8 @@ def setup_job(db_cred, db_table_name, http_json_base_url,
               scratch_dir, slurm_core, slurm_disk_gibibytes, slurm_mem_mebibytes,
               slurm_template_path):
 
-    job_json = input_gdc_id + '_bqsr_wgs.json'
-    job_slurm = input_gdc_id + '_bqsr_wgs.sh'
+    job_json = '/'.join(job_creation_uuid, 'cwl', input_gdc_id + '_bqsr_wgs.json')
+    job_slurm = '/'.join(job_creation_uuid, 'slurm', input_gdc_id + '_bqsr_wgs.sh')
     json_path = '/'.join(http_json_base_url,job_creation_uuid,job_json)
 
     generate_runner(db_cred, db_table_name, input_gdc_id, job_creation_uuid, job_json,
@@ -171,6 +171,16 @@ def main():
     slurm_template_path = args.slurm_template_path
 
     job_creation_uuid = str(uuid.uuid4())
+
+    cwl_dir = '/'.join(job_creation_uuid,'cwl')
+    slurm_dir = '/'.join(job_creation_uuid, 'slurm')
+
+    if not os.path.exists(job_creation_uuid):
+        os.makedirs(job_creation_uuid)
+        os.makedirs(cwl_dir)
+        os.makedirs(slurm_dir)
+    else:
+        sys.exit(job_creation_uuid + ' exists. Exiting.')
 
     with open(job_table_path, 'r') as job_table_open:
         for job_line in job_table_open:
