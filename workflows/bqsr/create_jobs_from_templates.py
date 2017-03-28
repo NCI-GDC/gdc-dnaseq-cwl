@@ -100,7 +100,7 @@ def setup_job(db_cred, db_table_name, http_json_base_url,
     generate_runner(db_cred, db_table_name, input_gdc_id, job_creation_uuid, job_json,
                     json_path, json_template_path, runner_cwl_path, runner_repo_hash,
                     s3_load_bucket, slurm_core)
-    generate_slurm(input_gdc_id, job_slurm, json_path, scratch_dir, slurm_core
+    generate_slurm(input_gdc_id, job_slurm, json_path, scratch_dir, slurm_core,
                    slurm_disk_gibibytes, slurm_mem_mebibytes, slurm_template_path)
     return
 
