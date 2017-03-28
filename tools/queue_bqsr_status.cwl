@@ -40,6 +40,11 @@ inputs:
     inputBinding:
       prefix: --job_creation_uuid
 
+  - id: job_path
+    type: string
+    inputBinding:
+      prefix: --job_path
+
   - id: known_snp_signpost_id
     type: string
     inputBinding:
