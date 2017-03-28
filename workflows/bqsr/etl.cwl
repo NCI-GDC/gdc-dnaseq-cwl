@@ -333,7 +333,7 @@ steps:
       - id: endpoint_json
         source: endpoint_json
       - id: input
-        source: transform/destination_sqlite
+        source: merge_sqlite/destination_sqlite
       - id: s3cfg_section
         source: load_s3cfg_section
       - id: s3uri
