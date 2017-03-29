@@ -178,6 +178,8 @@ steps:
         source: bam_signpost_id
       - id: endpoint_json
         source: endpoint_json
+      - id: job_creation_uuid
+        source: job_creation_uuid
       - id: known_snp_index_signpost_id
         source: known_snp_index_signpost_id
       - id: known_snp_signpost_id
