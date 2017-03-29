@@ -1,21 +1,21 @@
 {
     "aws_config": {
         "class": "File",
-        "path" : "/home/ubuntu/.aws/config"
+        "path" : "file:///home/ubuntu/.aws/config"
     },
     "aws_shared_credentials": {
             "class": "File",
-            "path" : "/home/ubuntu/.aws/credentials"
+            "path" : "file:///home/ubuntu/.aws/credentials"
     },
     "bam_signpost_id": "XX_INPUT_GDC_ID_XX",
     "db_cred_path": {
         "class": "File",
-        "path": "/home/ubuntu/XX_DB_CRED_XX"
+        "path": "file:///home/ubuntu/XX_DB_CRED_XX"
     },
     "db_cred_section": "DEFAULT",
     "endpoint_json": {
         "class": "File",
-        "path" : "/home/ubuntu/endpoint.json"
+        "path" : "file:///home/ubuntu/endpoint.json"
     },
     "job_creation_uuid": "XX_JOB_CREATION_UUID_XX",
     "job_path": "XX_JOB_PATH_XX",
