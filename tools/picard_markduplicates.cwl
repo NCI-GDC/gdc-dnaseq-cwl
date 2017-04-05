@@ -52,7 +52,7 @@ outputs:
     outputBinding:
       glob: $(inputs.INPUT.basename + ".metrics")
 
-arguments::
+arguments:
   - valueFrom: $(inputs.INPUT.basename)
     prefix: OUTPUT=
     separate: false
