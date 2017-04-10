@@ -196,7 +196,7 @@ def main():
                 job_split = job_line.strip().split(',')
                 input_gdc_id = job_split[header_key_dict['aligned_gdc_id']]
                 input_filesize = int(job_split[header_key_dict['aligned_filesize']])
-                slurm_storage_gibibytes = math.ceil(2 * (input_filesize / (1024**3)))
+                slurm_storage_gibibytes = math.ceil(3 * (input_filesize / (1024**3)))
                 if slurm_storage_gibibytes > slurm_disk_gibibytes:
                     sys.exit(1)
                 fraction_of_resources = slurm_storage_gibibytes / slurm_disk_gibibytes
