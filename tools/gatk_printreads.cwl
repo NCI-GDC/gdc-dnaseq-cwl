@@ -1,70 +1,103 @@
 #!/usr/bin/env cwl-runner
 
-cwlVersion: "cwl:draft-3"
-
-description: |
-  Usage:  cwl-runner <this-file-path> XXXX
-  Options:
-    --bam_path       XXXX
-    --uuid           XXXX
+cwlVersion: v1.0
 
 requirements:
-  - class: InlineJavascriptRequirement
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/cocleaning-tool
+    dockerPull: quay.io/ncigdc/cocleaning-tool:3.7
+  - class: InlineJavascriptRequirement
 
 class: CommandLineTool
 
 inputs:
-  - id: bam_path
+  - id: BQSR
+    type: ["null", File]
+    inputBinding:
+      prefix: --BQSR
+
+  - id: input_file
+    #format: "edam:format_2572"
     type: File
     inputBinding:
-      prefix: --bam_path
+      prefix: --input_file
     secondaryFiles:
       - ^.bai
 
-  - id: bqsr_grp_path
-    type: File
+  - id: log_to_file
+    type: string
     inputBinding:
-      prefix: --bqsr_table_path
+      prefix: --log_to_file
 
-  - id: reference_fasta_path
+  - id: --logging_level
+    default: INFO
+    type: string
+    inputBinding:
+      prefix: --logging_level
+
+  - id: num_cpu_threads_per_data_thread
+    type: int
+    default: 1
+    inputBinding:
+      prefix: --num_cpu_threads_per_data_thread
+
+  - id: number
+    type: int
+    default: -1
+    inputBinding:
+      prefix: --number
+    
+  - id: platform
+    type: ["null", string]
+    inputBinding:
+      prefix: --platform
+
+  - id: readGroup
+    type: ["null", string]
+    inputBinding:
+      prefix: --readGroup
+
+  - id: reference_sequence
+    #format: "edam:format_1929"
     type: File
     inputBinding:
-      prefix: --reference_fasta_path
+      prefix: --reference_sequence
     secondaryFiles:
       - .fai
       - ^.dict
 
-  - id: thread_count
-    type: int
+  - id: sample_file
+    type: ["null", string]
     inputBinding:
-      prefix: --thread_count
+      prefix: --sample_file
 
-  - id: uuid
-    type: string
+  - id: sample_name
+    type: ["null", string]
     inputBinding:
-      prefix: --uuid
+      prefix: --sample_name
+
+  - id: simplify
+    type: boolean
+    default: false
+    inputBinding:
+      prefix: --simplify
 
 outputs:
   - id: output_bam
+    #format: "edam:format_2572"
     type: File
-    description: "The BAM file"
     outputBinding:
-      glob: $(inputs.bam_path.path.split('/').slice(-1)[0])
+      glob: $(inputs.input_file.basename)
     secondaryFiles:
       - ^.bai
-          
-  - id: log
-    type: File
-    description: "python log file"
-    outputBinding:
-      glob: $(inputs.uuid + "_gatk_printreads.log")
 
-  - id: output_sqlite
+  - id: output_log
     type: File
-    description: "sqlite file"
     outputBinding:
-      glob: $(inputs.uuid + ".db")
-          
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/tools/cocleaning-tool/main.py", "--tool_name", "printreads"]
+      glob: $(inputs.log_to_file)
+
+arguments:
+  - valueFrom: $(inputs.input_file.basename)
+    prefix: --out
+    separate: true
+
+baseCommand: [java, -jar, /usr/local/bin/GenomeAnalysisTK.jar, -T, PrintReads]

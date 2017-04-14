@@ -1,0 +1,32 @@
+{
+    "aws_config": {
+        "class": "File",
+        "path" : "/home/ubuntu/.aws/config"
+    },
+    "aws_shared_credentials": {
+            "class": "File",
+            "path" : "/home/ubuntu/aws_jhsavage_credentials"
+    },
+    "bam_signpost_id": "82a84ebf-1237-4a6c-b423-157284e1f90d",
+    "db_cred_path": {
+        "class": "File",
+        "path": "/home/ubuntu/connect_jhsavage_test2.ini"
+    },
+    "db_cred_section": "DEFAULT",
+    "endpoint_json": {
+        "class": "File",
+        "path" : "/home/ubuntu/endpoint.json"
+    },
+    "known_snp_index_signpost_id": "df35a362-e9bb-47a1-b79c-24463ea9e218",
+    "known_snp_signpost_id": "4ba1c087-ec80-47c4-a9d5-e9bb9933fef4",
+    "load_bucket": "s3://bioinformatics_scratch/maydeletetest",
+    "load_s3cfg_section": "ceph",
+    "num_threads": 8,
+    "reference_dict_signpost_id": "cf9768de-12ec-4afb-9af2-1b6ba3e07c0d",
+    "reference_fa_signpost_id": "ed96790c-3eb5-4aa2-8f46-702d503e64e4",
+    "reference_fai_signpost_id": "10283433-bcec-46bc-bfd5-5215428853ea",
+    "repo": "https://github.com/NCI-GDC/gdc-dnaseq-cwl",
+    "repo_hash": "d0de51fa727c1f8996865a04b0e56811a4bd6a8e",
+    "signpost_base_url": "signpost.service.consul/v0/did/",
+    "status_table_name": "maydeletetest_bqsr"
+}

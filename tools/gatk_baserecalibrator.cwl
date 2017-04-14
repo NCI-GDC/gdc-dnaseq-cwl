@@ -1,77 +1,165 @@
 #!/usr/bin/env cwl-runner
 
-cwlVersion: "cwl:draft-3"
-
-description: |
-  Usage:  cwl-runner <this-file-path> XXXX
-  Options:
-    --bam_path       XXXX
-    --uuid           XXXX
+cwlVersion: v1.0
 
 requirements:
-  - class: InlineJavascriptRequirement
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/cocleaning-tool
+    dockerPull: quay.io/ncigdc/cocleaning-tool:3.7
+  - class: InlineJavascriptRequirement
 
 class: CommandLineTool
 
 inputs:
-  - id: bam_path
+  - id: binary_tag_name
+    type: ["null", string]
+    inputBinding:
+      prefix: --binary_tag_name
+
+  - id: bqsrBAQGapOpenPenalty
+    type: double
+    default: 40
+    inputBinding:
+      prefix: --bqsrBAQGapOpenPenalty
+
+  - id: covariate
+    type: ["null", string]
+    inputBinding:
+      prefix: --covariate
+
+  - id: deletions_default_quality
+    type: int
+    default: 45
+    inputBinding:
+      prefix: --deletions_default_quality
+
+  - id: indels_context_size
+    type: int
+    default: 3
+    inputBinding:
+      prefix: --indels_context_size
+
+  - id: input_file
+    #format: "edam:format_2572"
     type: File
     inputBinding:
-      prefix: --bam_path
+      prefix: --input_file
     secondaryFiles:
       - ^.bai
 
-  - id: known_snp_vcf_path
+  - id: insertions_default_quality
+    type: int
+    default: 45
+    inputBinding:
+      prefix: --insertions_default_quality
+
+  - id: knownSites
+    #format: "edam:format_3016"
     type: File
     inputBinding:
-      prefix: --known_snp_vcf_path
+      prefix: --knownSites
     secondaryFiles:
       - .tbi
-      
-  - id: reference_fasta_path
+
+  - id: list
+    type: boolean
+    default: false
+    inputBinding:
+      prefix: --list
+
+  - id: log_to_file
+    type: string
+    inputBinding:
+      prefix: --log_to_file
+
+  - id: --logging_level
+    default: INFO
+    type: string
+    inputBinding:
+      prefix: --logging_level
+
+  - id: low_quality_tail
+    type: int
+    default: 2
+    inputBinding:
+      prefix: --low_quality_tail
+
+  - id: lowMemoryMode
+    type: boolean
+    default: false
+    inputBinding:
+      prefix: --lowMemoryMode
+
+  - id: maximum_cycle_value
+    type: int
+    default: 500
+    inputBinding:
+      prefix: --maximum_cycle_value
+
+  - id: mismatches_context_size
+    type: int
+    default: 2
+    inputBinding:
+      prefix: --mismatches_context_size
+
+  - id: mismatches_default_quality
+    type: int
+    default: -1
+    inputBinding:
+      prefix: --mismatches_default_quality
+
+  - id: no_standard_covs
+    type: boolean
+    default: false
+    inputBinding:
+      prefix: --no_standard_covs
+
+  - id: num_cpu_threads_per_data_thread
+    type: int
+    default: 1
+    inputBinding:
+      prefix: --num_cpu_threads_per_data_thread
+
+  - id: --quantizing_levels
+    type: int
+    default: 16
+    inputBinding:
+      prefix: --quantizing_levels
+
+  - id: run_without_dbsnp_potentially_ruining_quality
+    type: boolean
+    default: false
+    inputBinding:
+      prefix: --run_without_dbsnp_potentially_ruining_quality
+
+  - id: sort_by_all_columns
+    type: boolean
+    default: false
+    inputBinding:
+      prefix: --sort_by_all_columns
+
+  - id: reference_sequence
+    #format: "edam:format_1929"
     type: File
     inputBinding:
-      prefix: --reference_fasta_path
+      prefix: --reference_sequence
     secondaryFiles:
       - .fai
       - ^.dict
 
-  - id: thread_count
-    type: int
-    inputBinding:
-      prefix: --thread_count
-
-  - id: uuid
-    type: string
-    inputBinding:
-      prefix: --uuid
-
 outputs:
   - id: output_grp
     type: File
-    description: "The grp file"
     outputBinding:
-      glob: $(inputs.bam_path.path.split('/').slice(-1)[0].slice(0,-4) + "_bqsr.grp")
+      glob: $(inputs.input_file.nameroot + "_bqsr.grp")
 
-  - id: log
-    type: File
-    description: "python log file"
-    outputBinding:
-      glob: $(inputs.uuid + "_gatk_baserecalibrator.log")
-
-  - id: output_bam
+  - id: output_log
     type: File
     outputBinding:
-      glob: $(inputs.bam_path.path.split('/').slice(-1)[0])
-    secondaryFiles:
-      - ^.bai
+      glob: $(inputs.log_to_file)
 
-  - id: output_sqlite
-    type: File
-    description: "sqlite file"
-    outputBinding:
-      glob: $(inputs.uuid + ".db")
-          
-baseCommand: ["/home/ubuntu/.virtualenvs/p3/bin/python","/home/ubuntu/tools/cocleaning-tool/main.py", "--tool_name", "baserecalibrator"]
+arguments:
+  - valueFrom: $(inputs.input_file.nameroot + "_bqsr.grp")
+    prefix: --out
+    separate: true
+
+baseCommand: [java, -jar, /usr/local/bin/GenomeAnalysisTK.jar, -T, BaseRecalibrator]

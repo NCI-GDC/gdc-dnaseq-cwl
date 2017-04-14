@@ -41,7 +41,7 @@ outputs:
         ${
         var signpost_json = JSON.parse(inputs.signpost_json.contents);
         var signpost_url = String(signpost_json.urls.slice(0));
-        var file_name = signpost_url.split('/').slice(-1)[0];
+        var file_name = signpost_url.split('/').slice(-1)[0].slice(0,-4) + ".bai";
         return file_name
         }
 
@@ -115,7 +115,7 @@ arguments:
         obj_path.push(signpost_json.urls[0]);
       }
       var signpost_path = obj_path[0].substring(5).split('/').slice(1).join('/');
-      var s3_url = "s3://" + signpost_path;
+      var s3_url = "s3://" + signpost_path.slice(0,-4) + ".bai";
       return s3_url
       }
     position: 98
