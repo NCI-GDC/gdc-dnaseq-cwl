@@ -37,8 +37,6 @@ inputs:
     type: string
   - id: reference_fai_signpost_id
     type: string
-  - id: run_uuid
-    type: string
   - id: signpost_base_url
     type: string
 
@@ -244,7 +242,7 @@ steps:
       - id: num_threads
         source: num_threads
       - id: run_uuid
-        source: run_uuid
+        valueFrom: "run_uuid"
     out:
       - id: gatk_printreads_output_bam
       - id: integrity_sqlite
@@ -268,7 +266,7 @@ steps:
           job_creation_uuid_sqlite/sqlite
         ]
       - id: uuid
-        source: run_uuid
+        valueFrom: "run_uuid"
     out:
       - id: destination_sqlite
       - id: log
