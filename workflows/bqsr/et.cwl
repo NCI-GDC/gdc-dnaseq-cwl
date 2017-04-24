@@ -41,8 +41,6 @@ inputs:
     type: string
   - id: signpost_base_url
     type: string
-  - id: start_token
-    type: File
 
 outputs:
   - id: merge_sqlite_destination_sqlite
