@@ -14,7 +14,7 @@ VIRTUALENV_NAME=p2
 
 ##JOB VARIABLE
 INPUT_GDC_ID=XX_INPUT_GDC_ID_XX
-CWL_RUNNER_PATH=https://raw.githubusercontent.com/NCI-GDC/gdc-dnaseq-cwl/featdev/coclean-modern/workflows/bqsr/runner.cwl
+CWL_RUNNER_PATH=https://raw.githubusercontent.com/NCI-GDC/gdc-dnaseq-cwl/master/workflows/bqsr/runner.cwl
 JSON_PATH=XX_JSON_PATH_XX
 
 function activate_virtualenv()
@@ -34,7 +34,7 @@ function runner()
     local tmp_dir=${5}
 
     export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128;
-    cwltool --debug --rm-tmpdir --rm-container --tmp-outdir-prefix ${cache_dir} --tmpdir-prefix ${tmp_dir} --custom-net host --outdir ${job_dir} ${cwl_path} ${json_path}
+    cwltool --debug --rm-tmpdir --rm-container --tmp-outdir-prefix ${cache_dir} --tmpdir-prefix ${tmp_dir} --custom-net bridge --outdir ${job_dir} ${cwl_path} ${json_path}
 }
 
 function main()
