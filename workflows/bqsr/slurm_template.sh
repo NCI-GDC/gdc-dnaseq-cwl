@@ -14,7 +14,7 @@ VIRTUALENV_NAME=p2
 
 ##JOB VARIABLE
 INPUT_GDC_ID=XX_INPUT_GDC_ID_XX
-CWL_RUNNER_PATH=https://raw.githubusercontent.com/NCI-GDC/gdc-dnaseq-cwl/featdev/coclean-modern/workflows/bqsr/runner.cwl
+CWL_RUNNER_PATH=https://raw.githubusercontent.com/NCI-GDC/gdc-dnaseq-cwl/master/workflows/bqsr/runner.cwl
 JSON_PATH=XX_JSON_PATH_XX
 
 function activate_virtualenv()
