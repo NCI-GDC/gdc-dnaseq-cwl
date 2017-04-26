@@ -34,7 +34,7 @@ function runner()
     local tmp_dir=${5}
 
     export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128;
-    cwltool --debug --rm-tmpdir --rm-container --tmp-outdir-prefix ${cache_dir} --tmpdir-prefix ${tmp_dir} --custom-net host --outdir ${job_dir} ${cwl_path} ${json_path}
+    cwltool --debug --rm-tmpdir --rm-container --tmp-outdir-prefix ${cache_dir} --tmpdir-prefix ${tmp_dir} --custom-net bridge --outdir ${job_dir} ${cwl_path} ${json_path}
 }
 
 function main()
