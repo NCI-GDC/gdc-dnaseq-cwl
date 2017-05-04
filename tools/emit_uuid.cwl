@@ -12,7 +12,7 @@ inputs:
   []
 
 outputs:
-  - id: uuid
+  - id: output
     type: string
     outputBinding:
       glob: uuid
@@ -20,6 +20,6 @@ outputs:
       outputEval: $(self[0].contents)
       
 
-stdout: uuid
+stdout: output
 
 baseCommand: [bash, -c, python3 -c 'import uuid; import sys; sys.stdout.write(str(uuid.uuid4()));']
