@@ -18,7 +18,6 @@ outputs:
       glob: uuid
       loadContents: true
       outputEval: $(self[0].contents)
-      
 
 stdout: output
 
