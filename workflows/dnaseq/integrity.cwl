@@ -9,9 +9,9 @@ requirements:
  - class: MultipleInputFeatureRequirement
 
 inputs:
-  - id: bai_path
+  - id: bai
     type: File
-  - id: bam_path
+  - id: bam
     type: File
   - id: input_state
     type: string
@@ -28,7 +28,7 @@ steps:
     run: ../../tools/ls_l.cwl
     in:
       - id: INPUT
-        source: bai_path
+        source: bai
     out:
       - id: OUTPUT
 
@@ -36,7 +36,7 @@ steps:
     run: ../../tools/md5sum.cwl
     in:
       - id: INPUT
-        source: bai_path
+        source: bai
     out:
       - id: OUTPUT
 
@@ -44,7 +44,7 @@ steps:
     run: ../../tools/sha256sum.cwl
     in:
       - id: INPUT
-        source: bai_path
+        source: bai
     out:
       - id: OUTPUT
 
@@ -52,7 +52,7 @@ steps:
     run: ../../tools/ls_l.cwl
     in:
       - id: INPUT
-        source: bam_path
+        source: bam
     out:
       - id: OUTPUT
 
@@ -60,7 +60,7 @@ steps:
     run: ../../tools/md5sum.cwl
     in:
       - id: INPUT
-        source: bam_path
+        source: bam
     out:
       - id: OUTPUT
 
@@ -68,7 +68,7 @@ steps:
     run: ../../tools/sha256sum.cwl
     in:
       - id: INPUT
-        source: bam_path
+        source: bam
     out:
       - id: OUTPUT
 
