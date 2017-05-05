@@ -10,14 +10,14 @@ requirements:
 class: CommandLineTool
 
 inputs:
-  - id: bam_path
+  - id: input
     type: File
     format: "edam:format_2572"
     inputBinding:
       prefix: --bam_path
 
 outputs:
-  - id: output_bam
+  - id: output
     type: File
     format: "edam:format_2572"
     outputBinding:
