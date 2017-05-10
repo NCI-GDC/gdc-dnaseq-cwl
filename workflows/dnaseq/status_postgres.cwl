@@ -5,12 +5,6 @@ cwlVersion: v1.0
 class: Workflow
 
 inputs:
-  - id: created_bai_gdc_id
-    type: string
-  - id: created_bam_gdc_id
-    type: string
-  - id: created_sqlite_gdc_id
-    type: string
   - id: db_cred
     type: File
   - id: db_cred_section
@@ -23,6 +17,8 @@ inputs:
     type: string
   - id: input_bam_gdc_id
     type: string
+  - id: input_bam_file_size
+    type: int
   - id: job_creation_uuid
     type: string
   - id: known_snp_gdc_id
@@ -70,11 +66,11 @@ inputs:
   - id: slurm_resource_mem_mb
     type: int
   - id: status
-    valueFrom: status
+    type: string
   - id: status_table
-    valueFrom: status_table
+    type: string
   - id: thread_count
-    type: thread_count
+    type: int
 
 outputs:
   - id: token
