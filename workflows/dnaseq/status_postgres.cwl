@@ -19,13 +19,11 @@ inputs:
     type: string
   - id: input_bam_file_size
     type: int
+  - id: input_bam_md5sum
+    type: int
   - id: job_creation_uuid
     type: string
   - id: known_snp_gdc_id
-    type: string
-  - id: program_id
-    type: string
-  - id: project_id
     type: string
   - id: reference_amb_gdc_id
     type: string
@@ -81,12 +79,6 @@ steps:
   - id: queue_status
     run: queue_status.cwl
     in:
-      - id: created_bai_gdc_id
-        source: created_bai_gdc_id
-      - id: created_bam_gdc_id
-        source: created_bam_gdc_id
-      - id: created_sqlite_gdc_id
-        source: created_sqlite_gdc_id
       - id: hostname
         source: get_hostname/output
       - id: host_ipaddress
@@ -95,6 +87,10 @@ steps:
         source: get_host_macaddress/output
       - id: input_bam_gdc_id
         source: input_bam_gdc_id
+      - id: input_bam_file_size
+        source: input_bam_file_size
+      - id: input_bam_md5sum
+        source: input_bam_md5sum
       - id: job_creation_uuid
         source: job_creation_uuid
       - id: known_snp_gdc_id
