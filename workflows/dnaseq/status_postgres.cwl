@@ -77,7 +77,7 @@ outputs:
 
 steps:
   - id: queue_status
-    run: dnaseq_queue_status.cwl
+    run: queue_status.cwl
     in:
       - id: hostname
         source: get_hostname/output
