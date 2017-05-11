@@ -77,7 +77,7 @@ outputs:
 
 steps:
   - id: queue_status
-    run: queue_status.cwl
+    run: dnaseq_queue_status.cwl
     in:
       - id: hostname
         source: get_hostname/output
@@ -95,10 +95,6 @@ steps:
         source: job_creation_uuid
       - id: known_snp_gdc_id
         source: known_snp_gdc_id
-      - id: program_id
-        source: program_id
-      - id: project_id
-        source: project_id
       - id: reference_amb_gdc_id
         source: reference_amb_gdc_id
       - id: reference_ann_gdc_id
