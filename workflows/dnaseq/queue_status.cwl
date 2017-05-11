@@ -10,21 +10,6 @@ requirements:
 class: CommandLineTool
 
 inputs:
-  - id: created_bai_gdc_id
-    type: string
-    inputBinding:
-      prefix: --created_bai_gdc_id
-
-  - id: created_bam_gdc_id
-    type: string
-    inputBinding:
-      prefix: --created_bam_gdc_id
-
-  - id: created_sqlite_gdc_id
-    type: string
-    inputBinding:
-      prefix: --created_sqlite_gdc_id
-
   - id: hostname
     type: string
     inputBinding:
@@ -45,20 +30,20 @@ inputs:
     inputBinding:
       prefix: --input_bam_gdc_id
 
+  - id: input_bam_file_size
+    type: int
+    inputBinding:
+      prefix: --input_bam_file_size
+
+  - id: input_bam_md5sum
+    type: int
+    inputBinding:
+      prefix: --input_bam_md5sum
+
   - id: job_creation_uuid
     type: string
     inputBinding:
       prefix: --job_creation_uuid
-
-  - id: program_id
-    type: string
-    inputBinding:
-      prefix: --program_id
-
-  - id: project_id
-    type: string
-    inputBinding:
-      prefix: --project_id
 
   - id: known_snp_gdc_id
     type: string
