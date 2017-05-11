@@ -60,7 +60,7 @@ inputs:
     source: int
   - id: slurm_resource_mem_mb
     source: int
-  - id: status_table_prefix
+  - id: status_table
     type: string
   - id: thread_count
     type: int
@@ -120,14 +120,12 @@ steps:
       - id: output
 
   - id: status_running
-    run: ../status/status_postgres_workflow.cwl
+    run: status_postgres.cwl
     in:
       - id: db_cred
         source: db_cred
       - id: db_cred_section
         source: db_cred_section
-      - id: gdc_project
-        source: gdc_project
       - id: hostname
         source: get_hostname/output
       - id: host_ipaddress
@@ -138,6 +136,8 @@ steps:
         source: input_bam_gdc_id
       - id: input_bam_file_size
         source: input_bam_file_size
+      - id: input_bam_md5sum
+        source: input_bam_md5sum
       - id: job_creation_uuid
         source: job_creation_uuid
       - id: known_snp_gdc_id
@@ -183,7 +183,7 @@ steps:
       - id: status
         valueFrom: "RUNNING"
       - id: status_table
-        valueFrom: $(status_table_prefix)-$(gdc_project)
+        source: status_table
       - id: thread_count
         source: thread_count
     out:
@@ -238,6 +238,9 @@ steps:
       - id: input_bam_gdc_id
         source: input_bam_gdc_id
       - id: input_bam_file_size
+        source: input_bam_file_size
+      - id: input_bam_md5sum
+        source: input_bam_md5sum
       - id: job_creation_uuid
         source: job_creation_uuid
       - id: known_snp_gdc_id
@@ -283,7 +286,7 @@ steps:
       - id: status
         valueFrom: "COMPLETE"
       - id: status_table
-        valueFrom: $(status_table_prefix)-$(gdc_project)
+        source: status_table
       - id: thread_count
         source: thread_count
     out:
