@@ -14,10 +14,6 @@ inputs:
     type: File
   - id: db_cred_section
     type: string
-  - id: gdc_program
-    type: string
-  - id: gdc_project
-    type: string
   - id: gdc_token
     type: File
   - id: input_bam_gdc_id
@@ -227,8 +223,6 @@ steps:
         source: db_cred
       - id: db_cred_section
         source: db_cred_section
-      - id: gdc_project
-        source: gdc_project
       - id: hostname
         source: get_hostname/output
       - id: host_ipaddress
