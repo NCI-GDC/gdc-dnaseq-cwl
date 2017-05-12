@@ -1,2 +1,3 @@
-input_bam_gdc_id	input_bam_file_size	input_bam_md5sum	workflow_version
-5a8a9f0b-9121-42c0-a38d-c6510e2065c1	11626021369	c3eb33a639e470d34f571d741d4dc9a9	latest
+input_bam_gdc_id	input_bam_file_size	input_bam_md5sum	json_template_uri	readgroup_count	status_table	workflow_version
+612fa1e5-19f7-4ed3-9fa5-a5090f7fb05d	7864608923	b9b5ecc8e1828c0cca23b7a4118019d6	https://raw.githubusercontent.com/NCI-GDC/gdc-dnaseq-cwl/gdc-active-submission/workflows/dnaseq/runner_template.json	19	latest
+de678354-28c5-4d95-a89f-b6ae09162bcc	7976248741	e02b566d4fea91e8edeb5e85187644b4	19	latest

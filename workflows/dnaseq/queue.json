@@ -1,5 +1,7 @@
 [
     {
+        "db_cred": "/home/ubuntu/connect_jhsavage_test.ini",
+        "db_cred_section": "",
         "input_bam_gdc_id": "612fa1e5-19f7-4ed3-9fa5-a5090f7fb05d",
         "input_bam_file_size": 7864608923,
         "input_bam_md5sum": "b9b5ecc8e1828c0cca23b7a4118019d6",
