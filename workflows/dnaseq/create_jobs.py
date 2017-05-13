@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import argparse
 import logging
@@ -6,6 +6,7 @@ import math
 import os
 import sys
 import urllib
+import urllib.request
 import uuid
 
 SCRATCH_DIR = '/mnt/SCRATCH'
