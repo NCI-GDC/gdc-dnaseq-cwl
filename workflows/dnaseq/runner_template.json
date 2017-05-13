@@ -1,19 +1,30 @@
 {
-    "input_bam_gdc_id": "XX_BAM_GDC_ID_XX",
     "db_cred": {
         "class": "File",
         "path": "XX_DB_CRED_XX"
     },
-    "db_cred_section": "DEFAULT",
+    "db_cred_section": "db_cred_section",
+    "input_bam_gdc_id": "XX_INPUT_BAM_GDC_ID_XX",
+    "input_bam_file_size": input_bam_file_size,
+    "input_bam_md5sum": "input_bam_md5sum",
     "known_snp_gdc_id": "known_snp_gdc_id",
+    "known_snp_index_gdc_id": "known_snp_index_gdc_id",
     "reference_amb_gdc_id": "reference_amb_gdc_id",
     "reference_ann_gdc_id": "reference_ann_gdc_id",
     "reference_bwt_gdc_id": "reference_bwt_gdc_id",
+    "reference_dict_gdc_id": "cf9768de-12ec-4afb-9af2-1b6ba3e07c0d",
     "reference_fa_gdc_id": "reference_fa_gdc_id",
     "reference_fai_gdc_id": "reference_fai_gdc_id",
     "reference_pac_gdc_id": "reference_pac_gdc_id",
     "reference_sa_gdc_id": "reference_sa_gdc_id",
+    "runner_cwl_branch": "runner_cwl_branch",
+    "runner_cwl_repo": "runner_cwl_repo",
+    "runner_cwl_uri": "runner_cwl_uri",
+    "runner_job_branch": "runner_job_branch",
+    "runner_job_repo": "runner_job_repo",
+    "runner_job_cwl_uri": "runner_job_cwl_uri",
+    "runner_job_slurm_uri": "runner_job_slurm_uri",
     "status_table": "XX_STATUS_TABLE_XX",
-    "thread_count": XX_RESOURCE_CORE_COUNT_XX,
-    "uuid": "XX_UUID_XX"
+    "thread_count": XX_THREAD_COUNT_XX,
+    "workflow_version": "workflow_version"
 }
