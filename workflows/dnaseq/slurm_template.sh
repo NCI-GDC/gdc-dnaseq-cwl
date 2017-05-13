@@ -25,8 +25,8 @@ function activate_virtualenv()
 
 function runner()
 {
-    local cwl_runner_path=${1}
-    local cwl_job_path=${2}
+    local cwl_job_path=${1}
+    local cwl_runner_path=${2}
     local job_dir=${3}
 
     local cache_dir=${job_dir}/cache
