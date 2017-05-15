@@ -74,7 +74,6 @@ def generate_runner(job_json_file, queue_data, runner_text):
 
 def generate_slurm(job_slurm_file, queue_data, slurm_template_text):
     for attr, value in queue_data.items():
-        print(attr, value)
         slurm_template_text = slurm_template_text.replace('${xx_'+attr+'_xx}', value)
     with open(job_slurm_file, 'w') as f_open:
         f_open.write(slurm_template_text)
