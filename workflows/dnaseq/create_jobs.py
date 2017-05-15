@@ -24,7 +24,6 @@ class AttributeDict(dict):
 def fetch_text(url):
     split = urllib.parse.urlsplit(url)
     scheme, path = split.scheme, split.path
-
     if scheme in ['http', 'https']:# and self.session is not None:
         try:
             resp = urllib.request.urlopen(url)
@@ -70,25 +69,41 @@ def generate_runner(job_json_file, queue_data, runner_text):
     setattr(runner_template, 'thread_count', '8')
     with open(job_json_file, 'w') as f_open:
         json.dump(runner_template, f_open, sort_keys=True, indent=4)
-
     return
 
 
 def generate_slurm(job_slurm_file, queue_data, slurm_template_text):
-
     for attr, value in queue_data.items():
         print(attr, value)
         slurm_template_text = slurm_template_text.replace('${xx_'+attr+'_xx}', value)
-
     with open(job_slurm_file, 'w') as f_open:
         f_open.write(slurm_template_text)
     return
 
 
+def get_raw_github_branch(url):
+    runner_cwl_uri_split = urllib.parse.urlsplit(url)
+    runner_cwl_branch = runner_cwl_uri_split.path.split('/')[2]
+    return runner_cwl_branch
+
+
+def get_raw_github_repo(url):
+    runner_cwl_uri_split = urllib.parse.urlsplit(url)
+    if runner_cwl_uri_split.netloc == 'raw.githubusercontent.com':
+        git_server = 'www.github.com'
+    else:
+        sys.exit('unhandled git server: %s' % url)
+    git_organization = runner_cwl_uri_split.path.split('/')[1]
+    git_repo = runner_cwl_uri_split.path.split('/')[2]
+    runner_cwl_repo = runner_cwl_uri_split.scheme + '://' + git_server + '/' + git_organization + '/' + git_repo
+    return runner_cwl_repo
+
+
 def setup_job(queue_item):
     job_json_file = '/'.join((queue_item['job_creation_uuid'], 'cwl', queue_item['input_bam_gdc_id'] + '_alignment.json'))
     job_slurm_file = '/'.join((queue_item['job_creation_uuid'], 'slurm', queue_item['input_bam_gdc_id'] + '_alignment.sh'))
-    json_uri = '/'.join((queue_item['runner_job_base_uri'], job_json_file))
+    runner_job_cwl_uri = '/'.join((queue_item['runner_job_base_uri'], job_json_file))
+    runner_job_slurm_uri = '/'.join((queue_item['runner_job_base_uri'], job_slurm_file))
 
     runner_json_template_text = fetch_text(queue_item['runner_json_template_uri'])
     slurm_template_text = fetch_text(queue_item['slurm_template_uri'])
@@ -100,17 +115,12 @@ def setup_job(queue_item):
     queue_item['slurm_mem_megabytes'] = str(slurm_mem_megabytes)
     queue_item['slurm_disk_gigabytes'] = str(slurm_disk_gigabytes)
 
-    runner_cwl_branch = ''
-    queue_item['runner_cwl_branch'] = runner_cwl_branch
-    runner_cwl_repo = ''
-    queue_item['runner_cwl_repo'] = runner_cwl_repo
-    runner_job_branch = ''
-    queue_item['runner_job_branch'] = runner_job_branch
-    runner_job_cwl_uri = json_uri
+    queue_item['runner_cwl_branch'] = get_raw_github_branch(queue_item['runner_cwl_uri'])
+    queue_item['runner_cwl_repo'] = get_raw_github_repo(queue_item['runner_cwl_uri'])
+    queue_item['runner_job_branch'] = get_raw_github_repo(runner_job_cwl_uri)
     queue_item['runner_job_cwl_uri'] = runner_job_cwl_uri
-    runner_job_repo = ''
+    runner_job_repo = get_raw_github_repo(runner_job_cwl_uri)
     queue_item['runner_job_repo'] = runner_job_repo
-    runner_job_slurm_uri = ''
     queue_item['runner_job_slurm_uri'] = runner_job_slurm_uri
 
 
@@ -138,7 +148,6 @@ def main():
     queue_json = args.queue_json
 
     job_creation_uuid = str(uuid.uuid4())
-
     cwl_dir = '/'.join((job_creation_uuid, 'cwl'))
     slurm_dir = '/'.join((job_creation_uuid, 'slurm'))
 
