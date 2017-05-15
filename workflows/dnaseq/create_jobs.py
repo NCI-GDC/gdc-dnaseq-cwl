@@ -82,7 +82,7 @@ def generate_slurm(job_slurm_file, queue_data, slurm_template_text):
 
 def get_raw_github_branch(url):
     runner_cwl_uri_split = urllib.parse.urlsplit(url)
-    runner_cwl_branch = runner_cwl_uri_split.path.split('/')[2]
+    runner_cwl_branch = runner_cwl_uri_split.path.split('/')[3]
     return runner_cwl_branch
 
 
