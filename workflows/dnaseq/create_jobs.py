@@ -117,7 +117,7 @@ def setup_job(queue_item):
 
     queue_item['runner_cwl_branch'] = get_raw_github_branch(queue_item['runner_cwl_uri'])
     queue_item['runner_cwl_repo'] = get_raw_github_repo(queue_item['runner_cwl_uri'])
-    queue_item['runner_job_branch'] = get_raw_github_repo(runner_job_cwl_uri)
+    queue_item['runner_job_branch'] = get_raw_github_branch(runner_job_cwl_uri)
     queue_item['runner_job_cwl_uri'] = runner_job_cwl_uri
     runner_job_repo = get_raw_github_repo(runner_job_cwl_uri)
     queue_item['runner_job_repo'] = runner_job_repo
