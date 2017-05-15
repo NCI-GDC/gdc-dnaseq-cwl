@@ -20,6 +20,7 @@ class AttributeDict(dict):
     __getattr__ = dict.__getitem__
     __setattr__ = dict.__setitem__
 
+
 def fetch_text(url):
     split = urllib.parse.urlsplit(url)
     scheme, path = split.scheme, split.path
@@ -56,15 +57,35 @@ def fetch_text(url):
 
 
 def generate_runner(job_creation_uuid, job_json, queue_data, runner_text, slurm_core, slurm_mem_megabytes, slurm_storage_gigabytes):
-    #print('runner_text=\n%s' % runner_text)
     runner_template = json.loads(runner_text, object_hook=lambda d: AttributeDict(**d))
-    #print('runner_template=\n%s' % str(runner_template))
     for attr, value in queue_data.items():
         if attr == 'db_cred':
-             pass
+             setattr(runner_template.db_cred, 'path', value)
+        elif attr == 'runner_cwl_branch':
+            runner_cwl_branch = ''
+            setattr(runner_template, attr, runner_cwl_branch)
+        elif attr == 'runner_cwl_repo':
+            runner_cwl_repo = ''
+            setattr(runner_template, attr, runner_cwl_repo)
+        elif attr == 'runner_job_branch':
+            runner_job_branch = ''
+            setattr(runner_template, attr, runner_job_branch)
+        elif attr == 'runner_job_cwl_uri':
+            runner_job_cwl_uri = ''
+            setattr(runner_template, attr, runner_job_cwl_uri)
+        elif attr == 'runner_job_repo':
+            runner_job_repo = ''
+            setattr(runner_template, attr, runner_job_repo)
+        elif attr == 'runner_job_slurm_uri':
+            runner_job_slurm_uri = ''
+            setattr(runner_template, attr, runner_job_slurm_uri)
         else:
-            setattr(runner_template, attr, value)
-
+            try:
+                hasattr(runner_template, attr)
+                setattr(runner_template, attr, value)
+            except KeyError:
+                continue
+    setattr(runner_template, 'thread_count', '8')
     with open(job_json, 'w') as f_open:
         json.dump(runner_template, f_open, sort_keys=True, indent=4)
 
@@ -75,8 +96,8 @@ def generate_slurm(job_creation_uuid, job_slurm, queue_data, slurm_template_text
     f_open = open(job_slurm, 'w')
 
     for attr, value in queue_data.items():
-        #print(attr, value)
-        slurm_template_text.replace('${xx_'+attr+'}', value)
+        print(attr, value)
+        slurm_template_text = slurm_template_text.replace('${xx_'+attr+'_xx}', value)
 
     with open(job_slurm, 'w') as f_open:
         f_open.write(slurm_template_text)
