@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --workdir=XX_SCRATCH_DIR_XX
-#SBATCH --cpus-per-task=XX_RESOURCE_CORE_COUNT_XX
-#SBATCH --mem=XX_RESOURCE_MEMORY_MEGABYTES_XX
-#SBATCH --gres=SCRATCH:XX_RESOURCE_DISK_GIGABYTES_XX
+#SBATCH --workdir=${xx_scratch_dir_xx}
+#SBATCH --cpus-per-task=${xx_slurm_core_xx}
+#SBATCH --mem=${xx_slurm_mem_megabytes_xx}
+#SBATCH --gres=SCRATCH:${xx_slurm_disk_gigabytes_xx}
 
 ##ENV VARIABLE
 SCRATCH_DIR=${xx_scratch_dir_xx}
