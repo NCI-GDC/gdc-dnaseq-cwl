@@ -40,15 +40,15 @@ inputs:
     type: string
   - id: runner_cwl_branch
     type: string
-  - id: runner_cwl_path
-    type: string
   - id: runner_cwl_repo
+    type: string
+  - id: runner_cwl_uri
     type: string
   - id: runner_job_branch
     type: string
-  - id: runner_job_path
-    type: string
   - id: runner_job_repo
+    type: string
+  - id: runner_job_uri
     type: string
   - id: slurm_resource_cores
     source: int
