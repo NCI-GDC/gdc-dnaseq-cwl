@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import json
 import logging
 import math
 import os
@@ -9,16 +10,21 @@ import urllib
 import urllib.request
 import uuid
 
+#from types import SimpleNamespace
+
 SCRATCH_DIR = '/mnt/SCRATCH'
 SLURM_CORE = 8
 SLURM_MEM = 50000
 
+class AttributeDict(dict): 
+    __getattr__ = dict.__getitem__
+    __setattr__ = dict.__setitem__
 
 def fetch_text(url):
     split = urllib.parse.urlsplit(url)
     scheme, path = split.scheme, split.path
 
-    if scheme in ['http', 'https'] and self.session is not None:
+    if scheme in ['http', 'https']:# and self.session is not None:
         try:
             resp = urllib.request.urlopen(url)
             if resp.status == 200:
@@ -49,92 +55,47 @@ def fetch_text(url):
     return
 
 
-def generate_runner(db_cred, db_table_name, input_gdc_id, job_creation_uuid, job_json,
-                    json_path, json_template_path, runner_cwl_path, runner_repo_hash,
-                    s3_load_bucket, slurm_core, slurm_disk_gibibytes, slurm_mem_mebibytes):
+def generate_runner(job_creation_uuid, job_json, queue_data, runner_text, slurm_core, slurm_mem_megabytes, slurm_storage_gigabytes):
+    #print('runner_text=\n%s' % runner_text)
+    runner_template = json.loads(runner_text, object_hook=lambda d: AttributeDict(**d))
+    #print('runner_template=\n%s' % str(runner_template))
+    for attr, value in queue_data.items():
+        if attr == 'db_cred':
+             pass
+        else:
+            setattr(runner_template, attr, value)
 
-    f_open = open(job_json, 'w')
-    with open(json_template_path, 'r') as read_open:
-        for line in read_open:
-            if 'XX_DB_CRED_XX' in line:
-                newline = line.replace('XX_DB_CRED_XX', db_cred)
-                f_open.write(newline)
-            elif 'XX_INPUT_GDC_ID_XX' in line:
-                newline = line.replace('XX_INPUT_GDC_ID_XX', input_gdc_id)
-                f_open.write(newline)
-            elif 'XX_JOB_CREATION_UUID_XX' in line:
-                newline = line.replace('XX_JOB_CREATION_UUID_XX', job_creation_uuid)
-                f_open.write(newline)
-            elif 'XX_JOB_PATH_XX' in line:
-                newline = line.replace('XX_JOB_PATH_XX', json_path)
-                f_open.write(newline)
-            elif 'XX_LOAD_BUCKET_XX' in line:
-                newline = line.replace('XX_LOAD_BUCKET_XX', s3_load_bucket)
-                f_open.write(newline)
-            elif 'XX_NUM_THREADS_XX' in line:
-                newline = line.replace('XX_NUM_THREADS_XX', str(slurm_core*2))
-                f_open.write(newline)
-            elif 'XX_SLURM_RESOURCE_CORE_COUNT_XX' in line:
-                newline = line.replace('XX_SLURM_RESOURCE_CORE_COUNT_XX', str(slurm_core))
-                f_open.write(newline)
-            elif 'XX_SLURM_RESOURCE_DISK_GIBIBYTES_XX' in line:
-                newline = line.replace('XX_SLURM_RESOURCE_DISK_GIBIBYTES_XX', str(slurm_disk_gibibytes))
-                f_open.write(newline)
-            elif 'XX_SLURM_RESOURCE_MEM_MEBIBYTES_XX' in line:
-                newline = line.replace('XX_SLURM_RESOURCE_MEM_MEBIBYTES_XX', str(slurm_mem_mebibytes))
-                f_open.write(newline)
-            elif 'XX_RUNNER_CWL_PATH_XX' in line:
-                newline = line.replace('XX_RUNNER_CWL_PATH_XX', runner_cwl_path)
-                f_open.write(newline)
-            elif 'XX_RUNNER_REPO_HASH_XX' in line:
-                newline = line.replace('XX_RUNNER_REPO_HASH_XX', runner_repo_hash)
-                f_open.write(newline)
-            elif 'XX_STATUS_TABLE_NAME_XX' in line:
-                newline = line.replace('XX_STATUS_TABLE_NAME_XX', db_table_name)
-                f_open.write(newline)
-            else:
-                f_open.write(line)
-    f_open.close()
+    with open(job_json, 'w') as f_open:
+        json.dump(runner_template, f_open, sort_keys=True, indent=4)
+
     return
 
-def generate_slurm(job_creation_uuid, job_slurm, queue_item, slurm_core, slurm_mem_megabytes, slurm_storage_gigabytes):
-    slurm_text = fetch_text(queue_item['slurm_template_uri'])
+
+def generate_slurm(job_creation_uuid, job_slurm, queue_data, slurm_template_text, slurm_core, slurm_mem_megabytes, slurm_storage_gigabytes):
     f_open = open(job_slurm, 'w')
-    with open(slurm_template_path, 'r') as read_open:
-        for line in slurm_text:
-            if 'XX_INPUT_GDC_ID_XX' in line:
-                newline = line.replace('XX_INPUT_GDC_ID_XX', input_gdc_id)
-                f_open.write(newline)
-            elif 'XX_JSON_PATH_XX' in line:
-                newline = line.replace('XX_JSON_PATH_XX', json_path)
-                f_open.write(newline)
-            elif 'XX_RESOURCE_CORE_COUNT_XX' in line:
-                newline = line.replace('XX_RESOURCE_CORE_COUNT_XX', str(slurm_core))
-                f_open.write(newline)
-            elif 'XX_RESOURCE_DISK_GIBIBYTES_XX' in line:
-                newline = line.replace('XX_RESOURCE_DISK_GIBIBYTES_XX', str(slurm_disk_gibibytes))
-                f_open.write(newline)
-            elif 'XX_RESOURCE_MEM_MEBIBYTES_XX' in line:
-                newline = line.replace('XX_RESOURCE_MEM_MEBIBYTES_XX', str(slurm_mem_mebibytes))
-                f_open.write(newline)
-            elif 'XX_SCRATCH_DIR_XX' in line:
-                newline = line.replace('XX_SCRATCH_DIR_XX', scratch_dir)
-                f_open.write(newline)
-            else:
-                f_open.write(line)
-    f_open.close()
+
+    for attr, value in queue_data.items():
+        #print(attr, value)
+        slurm_template_text.replace('${xx_'+attr+'}', value)
+
+    with open(job_slurm, 'w') as f_open:
+        f_open.write(slurm_template_text)
     return
+
 
 def setup_job(job_creation_uuid, queue_item):
     job_json = '/'.join((job_creation_uuid, 'cwl', queue_item['input_bam_gdc_id'] + '_alignment.json'))
     job_slurm = '/'.join((job_creation_uuid, 'slurm', queue_item['input_bam_gdc_id'] + '_alignment.sh'))
     json_uri = '/'.join((queue_item['runner_job_base_uri'], job_json))
 
-    slurm_core = SLURM_CORE
+    runner_json_template_text = fetch_text(queue_item['runner_json_template_uri'])
+    slurm_template_text = fetch_text(queue_item['slurm_template_uri'])
+
+    slurm_core = SLURM_CORE # will eventually be decided by cwl engine at run time per step
     slurm_mem_megabytes = SLURM_MEM # make a model
-    slurm_storage_gigabytes = math.ceil(10 * (queue_item['input_bam_file_size'] / (1000**3))) #use readgroup_count
-    generate_runner(job_creation_uuid, job_json, queue_item, slurm_core, slurm_mem_megabytes, slurm_storage_gigabytes)
-    generate_slurm(job_creation_uuid, job_slurm, queue_item, slurm_core, slurm_mem_megabytes, slurm_storage_gigabytes)
+    slurm_storage_gigabytes = math.ceil(10 * (int(queue_item['input_bam_file_size']) / (1000**3))) #use readgroup_count, will eventually be decided by cwl engine at run time per step
+    generate_runner(job_creation_uuid, job_json, queue_item, runner_json_template_text, slurm_core, slurm_mem_megabytes, slurm_storage_gigabytes)
+    generate_slurm(job_creation_uuid, job_slurm, queue_item, slurm_template_text, slurm_core, slurm_mem_megabytes, slurm_storage_gigabytes)
     return
 
 
@@ -154,20 +115,7 @@ def main():
     )
 
     args = parser.parse_args()
-
-    # db_cred = args.db_cred
-    # db_table_name = args.db_table_name
-    # job_table_path = args.job_table_path
-    # json_template_path = args.json_template_path
-    # num_cores = args.num_cores
-    # http_json_base_url = args.http_json_base_url
-    # runner_cwl_path = args.runner_cwl_path
-    # runner_repo_hash = args.runner_repo_hash
-    # s3_load_bucket = args.s3_load_bucket
-    # scratch_dir = args.scratch_dir
-    # slurm_disk_gibibytes = args.slurm_disk_gibibytes
-    # slurm_mem_mebibytes = args.slurm_mem_mebibytes
-    # slurm_template_path = args.slurm_template_path
+    queue_json = args.queue_json
 
     job_creation_uuid = str(uuid.uuid4())
 
@@ -185,25 +133,7 @@ def main():
         queue_dict = json.loads(f.read())
     for queue_item in queue_dict:
         setup_job(job_creation_uuid, queue_item)
-
-    # with open(job_table_path, 'r') as job_table_open:
-    #     for job_line in job_table_open:
-    #         if job_line.startswith('aligned_gdc_id'):
-    #             header_key_dict = read_header(job_line)
-    #         else:
-    #             job_split = job_line.strip().split(',')
-    #             input_gdc_id = job_split[header_key_dict['aligned_gdc_id']]
-    #             input_filesize = int(job_split[header_key_dict['aligned_filesize']])
-    #             slurm_storage_gibibytes = math.ceil(3 * (input_filesize / (1024**3)))
-    #             if slurm_storage_gibibytes > slurm_disk_gibibytes:
-    #                 sys.exit(1)
-    #             fraction_of_resources = slurm_storage_gibibytes / slurm_disk_gibibytes
-    #             slurm_core = math.ceil(fraction_of_resources * num_cores)
-    #             setup_job(db_cred, db_table_name, http_json_base_url,
-    #                       input_gdc_id, job_table_path, job_creation_uuid,
-    #                       json_template_path, runner_cwl_path, runner_repo_hash, s3_load_bucket,
-    #                       scratch_dir, slurm_core, slurm_storage_gibibytes, slurm_mem_mebibytes,
-    #                       slurm_template_path)
+    return
 
 
 if __name__=='__main__':
