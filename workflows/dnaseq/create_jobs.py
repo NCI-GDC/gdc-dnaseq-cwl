@@ -56,29 +56,11 @@ def fetch_text(url):
     return
 
 
-def generate_runner(job_creation_uuid, job_json, queue_data, runner_text, slurm_core, slurm_mem_megabytes, slurm_storage_gigabytes):
+def generate_runner(job_json_file, queue_data, runner_text):
     runner_template = json.loads(runner_text, object_hook=lambda d: AttributeDict(**d))
     for attr, value in queue_data.items():
         if attr == 'db_cred':
              setattr(runner_template.db_cred, 'path', value)
-        elif attr == 'runner_cwl_branch':
-            runner_cwl_branch = ''
-            setattr(runner_template, attr, runner_cwl_branch)
-        elif attr == 'runner_cwl_repo':
-            runner_cwl_repo = ''
-            setattr(runner_template, attr, runner_cwl_repo)
-        elif attr == 'runner_job_branch':
-            runner_job_branch = ''
-            setattr(runner_template, attr, runner_job_branch)
-        elif attr == 'runner_job_cwl_uri':
-            runner_job_cwl_uri = ''
-            setattr(runner_template, attr, runner_job_cwl_uri)
-        elif attr == 'runner_job_repo':
-            runner_job_repo = ''
-            setattr(runner_template, attr, runner_job_repo)
-        elif attr == 'runner_job_slurm_uri':
-            runner_job_slurm_uri = ''
-            setattr(runner_template, attr, runner_job_slurm_uri)
         else:
             try:
                 hasattr(runner_template, attr)
@@ -92,21 +74,20 @@ def generate_runner(job_creation_uuid, job_json, queue_data, runner_text, slurm_
     return
 
 
-def generate_slurm(job_creation_uuid, job_slurm, queue_data, slurm_template_text, slurm_core, slurm_mem_megabytes, slurm_storage_gigabytes):
-    f_open = open(job_slurm, 'w')
+def generate_slurm(job_slurm_file, queue_data, slurm_template_text):
 
     for attr, value in queue_data.items():
         print(attr, value)
         slurm_template_text = slurm_template_text.replace('${xx_'+attr+'_xx}', value)
 
-    with open(job_slurm, 'w') as f_open:
+    with open(job_slurm_file, 'w') as f_open:
         f_open.write(slurm_template_text)
     return
 
 
-def setup_job(job_creation_uuid, queue_item):
-    job_json = '/'.join((job_creation_uuid, 'cwl', queue_item['input_bam_gdc_id'] + '_alignment.json'))
-    job_slurm = '/'.join((job_creation_uuid, 'slurm', queue_item['input_bam_gdc_id'] + '_alignment.sh'))
+def setup_job(queue_item):
+    job_json_file = '/'.join((queue_item['job_creation_uuid'], 'cwl', queue_item['input_bam_gdc_id'] + '_alignment.json'))
+    job_slurm_file = '/'.join((queue_item['job_creation_uuid'], 'slurm', queue_item['input_bam_gdc_id'] + '_alignment.sh'))
     json_uri = '/'.join((queue_item['runner_job_base_uri'], job_json))
 
     runner_json_template_text = fetch_text(queue_item['runner_json_template_uri'])
@@ -114,9 +95,27 @@ def setup_job(job_creation_uuid, queue_item):
 
     slurm_core = SLURM_CORE # will eventually be decided by cwl engine at run time per step
     slurm_mem_megabytes = SLURM_MEM # make a model
-    slurm_storage_gigabytes = math.ceil(10 * (int(queue_item['input_bam_file_size']) / (1000**3))) #use readgroup_count, will eventually be decided by cwl engine at run time per step
-    generate_runner(job_creation_uuid, job_json, queue_item, runner_json_template_text, slurm_core, slurm_mem_megabytes, slurm_storage_gigabytes)
-    generate_slurm(job_creation_uuid, job_slurm, queue_item, slurm_template_text, slurm_core, slurm_mem_megabytes, slurm_storage_gigabytes)
+    slurm_storage_gigabytes = math.ceil(10 * (int(queue_item['input_bam_file_size']) / (1000**3))) #use readgroup, will eventually be decided by cwl engine at run time per step
+    queue_item.slurm_core = slurm_core_count
+    queue_item.slurm_mem_megabytes = slurm_mem_megabytes
+    queue_item.slurm_storage_gigabytes = slurm_storage_gigabytes
+
+    runner_cwl_branch = ''
+    queue_item.runner_cwl_branch = runner_cwl_branch
+    runner_cwl_repo = ''
+    queue_item.runner_cwl_repo = runner_cwl_repo
+    runner_job_branch = ''
+    queue_item.runner_job_branch = runner_job_branch
+    runner_job_cwl_uri = ''
+    queue_item.runner_job_cwl_uri = runner_job_cwl_uri
+    runner_job_repo = ''
+    queue_item.runner_job_repo = runner_job_repo
+    runner_job_slurm_uri = ''
+    queue_item.runner_job_slurm_uri = runner_job_slurm_uri
+
+
+    generate_runner(job_json_file, queue_item, runner_json_template_text)
+    generate_slurm(job_slurm_file, queue_item, slurm_template_text)
     return
 
 
@@ -153,7 +152,8 @@ def main():
     with open(queue_json, 'r') as f:
         queue_dict = json.loads(f.read())
     for queue_item in queue_dict:
-        setup_job(job_creation_uuid, queue_item)
+        queue_item.job_creation_uuid = job_creation_uuid
+        setup_job(queue_item)
     return
 
 
