@@ -80,11 +80,11 @@ steps:
     run: dnaseq_queue_status.cwl
     in:
       - id: hostname
-        source: get_hostname/output
+        source: hostname
       - id: host_ipaddress
-        source: get_host_ipaddress/output
+        source: host_ipaddress
       - id: host_macaddress
-        source: get_host_macaddress/output
+        source: host_macaddress
       - id: input_bam_gdc_id
         source: input_bam_gdc_id
       - id: input_bam_file_size
