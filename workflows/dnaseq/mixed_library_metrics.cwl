@@ -10,7 +10,7 @@ requirements:
 inputs:
   - id: bam
     type: File
-  - id: db_snp_vcf
+  - id: known_snp
     type: File
   - id: fasta
     type: File
@@ -31,7 +31,7 @@ steps:
     run: ../../tools/picard_collectmultiplemetrics.cwl
     in:
       - id: DB_SNP
-        source: db_snp_vcf
+        source: known_snp
       - id: INPUT
         source: bam
       - id: REFERENCE_SEQUENCE
@@ -64,7 +64,7 @@ steps:
       - id: uuid
         source: uuid
       - id: vcf
-        source: db_snp_vcf
+        source: known_snp
         valueFrom: $(self.basename)
       - id: alignment_summary_metrics
         source: picard_collectmultiplemetrics/alignment_summary_metrics
@@ -98,7 +98,7 @@ steps:
     run: ../../tools/picard_collectoxogmetrics.cwl
     in:
       - id: DB_SNP
-        source: db_snp_vcf
+        source: known_snp
       - id: INPUT
         source: bam
       - id: REFERENCE_SEQUENCE
@@ -122,7 +122,7 @@ steps:
       - id: uuid
         source: uuid
       - id: vcf
-        source: db_snp_vcf
+        source: known_snp
         valueFrom: $(self.basename)
     out:
       - id: log
