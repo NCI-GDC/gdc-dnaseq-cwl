@@ -36,7 +36,7 @@ inputs:
       prefix: --input_bam_file_size
 
   - id: input_bam_md5sum
-    type: int
+    type: string
     inputBinding:
       prefix: --input_bam_md5sum
 
