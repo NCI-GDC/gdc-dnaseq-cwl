@@ -41,21 +41,21 @@ inputs:
     type: string
   - id: run_uuid
     type: string
-  - id: runner_cwl_path
-    type: string
   - id: runner_cwl_branch
     type: string
   - id: runner_cwl_repo
     type: string
   - id: runner_cwl_repo_hash
     type: string
-  - id: runner_job_path
+  - id: runner_cwl_uri
     type: string
   - id: runner_job_branch
     type: string
   - id: runner_job_repo
     type: string
   - id: runner_job_repo_hash
+    type: string
+  - id: runner_job_uri
     type: string
   - id: slurm_resource_cores
     type: int
@@ -76,8 +76,8 @@ outputs:
     outputSource: sqlite_to_postgres/log
 
 steps:
-  - id: queue_status
-    run: queue_status.cwl
+  - id: dnaseq_queue_status
+    run: dnaseq_queue_status.cwl
     in:
       - id: hostname
         source: get_hostname/output
@@ -111,22 +111,22 @@ steps:
         source: reference_sa_gdc_id
       - id: run_uuid
         source: run_uuid
-      - id: runner_cwl_path
-        source: runner_cwl_path
       - id: runner_cwl_branch
         source: runner_cwl_branch
       - id: runner_cwl_repo
         source: runner_cwl_repo
       - id: runner_cwl_repo_hash
         source: get_runner_cwl_repo_hash/output
-      - id: runner_job_path
-        source: runner_job_path
+      - id: runner_cwl_uri
+        source: runner_cwl_uri
       - id: runner_job_branch
         source: runner_job_branch
       - id: runner_job_repo
         source: runner_job_repo
       - id: runner_job_repo_hash
         source: get_runner_job_repo_hash/output
+      - id: runner_job_uri
+        source: runner_job_uri
       - id: slurm_resource_cores
         source: slurm_resource_cores
       - id: slurm_resource_disk_gb
