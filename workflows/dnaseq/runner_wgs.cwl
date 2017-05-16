@@ -20,6 +20,8 @@ inputs:
     type: string
   - id: input_bam_file_size
     type: string
+  - id: input_bam_md5sum
+    type: string
   - id: job_creation_uuid
     type: string
   - id: known_snp_gdc_id
@@ -51,11 +53,11 @@ inputs:
   - id: runner_job_uri
     type: string
   - id: slurm_resource_cores
-    source: int
+    type: int
   - id: slurm_resource_disk_gb
-    source: int
+    type: int
   - id: slurm_resource_mem_mb
-    source: int
+    type: int
   - id: status_table
     type: string
   - id: thread_count
