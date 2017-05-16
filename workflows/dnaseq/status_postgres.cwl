@@ -11,7 +11,7 @@ inputs:
     type: string
   - id: hostname
     type: string
-  - id: host_ipadress
+  - id: host_ipaddress
     type: string
   - id: host_macaddress
     type: string
