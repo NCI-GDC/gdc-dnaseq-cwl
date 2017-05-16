@@ -20,7 +20,7 @@ inputs:
   - id: input_bam_file_size
     type: int
   - id: input_bam_md5sum
-    type: int
+    type: string
   - id: job_creation_uuid
     type: string
   - id: known_snp_gdc_id
