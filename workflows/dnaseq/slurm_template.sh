@@ -11,8 +11,8 @@ SCRATCH_DIR=${xx_scratch_dir_xx}
 VIRTUALENV_NAME=${xx_virtualenv_name_xx}
 
 ##JOB VARIABLE
-CWL_JOB_PATH=${xx_cwl_job_path_xx}
-CWL_RUNNER_PATH=${xx_cwl_runner_path_xx}
+CWL_JOB_PATH=${xx_runner_job_cwl_uri_xx}
+CWL_RUNNER_PATH=${xx_runner_cwl_uri_xx}
 INPUT_GDC_ID=${xx_input_bam_gdc_id_xx}
 
 function activate_virtualenv()
