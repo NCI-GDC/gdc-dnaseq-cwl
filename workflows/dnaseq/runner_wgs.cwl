@@ -156,16 +156,16 @@ steps:
         source: reference_sa_gdc_id
       - id: run_uuid
         source: get_run_uuid/output
-      - id: runner_cwl_path
-        source: runner_cwl_path
+      - id: runner_cwl_uri
+        source: runner_cwl_uri
       - id: runner_cwl_branch
         source: runner_cwl_branch
       - id: runner_cwl_repo
         source: runner_cwl_repo
       - id: runner_cwl_repo_hash
         source: get_runner_cwl_repo_hash/output
-      - id: runner_job_path
-        source: runner_job_path
+      - id: runner_job_uri
+        source: runner_job_uri
       - id: runner_job_branch
         source: runner_job_branch
       - id: runner_job_repo
@@ -190,6 +190,8 @@ steps:
   - id: etl
     run: etl.cwl
     in:
+      - id: gdc_token
+        source: gdc_token
       - id: input_bam_gdc_id
         source: input_bam_gdc_id
       - id: known_snp_gdc_id
@@ -219,7 +221,7 @@ steps:
       - id: harmonized_bam_uri
 
   - id: status_complete
-    run: ../status/status_postgres_workflow.cwl
+    run: status_postgres.cwl
     in:
       - id: db_cred
         source: db_cred
@@ -257,16 +259,16 @@ steps:
         source: reference_sa_gdc_id
       - id: run_uuid
         source: get_run_uuid/output
-      - id: runner_cwl_path
-        source: runner_cwl_path
+      - id: runner_cwl_uri
+        source: runner_cwl_uri
       - id: runner_cwl_branch
         source: runner_cwl_branch
       - id: runner_cwl_repo
         source: runner_cwl_repo
       - id: runner_cwl_repo_hash
         source: get_runner_cwl_repo_hash/output
-      - id: runner_job_path
-        source: runner_job_path
+      - id: runner_job_uri
+        source: runner_job_uri
       - id: runner_job_branch
         source: runner_job_branch
       - id: runner_job_repo
