@@ -562,7 +562,7 @@ steps:
     in:
       - id: bam
         source: picard_sortsam_pe/SORTED_OUTPUT
-      - id: db_snp_vcf
+      - id: known_snp
         source: db_snp_path
       - id: fasta
         source: reference_sequence
@@ -595,7 +595,7 @@ steps:
     in:
       - id: bam
         source: picard_sortsam_se/SORTED_OUTPUT
-      - id: db_snp_vcf
+      - id: known_snp
         source: db_snp_path
       - id: fasta
         source: reference_sequence
@@ -745,8 +745,8 @@ steps:
     in:
       - id: bam
         source: picard_markduplicates/OUTPUT
-      - id: db_snp_vcf
-        source: db_snp_path
+      - id: known_snp
+        source: known_snp
       - id: fasta
         source: reference_sequence
       - id: input_state
