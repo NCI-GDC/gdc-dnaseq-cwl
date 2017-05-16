@@ -116,7 +116,7 @@ steps:
       - id: runner_cwl_repo
         source: runner_cwl_repo
       - id: runner_cwl_repo_hash
-        source: get_runner_cwl_repo_hash/output
+        source: runner_cwl_repo_hash
       - id: runner_cwl_uri
         source: runner_cwl_uri
       - id: runner_job_branch
@@ -124,7 +124,7 @@ steps:
       - id: runner_job_repo
         source: runner_job_repo
       - id: runner_job_repo_hash
-        source: get_runner_job_repo_hash/output
+        source: runner_job_repo_hash
       - id: runner_job_uri
         source: runner_job_uri
       - id: slurm_resource_cores
