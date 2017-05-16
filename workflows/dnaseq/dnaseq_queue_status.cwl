@@ -131,17 +131,17 @@ inputs:
       prefix: --runner_job_uri
 
   - id: slurm_resource_cores
-    type: string
+    type: int
     inputBinding:
       prefix: --slurm_resource_cores
 
   - id: slurm_resource_disk_gb
-    type: string
+    type: int
     inputBinding:
       prefix: --slurm_resource_disk_gb
 
   - id: slurm_resource_mem_mb
-    type: string
+    type: int
     inputBinding:
       prefix: --slurm_resource_mem_mb
 
@@ -156,7 +156,7 @@ inputs:
       prefix: --status_table
 
   - id: thread_count
-    type: string
+    type: int
     inputBinding:
       prefix: --thread_count
 
