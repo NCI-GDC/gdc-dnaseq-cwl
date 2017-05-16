@@ -146,9 +146,9 @@ steps:
   - id: sqlite_to_postgres
     run: ../../tools/sqlite_to_postgres_hirate.cwl
     in:
-      - id: db_cred
+      - id: postgres_creds_path
         source: db_cred
-      - id: db_cred_section
+      - id: ini_section
         source: db_cred_section
       - id: source_sqlite_path
         source: dnaseq_queue_status/sqlite
