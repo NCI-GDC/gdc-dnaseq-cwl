@@ -35,6 +35,9 @@ inputs:
   - id: fasta_bwt
     type: File
 
+  - id: fasta_fai
+    type: File
+
   - id: fasta_pac
     type: File
 
@@ -51,7 +54,8 @@ outputs:
       - .amb
       - .ann
       - .bwt
+      - .fai
       - .pac
       - .sa
 
-baseCommand: "true"
+baseCommand: ['true']
