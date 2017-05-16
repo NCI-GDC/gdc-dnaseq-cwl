@@ -10,6 +10,8 @@ requirements:
  - class: SubworkflowFeatureRequirement
 
 inputs:
+  - id: gdc_token
+    type: File
   - id: input_bam_gdc_id
     type: string
   - id: known_snp_gdc_id
@@ -132,7 +134,7 @@ steps:
       - id: output
 
   - id: root_fasta_files
-    run: ../../tools/copy_files_to_dir.cwl
+    run: ../../tools/root_fasta_dnaseq.cwl
     in:
       - id: fasta
         source: extract_ref_fa/output
