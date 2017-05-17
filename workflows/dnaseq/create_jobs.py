@@ -59,7 +59,9 @@ def generate_runner(job_json_file, queue_data, runner_text):
     runner_template = json.loads(runner_text, object_hook=lambda d: AttributeDict(**d))
     for attr, value in queue_data.items():
         if attr == 'db_cred':
-             setattr(runner_template.db_cred, 'path', value)
+            setattr(runner_template.db_cred, 'path', value)
+        elif attr == 'gdc_token':
+            setattr(runner_template.gdc_token, 'path', value)
         else:
             try:
                 hasattr(runner_template, attr)
