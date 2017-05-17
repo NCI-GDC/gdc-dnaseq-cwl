@@ -4,7 +4,7 @@ cwlVersion: draft-3
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/cocleaning-tool:3.7
+    dockerPull: quay.io/ncigdc/cocleaning-tool:63a7464045a47625ba04b52a02523144dfde5afdc9cc237e570597fa7d53a192
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
