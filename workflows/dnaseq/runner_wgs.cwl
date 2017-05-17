@@ -166,10 +166,10 @@ steps:
         source: runner_cwl_repo
       - id: runner_cwl_repo_hash
         source: get_runner_cwl_repo_hash/output
-      - id: runner_job_uri
-        source: runner_job_uri
       - id: runner_job_branch
         source: runner_job_branch
+      - id: runner_job_cwl_uri
+        source: runner_job_cwl_uri
       - id: runner_job_repo
         source: runner_job_repo
       - id: runner_job_repo_hash
@@ -268,10 +268,10 @@ steps:
         source: runner_cwl_repo
       - id: runner_cwl_repo_hash
         source: get_runner_cwl_repo_hash/output
-      - id: runner_job_uri
-        source: runner_job_uri
       - id: runner_job_branch
         source: runner_job_branch
+      - id: runner_job_cwl_uri
+        source: runner_job_cwl_uri
       - id: runner_job_repo
         source: runner_job_repo
       - id: runner_job_repo_hash

@@ -51,11 +51,11 @@ inputs:
     type: string
   - id: runner_job_branch
     type: string
+  - id: runner_job_cwl_uri
+    type: string
   - id: runner_job_repo
     type: string
   - id: runner_job_repo_hash
-    type: string
-  - id: runner_job_uri
     type: string
   - id: slurm_resource_cores
     type: int
@@ -126,7 +126,7 @@ steps:
       - id: runner_job_repo_hash
         source: runner_job_repo_hash
       - id: runner_job_uri
-        source: runner_job_uri
+        source: runner_job_cwl_uri
       - id: slurm_resource_cores
         source: slurm_resource_cores
       - id: slurm_resource_disk_gb
