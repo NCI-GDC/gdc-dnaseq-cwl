@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import ast
 import json
 import logging
 import math
@@ -15,11 +16,6 @@ import uuid
 SCRATCH_DIR = '/mnt/SCRATCH'
 SLURM_CORE = 8
 SLURM_MEM = 50000
-
-class AttributeDict(dict): 
-    __getattr__ = dict.__getitem__
-    __setattr__ = dict.__setitem__
-
 
 def fetch_text(url):
     split = urllib.parse.urlsplit(url)
@@ -56,21 +52,12 @@ def fetch_text(url):
 
 
 def generate_runner(job_json_file, queue_data, runner_text):
-    runner_template = json.loads(runner_text, object_hook=lambda d: AttributeDict(**d))
     for attr, value in queue_data.items():
-        if attr == 'db_cred':
-            setattr(runner_template.db_cred, 'path', value)
-        elif attr == 'gdc_token':
-            setattr(runner_template.gdc_token, 'path', value)
-        else:
-            try:
-                hasattr(runner_template, attr)
-                setattr(runner_template, attr, value)
-            except KeyError:
-                continue
-    setattr(runner_template, 'thread_count', '8')
+        runner_text = runner_text.replace('${'+attr+'}', value)
+    runner_text = runner_text.replace('${thread_count}', str(8))
+    runner_dict = ast.literal_eval(runner_text)
     with open(job_json_file, 'w') as f_open:
-        json.dump(runner_template, f_open, sort_keys=True, indent=4)
+        json.dump(runner_dict, f_open, sort_keys=True, indent=4)
     return
 
 
