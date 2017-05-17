@@ -8,11 +8,6 @@ docker_repos=($(grep dockerPull runner_wgs_pack.cwl | sort | uniq | awk '{print 
 #     docker pull ${docker_repo}:latest
 # done
 
-for docker_repo in "${docker_repos[@]}"
-do
-    docker inspect ${docker_repo}:latest | grep "Id\":" | awk -F ":" '{print $3}' | sed -e 's/",$//'
-done
-
 rm runner_wgs_pack.cwl
 
 for docker_repo in "${docker_repos[@]}"
