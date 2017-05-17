@@ -16,6 +16,8 @@ inputs:
     type: string
   - id: known_snp_gdc_id
     type: string
+  - id: known_snp_index_gdc_id
+    type: string
   - id: reference_amb_gdc_id
     type: string
   - id: reference_ann_gdc_id
@@ -60,6 +62,16 @@ steps:
         source: gdc_token
       - id: gdc_uuid
         source: known_snp_gdc_id
+    out:
+      - id: output
+
+  - id: extract_known_snp_index
+    run: ../../tools/gdc_get_object.cwl
+    in:
+      - id: gdc_token
+        source: gdc_token
+      - id: gdc_uuid
+        source: known_snp_index_gdc_id
     out:
       - id: output
 
@@ -152,6 +164,16 @@ steps:
         source: extract_ref_sa/output
     out:
       - id: output
+
+  # - id: root_known_snp_files
+  #   run: ../../tools/root_vcf.cwl
+  #   in:
+  #     - id: vcf
+  #       source: extract_known_snp/output
+  #     - id: vcf_index
+  #       source: extract_known_snp_index/output
+  #   out:
+  #     - id: output
 
   - id: transform
     run: transform.cwl
