@@ -25,6 +25,8 @@ inputs:
     type: string
   - id: known_snp_gdc_id
     type: string
+  - id: known_snp_index_gdc_id
+    type: string
   - id: reference_amb_gdc_id
     type: string
   - id: reference_ann_gdc_id
@@ -95,6 +97,8 @@ steps:
         source: job_creation_uuid
       - id: known_snp_gdc_id
         source: known_snp_gdc_id
+      - id: known_snp_index_gdc_id
+        source: known_snp_index_gdc_id
       - id: reference_amb_gdc_id
         source: reference_amb_gdc_id
       - id: reference_ann_gdc_id
