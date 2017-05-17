@@ -21,5 +21,11 @@ do
         echo ${file_name}
         did=$(docker inspect ${docker_repo}:latest | grep "Id\":" | awk -F ":" '{print $3}' | sed -e 's/",$//')
         grep ${docker_repo}:${did} ${file_name}
+        if [ $? -ne 0 ]
+        then
+            echo ${file_name} needs fixin ${docker_repo}
+            sed "s|${docker_repo}:.*|${docker_repo}:${did}|" ${file_name}
+        fi
+               
     done
 done
