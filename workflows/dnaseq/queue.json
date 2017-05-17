@@ -51,6 +51,6 @@
         "slurm_template_uri": "https://raw.githubusercontent.com/NCI-GDC/gdc-dnaseq-cwl/gdc-active-submission/workflows/dnaseq/slurm_template.sh",
         "status_table": "dnaseq",
         "virtualenv_name": "p2",
-        "workflow_version": "latest"
+        "workflow_hash": "latest"
     }
 ]

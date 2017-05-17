@@ -34,5 +34,5 @@
     "slurm_resource_mem_mb": ${slurm_resource_mem_megabytes},
     "status_table": "${status_table}",
     "thread_count": ${thread_count},
-    "workflow_version": "${workflow_version}"
+    "workflow_hash": "${workflow_hash}"
 }

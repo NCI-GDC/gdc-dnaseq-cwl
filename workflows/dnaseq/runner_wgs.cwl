@@ -34,6 +34,8 @@ inputs:
     type: string
   - id: reference_bwt_gdc_id
     type: string
+  - id: reference_dict_gdc_id
+    type: string
   - id: reference_fa_gdc_id
     type: string
   - id: reference_fai_gdc_id
@@ -66,6 +68,8 @@ inputs:
     type: string
   - id: thread_count
     type: int
+  - id: workflow_hash
+    type: string
 
 outputs:
   - id: token
