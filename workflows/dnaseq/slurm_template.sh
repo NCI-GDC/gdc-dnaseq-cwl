@@ -2,7 +2,7 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --workdir=${xx_scratch_dir_xx}
-#SBATCH --cpus-per-task=${xx_slurm_reseource_cores_xx}
+#SBATCH --cpus-per-task=${xx_slurm_resource_cores_xx}
 #SBATCH --mem=${xx_slurm_resource_mem_megabytes_xx}
 #SBATCH --gres=SCRATCH:${xx_slurm_resource_disk_gigabytes_xx}
 
