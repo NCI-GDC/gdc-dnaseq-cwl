@@ -50,7 +50,9 @@ inputs:
     type: string
   - id: runner_job_repo
     type: string
-  - id: runner_job_uri
+  - id: runner_job_cwl_uri
+    type: string
+  - id: runner_job_slurm_uri
     type: string
   - id: slurm_resource_cores
     type: int
