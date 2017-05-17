@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/sqlite_to_postgres:1
+    dockerPull: quay.io/ncigdc/sqlite_to_postgres:c032605a7a4d8892697f02d8611e64840414426dab3ca8a71f52434c616b04b6
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool

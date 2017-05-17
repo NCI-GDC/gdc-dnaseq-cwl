@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/samtools_metrics_sqlite:1
+    dockerPull: quay.io/ncigdc/samtools_metrics_sqlite:294fa5fde699d338865096b815c6c5f4a8f2dfaeb4d22a52fcc93239f2d0066f
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool

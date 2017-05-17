@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/fastq_remove_duplicate_qname:1
+    dockerPull: quay.io/ncigdc/fastq_remove_duplicate_qname:5e79f51f0ee0f785930d8b7808c22f2874053659af4378e52935b3e90525fc7a
   - class: InlineJavascriptRequirement
   - class: ShellCommandRequirement
 

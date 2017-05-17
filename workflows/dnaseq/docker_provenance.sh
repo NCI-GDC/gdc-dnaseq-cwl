@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #set -e
-cwltool --pack workflows/dnaseq/runner_wgs.cwl > runner_wgs_pack.cwl
+#cwltool --pack workflows/dnaseq/runner_wgs.cwl > runner_wgs_pack.cwl
 docker_repos=($(grep dockerPull runner_wgs_pack.cwl | sort | uniq | awk '{print $2}' | sed -e 's/^"//' -e 's/"$//' | awk -F ":" '{print $1}' | grep ncigdc))
 # for docker_repo in "${docker_repos[@]}"
 # do
@@ -23,7 +23,7 @@ do
             echo ${file_name} needs fixin ${docker_repo}
             sed -i "s|${docker_repo}:.*|${docker_repo}:${did}|" ${file_name}
         fi
-        docker tag ${docker_repo}:latest ${docker_repo}:${did}
-        docker push ${docker_repo}:${did}       
+        #docker tag ${docker_repo}:latest ${docker_repo}:${did}
+        #docker push ${docker_repo}:${did}       
     done
 done
