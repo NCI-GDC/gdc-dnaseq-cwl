@@ -8,7 +8,7 @@ docker_repos=($(grep dockerPull runner_wgs_pack.cwl | sort | uniq | awk '{print 
 #     docker pull ${docker_repo}:latest
 # done
 
-rm runner_wgs_pack.cwl
+#rm runner_wgs_pack.cwl
 
 for docker_repo in "${docker_repos[@]}"
 do
@@ -21,7 +21,7 @@ do
         if [ $? -ne 0 ]
         then
             echo ${file_name} needs fixin ${docker_repo}
-            sed "s|${docker_repo}:.*|${docker_repo}:${did}|" ${file_name}
+            sed -i "s|${docker_repo}:.*|${docker_repo}:${did}|" ${file_name}
         fi
         docker tag ${docker_repo}:latest ${docker_repo}:${did}
         docker push ${docker_repo}:${did}       
