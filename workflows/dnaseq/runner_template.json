@@ -4,6 +4,10 @@
         "path": "${db_cred}"
     },
     "db_cred_section": "${db_cred_section}",
+    "gdc_token": {
+        "class": "File",
+        "path": "${gdc_token}"
+    },
     "input_bam_gdc_id": "${input_bam_gdc_id}",
     "input_bam_file_size": "${input_bam_file_size}",
     "input_bam_md5sum": "${input_bam_md5sum}",
