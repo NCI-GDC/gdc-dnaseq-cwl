@@ -29,10 +29,10 @@
     "runner_job_repo": "${runner_job_repo}",
     "runner_job_cwl_uri": "${runner_job_cwl_uri}",
     "runner_job_slurm_uri": "${runner_job_slurm_uri}",
-    "slurm_resource_cores": "${slurm_resource_cores}",
-    "slurm_resource_disk_gb": "${slurm_resource_disk_gb}",
-    "slurm_resource_mem_mb": "${slurm_resource_mem_mb}",
+    "slurm_resource_cores": ${slurm_resource_cores},
+    "slurm_resource_disk_gb": ${slurm_resource_disk_gb},
+    "slurm_resource_mem_mb": ${slurm_resource_mem_mb},
     "status_table": "${status_table}",
-    "thread_count": "${thread_count}",
+    "thread_count": ${thread_count},
     "workflow_version": "${workflow_version}"
 }

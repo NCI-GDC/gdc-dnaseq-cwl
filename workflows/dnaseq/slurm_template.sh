@@ -2,9 +2,9 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --workdir=${xx_scratch_dir_xx}
-#SBATCH --cpus-per-task=${xx_slurm_core_xx}
-#SBATCH --mem=${xx_slurm_mem_megabytes_xx}
-#SBATCH --gres=SCRATCH:${xx_slurm_disk_gigabytes_xx}
+#SBATCH --cpus-per-task=${xx_slurm_reseource_core_xx}
+#SBATCH --mem=${xx_slurm_resource_mem_megabytes_xx}
+#SBATCH --gres=SCRATCH:${xx_slurm_resource_disk_gigabytes_xx}
 
 ##ENV VARIABLE
 SCRATCH_DIR=${xx_scratch_dir_xx}

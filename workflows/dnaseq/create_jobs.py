@@ -112,9 +112,9 @@ def setup_job(queue_item):
     slurm_core = SLURM_CORE # will eventually be decided by cwl engine at run time per step
     slurm_mem_megabytes = SLURM_MEM # make a model
     slurm_disk_gigabytes = math.ceil(10 * (int(queue_item['input_bam_file_size']) / (1000**3))) #use readgroup, will eventually be decided by cwl engine at run time per step
-    queue_item['slurm_core'] = str(slurm_core)
-    queue_item['slurm_mem_megabytes'] = str(slurm_mem_megabytes)
-    queue_item['slurm_disk_gigabytes'] = str(slurm_disk_gigabytes)
+    queue_item['slurm_resource_core'] = str(slurm_core)
+    queue_item['slurm_resource_mem_megabytes'] = str(slurm_mem_megabytes)
+    queue_item['slurm_resource_disk_gigabytes'] = str(slurm_disk_gigabytes)
 
     queue_item['runner_cwl_branch'] = get_raw_github_branch(queue_item['runner_cwl_uri'])
     queue_item['runner_cwl_repo'] = get_raw_github_repo(queue_item['runner_cwl_uri'])
