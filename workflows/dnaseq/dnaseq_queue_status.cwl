@@ -31,7 +31,7 @@ inputs:
       prefix: --input_bam_gdc_id
 
   - id: input_bam_file_size
-    type: int
+    type: long
     inputBinding:
       prefix: --input_bam_file_size
 

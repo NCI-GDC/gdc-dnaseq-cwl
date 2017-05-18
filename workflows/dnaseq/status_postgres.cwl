@@ -18,7 +18,7 @@ inputs:
   - id: input_bam_gdc_id
     type: string
   - id: input_bam_file_size
-    type: int
+    type: long
   - id: input_bam_md5sum
     type: string
   - id: job_creation_uuid
