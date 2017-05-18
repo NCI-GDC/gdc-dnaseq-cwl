@@ -15,10 +15,10 @@ outputs:
   - id: output
     type: string
     outputBinding:
-      glob: uuid
+      glob: output
       loadContents: true
       outputEval: $(self[0].contents)
 
 stdout: output
 
-baseCommand: [bash, -c, python3 -c 'import uuid; import sys; sys.stdout.write(str(uuid.uuid4()));']
+baseCommand: [python3, -c, "import uuid; import sys; sys.stdout.write(str(uuid.uuid4()));"]
