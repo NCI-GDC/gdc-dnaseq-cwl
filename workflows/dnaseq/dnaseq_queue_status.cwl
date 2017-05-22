@@ -50,6 +50,11 @@ inputs:
     inputBinding:
       prefix: --known_snp_gdc_id
 
+  - id: known_snp_index_gdc_id
+    type: string
+    inputBinding:
+      prefix: --known_snp_gdc_id
+
   - id: reference_amb_gdc_id
     type: string
     inputBinding:
