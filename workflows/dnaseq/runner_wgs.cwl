@@ -192,6 +192,8 @@ steps:
         valueFrom: "RUNNING"
       - id: status_table
         source: status_table
+      - id: step_token
+        source: gdc_token
       - id: thread_count
         source: thread_count
     out:
@@ -298,6 +300,8 @@ steps:
         valueFrom: "COMPLETE"
       - id: status_table
         source: status_table
+      - id: step_token
+        source: etl/token
       - id: thread_count
         source: thread_count
     out:
