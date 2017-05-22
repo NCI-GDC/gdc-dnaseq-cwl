@@ -169,11 +169,11 @@ outputs:
   - id: log
     type: File
     outputBinding:
-      glob: $(inputs.uuid+".log")
+      glob: $(inputs.run_uuid+".log")
 
   - id: sqlite
     type: File
     outputBinding:
-      glob: $(inputs.uuid+".db")
+      glob: $(inputs.run_uuid+".db")
 
 baseCommand: [/usr/local/bin/dnaseq_queue_status]
