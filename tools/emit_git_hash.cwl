@@ -6,7 +6,7 @@ class: CommandLineTool
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/git-client
+    dockerPull: quay.io/ncigdc/git-client:latest
   - class: ShellCommandRequirement
 
 inputs:
