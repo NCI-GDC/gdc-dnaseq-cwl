@@ -69,6 +69,8 @@ inputs:
     type: string
   - id: status_table
     type: string
+  - id: step_token
+    type: File
   - id: thread_count
     type: int
 
