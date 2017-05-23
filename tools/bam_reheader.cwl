@@ -21,11 +21,11 @@ outputs:
     type: File
     format: "edam:format_2572"
     outputBinding:
-      glob: $(inputs.bam_path.basename)
+      glob: $(inputs.input.basename)
 
   - id: log
     type: File
     outputBinding:
-      glob: $(inputs.bam_path.basename + ".log")
+      glob: $(inputs.input.basename + ".log")
 
 baseCommand: [/usr/local/bin/bam_reheader]
