@@ -165,23 +165,23 @@ steps:
     out:
       - id: output
 
-  # - id: root_known_snp_files
-  #   run: ../../tools/root_vcf.cwl
-  #   in:
-  #     - id: vcf
-  #       source: extract_known_snp/output
-  #     - id: vcf_index
-  #       source: extract_known_snp_index/output
-  #   out:
-  #     - id: output
-
+  - id: root_known_snp_files
+    run: ../../tools/root_vcf.cwl
+    in:
+      - id: vcf
+        source: extract_known_snp/output
+      - id: vcf_index
+        source: extract_known_snp_index/output
+    out:
+      - id: output
+ 
   - id: transform
     run: transform.cwl
     in:
       - id: input_bam
         source: extract_bam/output
       - id: known_snp
-        source: extract_known_snp/output
+        source: root_known_snp_files/output
       - id: reference_sequence
         source: root_fasta_files/output
       - id: thread_count
