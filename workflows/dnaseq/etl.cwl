@@ -24,6 +24,8 @@ inputs:
     type: string
   - id: reference_bwt_gdc_id
     type: string
+  - id: reference_dict_gdc_id
+    type: string
   - id: reference_fa_gdc_id
     type: string
   - id: reference_fai_gdc_id
@@ -92,6 +94,16 @@ steps:
         source: gdc_token
       - id: gdc_uuid
         source: reference_fai_gdc_id
+    out:
+      - id: output
+
+  - id: extract_ref_dict
+    run: ../../tools/gdc_get_object.cwl
+    in:
+      - id: gdc_token
+        source: gdc_token
+      - id: gdc_uuid
+        source: reference_dict_gdc_id
     out:
       - id: output
 

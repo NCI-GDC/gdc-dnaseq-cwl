@@ -13,6 +13,8 @@ requirements:
         entry: $(inputs.fasta_ann)
       - entryname: $(inputs.fasta_bwt.basename)
         entry: $(inputs.fasta_bwt)
+      - entryname: $(inputs.fasta_dict.basename)
+        entry: $(inputs.fasta_dict)
       - entryname: $(inputs.fasta_fai.basename)
         entry: $(inputs.fasta_fai)
       - entryname: $(inputs.fasta_pac.basename)
@@ -35,6 +37,9 @@ inputs:
     type: File
 
   - id: fasta_bwt
+    type: File
+
+  - id: fasta_dict
     type: File
 
   - id: fasta_fai
