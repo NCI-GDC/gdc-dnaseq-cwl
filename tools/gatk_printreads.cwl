@@ -16,7 +16,7 @@ inputs:
       prefix: --BQSR
 
   - id: input_file
-    #format: "edam:format_2572"
+    format: "edam:format_2572"
     type: File
     inputBinding:
       prefix: --input_file
@@ -57,7 +57,7 @@ inputs:
       prefix: --readGroup
 
   - id: reference_sequence
-    #format: "edam:format_1929"
+    format: "edam:format_1929"
     type: File
     inputBinding:
       prefix: --reference_sequence
@@ -83,7 +83,7 @@ inputs:
 
 outputs:
   - id: output_bam
-    #format: "edam:format_2572"
+    format: "edam:format_2572"
     type: File
     outputBinding:
       glob: $(inputs.input_file.basename)
