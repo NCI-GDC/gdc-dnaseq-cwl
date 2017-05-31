@@ -33,6 +33,8 @@ inputs:
     type: string
   - id: reference_bwt_gdc_id
     type: string
+  - id: reference_dict_gdc_id
+    type: string
   - id: reference_fa_gdc_id
     type: string
   - id: reference_fai_gdc_id
@@ -107,6 +109,8 @@ steps:
         source: reference_ann_gdc_id
       - id: reference_bwt_gdc_id
         source: reference_bwt_gdc_id
+      - id: reference_dict_gdc_id
+        source: reference_dict_gdc_id
       - id: reference_fa_gdc_id
         source: reference_fa_gdc_id
       - id: reference_fai_gdc_id

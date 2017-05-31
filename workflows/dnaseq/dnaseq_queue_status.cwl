@@ -70,6 +70,11 @@ inputs:
     inputBinding:
       prefix: --reference_bwt_gdc_id
 
+  - id: reference_dict_gdc_id
+    type: string
+    inputBinding:
+      prefix: --reference_dict_gdc_id
+
   - id: reference_fa_gdc_id
     type: string
     inputBinding:
