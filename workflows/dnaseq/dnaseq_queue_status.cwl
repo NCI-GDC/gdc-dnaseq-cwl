@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/dnaseq_queue_status:d95201607ffcce66bcee3121378a038e469bd5edfda5faf823cc6c2b169efab6
+    dockerPull: quay.io/ncigdc/dnaseq_queue_status:073418531a1a0a501e0925fbf45ff7ad37c8fc994479f5fae706d4a862f4f0f0
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
