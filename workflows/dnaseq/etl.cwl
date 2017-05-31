@@ -168,6 +168,8 @@ steps:
         source: extract_ref_ann/output
       - id: fasta_bwt
         source: extract_ref_bwt/output
+      - id: fasta_dict
+        source: extract_ref_dict/output
       - id: fasta_fai
         source: extract_ref_fai/output
       - id: fasta_pac
