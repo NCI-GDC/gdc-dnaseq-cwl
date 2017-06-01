@@ -24,11 +24,11 @@ outputs:
   - id: log
     type: File
     outputBinding:
-      glob: $("test_results.log")
+      glob: $("log.txt")
 
   - id: results
     type: File
     outputBinding:
-      glob: $("test_results.json")
+      glob: $("results.json")
 
 baseCommand: [/usr/local/bin/dnaseq_validation]
