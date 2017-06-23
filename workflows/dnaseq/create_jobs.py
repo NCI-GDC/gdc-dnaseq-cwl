@@ -138,7 +138,8 @@ def run(queue_json_tempfile, temp_dir):
         for queue_item in queue_dict:
             queue_item['job_creation_uuid'] = job_creation_uuid
             setup_job(queue_item, temp_dir)
-        return temp_dir
+        print('os.listdir(temp_dir): %s' % os.listdir(temp_dir))
+        return temp_dir, job_creation_uuid
 
 def main():
     parser = argparse.ArgumentParser('make slurm and cwl job')

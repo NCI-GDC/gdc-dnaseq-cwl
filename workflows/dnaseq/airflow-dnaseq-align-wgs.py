@@ -1,7 +1,9 @@
 from datetime import datetime, timedelta
+import json
 import os
 from tempfile import NamedTemporaryFile, TemporaryDirectory
 import shutil
+import uuid
 
 from airflow import DAG
 from airflow.hooks.S3_hook import S3Hook
@@ -22,7 +24,7 @@ default_args = {
     'start_date': datetime.now() - timedelta(days=1),
 }
 
-dag = DAG('dnaseq-align-wgs',
+dag = DAG('af-dnaseq-align-wgs',
           default_args=default_args,
           schedule_interval=None
 #          schedule_interval='@once'
@@ -43,22 +45,42 @@ sensor = S3KeySensor(
 
 
 def create_run_jobs(queue_json_file):
-    with TemporaryDirectory() as temp_dir:
+    with TemporaryDirectory() as temp_git_dir:
         # create jobs
-        job_dir = create_jobs.run(queue_json_file, temp_dir)
-        job_uuid = os.path.basename(job_dir)
-        job_git_dir = os.path.join(temp_dir, job_uuid)
+        ##job_dir, job_creation_uuid = create_jobs.run(queue_json_file, temp_dir) ##context manager restrict
+        job_creation_uuid = str(uuid.uuid4())
+        # job_creation_dir = os.path.join(temp_git_dir, job_creation_uuid)
+        # cwl_git_dir = os.path.join(temp_git_dir, job_creation_uuid, 'cwl')
+        # slurm_git_dir = os.path.join(temp_git_dir, job_creation_uuid, 'slurm')
+        # os.makedirs(cwl_dir)
+        # os.makedirs(slurm_dir)
 
-        # clone git repo
-        repo_dir=os.path.join(temp_dir, os.path.basename(WORKFLOW_JOBS_GIT).split('.')[0])
-        git_repo = Repo.clone_from(WORKFLOW_JOBS_GIT, repo_dir)
+        ## get job data
+        with open(queue_json_file.name,'r') as f:
+            f.seek(0)
+            queue_dict = json.loads(f.read())
 
-        # add new jobs to repo
-        os.rename(job_dir, job_git_dir)
-        git_repo.index.add([job_git_dir])
-        git_repo.index.commit("airflow add jobs")
-        origin = git_repo.remote(name='origin')
-        origin.push()
+        ## make jobs in temp dir
+        with TemporaryDirectory() as temp_job_dir:
+            for queue_item in queue_dict:
+                queue_item['job_creation_uuid'] = job_creation_uuid
+                create_jobs.setup_job(queue_item, temp_job_dir)
+            print('os.listdir(temp_job_dir): %s' % os.listdir(temp_job_dir))
+
+            # print(os.listdir(job_dir))
+
+            ## clone git repo
+            repo_dir=os.path.join(temp_git_dir, os.path.basename(WORKFLOW_JOBS_GIT).split('.')[0])
+            os.makedirs(repo_dir)
+            git_repo = Repo.clone_from(WORKFLOW_JOBS_GIT, repo_dir)
+
+            ## add new jobs to repo
+            job_git_dir = os.path.join(repo_dir, job_creation_uuid)
+            os.rename(os.path.join(temp_job_dir,job_creation_uuid), job_git_dir)
+            git_repo.index.add([job_git_dir])
+            git_repo.index.commit("airflow add jobs")
+            origin = git_repo.remote(name='origin')
+            origin.push()
 
 def s3_get_key(ti):
     s3_bucket = ti.xcom_pull('check_s3', key='s3_bucket')
