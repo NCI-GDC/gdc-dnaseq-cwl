@@ -47,13 +47,7 @@ sensor = S3KeySensor(
 def create_run_jobs(queue_json_file):
     with TemporaryDirectory() as temp_git_dir:
         # create jobs
-        ##job_dir, job_creation_uuid = create_jobs.run(queue_json_file, temp_dir) ##context manager restrict
         job_creation_uuid = str(uuid.uuid4())
-        # job_creation_dir = os.path.join(temp_git_dir, job_creation_uuid)
-        # cwl_git_dir = os.path.join(temp_git_dir, job_creation_uuid, 'cwl')
-        # slurm_git_dir = os.path.join(temp_git_dir, job_creation_uuid, 'slurm')
-        # os.makedirs(cwl_dir)
-        # os.makedirs(slurm_dir)
 
         ## get job data
         with open(queue_json_file.name,'r') as f:
@@ -65,9 +59,6 @@ def create_run_jobs(queue_json_file):
             for queue_item in queue_dict:
                 queue_item['job_creation_uuid'] = job_creation_uuid
                 create_jobs.setup_job(queue_item, temp_job_dir)
-            print('os.listdir(temp_job_dir): %s' % os.listdir(temp_job_dir))
-
-            # print(os.listdir(job_dir))
 
             ## clone git repo
             repo_dir=os.path.join(temp_git_dir, os.path.basename(WORKFLOW_JOBS_GIT).split('.')[0])
@@ -81,6 +72,8 @@ def create_run_jobs(queue_json_file):
             git_repo.index.commit("airflow add jobs")
             origin = git_repo.remote(name='origin')
             origin.push()
+    return
+
 
 def s3_get_key(ti):
     s3_bucket = ti.xcom_pull('check_s3', key='s3_bucket')
