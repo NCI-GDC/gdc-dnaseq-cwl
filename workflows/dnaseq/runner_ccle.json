@@ -39,5 +39,6 @@
     "slurm_resource_disk_gb": 117,
     "slurm_resource_mem_mb": 50,
     "status_table": "align",
-    "thread_count": 16
+    "thread_count": 16,
+    "workflow_hash": "None"
 }
