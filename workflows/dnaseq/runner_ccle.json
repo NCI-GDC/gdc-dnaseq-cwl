@@ -33,6 +33,7 @@
     "runner_job_branch": "master",
     "runner_job_path": "",
     "runner_job_repo": "https://github.com/NCI-GDC/workflow-jobs",
+    "runner_job_cwl_uri": "None",
     "slurm_resource_cores": 8,
     "slurm_resource_disk_gb": 117,
     "slurm_resource_mem_mb": 50,
