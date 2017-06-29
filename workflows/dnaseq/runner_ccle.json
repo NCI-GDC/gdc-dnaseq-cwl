@@ -29,6 +29,7 @@
     "runner_cwl_branch": "gdc-active-submission",
     "runner_cwl_path": "https://raw.githubusercontent.com/NCI-GDC/gdc-dnaseq-cwl/gdc-active-submission/workflows/dnaseq/runner.cwl",
     "runner_cwl_repo": "https://github.com/NCI-GDC/gdc-dnaseq-cwl",
+    "runner_cwl_uri": "https://raw.githubusercontent.com/NCI-GDC/gdc-dnaseq-cwl/gdc-active-submission/workflows/dnaseq/runner_wgs.cwl",
     "runner_job_branch": "master",
     "runner_job_path": "",
     "runner_job_repo": "https://github.com/NCI-GDC/workflow-jobs",
