@@ -15,6 +15,7 @@
     "input_bam_md5sum": "c3eb33a639e470d34f571d741d4dc9a9",
     "job_creation_uuid": "790b89e4-ca8c-486c-a9b2-2db0c4cf66ed",
     "known_snp_gdc_id": "4ba1c087-ec80-47c4-a9d5-e9bb9933fef4",
+    "known_snp_index_gdc_id": "df35a362-e9bb-47a1-b79c-24463ea9e218",
     "program_id": "CCLE",
     "project_id": "BRCA",
     "reference_amb_gdc_id": "2fbc4427-5681-4d78-89d1-bc9e6b674a60",
