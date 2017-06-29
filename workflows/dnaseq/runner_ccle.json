@@ -1,7 +1,7 @@
 {
     "db_cred": {
         "class": "File",
-        "path": "/home/ubuntu/connect_jhsavage_test.ini"
+        "path": "/home/ubuntu/connect_jhsavage_node001.ini"
     },
     "db_cred_section": "DEFAULT",
     "gdc_program": "",
