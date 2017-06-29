@@ -38,6 +38,6 @@
     "slurm_resource_cores": 8,
     "slurm_resource_disk_gb": 117,
     "slurm_resource_mem_mb": 50,
-    "status_table_prefix": "align",
+    "status_table": "align",
     "thread_count": 16
 }
