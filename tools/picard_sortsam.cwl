@@ -57,5 +57,7 @@ outputs:
     format: "edam:format_2572"
     outputBinding:
       glob: $(inputs.OUTPUT)
+    secondaryFiles:
+      - ^.bai
           
 baseCommand: [java, -jar, /usr/local/bin/picard.jar, SortSam]
