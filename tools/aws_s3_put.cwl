@@ -26,7 +26,7 @@ inputs:
     type: File
     inputBinding:
       loadContents: true
-      valueFrom: null
+      valueFrom: $(null)
 
   - id: input
     type: File

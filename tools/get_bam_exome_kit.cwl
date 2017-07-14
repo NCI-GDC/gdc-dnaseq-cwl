@@ -17,7 +17,7 @@ inputs:
     type: File
     inputBinding:
       loadContents: true
-      valueFrom: null
+      valueFrom: $(null)
 
 outputs:
   - id: exome_kit

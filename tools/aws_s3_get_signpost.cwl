@@ -25,13 +25,13 @@ inputs:
     type: File
     inputBinding:
       loadContents: true
-      valueFrom: null
+      valueFrom: $(null)
 
   - id: signpost_json
     type: File
     inputBinding:
       loadContents: true
-      valueFrom: null
+      valueFrom: $(null)
 
 outputs:
   - id: output

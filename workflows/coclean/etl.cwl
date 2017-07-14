@@ -450,7 +450,7 @@ steps:
         valueFrom: $(self + "/" + inputs.bam_uuid + "/")
       - id: bam_uuid
         source: emit_bam_normal_uuid/output
-        valueFrom: null
+        valueFrom: $(null)
     out:
       - id: output
 
@@ -473,7 +473,7 @@ steps:
         valueFrom: $(self + "/" + inputs.bam_uuid + "/")
       - id: bam_uuid
         source: emit_bam_normal_uuid/output
-        valueFrom: null
+        valueFrom: $(null)
     out:
       - id: output
 
@@ -495,7 +495,7 @@ steps:
         valueFrom: $(self + "/" + inputs.bam_uuid + "/")
       - id: bam_uuid
         source: emit_bam_tumor_uuid/output
-        valueFrom: null
+        valueFrom: $(null)
     out:
       - id: output
 
@@ -518,7 +518,7 @@ steps:
         valueFrom: $(self + "/" + inputs.bam_uuid + "/")
       - id: bam_uuid
         source: emit_bam_tumor_uuid/output
-        valueFrom: null
+        valueFrom: $(null)
     out:
       - id: output
 

@@ -10,6 +10,10 @@ from airflow.hooks.S3_hook import S3Hook
 from airflow.operators.python_operator import PythonOperator
 from airflow.operators.sensors import S3KeySensor
 
+from fabric.api import local, run, env, put, settings
+#from fabric.api import settings
+#from fabric.op
+
 from git import Repo
 
 import create_jobs
@@ -72,7 +76,18 @@ def create_run_jobs(queue_json_file):
             git_repo.index.commit("airflow add jobs")
             origin = git_repo.remote(name='origin')
             origin.push()
-    return
+
+            ## get list of slurm scripts
+            git_slurm_dir = os.path.join(job_git_dir, 'slurm')
+            slurm_script_list = os.listdir(git_slurm_dir)
+
+            ## sbatch slurm scripts
+            #for slurm_script in slurm_script_list:
+                
+
+
+    ## remove s3 json file
+    #return
 
 
 def s3_get_key(ti):
