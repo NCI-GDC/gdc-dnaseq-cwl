@@ -22,21 +22,21 @@ def get_readgroup_length_dict(conn, fq_suffix, is_pe):
                 readgroup_dict[readgroup_name]['is_paired_end'] = 'true'
             else:
                 readgroup_dict[readgroup_name]['is_paired_end'] = 'false'
-    conn.close()
+    #conn.close()
     return readgroup_dict
 
 def get_readgroup_info_dict(readgroup_dict, conn):
     c = conn.cursor()
-    for readgroup in sorted(list(readgoup_dict)):
+    for readgroup in sorted(list(readgroup_dict)):
         query = 'select key, value from readgroups where ID == ' + readgroup
         for row in c.execute(query):
             key = row[0]
             value = row[1]
             readgroup_dict[readgroup][key] = value
-    conn.close()
+    #conn.close()
     return readgroup_dict
 
-def get_normalize_readgroup_list(readgoup_dict):
+def get_normalize_readgroup_list(readgroup_dict):
     readgroup_list = list()
     for readgroup in sorted(list(readgroup_dict)):
         norm_readgroup_dict = dict()
@@ -64,6 +64,8 @@ def get_readgroups(conn):
     return pe_normalize_list + se_normalize_list
 
 def write_json_list(normalize_list, gdc_id):
+    with open(gdc_id+'.json', 'w') as f_open:
+        json.dump(normalize_list, f_open)
     return
 
 def main():
