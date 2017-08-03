@@ -33,7 +33,7 @@ def get_readgroup_length_dict(conn, fq_suffix, is_pe):
         query = 'select fastq_path, Value from fastqc_data_Basic_Statistics where "Measure" = "Sequence length"'
         for row in c.execute(query):
             fastq_path = row[0]
-            sequence_length = row[1]
+            sequence_length = int(row[1])
             fastq_name = os.path.basename(fastq_path)
             if fastq_name.endswith(fq_suffix):
                 readgroup_name = '_'.join(fastq_name.split('_')[:-1])
