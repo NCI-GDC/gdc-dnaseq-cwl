@@ -75,7 +75,11 @@ def get_normalize_readgroup_list(readgroup_dict):
         norm_readgroup_dict['library_strategy'] = 'WGS'
         norm_readgroup_dict['type'] = 'read_group'
         norm_readgroup_dict['experiment_name'] = False # readgroup_dict[readgroup]['']
-        norm_readgroup_dict['sequencing_center'] = readgroup_dict[readgroup]['CN']
+        if 'CN' in readgroup_dict[readgroup]:
+            norm_readgroup_dict['sequencing_center'] = readgroup_dict[readgroup]['CN']
+            prev_CN = readgroup_dict[readgroup]['CN']
+        else:
+            norm_readgroup_dict['sequencing_center'] = prev_CN
         norm_readgroup_dict['aliquots'] = {'submitter_id': ''}
         readgroup_list.append(norm_readgroup_dict)
     return readgroup_list
