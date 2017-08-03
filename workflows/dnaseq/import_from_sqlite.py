@@ -39,9 +39,9 @@ def get_readgroup_length_dict(conn, fq_suffix, is_pe):
                 readgroup_name = '_'.join(fastq_name.split('_')[:-1])
                 readgroup_dict[readgroup_name]['read_length'] = sequence_length
                 if is_pe:
-                    readgroup_dict[readgroup_name]['is_paired_end'] = 'true'
+                    readgroup_dict[readgroup_name]['is_paired_end'] = True
                 else:
-                    readgroup_dict[readgroup_name]['is_paired_end'] = 'false'
+                    readgroup_dict[readgroup_name]['is_paired_end'] = False
         #conn.close()
         return readgroup_dict
     sys.exit('no recognized test query')
