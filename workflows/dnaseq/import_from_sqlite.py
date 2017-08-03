@@ -61,7 +61,7 @@ def get_readgroup_info_dict(readgroup_dict, conn):
 
 def get_normalize_readgroup_list(readgroup_dict):
     readgroup_list = list()
-    print(json.dumps(readgroup_dict, indent=4, sort_keys=True))
+    #print(json.dumps(readgroup_dict, indent=4, sort_keys=True))
     for readgroup in sorted(list(readgroup_dict)):
         if readgroup == 'default':
             continue
