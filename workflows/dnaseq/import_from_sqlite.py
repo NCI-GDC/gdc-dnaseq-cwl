@@ -32,28 +32,52 @@ def get_readgroup_length_dict(conn, fq_suffix, is_pe):
                     readgroup_dict[readgroup_name]['is_paired_end'] = 'false'
         #conn.close()
         return readgroup_dict
+    
     test_query = 'SELECT count(*) FROM sqlite_master WHERE type="table" AND name="fastqc_data_Basic_Statistics"'
     result = c.execute(test_query).fetchone()[0]
     if result == 1:
-        query = 'select fastq_path, Value from fastqc_data_Basic_Statistics where "Measure" = "Sequence length"'
-        for row in c.execute(query):
-            fastq_path = row[0]
-            sequence_length = row[1]
-            if '-' in sequence_length:
-                max_length = sequence_length.split('-')[1]
-                sequence_length = int(max_length)
-            else:
-                sequence_length = int(sequence_length)
-            fastq_name = os.path.basename(fastq_path)
-            if fastq_name.endswith(fq_suffix):
-                readgroup_name = '_'.join(fastq_name.split('_')[:-1])
-                readgroup_dict[readgroup_name]['read_length'] = sequence_length
-                if is_pe:
-                    readgroup_dict[readgroup_name]['is_paired_end'] = True
+        test_query = 'SELECT * FROM sqlite_master WHERE type="table" AND name="fastqc_data_Basic_Statistics"'
+        result = c.execute(test_query).fetchone()[4]
+        if 'fastq_path TEXT' in result:
+            query = 'select fastq_path, Value from fastqc_data_Basic_Statistics where "Measure" = "Sequence length"'
+            for row in c.execute(query):
+                fastq_path = row[0]
+                sequence_length = row[1]
+                if '-' in sequence_length:
+                    max_length = sequence_length.split('-')[1]
+                    sequence_length = int(max_length)
                 else:
-                    readgroup_dict[readgroup_name]['is_paired_end'] = False
-        #conn.close()
-        return readgroup_dict
+                    sequence_length = int(sequence_length)
+                fastq_name = os.path.basename(fastq_path)
+                if fastq_name.endswith(fq_suffix):
+                    readgroup_name = '_'.join(fastq_name.split('_')[:-1])
+                    readgroup_dict[readgroup_name]['read_length'] = sequence_length
+                    if is_pe:
+                        readgroup_dict[readgroup_name]['is_paired_end'] = True
+                    else:
+                        readgroup_dict[readgroup_name]['is_paired_end'] = False
+            #conn.close()
+            return readgroup_dict
+        elif 'fastq TEXT' in result:
+            query = 'select fastq, Value from fastqc_data_Basic_Statistics where "Measure" = "Sequence length"'
+            for row in c.execute(query):
+                fastq_path = row[0]
+                sequence_length = row[1]
+                if '-' in sequence_length:
+                    max_length = sequence_length.split('-')[1]
+                    sequence_length = int(max_length)
+                else:
+                    sequence_length = int(sequence_length)
+                fastq_name = os.path.basename(fastq_path)
+                if fastq_name.endswith(fq_suffix):
+                    readgroup_name = '_'.join(fastq_name.split('_')[:-1])
+                    readgroup_dict[readgroup_name]['read_length'] = sequence_length
+                    if is_pe:
+                        readgroup_dict[readgroup_name]['is_paired_end'] = True
+                    else:
+                        readgroup_dict[readgroup_name]['is_paired_end'] = False
+            #conn.close()
+            return readgroup_dict
     sys.exit('no recognized test query')
     return
             
