@@ -1,0 +1,12 @@
+#sql
+SELECT bam_signpost_id,bam_uuid,s3_bam_url FROM run_status_bqsr_wgs_jan2017 WHERE status = 'COMPLETE';
+SELECT gdc_src_id, gdc_id FROM wgs;
+
+SELECT wgs.gdc_src_id,bqsr.bam_signpost_id,bqsr.bam_uuid,bqsr.s3_bam_url FROM run_status_bqsr_wgs_jan2017 bqsr JOIN wgs wgs ON uuid(bqsr.bam_signpost_id) = wgs.gdc_id;
+
+SELECT wgs.gdc_src_id,bqsr.bam_signpost_id,bqsr.bam_uuid,bqsr.s3_bam_url FROM run_status_bqsr_wgs_jan2017 bqsr JOIN wgs wgs ON uuid(bqsr.bam_signpost_id) = wgs.gdc_id  WHERE bqsr.status = 'COMPLETE';
+
+#
+
+
+SELECT input_signpost_id, s3_url, uuid FROM wgs_753_status WHERE status = 'COMPLETE';
