@@ -13,7 +13,7 @@ do
         list="$(find tcga_wgs_alignment_* -iname "*${uuid2}*" | egrep '.*')"
         if [ $? -eq 1 ]
         then
-            printf "\tDO NOT HAVE ${uuid2} for ${uuid1}\n"
+            printf "\t\t\tDO NOT HAVE ${uuid2} for ${uuid1}\n"
         else
             #continue
             printf "\tuuid2 HAS ${uuid2} for ${uuid1}\n"
