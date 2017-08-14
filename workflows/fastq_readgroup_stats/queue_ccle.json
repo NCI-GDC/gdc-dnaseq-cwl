@@ -1,0 +1,19 @@
+[
+    {
+        "db_cred": "file:///home/ubuntu/connect_jhsavage_node001.ini",
+        "db_cred_section": "DEFAULT",
+        "gdc_token": "file:///home/ubuntu/empty.token",
+        "input_bam_gdc_id": "",
+        "input_bam_file_size": "",
+        "input_bam_md5sum": "",
+        "readgroup_count": 19,
+        "runner_cwl_uri": "https://raw.githubusercontent.com/NCI-GDC/gdc-dnaseq-cwl/gdc-active-submission/workflows/dnaseq/runner_wgs.cwl",
+        "runner_job_base_uri": "https://raw.githubusercontent.com/NCI-GDC/workflow-jobs/master",
+        "runner_json_template_uri": "https://raw.githubusercontent.com/NCI-GDC/gdc-dnaseq-cwl/gdc-active-submission/workflows/dnaseq/runner_template.json",
+        "scratch_dir" : "/mnt/SCRATCH",
+        "slurm_template_uri": "https://raw.githubusercontent.com/NCI-GDC/gdc-dnaseq-cwl/gdc-active-submission/workflows/dnaseq/slurm_template.sh",
+        "status_table": "dnaseq",
+        "virtualenv_name": "p2",
+        "workflow_version": "latest"
+    }
+]

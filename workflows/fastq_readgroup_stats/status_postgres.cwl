@@ -152,7 +152,7 @@ steps:
       - id: ini_section
         source: db_cred_section
       - id: source_sqlite_path
-        source: dnaseq_queue_status/sqlite
+        source: json_to_sqlite/sqlite
       - id: uuid
         source: run_uuid
     out:

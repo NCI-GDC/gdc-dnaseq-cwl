@@ -18,6 +18,8 @@ inputs:
     type: File
   - id: input_bam_gdc_id
     type: string
+  - id: input_bam_file_size
+    type: long
   - id: job_creation_uuid
     type: string
   - id: runner_cwl_branch
@@ -35,15 +37,15 @@ inputs:
   - id: runner_job_slurm_uri
     type: string
   - id: slurm_resource_cores
-    type: int
+    type: long
   - id: slurm_resource_disk_gb
-    type: int
+    type: long
   - id: slurm_resource_mem_mb
-    type: int
+    type: long
   - id: status_table
     type: string
   - id: thread_count
-    type: int
+    type: long
   - id: workflow_hash
     type: string
 

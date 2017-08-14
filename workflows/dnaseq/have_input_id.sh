@@ -16,7 +16,7 @@ do
             printf "\t\t\tDO NOT HAVE ${uuid2} for ${uuid1}\n"
         else
             #continue
-            printf "\tuuid2 HAS ${uuid2} for ${uuid1}\n"
+            printf "\t\tuuid2 HAS ${uuid2} for ${uuid1}\n"
         fi
     else
         #continue

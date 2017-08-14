@@ -10,6 +10,8 @@ from airflow.hooks.S3_hook import S3Hook
 from airflow.operators.python_operator import PythonOperator
 from airflow.operators.sensors import S3KeySensor
 
+from paramiko import SSHClient
+
 from git import Repo
 
 import create_jobs
@@ -79,7 +81,7 @@ def create_run_jobs(queue_json_file):
 
             ## sbatch slurm scripts
             #for slurm_script in slurm_script_list:
-                
+            
 
 
     ## remove s3 json file
