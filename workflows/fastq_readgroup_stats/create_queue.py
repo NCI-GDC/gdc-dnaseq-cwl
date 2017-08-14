@@ -56,7 +56,8 @@ def main():
     for queue_item in queue_items:
         queue_object = get_queue_object(queue_item, queue_template)
         object_list.append(queue_object)
-        
+
+    #consider `date +%s%N`
     outfile = 'jobs_' + datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f') + 'Z.json'
     with open(outfile, 'w') as f:
         json.dump(object_list, f, sort_keys=True, indent=4)
