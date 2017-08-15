@@ -3,6 +3,7 @@ import json
 import os
 from tempfile import NamedTemporaryFile, TemporaryDirectory
 import shutil
+import time
 import uuid
 
 from airflow import DAG
@@ -45,10 +46,9 @@ sensor = S3KeySensor(
     soft_fail=False,
     dag=dag)
 
-def put_slurm_scripts(sftp, slurm_dir):
+def put_slurm_scripts(sftp, remote_path, slurm_dir):
     os.chdir(os.path.split(slurm_dir)[0])
     parent=os.path.split(localpath)[1]
-    remotepath = '/home/ubuntu/airflow'
     for walker in os.walk(parent):
         try:
             sftp.mkdir(os.path.join(remotepath,walker[0]))
@@ -116,13 +116,21 @@ def create_run_jobs(queue_json_file):
             ed25519_key = paramiko.Ed25519Key.from_private_key_file(ED25519KEY)
             transport.connect(username='ubuntu', pkey=ed25519_key)
             sftp = paramiko.SFTPClient.from_transport(transport)
-            put_slurm_scripts(sftp, git_slurm_dir)
+            slurm_job_dir = '/home/ubuntu/airflow'
+            put_slurm_scripts(sftp, slurm_job_dir, job_git_dir)
+
+            session = transport.open_channel('submitjobs')
+            for slurm_script in slurm_script_list:
+                remote_shell_path = os.path.join(slurm_job_dir, job_creation_uuid, 'slurm', slurm_script)
+                stdin, stdout, stderr = session.exec_command('sbatch ' + remote_shell_path)
+                slurm_id = stdout
+                time.sleep(61)
             
             ssh = paramiko.SSHClient()
             ssh.load_system_host_keys()
             ssh.connect('example.com')
 
-            remote_dir = os.path.join('/home/ubuntu/airflow',os.path.basename(git_slurm_dir))
+            remote_dir = os.path.join('/home/ubuntu/airflow',os.path.basename(job_git_dir))
             rm_slurm_scripts(sftp, remote_dir)
             sftp.rmdir(remote_dir)
             transport.close()
