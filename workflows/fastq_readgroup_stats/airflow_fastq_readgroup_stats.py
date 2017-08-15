@@ -59,31 +59,20 @@ def put_slurm_scripts(sftp, slurm_dir):
     return
 
 def rm_slurm_scripts(sftp, slurm_dir):
-    print('slurm_dir=%s' % slurm_dir)
-    i = 0
     remote_path_list = list()
     for remote_path in sftp.listdir_iter(slurm_dir):
         remote_path_list.append(remote_path)
     for remote_path in remote_path_list:
-        print(i)
-        i += 1
-        print('remote_path=%s' % remote_path)
         if stat.S_ISDIR(remote_path.st_mode):
             remove_dir = os.path.join(slurm_dir, remote_path.filename)
             if len(sftp.listdir(remove_dir)) > 0:
-                print('if')
                 rm_slurm_scripts(sftp, remove_dir)
                 sftp.rmdir(remove_dir)
-                print('done if')
             else:
-                print('else')
                 sftp.rmdir(remove_dir)
-                print('done else')
         else:
-            print('remove')
             remove_file = os.path.join(slurm_dir, remote_path.filename)
             sftp.remove(remove_file)
-            print('done remove')
     return
 
 def create_run_jobs(queue_json_file):
