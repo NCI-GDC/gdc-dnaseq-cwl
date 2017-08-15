@@ -33,7 +33,6 @@ dag = DAG('fastq-rnaseq-stats',
 #          schedule_interval='@once'
 )
 
-
 sensor = S3KeySensor(
     task_id='check_s3',
     bucket_name = 'secure-east2-test-bucket',
@@ -174,7 +173,6 @@ pull = PythonOperator(
     dag=dag,
     provide_context=True,
     python_callable=job_creator)
-
 
 pull.set_upstream(sensor)
 from datetime import datetime
