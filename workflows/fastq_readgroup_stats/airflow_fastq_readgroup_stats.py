@@ -10,7 +10,7 @@ from airflow.hooks.S3_hook import S3Hook
 from airflow.operators.python_operator import PythonOperator
 from airflow.operators.sensors import S3KeySensor
 
-from paramiko import SSHClient
+import paramiko
 
 from git import Repo
 
@@ -45,6 +45,46 @@ sensor = S3KeySensor(
     soft_fail=False,
     dag=dag)
 
+def put_slurm_scripts(sftp, slurm_dir):
+    os.chdir(os.path.split(slurm_dir)[0])
+    parent=os.path.split(localpath)[1]
+    remotepath = '/home/ubuntu/airflow'
+    for walker in os.walk(parent):
+        try:
+            sftp.mkdir(os.path.join(remotepath,walker[0]))
+        except:
+            pass
+        for file in walker[2]:
+            sftp.put(os.path.join(walker[0],file),os.path.join(remotepath,walker[0],file))
+    return
+
+def rm_slurm_scripts(sftp, slurm_dir):
+    print('slurm_dir=%s' % slurm_dir)
+    i = 0
+    remote_path_list = list()
+    for remote_path in sftp.listdir_iter(slurm_dir):
+        remote_path_list.append(remote_path)
+    for remote_path in remote_path_list:
+        print(i)
+        i += 1
+        print('remote_path=%s' % remote_path)
+        if stat.S_ISDIR(remote_path.st_mode):
+            remove_dir = os.path.join(slurm_dir, remote_path.filename)
+            if len(sftp.listdir(remove_dir)) > 0:
+                print('if')
+                rm_slurm_scripts(sftp, remove_dir)
+                sftp.rmdir(remove_dir)
+                print('done if')
+            else:
+                print('else')
+                sftp.rmdir(remove_dir)
+                print('done else')
+        else:
+            print('remove')
+            remove_file = os.path.join(slurm_dir, remote_path.filename)
+            sftp.remove(remove_file)
+            print('done remove')
+    return
 
 def create_run_jobs(queue_json_file):
     with TemporaryDirectory() as temp_git_dir:
@@ -81,8 +121,22 @@ def create_run_jobs(queue_json_file):
 
             ## sbatch slurm scripts
             #for slurm_script in slurm_script_list:
+            slurm_master = '172.21.47.44'
+            ED25519KEY='/home/ubuntu/.ssh/jeremiah-1492718018'
+            transport = paramiko.Transport((slurm_master, 22))
+            ed25519_key = paramiko.Ed25519Key.from_private_key_file(ED25519KEY)
+            transport.connect(username='ubuntu', pkey=ed25519_key)
+            sftp = paramiko.SFTPClient.from_transport(transport)
+            put_slurm_scripts(sftp, git_slurm_dir)
             
+            ssh = paramiko.SSHClient()
+            ssh.load_system_host_keys()
+            ssh.connect('example.com')
 
+            remote_dir = os.path.join('/home/ubuntu/airflow',os.path.basename(git_slurm_dir))
+            rm_slurm_scripts(sftp, remote_dir)
+            sftp.rmdir(remote_dir)
+            transport.close()
 
     ## remove s3 json file
     #return
