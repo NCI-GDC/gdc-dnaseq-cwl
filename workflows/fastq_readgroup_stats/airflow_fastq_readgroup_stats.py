@@ -108,36 +108,34 @@ def create_run_jobs(queue_json_file):
             git_slurm_dir = os.path.join(job_git_dir, 'slurm')
             slurm_script_list = os.listdir(git_slurm_dir)
 
-            ## sbatch slurm scripts
-            #for slurm_script in slurm_script_list:
+            ## connect to slurm master
             slurm_master = '172.21.47.44'
             ED25519KEY='/home/ubuntu/.ssh/jeremiah-1492718018'
             transport = paramiko.Transport((slurm_master, 22))
             ed25519_key = paramiko.Ed25519Key.from_private_key_file(ED25519KEY)
             transport.connect(username='ubuntu', pkey=ed25519_key)
+
+            ## transfer shell scripts to slurm master
             sftp = paramiko.SFTPClient.from_transport(transport)
             slurm_job_dir = '/home/ubuntu/airflow'
             put_slurm_scripts(sftp, slurm_job_dir, job_git_dir)
 
+            ## sbatch slurm scripts
+            #for slurm_script in slurm_script_list:
             session = transport.open_channel('submitjobs')
             for slurm_script in slurm_script_list:
                 remote_shell_path = os.path.join(slurm_job_dir, job_creation_uuid, 'slurm', slurm_script)
                 stdin, stdout, stderr = session.exec_command('sbatch ' + remote_shell_path)
                 slurm_id = stdout
                 time.sleep(61)
-            
-            ssh = paramiko.SSHClient()
-            ssh.load_system_host_keys()
-            ssh.connect('example.com')
 
+            ## remove slurm scripts from slurm master
             remote_dir = os.path.join('/home/ubuntu/airflow',os.path.basename(job_git_dir))
             rm_slurm_scripts(sftp, remote_dir)
             sftp.rmdir(remote_dir)
             transport.close()
-
     ## remove s3 json file
-    #return
-
+    return
 
 def s3_get_key(ti):
     s3_bucket = ti.xcom_pull('check_s3', key='s3_bucket')
@@ -156,8 +154,7 @@ def s3_get_key(ti):
         f_source.flush()
         source_s3.connection.close()
         create_run_jobs(queue_json_file=f_source)
-
-    
+    return
 
 def job_creator(**kwargs):
     print('kwargs=%s' % kwargs)
@@ -179,62 +176,6 @@ pull = PythonOperator(
     python_callable=job_creator)
 
 
-# et = S3FileTransformOperator(
-#     xcom_task_id='check_s3',
-#     task_id='test_et',
-#     dag=dag
-#     )
-
-# t1 = BashOperator(
-#     task_id='test1',
-#     bash_command='touch ${HOME}/test1',
-#     dag=dag)
-
-
-# t2 = BashOperator(
-#     task_id='test2',
-#     bash_command='touch ${HOME}/test2',
-#     dag=dag)
-
-
 pull.set_upstream(sensor)
-#et.set_upstream(sensor)
-
-# t1.set_upstream(sensor)
-# t2.set_upstream(t1)
-
-# t1 = BashOperator(
-#     task_id='create_cwl_slurm_jobs',
-#     bash_command='python dnaseq/create_jobs.py --queue_json queue.json',
-#     dag=dag)
-
-# t2 = BashOperator(
-#     task_id='push_jobs_to_git_repo',
-#     bash_command='cd workflow-jobs && git add * && git commit -am "add jobs" && git push && cd -',
-#     dag=dag)
-
-# t3 = BashOperator(
-#     task_id='get_slurm_list',
-#     bash_command
-#     )
-
-# t2 = BashOperator(
-#     task_id='task2',
-#     depends_on_past=False,
-#     bash_command='echo a big hadoop job putting files on s3',
-#     trigger_rule='all_failed',
-#     dag=dag)
-
-# t3 = BashOperator(
-#     task_id='task3',
-#     depends_on_past=False,
-#     bash_command='echo im next job using s3 files',
-#     trigger_rule='all_done',
-#     dag=dag)
-
-# t3.set_upstream(sensor)
-# t3.set_upstream(t2)
-
-
 from datetime import datetime
 print(datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f'))
