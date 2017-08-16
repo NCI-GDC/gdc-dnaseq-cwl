@@ -156,9 +156,6 @@ steps:
         source: gdc_token
       - id: table_name
         source: status_table
-
-      - id: table_name
-        source: status_table
       - id: thread_count
         source: thread_count
     out:
