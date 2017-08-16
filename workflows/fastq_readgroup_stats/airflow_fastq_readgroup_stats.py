@@ -46,7 +46,7 @@ sensor = S3KeySensor(
     dag=dag)
 
 def put_slurm_scripts(sftp, remotepath, localpath):
-    os.chdir(os.path.split(localpth)[0])
+    os.chdir(os.path.split(localpath)[0])
     parent=os.path.split(localpath)[1]
     for walker in os.walk(parent):
         try:
@@ -181,3 +181,37 @@ pull = PythonOperator(
 pull.set_upstream(sensor)
 from datetime import datetime
 print(datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f'))
+
+
+
+def manual():
+    import os
+    import paramiko
+    import time
+    
+    job_creation_uuid = job_git_dir = '1646859a-bf82-4e6f-a4cf-6437a91a527d'
+    git_slurm_dir = os.path.join(job_git_dir, 'slurm')
+    slurm_script_list = os.listdir(git_slurm_dir)
+    slurm_master = '172.21.47.44'
+    ED25519KEY='/home/ubuntu/.ssh/jeremiah-1492718018'
+    transport = paramiko.Transport((slurm_master, 22))
+    ed25519_key = paramiko.Ed25519Key.from_private_key_file(ED25519KEY)
+    transport.connect(username='ubuntu', pkey=ed25519_key)
+
+    #paste put_slurm_scripts
+
+    sftp = paramiko.SFTPClient.from_transport(transport)
+    slurm_job_dir = '/home/ubuntu/airflow'
+    put_slurm_scripts(sftp, slurm_job_dir, job_git_dir)
+    
+    client = paramiko.SSHClient()
+    client.load_system_host_keys()
+    client.connect(slurm_master, pkey=ed25519_key)
+    for slurm_script in slurm_script_list:
+        remote_shell_path = os.path.join(slurm_job_dir, job_creation_uuid, 'slurm', slurm_script)
+        print('sbatch ' + remote_shell_path)
+        stdin, stdout, stderr = client.exec_command('sbatch ' + remote_shell_path)
+        slurm_id = stdout.read()
+        print(str(slurm_id))
+        time.sleep(61)
+    client.close()
