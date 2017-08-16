@@ -117,6 +117,8 @@ def setup_job(queue_item, temp_dir):
     runner_job_repo = get_raw_github_repo(runner_job_cwl_uri)
     queue_item['runner_job_repo'] = runner_job_repo
     queue_item['runner_job_slurm_uri'] = runner_job_slurm_uri
+
+    generate_slurm(job_slurm_file, queue_item, slurm_template_text, temp_dir)
     del queue_item['runner_job_base_uri']
     del queue_item['runner_json_template_uri']
     del queue_item['scratch_dir']
@@ -124,7 +126,6 @@ def setup_job(queue_item, temp_dir):
     del queue_item['virtualenv_name']
 
     generate_runner(job_json_file, queue_item, runner_json_template, temp_dir)
-    generate_slurm(job_slurm_file, queue_item, slurm_template_text, temp_dir)
     return
 
 
