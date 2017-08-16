@@ -75,6 +75,8 @@ def generate_runner(job_json_file, queue_data, job_template, temp_dir):
     for attr, value in queue_data.items():
         if type(job_object[attr]) == dict:
             job_object[attr]['path'] = value
+        else:
+            job_object[attr] = value
     job_json_path = os.path.join(temp_dir, job_json_file)
     os.makedirs(os.path.dirname(job_json_path),exist_ok=True)
     with open(job_json_path, 'w') as f_open:
