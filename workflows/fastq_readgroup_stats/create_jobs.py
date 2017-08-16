@@ -95,8 +95,8 @@ def generate_slurm(job_slurm_file, queue_data, slurm_template_text, temp_dir):
 
 
 def setup_job(queue_item, temp_dir):
-    job_json_file = '/'.join((queue_item['job_creation_uuid'], 'cwl', queue_item['input_bam_gdc_id'] + '_alignment.json'))
-    job_slurm_file = '/'.join((queue_item['job_creation_uuid'], 'slurm', queue_item['input_bam_gdc_id'] + '_alignment.sh'))
+    job_json_file = '/'.join((queue_item['job_creation_uuid'], 'cwl', queue_item['input_bam_gdc_id'] + '.json'))
+    job_slurm_file = '/'.join((queue_item['job_creation_uuid'], 'slurm', queue_item['input_bam_gdc_id'] + '.sh'))
     runner_job_cwl_uri = '/'.join((queue_item['runner_job_base_uri'], job_json_file))
     runner_job_slurm_uri = '/'.join((queue_item['runner_job_base_uri'], job_slurm_file))
 
@@ -180,10 +180,9 @@ def main():
     with open(queue_json, 'r') as f:
         queue_dict = json.loads(f.read())
 
-    dirpath = tempfile.mkdtemp()
     for queue_item in queue_dict:
         queue_item['job_creation_uuid'] = job_creation_uuid
-        setup_job(queue_item, dirpath)
+        setup_job(queue_item, job_creation_uuid)
     return
 
 
