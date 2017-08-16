@@ -7,7 +7,7 @@ import logging
 import math
 import os
 import sys
-from tempfile import TemporaryDirectory
+import tempfile
 import urllib
 import urllib.request
 import uuid
@@ -70,15 +70,15 @@ def get_raw_github_repo(url):
     return runner_cwl_repo
 
 
-def generate_runner(job_json_file, queue_data, runner_text, temp_dir):
+def generate_runner(job_json_file, queue_data, job_template, temp_dir):
+    job_object = job_template.copy()
     for attr, value in queue_data.items():
-        runner_text = runner_text.replace('${'+attr+'}', value)
-    runner_text = runner_text.replace('${thread_count}', str(8))
-    runner_dict = ast.literal_eval(runner_text)
+        if type(job_object[attr]) == dict:
+            job_object[attr]['path'] = value
     job_json_path = os.path.join(temp_dir, job_json_file)
     os.makedirs(os.path.dirname(job_json_path),exist_ok=True)
     with open(job_json_path, 'w') as f_open:
-        json.dump(runner_dict, f_open, sort_keys=True, indent=4)
+        json.dump(job_object, f_open, sort_keys=True, indent=4)
     return
 
 
@@ -98,7 +98,7 @@ def setup_job(queue_item, temp_dir):
     runner_job_cwl_uri = '/'.join((queue_item['runner_job_base_uri'], job_json_file))
     runner_job_slurm_uri = '/'.join((queue_item['runner_job_base_uri'], job_slurm_file))
 
-    runner_json_template_text = fetch_text(queue_item['runner_json_template_uri'])
+    runner_json_template = ast.literal_eval(fetch_text(queue_item['runner_json_template_uri']))
     slurm_template_text = fetch_text(queue_item['slurm_template_uri'])
 
     slurm_core = SLURM_CORE # will eventually be decided by cwl engine at run time per step
@@ -115,8 +115,13 @@ def setup_job(queue_item, temp_dir):
     runner_job_repo = get_raw_github_repo(runner_job_cwl_uri)
     queue_item['runner_job_repo'] = runner_job_repo
     queue_item['runner_job_slurm_uri'] = runner_job_slurm_uri
+    del queue_item['runner_job_base_uri']
+    del queue_item['runner_json_template_uri']
+    del queue_item['scratch_dir']
+    del queue_item['slurm_template_uri']
+    del queue_item['virtualenv_name']
 
-    generate_runner(job_json_file, queue_item, runner_json_template_text, temp_dir)
+    generate_runner(job_json_file, queue_item, runner_json_template, temp_dir)
     generate_slurm(job_slurm_file, queue_item, slurm_template_text, temp_dir)
     return
 
@@ -134,7 +139,7 @@ def run(queue_json_tempfile, temp_dir):
         f.seek(0)
         queue_dict = json.loads(f.read())
 
-    with TemporaryDirectory() as temp_dir:
+    with tempfile.TemporaryDirectory() as temp_dir:
         for queue_item in queue_dict:
             queue_item['job_creation_uuid'] = job_creation_uuid
             setup_job(queue_item, temp_dir)
@@ -172,9 +177,11 @@ def main():
 
     with open(queue_json, 'r') as f:
         queue_dict = json.loads(f.read())
+
+    dirpath = tempfile.mkdtemp()
     for queue_item in queue_dict:
         queue_item['job_creation_uuid'] = job_creation_uuid
-        setup_job(queue_item)
+        setup_job(queue_item, dirpath)
     return
 
 
