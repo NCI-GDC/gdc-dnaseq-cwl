@@ -40,9 +40,9 @@ inputs:
     type: string
   - id: slurm_resource_cores
     type: long
-  - id: slurm_resource_disk_gb
+  - id: slurm_resource_disk_gigabytes
     type: long
-  - id: slurm_resource_mem_mb
+  - id: slurm_resource_mem_megabytes
     type: long
   - id: status_table
     type: string
@@ -146,10 +146,10 @@ steps:
         source: get_runner_job_repo_hash/output
       - id: slurm_resource_cores
         source: slurm_resource_cores
-      - id: slurm_resource_disk_gb
-        source: slurm_resource_disk_gb
-      - id: slurm_resource_mem_mb
-        source: slurm_resource_mem_mb
+      - id: slurm_resource_disk_gigabytes
+        source: slurm_resource_disk_gigabytes
+      - id: slurm_resource_mem_megabytes
+        source: slurm_resource_mem_megabytes
       - id: status
         valueFrom: "RUNNING"
       - id: step_token
@@ -218,10 +218,10 @@ steps:
         source: get_runner_job_repo_hash/output
       - id: slurm_resource_cores
         source: slurm_resource_cores
-      - id: slurm_resource_disk_gb
-        source: slurm_resource_disk_gb
-      - id: slurm_resource_mem_mb
-        source: slurm_resource_mem_mb
+      - id: slurm_resource_disk_gigabytes
+        source: slurm_resource_disk_gigabytes
+      - id: slurm_resource_mem_megabytes
+        source: slurm_resource_mem_megabytes
       - id: status
         valueFrom: "COMPLETE"
       - id: step_token
