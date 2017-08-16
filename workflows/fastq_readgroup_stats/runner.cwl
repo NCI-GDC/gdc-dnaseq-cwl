@@ -152,10 +152,9 @@ steps:
         source: slurm_resource_mem_mb
       - id: status
         valueFrom: "RUNNING"
-      - id: status_table
-        source: status_table
       - id: step_token
-        source: gdc_token      - id: table_name
+        source: gdc_token
+      - id: table_name
         source: status_table
 
       - id: table_name
@@ -228,8 +227,6 @@ steps:
         source: slurm_resource_mem_mb
       - id: status
         valueFrom: "COMPLETE"
-      - id: status_table
-        source: status_table
       - id: step_token
         source: etl/token
       - id: table_name
