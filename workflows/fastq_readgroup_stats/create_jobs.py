@@ -84,7 +84,7 @@ def generate_runner(job_json_file, queue_data, job_template, temp_dir):
 
 def generate_slurm(job_slurm_file, queue_data, slurm_template_text, temp_dir):
     for attr, value in queue_data.items():
-        slurm_template_text = slurm_template_text.replace('${xx_'+attr+'_xx}', value)
+        slurm_template_text = slurm_template_text.replace('${xx_'+attr+'_xx}', str(value))
     job_slurm_path = os.path.join(temp_dir, job_slurm_file)
     os.makedirs(os.path.dirname(job_slurm_path),exist_ok=True)
     with open(job_slurm_path, 'w') as f_open:
