@@ -120,13 +120,17 @@ def create_run_jobs(queue_json_file):
             put_slurm_scripts(sftp, slurm_job_dir, job_git_dir)
 
             ## sbatch slurm scripts
-            #for slurm_script in slurm_script_list:
-            session = transport.open_channel('submitjobs')
+            client = paramiko.SSHClient()
+            client.load_system_host_keys()
+            client.connect(slurm_master, pkey=ed25519_key)
             for slurm_script in slurm_script_list:
                 remote_shell_path = os.path.join(slurm_job_dir, job_creation_uuid, 'slurm', slurm_script)
-                stdin, stdout, stderr = session.exec_command('sbatch ' + remote_shell_path)
-                slurm_id = stdout
+                print('sbatch ' + remote_shell_path)
+                stdin, stdout, stderr = client.exec_command('sbatch ' + remote_shell_path)
+                slurm_id = stdout.read()
+                print(str(slurm_id))
                 time.sleep(61)
+            client.close()
 
             ## remove slurm scripts from slurm master
             remote_dir = os.path.join('/home/ubuntu/airflow',os.path.basename(job_git_dir))
