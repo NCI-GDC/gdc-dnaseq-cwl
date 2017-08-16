@@ -20,6 +20,8 @@ inputs:
     type: string
   - id: input_bam_file_size
     type: long
+  - id: input_bam_md5sum
+    type: string
   - id: job_creation_uuid
     type: string
   - id: runner_cwl_branch
