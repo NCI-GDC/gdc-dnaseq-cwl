@@ -17,7 +17,7 @@ inputs:
   - id: start_token
     type: File
   - id: thread_count
-    type: int
+    type: long
   - id: run_uuid
     type: string
 
