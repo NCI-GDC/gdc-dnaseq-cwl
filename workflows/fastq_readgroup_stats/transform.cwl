@@ -15,7 +15,7 @@ inputs:
   - id: input_bam
     type: File
   - id: thread_count
-    type: int
+    type: long
   - id: run_uuid
     type: string
 
