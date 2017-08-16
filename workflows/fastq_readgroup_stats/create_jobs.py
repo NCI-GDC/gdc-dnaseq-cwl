@@ -106,9 +106,9 @@ def setup_job(queue_item, temp_dir):
     slurm_core = SLURM_CORE # will eventually be decided by cwl engine at run time per step
     slurm_mem_megabytes = SLURM_MEM # make a model
     slurm_disk_gigabytes = math.ceil(3 * (int(queue_item['input_bam_file_size']) / (1000**3))) #use readgroup, will eventually be decided by cwl engine at run time per step
-    queue_item['slurm_resource_cores'] = str(slurm_core)
-    queue_item['slurm_resource_mem_megabytes'] = str(slurm_mem_megabytes)
-    queue_item['slurm_resource_disk_gigabytes'] = str(slurm_disk_gigabytes)
+    queue_item['slurm_resource_cores'] = slurm_core
+    queue_item['slurm_resource_mem_megabytes'] = slurm_mem_megabytes
+    queue_item['slurm_resource_disk_gigabytes'] = slurm_disk_gigabytes
 
     queue_item['runner_cwl_branch'] = get_raw_github_branch(queue_item['runner_cwl_uri'])
     queue_item['runner_cwl_repo'] = get_raw_github_repo(queue_item['runner_cwl_uri'])
@@ -170,19 +170,20 @@ def main():
     cwl_dir = '/'.join((job_creation_uuid, 'cwl'))
     slurm_dir = '/'.join((job_creation_uuid, 'slurm'))
 
-    if not os.path.exists(job_creation_uuid):
-        os.makedirs(job_creation_uuid)
-        os.makedirs(cwl_dir)
-        os.makedirs(slurm_dir)
-    else:
-        sys.exit(job_creation_uuid + ' exists. Exiting.')
+    # if not os.path.exists(job_creation_uuid):
+    #     os.makedirs(job_creation_uuid)
+    #     os.makedirs(cwl_dir)
+    #     os.makedirs(slurm_dir)
+    # else:
+    #     sys.exit(job_creation_uuid + ' exists. Exiting.')
 
     with open(queue_json, 'r') as f:
         queue_dict = json.loads(f.read())
 
+    temp_dir = tempfile.mkdtemp(dir='.')
     for queue_item in queue_dict:
         queue_item['job_creation_uuid'] = job_creation_uuid
-        setup_job(queue_item, job_creation_uuid)
+        setup_job(queue_item, temp_dir)
     return
 
 
