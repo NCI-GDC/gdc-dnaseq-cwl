@@ -10,7 +10,7 @@
     "runner_json_template_uri": "https://raw.githubusercontent.com/NCI-GDC/gdc-dnaseq-cwl/gdc-active-submission/workflows/fastq_readgroup_stats/runner_template.json",
     "scratch_dir" : "/mnt/SCRATCH",
     "slurm_template_uri": "https://raw.githubusercontent.com/NCI-GDC/gdc-dnaseq-cwl/gdc-active-submission/workflows/fastq_readgroup_stats/slurm_template.sh",
-    "status_table": "fastq_readgroup_stats_3`",
+    "status_table": "fastq_readgroup_stats",
     "virtualenv_name": "p2",
     "workflow_hash": ""
 }
