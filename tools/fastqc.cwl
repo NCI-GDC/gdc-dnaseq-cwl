@@ -97,7 +97,7 @@ inputs:
       prefix: --quiet
 
   - id: threads
-    type: int
+    type: long
     default: 1
     inputBinding:
       prefix: --threads
