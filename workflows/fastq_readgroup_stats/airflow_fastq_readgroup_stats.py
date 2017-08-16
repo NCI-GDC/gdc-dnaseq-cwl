@@ -45,8 +45,8 @@ sensor = S3KeySensor(
     soft_fail=False,
     dag=dag)
 
-def put_slurm_scripts(sftp, remote_path, slurm_dir):
-    os.chdir(os.path.split(slurm_dir)[0])
+def put_slurm_scripts(sftp, remotepath, localpath):
+    os.chdir(os.path.split(localpth)[0])
     parent=os.path.split(localpath)[1]
     for walker in os.walk(parent):
         try:
