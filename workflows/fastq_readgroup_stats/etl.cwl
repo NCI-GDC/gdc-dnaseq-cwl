@@ -55,7 +55,7 @@ steps:
       - id: input
         source: transform/merge_all_sqlite_destination_sqlite
       - id: uuid
-        source: uuid
+        source: run_uuid
     out:
       - id: output
 
