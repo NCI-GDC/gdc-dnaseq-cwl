@@ -2,15 +2,15 @@
     "db_cred": "file:///home/ubuntu/connect_jhsavage.ini",
     "db_cred_section": "DEFAULT",
     "gdc_token": "file:///home/ubuntu/gdc-user-token.2017-06-26T15-18-51-05-00.txt",
-    "input_bam_gdc_id": "xx_input_bam_gdc_id_xx",
+    "input_bam_gdc_id": "",
     "input_bam_file_size": 0,
-    "input_bam_md5sum": "xx_input_bam_md5sum_xx",
+    "input_bam_md5sum": "",
     "runner_cwl_uri": "https://raw.githubusercontent.com/NCI-GDC/gdc-dnaseq-cwl/gdc-active-submission/workflows/fastq_readgroup_stats/runner.cwl",
     "runner_job_base_uri": "https://raw.githubusercontent.com/NCI-GDC/workflow-jobs/master",
     "runner_json_template_uri": "https://raw.githubusercontent.com/NCI-GDC/gdc-dnaseq-cwl/gdc-active-submission/workflows/fastq_readgroup_stats/runner_template.json",
     "scratch_dir" : "/mnt/SCRATCH",
     "slurm_template_uri": "https://raw.githubusercontent.com/NCI-GDC/gdc-dnaseq-cwl/gdc-active-submission/workflows/fastq_readgroup_stats/slurm_template.sh",
-    "status_table": "fastq_readgroup_stats_34",
+    "status_table": "fastq_readgroup_stats_3`",
     "virtualenv_name": "p2",
-    "workflow_hash": "913e29ad8dd8b283eb932ec4ac0153e5303d4978"
+    "workflow_hash": ""
 }
