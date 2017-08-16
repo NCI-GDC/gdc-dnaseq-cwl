@@ -120,8 +120,8 @@ steps:
         source: [
           input_bam_file_size,
           slurm_resource_cores,
-          slurm_resource_disk_gb,
-          slurm_resource_mem_mb,
+          slurm_resource_disk_gigabytes,
+          slurm_resource_mem_megabytes,
           thread_count
         ]
       - id: float_keys
