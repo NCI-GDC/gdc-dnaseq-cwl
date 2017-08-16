@@ -155,7 +155,11 @@ steps:
       - id: status_table
         source: status_table
       - id: step_token
-        source: gdc_token
+        source: gdc_token      - id: table_name
+        source: status_table
+
+      - id: table_name
+        source: status_table
       - id: thread_count
         source: thread_count
     out:
@@ -228,6 +232,8 @@ steps:
         source: status_table
       - id: step_token
         source: etl/token
+      - id: table_name
+        source: status_table
       - id: thread_count
         source: thread_count
     out:
