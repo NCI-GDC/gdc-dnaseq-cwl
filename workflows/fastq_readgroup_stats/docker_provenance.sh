@@ -12,7 +12,7 @@ echo "packed workflow: ${output_name}"
 
 #set -e
 cwltool --pack ${input_workflow_path} > ${output_name}
-docker_repos=($(grep dockerPull runner_wgs_pack.cwl | sort | uniq | awk '{print $2}' | sed -e 's/^"//' -e 's/"$//' | awk -F ":" '{print $1}' | grep ncigdc))
+docker_repos=($(grep dockerPull ${output_name} | sort | uniq | awk '{print $2}' | sed -e 's/^"//' -e 's/"$//' | awk -F ":" '{print $1}' | grep ncigdc))
 rm ${output_name}
 for docker_repo in "${docker_repos[@]}"
 do
