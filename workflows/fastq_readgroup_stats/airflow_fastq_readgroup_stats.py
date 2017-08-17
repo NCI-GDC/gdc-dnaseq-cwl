@@ -189,7 +189,7 @@ def manual():
     import paramiko
     import time
     
-    job_creation_uuid = job_git_dir = '1646859a-bf82-4e6f-a4cf-6437a91a527d'
+    job_creation_uuid = job_git_dir = 'c757a93a-dda1-4590-9724-9ecb9c7ca754'
     git_slurm_dir = os.path.join(job_git_dir, 'slurm')
     slurm_script_list = os.listdir(git_slurm_dir)
     slurm_master = '172.21.47.44'
