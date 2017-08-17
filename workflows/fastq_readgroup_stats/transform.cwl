@@ -25,19 +25,11 @@ outputs:
     outputSource: merge_all_sqlite/destination_sqlite
 
 steps:
-  - id: samtools_bamtobam
-    run: ../../tools/samtools_bamtobam.cwl
-    in:
-      - id: INPUT
-        source: input_bam
-    out:
-      - id: OUTPUT
-
   - id: biobambam_bamtofastq
     run: ../../tools/biobambam2_bamtofastq.cwl
     in:
       - id: filename
-        source: samtools_bamtobam/OUTPUT
+        source: input_bam
     out:
       - id: output_fastq1
       - id: output_fastq2
