@@ -5,7 +5,10 @@ input_workflow_name=$(basename "${input_workflow_path}")
 workflow_prefix="${input_workflow_name%.*}"
 fileext="${input_workflow_name##*.}"
 
-output_name=${workflow_prefix}_pack${fileext}
+output_name=${workflow_prefix}_pack.${fileext}
+
+echo "input_workflow_path: ${input_workflow_path}"
+echo "packed workflow: ${output_name}"
 
 #set -e
 cwltool --pack ${input_workflow_path} > ${output_name}
