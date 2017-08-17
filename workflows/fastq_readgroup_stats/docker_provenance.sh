@@ -1,14 +1,21 @@
 #!/usr/bin/env bash
 
+input_workflow_path=${1}
+input_workflow_name=$(basename "${input_workflow_path}")
+workflow_prefix="${input_workflow_name%.*}"
+fileext="${input_workflow_name##*.}"
+
+output_name=${workflow_prefix}_pack${fileext}
+
 #set -e
-cwltool --pack workflows/dnaseq/runner_wgs.cwl > runner_wgs_pack.cwl
+cwltool --pack ${input_workflow_path} > ${output_name}
 docker_repos=($(grep dockerPull runner_wgs_pack.cwl | sort | uniq | awk '{print $2}' | sed -e 's/^"//' -e 's/"$//' | awk -F ":" '{print $1}' | grep ncigdc))
+rm ${output_name}
 for docker_repo in "${docker_repos[@]}"
 do
     docker pull ${docker_repo}:latest
 done
 
-rm runner_wgs_pack.cwl
 
 for docker_repo in "${docker_repos[@]}"
 do
