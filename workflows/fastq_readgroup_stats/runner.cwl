@@ -51,6 +51,17 @@ inputs:
   - id: workflow_hash
     type: string
 
+  - id: aws_config
+    type: File
+  - id: aws_shared_credentials
+    type: File
+  - id: endpoint_json
+    type: File
+  - id: s3cfg_section
+    type: string
+  - id: s3_uri
+    type: string
+
 outputs:
   - id: token
     type: File
@@ -174,6 +185,16 @@ steps:
         source: thread_count
       - id: run_uuid
         source: get_run_uuid/output
+      - id: aws_config
+        source: aws_config
+      - id: aws_shared_credentials
+        source: aws_shared_credentials
+      - id: endpoint_json
+        source: endpoint_json
+      - id: s3cfg_section
+        source: s3cfg_section
+      - id: s3_uri
+        source: s3_uri
     out:
       - id: token
 
