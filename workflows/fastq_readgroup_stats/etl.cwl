@@ -27,9 +27,9 @@ inputs:
     type: File
   - id: endpoint_json
     type: File
-  - id: s3cfg_section
+  - id: load_bucket
     type: string
-  - id: s3_uri
+  - id: s3cfg_section
     type: string
 
 outputs:
@@ -74,8 +74,11 @@ steps:
       - id: s3cfg_section
         source: s3cfg_section
       - id: s3_uri
-        source: s3_uri
-        source: 
+        source: load_bucket
+        valueFrom: $(self + "/" inputs.run_uuid + "/")
+      - id: run_uuid
+        source: run_uuid
+        valueFrom: $(null)
     out:
       - id: output
 
