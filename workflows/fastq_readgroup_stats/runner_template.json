@@ -11,7 +11,6 @@
     "input_bam_gdc_id": "",
     "input_bam_file_size": 0,
     "input_bam_md5sum": "",
-    "task_creation_uuid": "",
     "runner_cwl_branch": "",
     "runner_cwl_repo": "",
     "runner_cwl_uri": "",
@@ -23,6 +22,7 @@
     "slurm_resource_disk_gigabytes": 0,
     "slurm_resource_mem_megabytes": 0,
     "status_table": "",
+    "task_creation_uuid": "",
     "thread_count": 1,
     "workflow_hash": "",
     "aws_config": {
