@@ -57,9 +57,9 @@ inputs:
     type: File
   - id: endpoint_json
     type: File
-  - id: s3cfg_section
+  - id: load_bucket
     type: string
-  - id: s3_uri
+  - id: s3cfg_section
     type: string
 
 outputs:
