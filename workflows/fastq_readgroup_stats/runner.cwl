@@ -191,10 +191,10 @@ steps:
         source: aws_shared_credentials
       - id: endpoint_json
         source: endpoint_json
+      - id: load_bucket
+        source: load_bucket
       - id: s3cfg_section
         source: s3cfg_section
-      - id: s3_uri
-        source: s3_uri
     out:
       - id: token
 
