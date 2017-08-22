@@ -11,7 +11,7 @@
     "input_bam_gdc_id": "",
     "input_bam_file_size": 0,
     "input_bam_md5sum": "",
-    "job_creation_uuid": "",
+    "task_creation_uuid": "",
     "runner_cwl_branch": "",
     "runner_cwl_repo": "",
     "runner_cwl_uri": "",
