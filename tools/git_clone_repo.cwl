@@ -16,7 +16,7 @@ requirements:
   #       envValue: "http://cloud-proxy:3128"
 
 inputs:
-  - id: repo
+  - id: repo_url
     type: string
     inputBinding:
       position: 0
@@ -45,7 +45,7 @@ outputs:
             }
           }
 
-          var repo_basename = local_basename(inputs.repo);
+          var repo_basename = local_basename(inputs.repo_url);
           var slice_number = get_slice_number(repo_basename);
           var repo_prefix = repo_basename.slice(0, slice_number);
 
