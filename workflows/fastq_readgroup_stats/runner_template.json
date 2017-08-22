@@ -1,28 +1,42 @@
 {
     "db_cred": {
         "class": "File",
-        "path": "${db_cred}"
+        "path": ""
     },
-    "db_cred_section": "${db_cred_section}",
+    "db_cred_section": "",
     "gdc_token": {
         "class": "File",
-        "path": "${gdc_token}"
+        "path": ""
     },
-    "input_bam_gdc_id": "${input_bam_gdc_id}",
+    "input_bam_gdc_id": "",
     "input_bam_file_size": 0,
-    "input_bam_md5sum": "${input_bam_md5sum}",
-    "job_creation_uuid": "${job_creation_uuid}",
-    "runner_cwl_branch": "${runner_cwl_branch}",
-    "runner_cwl_repo": "${runner_cwl_repo}",
-    "runner_cwl_uri": "${runner_cwl_uri}",
-    "runner_job_branch": "${runner_job_branch}",
-    "runner_job_repo": "${runner_job_repo}",
-    "runner_job_cwl_uri": "${runner_job_cwl_uri}",
-    "runner_job_slurm_uri": "${runner_job_slurm_uri}",
+    "input_bam_md5sum": "",
+    "job_creation_uuid": "",
+    "runner_cwl_branch": "",
+    "runner_cwl_repo": "",
+    "runner_cwl_uri": "",
+    "runner_job_branch": "",
+    "runner_job_repo": "",
+    "runner_job_cwl_uri": "",
+    "runner_job_slurm_uri": "",
     "slurm_resource_cores": 0,
     "slurm_resource_disk_gigabytes": 0,
     "slurm_resource_mem_megabytes": 0,
-    "status_table": "${status_table}",
+    "status_table": "",
     "thread_count": 1,
-    "workflow_hash": "${workflow_hash}"
+    "workflow_hash": "",
+    "aws_config": {
+        "class": "File",
+        "path": ""
+    },
+    "aws_shared_credentials": {
+        "class": "File",
+        "path": ""
+    },
+    "endpoint_json": {
+        "class": "File",
+        "path": ""
+    },
+    "s3cfg_section": "",
+    "load_bucket": ""
 }
