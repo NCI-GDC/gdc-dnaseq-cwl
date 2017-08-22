@@ -21,6 +21,17 @@ inputs:
   - id: run_uuid
     type: string
 
+  - id: aws_config
+    type: File
+  - id: aws_shared_credentials
+    type: File
+  - id: endpoint_json
+    type: File
+  - id: s3cfg_section
+    type: string
+  - id: s3_uri
+    type: string
+
 outputs:
   - id: token
     type: File
@@ -49,15 +60,24 @@ steps:
     out:
       - id: merge_all_sqlite_destination_sqlite
 
-  # - id: load_sqlite
-  #   run: ../../tools/gdc_put_object.cwl
-  #   in:
-  #     - id: input
-  #       source: transform/merge_all_sqlite_destination_sqlite
-  #     - id: uuid
-  #       source: run_uuid
-  #   out:
-  #     - id: output
+  - id: load_sqlite
+    run: ../../tools/aws_s3_put.cwl
+    in:
+      - id: aws_config
+        source: aws_config
+      - id: aws_shared_credentials
+        source: aws_shared_credentials
+      - id: endpoint_json
+        source: endpoint_json
+      - id: input
+        source: transform/merge_all_sqlite_destination_sqlite
+      - id: s3cfg_section
+        source: s3cfg_section
+      - id: s3_uri
+        source: s3_uri
+        source: 
+    out:
+      - id: output
 
   - id: generate_token
     run: ../../tools/generate_load_token.cwl
