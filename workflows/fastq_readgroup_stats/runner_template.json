@@ -1,8 +1,8 @@
 {
-    "cwl_runner_branch": "",
+    "cwl_runner_hash": "",
     "cwl_runner_repo": "",
-    "cwl_runner_cwl_url": "",
-    "cwl_runner_job_branch": "",
+    "cwl_runner_url": "",
+    "cwl_runner_job_hash": "",
     "cwl_runner_job_repo": "",
     "cwl_runner_job_url": "",
     "db_cred": {
@@ -24,7 +24,6 @@
     "status_table": "",
     "task_creation_uuid": "",
     "thread_count": 1,
-    "workflow_hash": "",
     "aws_config": {
         "class": "File",
         "path": ""
