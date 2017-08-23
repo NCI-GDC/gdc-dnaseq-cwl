@@ -1,7 +1,7 @@
 {
 
-    "cwl_runner_job_baseurl": "https://raw.githubusercontent.com/NCI-GDC/workflow-jobs/",
-    "cwl_runner_baseurl": "https://raw.githubusercontent.com/NCI-GDC/gdc-dnaseq-cwl/",
+    "cwl_runner_job_baseurl": "https://raw.githubusercontent.com/NCI-GDC/workflow-jobs",
+    "cwl_runner_baseurl": "https://raw.githubusercontent.com/NCI-GDC/gdc-dnaseq-cwl",
     "cwl_runner_hash": "",
     "cwl_runner_pathurl": "workflows/fastq_readgroup_stats/runner.cwl",
     "db_cred": "",
