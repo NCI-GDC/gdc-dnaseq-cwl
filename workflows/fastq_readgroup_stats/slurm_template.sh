@@ -12,7 +12,7 @@ VIRTUALENV_NAME=${xx_virtualenv_name_xx}
 
 ##JOB VARIABLE
 CWL_GET_WORKFLOW_URL=${xx_cwl_get_workflow_url_xx}
-CWL_JOB_URL=${xx_runner_job_cwl_url_xx}
+CWL_JOB_URL=${xx_cwl_runner_job_url_xx}
 CWL_WORKFLOW_GIT_URL=${xx_cwl_workflow_git_url_xx}
 CWL_WORKFLOW_GIT_HASH=${xx_cwl_workflow_git_hash_xx}
 CWL_WORKFLOW_PATH=${xx_cwl_workflow_path_xx}

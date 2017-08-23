@@ -10,6 +10,22 @@ requirements:
   - class: StepInputExpressionRequirement
 
 inputs:
+  - id: cwl_runner_branch
+    type: string
+  - id: cwl_runner_repo
+    type: string
+  - id: cwl_runner_repo_hash
+    type: string
+  - id: cwl_runner_url
+    type: string
+  - id: cwl_runner_job_branch
+    type: string
+  - id: cwl_runner_job_url
+    type: string
+  - id: cwl_runner_job_repo
+    type: string
+  - id: cwl_runner_job_repo_hash
+    type: string
   - id: db_cred
     type: File
   - id: db_cred_section
@@ -29,22 +45,6 @@ inputs:
   - id: job_creation_uuid
     type: string
   - id: run_uuid
-    type: string
-  - id: runner_cwl_branch
-    type: string
-  - id: runner_cwl_repo
-    type: string
-  - id: runner_cwl_repo_hash
-    type: string
-  - id: runner_cwl_uri
-    type: string
-  - id: runner_job_branch
-    type: string
-  - id: runner_job_cwl_uri
-    type: string
-  - id: runner_job_repo
-    type: string
-  - id: runner_job_repo_hash
     type: string
   - id: slurm_resource_cores
     type: long
@@ -72,6 +72,14 @@ steps:
     in:
       - id: string_keys
         default: [
+          "cwl_runner_branch",
+          "cwl_runner_repo",
+          "cwl_runner_repo_hash",
+          "cwl_runner_url",
+          "cwl_runner_job_branch",
+          "cwl_runner_job_repo",
+          "cwl_runner_job_repo_hash",
+          "cwl_runner_job_url",
           "hostname",
           "host_ipaddress",
           "host_macaddress",
@@ -79,18 +87,18 @@ steps:
           "input_bam_md5sum",
           "job_creation_uuid",
           "run_uuid",
-          "runner_cwl_branch",
-          "runner_cwl_repo",
-          "runner_cwl_repo_hash",
-          "runner_cwl_uri",
-          "runner_job_branch",
-          "runner_job_repo",
-          "runner_job_repo_hash",
-          "runner_job_cwl_uri",
           "status"
         ]
       - id: string_values
         source: [
+          cwl_runner_branch,
+          cwl_runner_repo,
+          cwl_runner_repo_hash,
+          cwl_runner_url,
+          cwl_runner_job_branch,
+          cwl_runner_job_repo,
+          cwl_runner_job_repo_hash,
+          cwl_runner_job_url,
           hostname,
           host_ipaddress,
           host_macaddress,
@@ -98,14 +106,6 @@ steps:
           input_bam_md5sum,
           job_creation_uuid,
           run_uuid,
-          runner_cwl_branch,
-          runner_cwl_repo,
-          runner_cwl_repo_hash,
-          runner_cwl_uri,
-          runner_job_branch,
-          runner_job_repo,
-          runner_job_repo_hash,
-          runner_job_cwl_uri,
           status
         ]
       - id: long_keys

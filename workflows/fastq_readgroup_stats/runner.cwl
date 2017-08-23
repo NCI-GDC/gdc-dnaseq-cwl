@@ -10,6 +10,18 @@ requirements:
   - class: SubworkflowFeatureRequirement
 
 inputs:
+  - id: cwl_runner_branch
+    type: string
+  - id: cwl_runner_repo
+    type: string
+  - id: cwl_runner_url
+    type: string
+  - id: cwl_runner_job_branch
+    type: string
+  - id: cwl_runner_job_repo
+    type: string
+  - id: cwl_runner_job_url
+    type: string
   - id: db_cred
     type: File
   - id: db_cred_section
@@ -24,19 +36,7 @@ inputs:
     type: string
   - id: job_creation_uuid
     type: string
-  - id: runner_cwl_branch
-    type: string
-  - id: runner_cwl_repo
-    type: string
-  - id: runner_cwl_uri
-    type: string
-  - id: runner_job_branch
-    type: string
-  - id: runner_job_repo
-    type: string
-  - id: runner_job_cwl_uri
-    type: string
-  - id: runner_job_slurm_uri
+  - id: slurm_runner_job_url
     type: string
   - id: slurm_resource_cores
     type: long
@@ -96,29 +96,45 @@ steps:
     out:
       - id: output
 
-  - id: get_runner_cwl_repo_hash
+  - id: get_cwl_runner_repo_hash
     run: ../../tools/emit_git_hash.cwl
     in:
       - id: repo
-        source: runner_cwl_repo
+        source: cwl_runner_repo
       - id: branch
-        source: runner_cwl_branch
+        source: cwl_runner_branch
     out:
       - id: output
 
-  - id: get_runner_job_repo_hash
+  - id: get_cwl_runner_job_repo_hash
     run: ../../tools/emit_git_hash.cwl
     in:
       - id: repo
-        source: runner_job_repo
+        source: cwl_runner_job_repo
       - id: branch
-        source: runner_job_branch
+        source: cwl_runner_job_branch
     out:
       - id: output
 
   - id: status_running
     run: status_postgres.cwl
     in:
+      - id: cwl_runner_url
+        source: cwl_runner_url
+      - id: cwl_runner_branch
+        source: cwl_runner_branch
+      - id: cwl_runner_repo
+        source: cwl_runner_repo
+      - id: cwl_runner_repo_hash
+        source: get_cwl_runner_repo_hash/output
+      - id: cwl_runner_job_branch
+        source: cwl_runner_job_branch
+      - id: cwl_runner_job_url
+        source: cwl_runner_job_url
+      - id: cwl_runner_job_repo
+        source: cwl_runner_job_repo
+      - id: cwl_runner_job_repo_hash
+        source: get_cwl_runner_job_repo_hash/output
       - id: db_cred
         source: db_cred
       - id: db_cred_section
@@ -139,22 +155,6 @@ steps:
         source: job_creation_uuid
       - id: run_uuid
         source: get_run_uuid/output
-      - id: runner_cwl_uri
-        source: runner_cwl_uri
-      - id: runner_cwl_branch
-        source: runner_cwl_branch
-      - id: runner_cwl_repo
-        source: runner_cwl_repo
-      - id: runner_cwl_repo_hash
-        source: get_runner_cwl_repo_hash/output
-      - id: runner_job_branch
-        source: runner_job_branch
-      - id: runner_job_cwl_uri
-        source: runner_job_cwl_uri
-      - id: runner_job_repo
-        source: runner_job_repo
-      - id: runner_job_repo_hash
-        source: get_runner_job_repo_hash/output
       - id: slurm_resource_cores
         source: slurm_resource_cores
       - id: slurm_resource_disk_gigabytes
@@ -201,6 +201,22 @@ steps:
   - id: status_complete
     run: status_postgres.cwl
     in:
+      - id: cwl_runner_url
+        source: cwl_runner_url
+      - id: cwl_runner_branch
+        source: cwl_runner_branch
+      - id: cwl_runner_repo
+        source: cwl_runner_repo
+      - id: cwl_runner_repo_hash
+        source: get_cwl_runner_repo_hash/output
+      - id: cwl_runner_job_branch
+        source: cwl_runner_job_branch
+      - id: cwl_runner_job_url
+        source: cwl_runner_job_url
+      - id: cwl_runner_job_repo
+        source: cwl_runner_job_repo
+      - id: cwl_runner_job_repo_hash
+        source: get_cwl_runner_job_repo_hash/output
       - id: db_cred
         source: db_cred
       - id: db_cred_section
@@ -221,22 +237,6 @@ steps:
         source: job_creation_uuid
       - id: run_uuid
         source: get_run_uuid/output
-      - id: runner_cwl_uri
-        source: runner_cwl_uri
-      - id: runner_cwl_branch
-        source: runner_cwl_branch
-      - id: runner_cwl_repo
-        source: runner_cwl_repo
-      - id: runner_cwl_repo_hash
-        source: get_runner_cwl_repo_hash/output
-      - id: runner_job_branch
-        source: runner_job_branch
-      - id: runner_job_cwl_uri
-        source: runner_job_cwl_uri
-      - id: runner_job_repo
-        source: runner_job_repo
-      - id: runner_job_repo_hash
-        source: get_runner_job_repo_hash/output
       - id: slurm_resource_cores
         source: slurm_resource_cores
       - id: slurm_resource_disk_gigabytes
