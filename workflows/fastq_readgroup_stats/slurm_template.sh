@@ -12,7 +12,7 @@ VIRTUALENV_NAME=${xx_virtualenv_name_xx}
 
 ##JOB VARIABLE
 CWL_RUNNER_JOB_URL=${xx_cwl_runner_job_url_xx}
-CWL_RUNNER_URL=${xx_cwl_runner_localpath_xx}
+CWL_RUNNER_URL=${xx_cwl_runner_url_xx}
 JOB_UUID=${xx_job_uuid_xx}
 
 function activate_virtualenv()
