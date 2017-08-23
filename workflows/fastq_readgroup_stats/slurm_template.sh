@@ -41,7 +41,6 @@ function runner()
 
 function main()
 {
-    local cwl_get_workflow_url=${CWL_GET_WORKFLOW_URL}
     local cwl_runner_job_url=${CWL_RUNNER_JOB_URL}
     local cwl_runner_url=${CWL_RUNNER_URL}
     local job_uuid=${JOB_UUID}
