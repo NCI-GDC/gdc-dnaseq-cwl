@@ -13,7 +13,6 @@
     "scratch_dir" : "/mnt/SCRATCH",
     "slurm_resource_cores": 0,
     "slurm_resource_mem_megabytes": 0,
-    "slurm_resource_disk_gigabytes": 0,
     "template_runner_job_json_url": "https://raw.githubusercontent.com/NCI-GDC/gdc-dnaseq-cwl/gdc-active-submission/workflows/fastq_readgroup_stats/runner_template.json",
     "template_slurm_url": "https://raw.githubusercontent.com/NCI-GDC/gdc-dnaseq-cwl/gdc-active-submission/workflows/fastq_readgroup_stats/slurm_template.sh",
     "status_table": "fastq_readgroup_stats",
