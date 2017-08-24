@@ -54,6 +54,8 @@ inputs:
     type: string
   - id: table_name
     type: string
+  - id: s3_sqlite_url
+    type: [$(null), string]
   - id: step_token
     type: File
   - id: thread_count
@@ -84,6 +86,7 @@ steps:
           "input_bam_gdc_id",
           "input_bam_md5sum",
           "job_uuid",
+          "s3_sqlite_url",
           "status"
         ]
       - id: string_values
@@ -102,6 +105,7 @@ steps:
           input_bam_gdc_id,
           input_bam_md5sum,
           job_uuid,
+          s3_sqlite_url,
           status
         ]
       - id: long_keys

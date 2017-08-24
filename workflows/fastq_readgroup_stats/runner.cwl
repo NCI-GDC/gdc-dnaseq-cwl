@@ -187,6 +187,7 @@ steps:
       - id: s3cfg_section
         source: s3cfg_section
     out:
+      - id: s3_sqlite_url
       - id: token
 
   - id: status_complete
@@ -226,6 +227,8 @@ steps:
         source: input_bam_md5sum
       - id: job_uuid
         source: job_uuid
+      - id: s3_sqlite_url
+        source: etl/s3_sqlite_url
       - id: slurm_resource_cores
         source: slurm_resource_cores
       - id: slurm_resource_disk_gigabytes

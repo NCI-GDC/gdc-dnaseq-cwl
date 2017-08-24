@@ -33,6 +33,9 @@ inputs:
     type: string
 
 outputs:
+  - id: s3_sqlite_url
+    type: string
+    outputSource: generate_s3_sqlite_url/output
   - id: token
     type: File
     outputSource: generate_token/token
@@ -58,7 +61,7 @@ steps:
       - id: job_uuid
         source: job_uuid
     out:
-      - id: merge_all_sqlite_destination_sqlite
+      - id: output
 
   - id: load_sqlite
     run: ../../tools/aws_s3_put.cwl
@@ -70,15 +73,28 @@ steps:
       - id: endpoint_json
         source: endpoint_json
       - id: input
-        source: transform/merge_all_sqlite_destination_sqlite
+        source: transform/output
       - id: s3cfg_section
         source: s3cfg_section
       - id: s3_uri
         source: load_bucket
-        valueFrom: $(self + "/" inputs.run_uuid + "/")
-      - id: run_uuid
-        source: run_uuid
+        valueFrom: $(self + "/" inputs.job_uuid + "/")
+      - id: job_uuid
+        source: job_uuid
         valueFrom: $(null)
+    out:
+      - id: output
+
+  - id: generate_s3_sqlite_url
+    run: ../../tools/generate_s3load_path.cwl
+    in:
+      - id: load_bucket
+        source: load_bucket
+      - id: filename
+        source: transform/output
+        valueFrom: $(self.basename)
+      - id: uuid
+        source: job_uuid
     out:
       - id: output
 
@@ -86,6 +102,6 @@ steps:
     run: ../../tools/generate_load_token.cwl
     in:
       - id: load1
-        source: transform/merge_all_sqlite_destination_sqlite
+        source: load_sqlite/output
     out:
       - id: token
