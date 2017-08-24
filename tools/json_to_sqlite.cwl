@@ -14,10 +14,10 @@ inputs:
     inputBinding:
       prefix: --input_json
 
-  - id: run_uuid
+  - id: job_uuid
     type: string
     inputBinding:
-      prefix: --run_uuid
+      prefix: --job_uuid
 
   - id: table_name
     type: string
@@ -28,11 +28,11 @@ outputs:
   - id: sqlite
     type: File
     outputBinding:
-      glob: $(inputs.run_uuid).db
+      glob: $(inputs.job_uuid).db
 
   - id: log
     type: File
     outputBinding:
-      glob: $(inputs.run_uuid).log
+      glob: $(inputs.job_uuid).log
 
 baseCommand: [json_to_sqlite]

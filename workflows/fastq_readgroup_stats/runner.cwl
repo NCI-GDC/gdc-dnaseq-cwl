@@ -34,7 +34,7 @@ inputs:
     type: long
   - id: input_bam_md5sum
     type: string
-  - id: job_creation_uuid
+  - id: job_uuid
     type: string
   - id: slurm_runner_job_url
     type: string
@@ -68,13 +68,6 @@ outputs:
     outputSource: status_complete/token
 
 steps:
-  - id: get_run_uuid
-    run: ../../tools/emit_uuid.cwl
-    in:
-      []
-    out:
-      - id: output
-
   - id: get_hostname
     run: ../../tools/emit_hostname.cwl
     in:
@@ -151,10 +144,8 @@ steps:
         source: input_bam_file_size
       - id: input_bam_md5sum
         source: input_bam_md5sum
-      - id: job_creation_uuid
-        source: job_creation_uuid
-      - id: run_uuid
-        source: get_run_uuid/output
+      - id: job_uuid
+        source: job_uuid
       - id: slurm_resource_cores
         source: slurm_resource_cores
       - id: slurm_resource_disk_gigabytes
@@ -183,8 +174,8 @@ steps:
         source: status_running/token
       - id: thread_count
         source: thread_count
-      - id: run_uuid
-        source: get_run_uuid/output
+      - id: job_uuid
+        source: job_uuid
       - id: aws_config
         source: aws_config
       - id: aws_shared_credentials
@@ -233,10 +224,8 @@ steps:
         source: input_bam_file_size
       - id: input_bam_md5sum
         source: input_bam_md5sum
-      - id: job_creation_uuid
-        source: job_creation_uuid
-      - id: run_uuid
-        source: get_run_uuid/output
+      - id: job_uuid
+        source: job_uuid
       - id: slurm_resource_cores
         source: slurm_resource_cores
       - id: slurm_resource_disk_gigabytes

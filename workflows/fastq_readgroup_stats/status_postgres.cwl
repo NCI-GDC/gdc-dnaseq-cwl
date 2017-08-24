@@ -42,9 +42,7 @@ inputs:
     type: long
   - id: input_bam_md5sum
     type: string
-  - id: job_creation_uuid
-    type: string
-  - id: run_uuid
+  - id: job_uuid
     type: string
   - id: slurm_resource_cores
     type: long
@@ -85,8 +83,7 @@ steps:
           "host_macaddress",
           "input_bam_gdc_id",
           "input_bam_md5sum",
-          "job_creation_uuid",
-          "run_uuid",
+          "job_uuid",
           "status"
         ]
       - id: string_values
@@ -104,8 +101,7 @@ steps:
           host_macaddress,
           input_bam_gdc_id,
           input_bam_md5sum,
-          job_creation_uuid,
-          run_uuid,
+          job_uuid,
           status
         ]
       - id: long_keys
@@ -136,8 +132,8 @@ steps:
     in:
       - id: input_json
         source: emit_json/output
-      - id: run_uuid
-        source: run_uuid
+      - id: job_uuid
+        source: job_uuid
       - id: table_name
         source: table_name
     out:
@@ -154,6 +150,6 @@ steps:
       - id: source_sqlite_path
         source: json_to_sqlite/sqlite
       - id: uuid
-        source: run_uuid
+        source: job_uuid
     out:
       - id: log

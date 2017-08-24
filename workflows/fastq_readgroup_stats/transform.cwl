@@ -16,7 +16,7 @@ inputs:
     type: File
   - id: thread_count
     type: long
-  - id: run_uuid
+  - id: job_uuid
     type: string
 
 outputs:
@@ -139,7 +139,7 @@ steps:
       - id: json_path
         source: bam_readgroup_to_json/OUTPUT
       - id: uuid
-        source: run_uuid
+        source: job_uuid
     out:
       - id: log
       - id: output_sqlite
@@ -150,7 +150,7 @@ steps:
       - id: source_sqlite
         source: readgroup_json_db/output_sqlite
       - id: uuid
-        source: run_uuid
+        source: job_uuid
     out:
       - id: destination_sqlite
       - id: log
@@ -217,7 +217,7 @@ steps:
       - id: INPUT
         source: fastqc1/OUTPUT
       - id: uuid
-        source: run_uuid
+        source: job_uuid
     out:
       - id: LOG
       - id: OUTPUT
@@ -229,7 +229,7 @@ steps:
       - id: INPUT
         source: fastqc2/OUTPUT
       - id: uuid
-        source: run_uuid
+        source: job_uuid
     out:
       - id: LOG
       - id: OUTPUT
@@ -241,7 +241,7 @@ steps:
       - id: INPUT
         source: fastqc_s/OUTPUT
       - id: uuid
-        source: run_uuid
+        source: job_uuid
     out:
       - id: LOG
       - id: OUTPUT
@@ -253,7 +253,7 @@ steps:
       - id: INPUT
         source: fastqc_o1/OUTPUT
       - id: uuid
-        source: run_uuid
+        source: job_uuid
     out:
       - id: LOG
       - id: OUTPUT
@@ -265,7 +265,7 @@ steps:
       - id: INPUT
         source: fastqc_o2/OUTPUT
       - id: uuid
-        source: run_uuid
+        source: job_uuid
     out:
       - id: LOG
       - id: OUTPUT
@@ -276,7 +276,7 @@ steps:
       - id: source_sqlite
         source: fastqc_db1/OUTPUT
       - id: uuid
-        source: run_uuid
+        source: job_uuid
     out:
       - id: destination_sqlite
       - id: log
@@ -287,7 +287,7 @@ steps:
       - id: source_sqlite
         source: fastqc_db2/OUTPUT
       - id: uuid
-        source: run_uuid
+        source: job_uuid
     out:
       - id: destination_sqlite
       - id: log
@@ -298,7 +298,7 @@ steps:
       - id: source_sqlite
         source: fastqc_db_s/OUTPUT
       - id: uuid
-        source: run_uuid
+        source: job_uuid
     out:
       - id: destination_sqlite
       - id: log
@@ -309,7 +309,7 @@ steps:
       - id: source_sqlite
         source: fastqc_db_o1/OUTPUT
       - id: uuid
-        source: run_uuid
+        source: job_uuid
     out:
       - id: destination_sqlite
       - id: log
@@ -320,7 +320,7 @@ steps:
       - id: source_sqlite
         source: fastqc_db_o2/OUTPUT
       - id: uuid
-        source: run_uuid
+        source: job_uuid
     out:
       - id: destination_sqlite
       - id: log
@@ -339,7 +339,7 @@ steps:
           merge_fastqc_db_o2_sqlite/destination_sqlite,
         ]
       - id: uuid
-        source: run_uuid
+        source: job_uuid
     out:
       - id: destination_sqlite
       - id: log
