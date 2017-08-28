@@ -48,8 +48,6 @@ inputs:
     type: string
   - id: thread_count
     type: long
-  - id: workflow_hash
-    type: string
 
   - id: aws_config
     type: File
