@@ -55,7 +55,7 @@ inputs:
   - id: table_name
     type: string
   - id: s3_sqlite_url
-    type: [$(null), string]
+    type: ["null", string]
   - id: step_token
     type: File
   - id: thread_count
