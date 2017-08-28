@@ -146,6 +146,8 @@ steps:
         source: input_bam_md5sum
       - id: job_uuid
         source: job_uuid
+      - id: s3_sqlite_url
+        valueFrom: "NULL"
       - id: slurm_resource_cores
         source: slurm_resource_cores
       - id: slurm_resource_disk_gigabytes
