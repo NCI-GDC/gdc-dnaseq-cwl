@@ -104,8 +104,6 @@ steps:
     in:
       - id: cwl_runner_url
         source: cwl_runner_url
-      - id: cwl_runner_branch
-        source: cwl_runner_branch
       - id: cwl_runner_repo
         source: cwl_runner_repo
       - id: cwl_runner_repo_hash
@@ -187,8 +185,6 @@ steps:
     in:
       - id: cwl_runner_url
         source: cwl_runner_url
-      - id: cwl_runner_branch
-        source: cwl_runner_branch
       - id: cwl_runner_repo
         source: cwl_runner_repo
       - id: cwl_runner_repo_hash
