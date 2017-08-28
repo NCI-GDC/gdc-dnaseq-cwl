@@ -10,7 +10,7 @@ requirements:
   - class: SubworkflowFeatureRequirement
 
 inputs:
-  - id: cwl_runner_branch
+  - id: cwl_runner_hash
     type: string
   - id: cwl_runner_repo
     type: string
@@ -86,16 +86,6 @@ steps:
     run: ../../tools/emit_host_mac.cwl
     in:
       []
-    out:
-      - id: output
-
-  - id: get_cwl_runner_repo_hash
-    run: ../../tools/emit_git_hash.cwl
-    in:
-      - id: repo
-        source: cwl_runner_repo
-      - id: branch
-        source: cwl_runner_branch
     out:
       - id: output
 
