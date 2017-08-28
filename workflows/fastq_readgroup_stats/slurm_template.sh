@@ -19,7 +19,7 @@ function activate_virtualenv()
 {
     local virtualenv_name=${1}
 
-    source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
+    source /usr/local/bin/virtualenvwrapper.sh
     source ${HOME}/.virtualenvs/${virtualenv_name}/bin/activate
 }
 
