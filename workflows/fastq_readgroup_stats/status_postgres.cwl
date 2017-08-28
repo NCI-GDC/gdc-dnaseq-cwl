@@ -10,8 +10,6 @@ requirements:
   - class: StepInputExpressionRequirement
 
 inputs:
-  - id: cwl_runner_branch
-    type: string
   - id: cwl_runner_repo
     type: string
   - id: cwl_runner_repo_hash
@@ -72,7 +70,6 @@ steps:
     in:
       - id: string_keys
         default: [
-          "cwl_runner_branch",
           "cwl_runner_repo",
           "cwl_runner_repo_hash",
           "cwl_runner_url",
@@ -91,7 +88,6 @@ steps:
         ]
       - id: string_values
         source: [
-          cwl_runner_branch,
           cwl_runner_repo,
           cwl_runner_repo_hash,
           cwl_runner_url,
