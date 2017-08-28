@@ -76,7 +76,7 @@ steps:
         source: transform/output
       - id: s3cfg_section
         source: s3cfg_section
-      - id: s3_uri
+      - id: s3uri
         source: load_bucket
         valueFrom: $(self + "/" inputs.job_uuid + "/")
       - id: job_uuid
