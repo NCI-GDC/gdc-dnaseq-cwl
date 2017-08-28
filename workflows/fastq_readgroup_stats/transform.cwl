@@ -126,7 +126,7 @@ steps:
     run: ../../tools/bam_readgroup_to_json.cwl
     in:
       - id: INPUT
-        source: samtools_bamtobam/OUTPUT
+        source: input_bam
       - id: MODE
         valueFrom: "lenient"
     out:
