@@ -10,7 +10,7 @@ requirements:
   - class: SubworkflowFeatureRequirement
 
 inputs:
-  - id: cwl_runner_hash
+  - id: cwl_runner_repo_hash
     type: string
   - id: cwl_runner_repo
     type: string
@@ -107,7 +107,7 @@ steps:
       - id: cwl_runner_repo
         source: cwl_runner_repo
       - id: cwl_runner_repo_hash
-        source: get_cwl_runner_repo_hash/output
+        source: cwl_runner_repo_hash
       - id: cwl_runner_job_branch
         source: cwl_runner_job_branch
       - id: cwl_runner_job_url
@@ -188,7 +188,7 @@ steps:
       - id: cwl_runner_repo
         source: cwl_runner_repo
       - id: cwl_runner_repo_hash
-        source: get_cwl_runner_repo_hash/output
+        source: cwl_runner_repo_hash
       - id: cwl_runner_job_branch
         source: cwl_runner_job_branch
       - id: cwl_runner_job_url
