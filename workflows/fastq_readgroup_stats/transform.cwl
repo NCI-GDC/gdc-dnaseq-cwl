@@ -216,7 +216,7 @@ steps:
     in:
       - id: INPUT
         source: fastqc1/OUTPUT
-      - id: uuid
+      - id: job_uuid
         source: job_uuid
     out:
       - id: LOG
@@ -228,7 +228,7 @@ steps:
     in:
       - id: INPUT
         source: fastqc2/OUTPUT
-      - id: uuid
+      - id: job_uuid
         source: job_uuid
     out:
       - id: LOG
@@ -240,7 +240,7 @@ steps:
     in:
       - id: INPUT
         source: fastqc_s/OUTPUT
-      - id: uuid
+      - id: job_uuid
         source: job_uuid
     out:
       - id: LOG
@@ -252,7 +252,7 @@ steps:
     in:
       - id: INPUT
         source: fastqc_o1/OUTPUT
-      - id: uuid
+      - id: job_uuid
         source: job_uuid
     out:
       - id: LOG
@@ -264,7 +264,7 @@ steps:
     in:
       - id: INPUT
         source: fastqc_o2/OUTPUT
-      - id: uuid
+      - id: job_uuid
         source: job_uuid
     out:
       - id: LOG
