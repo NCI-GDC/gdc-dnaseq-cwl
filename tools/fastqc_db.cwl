@@ -15,16 +15,16 @@ inputs:
     inputBinding:
       prefix: --INPUT
 
-  - id: uuid
+  - id: job_uuid
     type: string
     inputBinding:
-      prefix: --uuid
+      prefix: --job_uuid
 
 outputs:
   - id: LOG
     type: File
     outputBinding:
-      glob: $(inputs.uuid + ".log")
+      glob: $(inputs.job_uuid + ".log")
 
   - id: OUTPUT
     type: File

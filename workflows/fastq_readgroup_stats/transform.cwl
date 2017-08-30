@@ -149,7 +149,7 @@ steps:
     in:
       - id: source_sqlite
         source: readgroup_json_db/output_sqlite
-      - id: uuid
+      - id: job_uuid
         source: job_uuid
     out:
       - id: destination_sqlite
@@ -275,7 +275,7 @@ steps:
     in:
       - id: source_sqlite
         source: fastqc_db1/OUTPUT
-      - id: uuid
+      - id: job_uuid
         source: job_uuid
     out:
       - id: destination_sqlite
@@ -286,7 +286,7 @@ steps:
     in:
       - id: source_sqlite
         source: fastqc_db2/OUTPUT
-      - id: uuid
+      - id: job_uuid
         source: job_uuid
     out:
       - id: destination_sqlite
@@ -297,7 +297,7 @@ steps:
     in:
       - id: source_sqlite
         source: fastqc_db_s/OUTPUT
-      - id: uuid
+      - id: job_uuid
         source: job_uuid
     out:
       - id: destination_sqlite
@@ -308,7 +308,7 @@ steps:
     in:
       - id: source_sqlite
         source: fastqc_db_o1/OUTPUT
-      - id: uuid
+      - id: job_uuid
         source: job_uuid
     out:
       - id: destination_sqlite
@@ -319,7 +319,7 @@ steps:
     in:
       - id: source_sqlite
         source: fastqc_db_o2/OUTPUT
-      - id: uuid
+      - id: job_uuid
         source: job_uuid
     out:
       - id: destination_sqlite
@@ -338,7 +338,7 @@ steps:
           merge_fastqc_db_o1_sqlite/destination_sqlite,
           merge_fastqc_db_o2_sqlite/destination_sqlite,
         ]
-      - id: uuid
+      - id: job_uuid
         source: job_uuid
     out:
       - id: destination_sqlite
