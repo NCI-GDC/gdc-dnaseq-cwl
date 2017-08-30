@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/readgroup_json_db:4da5447957ab5de4a3ea6ae7620bf4687381a7fd19cf2aa66d45af42fcb09c2a
+    dockerPull: quay.io/ncigdc/readgroup_json_db:eed25660a0e54d5f840b8cf56caebb0dbe8f09a727a6700b7d5f4d7906f385b3
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
@@ -16,21 +16,21 @@ inputs:
     inputBinding:
       prefix: --json_path
 
-  - id: uuid
+  - id: job_uuid
     type: string
     inputBinding:
-      prefix: --uuid
+      prefix: --job_uuid
 
 outputs:
   - id: log
     type: File
     outputBinding:
-      glob: $(inputs.uuid +".log")
+      glob: $(inputs.job_uuid +".log")
 
   - id: output_sqlite
     type: File
     format: "edam:format_3621"
     outputBinding:
-      glob: $(inputs.uuid + ".db")         
+      glob: $(inputs.job_uuid + ".db")         
           
 baseCommand: [/usr/local/bin/readgroup_json_db]

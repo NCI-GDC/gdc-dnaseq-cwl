@@ -138,7 +138,7 @@ steps:
     in:
       - id: json_path
         source: bam_readgroup_to_json/OUTPUT
-      - id: uuid
+      - id: job_uuid
         source: job_uuid
     out:
       - id: log
