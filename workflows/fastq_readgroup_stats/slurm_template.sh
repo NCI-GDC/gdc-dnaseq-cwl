@@ -8,12 +8,18 @@
 
 ##ENV VARIABLE
 SCRATCH_DIR=${xx_scratch_dir_xx}
-VIRTUALENV_NAME=${xx_virtualenv_name_xx}
 
 ##JOB VARIABLE
-CWL_RUNNER_JOB_URL=${xx_cwl_runner_job_url_xx}
-CWL_RUNNER_URL=${xx_cwl_runner_url_xx}
 JOB_UUID=${xx_job_uuid_xx}
+CWL_WORKFLOW_GIT_REPO=${xx_cwl_workflow_git_repo_xx}
+CWL_WORKFLOW_GIT_HASH=${xx_cwl_workflow_git_hash_xx}
+CWL_WORKFLOW_REL_PATH=${xx_cwl_workflow_rel_path_xx}
+CWL_JOB_GIT_REPO=${xx_cwl_job_git_repo_xx}
+CWL_JOB_GIT_BRANCH=${xx_cwl_workflow_git_branch_xx}
+CWL_JOB_REL_PATH=${xx_cwl_job_rel_path_xx}
+CLONE_JOB_DIR=repos/job
+CLONE_WORKFLOW_DIR=repos/workflow
+
 
 function activate_virtualenv()
 {
@@ -23,34 +29,51 @@ function activate_virtualenv()
     source ${HOME}/.virtualenvs/${virtualenv_name}/bin/activate
 }
 
+function git_clone()
+{
+    local clone_dir=${1}
+    local git_branch=${2}
+    local git_repo=${3}
+
+    local repo=$(basename ${git_repo})
+    local repo_dir=${clone_dir}/"${repo%.*}"
+    local prev_dir=$(pwd)
+
+    cd ${clone_dir}
+    git clone ${git_repo}
+    cd ${repo_dir}
+    git checkout ${git_branch}
+    cd ${prev_dir}
+}
+
 function runner()
 {
-    local cwl_job_url=${1}
-    local cwl_runner_url=${2}
-    local job_dir=${3}
+    local job_path=${2}
+    local workflow_path=${3}
 
-    local cache_dir=${job_dir}/cache
-    local tmp_dir=${job_dir}/job
-    mkdir -p ${cache_dir}
-    mkdir -p ${job_dir}
-    mkdir -p ${tmp_dir}
-
-    export http_proxy=http://cloud-proxy:3128; export https_proxy=http://cloud-proxy:3128;
-    cwltool --debug --rm-tmpdir --rm-container --tmp-outdir-prefix ${cache_dir} --tmpdir-prefix ${tmp_dir} --custom-net bridge --outdir ${job_dir} ${cwl_runner_url} ${cwl_job_url}
+    java -jar rabix-cli-1.0.1/lib/rabix-cli.jar ${workflow_path} ${job_path}
 }
 
 function main()
 {
-    local cwl_runner_job_url=${CWL_RUNNER_JOB_URL}
-    local cwl_runner_url=${CWL_RUNNER_URL}
+    local cwl_workflow_git_repo=${CWL_WORKFLOW_GIT_REPO}
+    local cwl_workflow_git_hash=${CWL_WORKFLOW_GIT_HASH}
+    local cwl_workflow_rel_path=${CWL_WORKFLOW_REL_PATH}
+    local cwl_job_git_repo=${CWL_JOB_GIT_REPO}
+    local cwl_job_git_branch=${CWL_JOB_GIT_BRANCH}
+    local cwl_job_rel_path=${CWL_JOB_REL_PATH}
     local job_uuid=${JOB_UUID}
     local scratch_dir=${SCRATCH_DIR}
-    local virtualenv_name=${VIRTUALENV_NAME}
 
     local job_dir=${scratch_dir}/${job_uuid}/
+    local clone_job_dir=${job_dir}/${CLONE_JOB_DIR}
+    local clone_workflow_dir=${job_dir}/${CLONE_WORKFLOW_DIR}
+    local job_path=${clone_job_dir}/${cwl_job_rel_path}
+    local workflow_path=${clone_workflow_dir}/${cwl_workflow_rel_path}
 
-    activate_virtualenv ${virtualenv_name}
-    runner ${cwl_runner_job_url} ${cwl_runner_url} ${job_dir}
+    git_clone ${clone_workflow_dir}  ${cwl_workflow_git_repo} ${cwl_workflow_git_hash}
+    get_job ${clone_job_dir} ${cwl_job_git_repo} ${cwl_job_git_branch}
+    runner ${job_dir} ${job_path} ${workflow_path}
     if [ $? -ne 0 ]
     then
         echo FAIL_RUNNER
