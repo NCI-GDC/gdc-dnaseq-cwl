@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/merge_sqlite:90e8298349049a0fae5b1aa0586a666945f9acd21d717e4e2c9f634d039f8559
+    dockerPull: quay.io/ncigdc/merge_sqlite:latest
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
@@ -18,10 +18,10 @@ inputs:
       inputBinding:
         prefix: "--source_sqlite"
 
-  - id: job_uuid
+  - id: run_uuid
     type: string
     inputBinding:
-      prefix: "--job_uuid"
+      prefix: "--run_uuid"
 
 outputs:
   - id: destination_sqlite
