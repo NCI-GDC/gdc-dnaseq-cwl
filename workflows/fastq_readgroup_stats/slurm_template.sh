@@ -48,8 +48,8 @@ function git_clone()
 
 function runner()
 {
-    local job_path=${2}
-    local workflow_path=${3}
+    local job_path=${1}
+    local workflow_path=${2}
 
     java -jar rabix-cli-1.0.1/lib/rabix-cli.jar ${workflow_path} ${job_path}
 }
@@ -81,6 +81,7 @@ function main()
         exit 1
     fi
     rm -rf ${job_dir}
+    
 }
 
 main "$@"
