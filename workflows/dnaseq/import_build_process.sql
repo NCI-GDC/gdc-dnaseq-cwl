@@ -3,12 +3,12 @@ SELECT * FROM wgs;
 SELECT * FROM run_status_bqsr_wgs_jan2017;
 --
 
-SELECT bam_signpost_id,bam_uuid,s3_bam_url FROM run_status_bqsr_wgs_jan2017 WHERE status = 'COMPLETE';
-SELECT gdc_src_id, gdc_id FROM wgs;
+SELECT distinct(bam_signpost_id),bam_uuid,s3_bam_url FROM run_status_bqsr_wgs_jan2017 WHERE status = 'COMPLETE';
+SELECT distinct(cghub_id), gdc_src_id, gdc_id, filename FROM wgs order by cghub_id;
 
 --SELECT wgs.gdc_src_id,bqsr.bam_signpost_id,bqsr.bam_uuid,bqsr.s3_bam_url FROM run_status_bqsr_wgs_jan2017 bqsr JOIN wgs wgs ON uuid(bqsr.bam_signpost_id) = wgs.gdc_id;
 
-SELECT DISTINCT(wgs.gdc_src_id),bqsr.bam_signpost_id,bqsr.bam_uuid,bqsr.s3_bam_url FROM run_status_bqsr_wgs_jan2017 bqsr JOIN wgs wgs ON uuid(bqsr.bam_signpost_id) = wgs.gdc_id  WHERE bqsr.status = 'COMPLETE' ORDER BY wgs.gdc_src_id;
+SELECT DISTINCT(wgs.gdc_src_id),bqsr.bam_signpost_id,bqsr.bam_uuid,wgs.cghub_id,wgs.location,bqsr.s3_bam_url FROM run_status_bqsr_wgs_jan2017 bqsr JOIN wgs wgs ON uuid(bqsr.bam_signpost_id) = wgs.gdc_id  WHERE bqsr.status = 'COMPLETE' ORDER BY wgs.gdc_src_id;
 
 \copy (SELECT DISTINCT(wgs.gdc_src_id),bqsr.bam_signpost_id,bqsr.bam_uuid,bqsr.s3_bam_url FROM run_status_bqsr_wgs_jan2017 bqsr JOIN wgs wgs ON uuid(bqsr.bam_signpost_id) = wgs.gdc_id  WHERE bqsr.status = 'COMPLETE' ORDER BY wgs.gdc_src_id) to 'wgs.csv' With CSV
 
@@ -80,3 +80,7 @@ SELECT bqsr.bam_signpost_id,bqsr.bam_uuid,regexp_replace(bqsr.s3_bam_url, '^.+[/
 
 
 SELECT wgs.gdc_src_id, bqsr.bam_signpost_id,bqsr.bam_uuid,regexp_replace(bqsr.s3_bam_url, '^.+[/\\]', '') FROM run_status_bqsr_wgs_jan2017 bqsr JOIN wgs wgs ON regexp_replace(wgs.filename, '^.+[/\\]', '') = regexp_replace(bqsr.s3_bam_url, '^.+[/\\]', '')WHERE bqsr.status = 'COMPLETE' AND bqsr.bam_uuid NOT IN (SELECT bqsr.bam_uuid FROM run_status_bqsr_wgs_jan2017 bqsr JOIN wgs wgs ON uuid(bqsr.bam_signpost_id) = wgs.gdc_id WHERE bqsr.status = 'COMPLETE' AND bqsr.bam_uuid NOT IN (SELECT DISTINCT(bqsr.bam_uuid) FROM run_status_bqsr_wgs_jan2017 bqsr JOIN wgs_753_status wgs ON bqsr.bam_signpost_id = wgs.uuid  WHERE bqsr.status = 'COMPLETE' AND wgs.status = 'COMPLETE')) AND bqsr.bam_uuid NOT IN ( SELECT DISTINCT(bqsr.bam_uuid) FROM run_status_bqsr_wgs_jan2017 bqsr JOIN wgs_753_status wgs753 ON bqsr.bam_signpost_id = wgs753.uuid  WHERE bqsr.status = 'COMPLETE' AND wgs753.status = 'COMPLETE') ORDER BY wgs.gdc_src_id;
+
+
+
+SELECT wgs.gdc_src_id, bqsr.bam_signpost_id,bqsr.bam_uuid,bqsr.s3_bam_url FROM run_status_bqsr_wgs_jan2017 bqsr JOIN wgs wgs ON regexp_replace(wgs.filename, '^.+[/\\]', '') = regexp_replace(bqsr.s3_bam_url, '^.+[/\\]', '')WHERE bqsr.status = 'COMPLETE' AND bqsr.bam_uuid NOT IN (SELECT bqsr.bam_uuid FROM run_status_bqsr_wgs_jan2017 bqsr JOIN wgs wgs ON uuid(bqsr.bam_signpost_id) = wgs.gdc_id WHERE bqsr.status = 'COMPLETE' AND bqsr.bam_uuid NOT IN (SELECT DISTINCT(bqsr.bam_uuid) FROM run_status_bqsr_wgs_jan2017 bqsr JOIN wgs_753_status wgs ON bqsr.bam_signpost_id = wgs.uuid  WHERE bqsr.status = 'COMPLETE' AND wgs.status = 'COMPLETE')) AND bqsr.bam_uuid NOT IN ( SELECT DISTINCT(bqsr.bam_uuid) FROM run_status_bqsr_wgs_jan2017 bqsr JOIN wgs_753_status wgs753 ON bqsr.bam_signpost_id = wgs753.uuid  WHERE bqsr.status = 'COMPLETE' AND wgs753.status = 'COMPLETE') ORDER BY wgs.gdc_src_id;
