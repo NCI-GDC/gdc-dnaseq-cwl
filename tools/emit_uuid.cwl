@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: python:3.6.2-slim
+    dockerPull: python:3.6.3-slim
 
 class: CommandLineTool
 
