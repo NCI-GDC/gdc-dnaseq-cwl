@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/merge_sqlite:latest
+    dockerPull: quay.io/ncigdc/merge_sqlite:e45e1f9a7091f7756be529bc9d26c599f038cce81ff7ad5e4f2989b50cdd39f2
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
