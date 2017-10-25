@@ -10,17 +10,17 @@ requirements:
   - class: SubworkflowFeatureRequirement
 
 inputs:
-  - id: cwl_runner_repo_hash
-    type: string
   - id: cwl_runner_repo
+    type: string
+  - id: cwl_runner_repo_hash
     type: string
   - id: cwl_runner_url
     type: string
-  - id: cwl_runner_job_branch
+  - id: cwl_runner_task_branch
     type: string
-  - id: cwl_runner_job_repo
+  - id: cwl_runner_task_url
     type: string
-  - id: cwl_runner_job_url
+  - id: cwl_runner_task_repo
     type: string
   - id: db_cred
     type: File
@@ -34,8 +34,6 @@ inputs:
     type: long
   - id: input_bam_md5sum
     type: string
-  - id: job_uuid
-    type: string
   - id: slurm_runner_job_url
     type: string
   - id: slurm_resource_cores
@@ -45,6 +43,8 @@ inputs:
   - id: slurm_resource_mem_megabytes
     type: long
   - id: status_table
+    type: string
+  - id: task_uuid
     type: string
   - id: thread_count
     type: long
@@ -91,29 +91,29 @@ steps:
     run: ../../tools/emit_git_hash.cwl
     in:
       - id: repo
-        source: cwl_runner_job_repo
+        source: cwl_runner_task_repo
       - id: branch
-        source: cwl_runner_job_branch
+        source: cwl_runner_task_branch
     out:
       - id: output
 
   - id: status_running
     run: status_postgres.cwl
     in:
-      - id: cwl_runner_url
-        source: cwl_runner_url
       - id: cwl_runner_repo
         source: cwl_runner_repo
       - id: cwl_runner_repo_hash
         source: cwl_runner_repo_hash
-      - id: cwl_runner_job_branch
-        source: cwl_runner_job_branch
-      - id: cwl_runner_job_url
-        source: cwl_runner_job_url
-      - id: cwl_runner_job_repo
-        source: cwl_runner_job_repo
-      - id: cwl_runner_job_repo_hash
-        source: get_cwl_runner_job_repo_hash/output
+      - id: cwl_runner_url
+        source: cwl_runner_url
+      - id: cwl_runner_task_branch
+        source: cwl_runner_task_branch
+      - id: cwl_runner_task_url
+        source: cwl_runner_task_url
+      - id: cwl_runner_task_repo
+        source: cwl_runner_task_repo
+      - id: cwl_runner_task_repo_hash
+        source: get_cwl_runner_task_repo_hash/output
       - id: db_cred
         source: db_cred
       - id: db_cred_section
@@ -130,8 +130,6 @@ steps:
         source: input_bam_file_size
       - id: input_bam_md5sum
         source: input_bam_md5sum
-      - id: job_uuid
-        source: job_uuid
       - id: s3_sqlite_url
         valueFrom: "NULL"
       - id: slurm_resource_cores
@@ -146,6 +144,8 @@ steps:
         source: gdc_token
       - id: table_name
         source: status_table
+      - id: task_uuid
+        source: task_uuid
       - id: thread_count
         source: thread_count
     out:

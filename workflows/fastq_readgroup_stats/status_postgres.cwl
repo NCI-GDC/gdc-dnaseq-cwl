@@ -16,13 +16,13 @@ inputs:
     type: string
   - id: cwl_runner_url
     type: string
-  - id: cwl_runner_job_branch
+  - id: cwl_runner_task_branch
     type: string
-  - id: cwl_runner_job_url
+  - id: cwl_runner_task_url
     type: string
-  - id: cwl_runner_job_repo
+  - id: cwl_runner_task_repo
     type: string
-  - id: cwl_runner_job_repo_hash
+  - id: cwl_runner_task_repo_hash
     type: string
   - id: db_cred
     type: File
@@ -40,8 +40,6 @@ inputs:
     type: long
   - id: input_bam_md5sum
     type: string
-  - id: job_uuid
-    type: string
   - id: slurm_resource_cores
     type: long
   - id: slurm_resource_disk_gigabytes
@@ -56,6 +54,8 @@ inputs:
     type: string
   - id: step_token
     type: File
+  - id: task_uuid
+    type: string
   - id: thread_count
     type: long
 
@@ -73,36 +73,36 @@ steps:
           "cwl_runner_repo",
           "cwl_runner_repo_hash",
           "cwl_runner_url",
-          "cwl_runner_job_branch",
-          "cwl_runner_job_repo",
-          "cwl_runner_job_repo_hash",
-          "cwl_runner_job_url",
+          "cwl_runner_task_branch",
+          "cwl_runner_task_repo",
+          "cwl_runner_task_repo_hash",
+          "cwl_runner_task_url",
           "hostname",
           "host_ipaddress",
           "host_macaddress",
           "input_bam_gdc_id",
           "input_bam_md5sum",
-          "job_uuid",
           "s3_sqlite_url",
           "status"
+          "task_uuid",
         ]
       - id: string_values
         source: [
           cwl_runner_repo,
           cwl_runner_repo_hash,
           cwl_runner_url,
-          cwl_runner_job_branch,
-          cwl_runner_job_repo,
-          cwl_runner_job_repo_hash,
-          cwl_runner_job_url,
+          cwl_runner_task_branch,
+          cwl_runner_task_repo,
+          cwl_runner_task_repo_hash,
+          cwl_runner_task_url,
           hostname,
           host_ipaddress,
           host_macaddress,
           input_bam_gdc_id,
           input_bam_md5sum,
-          job_uuid,
           s3_sqlite_url,
           status
+          task_uuid,
         ]
       - id: long_keys
         default: [
@@ -132,8 +132,8 @@ steps:
     in:
       - id: input_json
         source: emit_json/output
-      - id: job_uuid
-        source: job_uuid
+      - id: task_uuid
+        source: task_uuid
       - id: table_name
         source: table_name
     out:
@@ -149,7 +149,7 @@ steps:
         source: db_cred_section
       - id: source_sqlite_path
         source: json_to_sqlite/sqlite
-      - id: uuid
-        source: job_uuid
+      - id: task_uuid
+        source: task_uuid
     out:
       - id: log

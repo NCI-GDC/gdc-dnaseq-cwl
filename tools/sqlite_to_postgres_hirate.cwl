@@ -25,15 +25,15 @@ inputs:
     inputBinding:
       prefix: --source_sqlite_path
 
-  - id: uuid
+  - id: task_uuid
     type: string
     inputBinding:
-      prefix: --uuid
+      prefix: --task_uuid
 
 outputs:
   - id: log
     type: File
     outputBinding:
-      glob: $(inputs.uuid + ".log")
+      glob: $(inputs.task_uuid + ".log")
           
 baseCommand: [sqlite_to_postgres]

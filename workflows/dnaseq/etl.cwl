@@ -37,8 +37,8 @@ inputs:
   - id: start_token
     type: File
   - id: thread_count
-    type: int
-  - id: run_uuid
+    type: long
+  - id: task_uuid
     type: string
 
 outputs:
@@ -200,8 +200,8 @@ steps:
         source: root_fasta_files/output
       - id: thread_count
         source: thread_count
-      - id: run_uuid
-        source: run_uuid
+      - id: task_uuid
+        source: task_uuid
     out:
       - id: picard_markduplicates_output
       - id: merge_all_sqlite_destination_sqlite

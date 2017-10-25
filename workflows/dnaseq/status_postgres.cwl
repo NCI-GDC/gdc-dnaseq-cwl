@@ -5,6 +5,20 @@ cwlVersion: v1.0
 class: Workflow
 
 inputs:
+  - id: cwl_runner_repo
+    type: string
+  - id: cwl_runner_repo_hash
+    type: string
+  - id: cwl_runner_url
+    type: string
+  - id: cwl_runner_task_branch
+    type: string
+  - id: cwl_runner_task_url
+    type: string
+  - id: cwl_runner_task_repo
+    type: string
+  - id: cwl_runner_task_repo_hash
+    type: string
   - id: db_cred
     type: File
   - id: db_cred_section
@@ -20,8 +34,6 @@ inputs:
   - id: input_bam_file_size
     type: long
   - id: input_bam_md5sum
-    type: string
-  - id: job_creation_uuid
     type: string
   - id: known_snp_gdc_id
     type: string
@@ -43,30 +55,14 @@ inputs:
     type: string
   - id: reference_sa_gdc_id
     type: string
-  - id: run_uuid
-    type: string
-  - id: runner_cwl_branch
-    type: string
-  - id: runner_cwl_repo
-    type: string
-  - id: runner_cwl_repo_hash
-    type: string
-  - id: runner_cwl_uri
-    type: string
-  - id: runner_job_branch
-    type: string
-  - id: runner_job_cwl_uri
-    type: string
-  - id: runner_job_repo
-    type: string
-  - id: runner_job_repo_hash
+  - id: task_uuid
     type: string
   - id: slurm_resource_cores
-    type: int
+    type: long
   - id: slurm_resource_disk_gb
-    type: int
+    type: long
   - id: slurm_resource_mem_mb
-    type: int
+    type: long
   - id: status
     type: string
   - id: status_table
@@ -74,7 +70,7 @@ inputs:
   - id: step_token
     type: File
   - id: thread_count
-    type: int
+    type: long
 
 outputs:
   - id: token
@@ -82,76 +78,92 @@ outputs:
     outputSource: sqlite_to_postgres/log
 
 steps:
-  - id: dnaseq_queue_status
-    run: dnaseq_queue_status.cwl
+  - id: emit_json
+    run: ../../tools/emit_json.cwl
     in:
-      - id: hostname
-        source: hostname
-      - id: host_ipaddress
-        source: host_ipaddress
-      - id: host_macaddress
-        source: host_macaddress
-      - id: input_bam_gdc_id
-        source: input_bam_gdc_id
-      - id: input_bam_file_size
-        source: input_bam_file_size
-      - id: input_bam_md5sum
-        source: input_bam_md5sum
-      - id: job_creation_uuid
-        source: job_creation_uuid
-      - id: known_snp_gdc_id
-        source: known_snp_gdc_id
-      - id: known_snp_index_gdc_id
-        source: known_snp_index_gdc_id
-      - id: reference_amb_gdc_id
-        source: reference_amb_gdc_id
-      - id: reference_ann_gdc_id
-        source: reference_ann_gdc_id
-      - id: reference_bwt_gdc_id
-        source: reference_bwt_gdc_id
-      - id: reference_dict_gdc_id
-        source: reference_dict_gdc_id
-      - id: reference_fa_gdc_id
-        source: reference_fa_gdc_id
-      - id: reference_fai_gdc_id
-        source: reference_fai_gdc_id
-      - id: reference_pac_gdc_id
-        source: reference_pac_gdc_id
-      - id: reference_sa_gdc_id
-        source: reference_sa_gdc_id
-      - id: run_uuid
-        source: run_uuid
-      - id: runner_cwl_branch
-        source: runner_cwl_branch
-      - id: runner_cwl_repo
-        source: runner_cwl_repo
-      - id: runner_cwl_repo_hash
-        source: runner_cwl_repo_hash
-      - id: runner_cwl_uri
-        source: runner_cwl_uri
-      - id: runner_job_branch
-        source: runner_job_branch
-      - id: runner_job_repo
-        source: runner_job_repo
-      - id: runner_job_repo_hash
-        source: runner_job_repo_hash
-      - id: runner_job_uri
-        source: runner_job_cwl_uri
-      - id: slurm_resource_cores
-        source: slurm_resource_cores
-      - id: slurm_resource_disk_gb
-        source: slurm_resource_disk_gb
-      - id: slurm_resource_mem_mb
-        source: slurm_resource_mem_mb
-      - id: status
-        source: status
-      - id: status_table
-        source: status_table
-      - id: thread_count
-        source: thread_count
+      - id: string_keys
+        default: [
+          "cwl_runner_repo",
+          "cwl_runner_repo_hash",
+          "cwl_runner_url",
+          "cwl_runner_task_branch",
+          "cwl_runner_task_repo",
+          "cwl_runner_task_repo_hash",
+          "cwl_runner_task_url",
+          "hostname"
+          "host_ipaddress"
+          "host_macaddress"
+          "input_bam_gdc_id"
+          "input_bam_md5sum"
+          "known_snp_gdc_id"
+          "known_snp_index_gdc_id"
+          "reference_amb_gdc_id"
+          "reference_ann_gdc_id"
+          "reference_bwt_gdc_id"
+          "reference_dict_gdc_id"
+          "reference_fa_gdc_id"
+          "reference_fai_gdc_id"
+          "reference_pac_gdc_id"
+          "reference_sa_gdc_id"
+          "status"
+          "task_uuid"
+        ]
+      - id: string_values
+        source: [
+          cwl_runner_repo,
+          cwl_runner_repo_hash,
+          cwl_runner_url,
+          cwl_runner_task_branch,
+          cwl_runner_task_repo,
+          cwl_runner_task_repo_hash,
+          cwl_runner_task_url,
+          hostname
+          host_ipaddress
+          host_macaddress
+          input_bam_gdc_id
+          input_bam_md5sum
+          known_snp_gdc_id
+          known_snp_index_gdc_id
+          reference_amb_gdc_id
+          reference_ann_gdc_id
+          reference_bwt_gdc_id
+          reference_dict_gdc_id
+          reference_fa_gdc_id
+          reference_fai_gdc_id
+          reference_pac_gdc_id
+          reference_sa_gdc_id
+          status
+          task_uuid
+        ]
+    - id: long_keys
+      default: [
+        "input_bam_file_size"
+        "slurm_resource_cores"
+        "slurm_resource_disk_gigabytes"
+        "slurm_resource_mem_megabytes"
+        "thread_count"
+      ]
+    - id: long_values
+      source: [
+        input_bam_file_size
+        slurm_resource_cores
+        slurm_resource_disk_gigabytes
+        slurm_resource_mem_megabytes
+        thread_count
+      ]
+
+  - id: json_to_sqlite
+    run: ../../tools/json_to_sqlite.cwl
+    in:
+      - id: input_json
+        soiurce: emit_json/output
+      - id: task_uuid
+        source: task_uuid
+      - id: table_name
+        source: table_name
     out:
-      - id: log
       - id: sqlite
+      - id: log
 
   - id: sqlite_to_postgres
     run: ../../tools/sqlite_to_postgres_hirate.cwl
@@ -162,7 +174,7 @@ steps:
         source: db_cred_section
       - id: source_sqlite_path
         source: dnaseq_queue_status/sqlite
-      - id: uuid
-        source: run_uuid
+      - id: task_uuid
+        source: task_uuid
     out:
       - id: log

@@ -95,10 +95,10 @@ inputs:
     inputBinding:
       prefix: --reference_sa_gdc_id
 
-  - id: run_uuid
+  - id: task_uuid
     type: string
     inputBinding:
-      prefix: --run_uuid
+      prefix: --task_uuid
 
   - id: runner_cwl_branch
     type: string
@@ -141,17 +141,17 @@ inputs:
       prefix: --runner_job_uri
 
   - id: slurm_resource_cores
-    type: int
+    type: long
     inputBinding:
       prefix: --slurm_resource_cores
 
   - id: slurm_resource_disk_gb
-    type: int
+    type: long
     inputBinding:
       prefix: --slurm_resource_disk_gb
 
   - id: slurm_resource_mem_mb
-    type: int
+    type: long
     inputBinding:
       prefix: --slurm_resource_mem_mb
 
@@ -166,7 +166,7 @@ inputs:
       prefix: --status_table
 
   - id: thread_count
-    type: int
+    type: long
     inputBinding:
       prefix: --thread_count
 
@@ -174,11 +174,11 @@ outputs:
   - id: log
     type: File
     outputBinding:
-      glob: $(inputs.run_uuid+".log")
+      glob: $(inputs.task_uuid+".log")
 
   - id: sqlite
     type: File
     outputBinding:
-      glob: $(inputs.run_uuid+".db")
+      glob: $(inputs.task_uuid+".db")
 
 baseCommand: [/usr/local/bin/dnaseq_queue_status]
