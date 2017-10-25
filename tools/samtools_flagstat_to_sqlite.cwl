@@ -25,20 +25,20 @@ inputs:
     inputBinding:
       prefix: --metric_path
 
-  - id: uuid
+  - id: task_uuid
     type: string
     inputBinding:
-      prefix: --uuid
+      prefix: --task_uuid
 
 outputs:
   - id: log
     type: File
     outputBinding:
-      glob: $(inputs.uuid+"_samtools_flagstat.log")
+      glob: $(inputs.task_uuid+"_samtools_flagstat.log")
 
   - id: sqlite
     type: File
     outputBinding:
-      glob: $(inputs.uuid + ".db")
+      glob: $(inputs.task_uuid + ".db")
 
 baseCommand: [/usr/local/bin/samtools_metrics_sqlite, --metric_name, flagstat]
