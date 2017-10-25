@@ -37,6 +37,10 @@ inputs:
       loadContents: true
       valueFrom: $(null)
 
+  - id: samse_maxOcc
+    type: long
+    default: 3
+      
   - id: thread_count
     type: int
 
@@ -65,7 +69,7 @@ arguments:
         function bwa_aln_33(rg_str, outbam) {
           var cmd = [
           "bwa", "aln", "-t", inputs.thread_count, inputs.fasta.path, inputs.fastq.path, ">", "aln.sai", "&&",
-          "bwa", "samse", "-r", "\"" + rg_str + "\"", inputs.fasta.path, "aln.sai", inputs.fastq.path, "|",
+          "bwa", "samse", "-n", inputs.samse_maxOcc, "-r", "\"" + rg_str + "\"", inputs.fasta.path, "aln.sai", inputs.fastq.path, "|",
           "samtools", "view", "-Shb", "-o", outbam, "-"
           ];
           return cmd.join(' ')
@@ -74,7 +78,7 @@ arguments:
         function bwa_aln_64(rg_str, outbam) {
           var cmd = [
           "bwa", "aln", "-I","-t", inputs.thread_count, inputs.fasta.path, inputs.fastq.path, ">", "aln.sai", "&&",
-          "bwa", "samse", "-r", "\"" + rg_str + "\"", inputs.fasta.path, "aln.sai", inputs.fastq.path, "|",
+          "bwa", "samse", "-n", inputs.samse_maxOcc, "-r", "\"" + rg_str + "\"", inputs.fasta.path, "aln.sai", inputs.fastq.path, "|",
           "samtools", "view", "-Shb", "-o", outbam, "-"
           ];
           return cmd.join(' ')
