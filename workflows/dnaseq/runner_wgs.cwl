@@ -18,9 +18,9 @@ inputs:
     type: string
   - id: cwl_runner_task_branch
     type: string
-  - id: cwl_runner_task_url
-    type: string
   - id: cwl_runner_task_repo
+    type: string
+  - id: cwl_runner_task_url
     type: string
   - id: db_cred
     type: File
@@ -94,23 +94,13 @@ steps:
     out:
       - id: output
 
-  - id: get_runner_cwl_repo_hash
+  - id: get_cwl_runner_task_repo_hash
     run: ../../tools/emit_git_hash.cwl
     in:
       - id: repo
-        source: runner_cwl_repo
+        source: cwl_runner_task_repo
       - id: branch
-        source: runner_cwl_branch
-    out:
-      - id: output
-
-  - id: get_runner_job_repo_hash
-    run: ../../tools/emit_git_hash.cwl
-    in:
-      - id: repo
-        source: runner_task_repo
-      - id: branch
-        source: runner_task_branch
+        source: cwl_runner_task_branch
     out:
       - id: output
 
@@ -255,8 +245,6 @@ steps:
         source: input_bam_file_size
       - id: input_bam_md5sum
         source: input_bam_md5sum
-      - id: job_creation_uuid
-        source: job_creation_uuid
       - id: known_snp_gdc_id
         source: known_snp_gdc_id
       - id: known_snp_index_gdc_id

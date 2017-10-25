@@ -59,9 +59,9 @@ inputs:
     type: string
   - id: slurm_resource_cores
     type: long
-  - id: slurm_resource_disk_gb
+  - id: slurm_resource_disk_gigabytes
     type: long
-  - id: slurm_resource_mem_mb
+  - id: slurm_resource_mem_megabytes
     type: long
   - id: status
     type: string
@@ -90,22 +90,22 @@ steps:
           "cwl_runner_task_repo",
           "cwl_runner_task_repo_hash",
           "cwl_runner_task_url",
-          "hostname"
-          "host_ipaddress"
-          "host_macaddress"
-          "input_bam_gdc_id"
-          "input_bam_md5sum"
-          "known_snp_gdc_id"
-          "known_snp_index_gdc_id"
-          "reference_amb_gdc_id"
-          "reference_ann_gdc_id"
-          "reference_bwt_gdc_id"
-          "reference_dict_gdc_id"
-          "reference_fa_gdc_id"
-          "reference_fai_gdc_id"
-          "reference_pac_gdc_id"
-          "reference_sa_gdc_id"
-          "status"
+          "hostname",
+          "host_ipaddress",
+          "host_macaddress",
+          "input_bam_gdc_id",
+          "input_bam_md5sum",
+          "known_snp_gdc_id",
+          "known_snp_index_gdc_id",
+          "reference_amb_gdc_id",
+          "reference_ann_gdc_id",
+          "reference_bwt_gdc_id",
+          "reference_dict_gdc_id",
+          "reference_fa_gdc_id",
+          "reference_fai_gdc_id",
+          "reference_pac_gdc_id",
+          "reference_sa_gdc_id",
+          "status",
           "task_uuid"
         ]
       - id: string_values
@@ -117,40 +117,40 @@ steps:
           cwl_runner_task_repo,
           cwl_runner_task_repo_hash,
           cwl_runner_task_url,
-          hostname
-          host_ipaddress
-          host_macaddress
-          input_bam_gdc_id
-          input_bam_md5sum
-          known_snp_gdc_id
-          known_snp_index_gdc_id
-          reference_amb_gdc_id
-          reference_ann_gdc_id
-          reference_bwt_gdc_id
-          reference_dict_gdc_id
-          reference_fa_gdc_id
-          reference_fai_gdc_id
-          reference_pac_gdc_id
-          reference_sa_gdc_id
-          status
+          hostname,
+          host_ipaddress,
+          host_macaddress,
+          input_bam_gdc_id,
+          input_bam_md5sum,
+          known_snp_gdc_id,
+          known_snp_index_gdc_id,
+          reference_amb_gdc_id,
+          reference_ann_gdc_id,
+          reference_bwt_gdc_id,
+          reference_dict_gdc_id,
+          reference_fa_gdc_id,
+          reference_fai_gdc_id,
+          reference_pac_gdc_id,
+          reference_sa_gdc_id,
+          status,
           task_uuid
         ]
-    - id: long_keys
-      default: [
-        "input_bam_file_size"
-        "slurm_resource_cores"
-        "slurm_resource_disk_gigabytes"
-        "slurm_resource_mem_megabytes"
-        "thread_count"
-      ]
-    - id: long_values
-      source: [
-        input_bam_file_size
-        slurm_resource_cores
-        slurm_resource_disk_gigabytes
-        slurm_resource_mem_megabytes
-        thread_count
-      ]
+      - id: long_keys
+        default: [
+          "input_bam_file_size",
+          "slurm_resource_cores",
+          "slurm_resource_disk_gigabytes",
+          "slurm_resource_mem_megabytes",
+          "thread_count"
+        ]
+      - id: long_values
+        source: [
+          input_bam_file_size,
+          slurm_resource_cores,
+          slurm_resource_disk_gigabytes,
+          slurm_resource_mem_megabytes,
+          thread_count
+        ]
 
   - id: json_to_sqlite
     run: ../../tools/json_to_sqlite.cwl
@@ -160,7 +160,7 @@ steps:
       - id: task_uuid
         source: task_uuid
       - id: table_name
-        source: table_name
+        source: status_table
     out:
       - id: sqlite
       - id: log
@@ -173,7 +173,7 @@ steps:
       - id: ini_section
         source: db_cred_section
       - id: source_sqlite_path
-        source: dnaseq_queue_status/sqlite
+        source: json_to_sqlite/sqlite
       - id: task_uuid
         source: task_uuid
     out:

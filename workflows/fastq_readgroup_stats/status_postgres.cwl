@@ -28,7 +28,8 @@ inputs:
     type: File
   - id: db_cred_section
     type: string
-  - id: hostname
+  - id: hostname- id: string_values
+      
     type: string
   - id: host_ipaddress
     type: string
@@ -83,8 +84,8 @@ steps:
           "input_bam_gdc_id",
           "input_bam_md5sum",
           "s3_sqlite_url",
-          "status"
-          "task_uuid",
+          "status",
+          "task_uuid"
         ]
       - id: string_values
         source: [
@@ -101,8 +102,8 @@ steps:
           input_bam_gdc_id,
           input_bam_md5sum,
           s3_sqlite_url,
-          status
-          task_uuid,
+          status,
+          task_uuid
         ]
       - id: long_keys
         default: [
