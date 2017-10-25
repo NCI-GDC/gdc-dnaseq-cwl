@@ -42,7 +42,7 @@ inputs:
     default: 3
       
   - id: thread_count
-    type: int
+    type: long
 
 outputs:
   - id: OUTPUT

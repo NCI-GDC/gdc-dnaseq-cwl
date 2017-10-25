@@ -114,7 +114,7 @@ inputs:
       prefix: --no_standard_covs
 
   - id: num_cpu_threads_per_data_thread
-    type: int
+    type: long
     default: 1
     inputBinding:
       prefix: --num_cpu_threads_per_data_thread

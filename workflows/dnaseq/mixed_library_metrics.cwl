@@ -17,7 +17,7 @@ inputs:
   - id: input_state
     type: string
   - id: thread_count
-    type: int
+    type: long
   - id: task_uuid
     type: string
 

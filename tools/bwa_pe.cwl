@@ -44,7 +44,7 @@ inputs:
       valueFrom: $(null)
 
   - id: thread_count
-    type: int
+    type: long
 
 outputs:
   - id: OUTPUT

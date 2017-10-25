@@ -19,7 +19,7 @@ inputs:
   - id: parent_bam
     type: string
   - id: thread_count
-    type: int
+    type: long
   - id: task_uuid
     type: string
 
