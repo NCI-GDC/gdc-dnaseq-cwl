@@ -471,6 +471,8 @@ steps:
         source: decider_bwa_se/output_readgroup_paths
       - id: fastqc_json_path
         source: fastqc_se_basicstats_json/OUTPUT
+      - id: samse_maxOcc
+        valueFrom: 10
       - id: thread_count
         source: thread_count
     out:
