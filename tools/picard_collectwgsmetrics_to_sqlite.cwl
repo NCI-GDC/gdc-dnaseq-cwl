@@ -30,20 +30,20 @@ inputs:
     inputBinding:
       prefix: --metric_path
 
-  - id: uuid
+  - id: task_uuid
     type: string
     inputBinding:
-      prefix: --uuid
+      prefix: --task_uuid
 
 outputs:
   - id: log
     type: File
     outputBinding:
-      glob: $(inputs.uuid+"_picard_CollectWgsMetrics.log")
+      glob: $(inputs.task_uuid+"_picard_CollectWgsMetrics.log")
 
   - id: sqlite
     type: File
     outputBinding:
-      glob: $(inputs.uuid + ".db")
+      glob: $(inputs.task_uuid + ".db")
 
 baseCommand: [/usr/local/bin/picard_metrics_sqlite, --metric_name, CollectWgsMetrics]
