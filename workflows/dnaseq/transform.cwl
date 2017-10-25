@@ -20,7 +20,7 @@ inputs:
     type: File
   - id: thread_count
     type: long
-  - id: run_uuid
+  - id: task_uuid
     type: string
 
 outputs:
@@ -61,8 +61,8 @@ steps:
         valueFrom: "original"
       - id: metric_path
         source: picard_validatesamfile_original/OUTPUT
-      - id: uuid
-        source: run_uuid
+      - id: task_uuid
+        source: task_uuid
     out:
       - id: sqlite
 
@@ -179,8 +179,8 @@ steps:
     in:
       - id: json_path
         source: bam_readgroup_to_json/OUTPUT
-      - id: uuid
-        source: run_uuid
+      - id: task_uuid
+        source: task_uuid
     out:
       - id: log
       - id: output_sqlite
@@ -190,8 +190,8 @@ steps:
     in:
       - id: source_sqlite
         source: readgroup_json_db/output_sqlite
-      - id: uuid
-        source: run_uuid
+      - id: task_uuid
+        source: task_uuid
     out:
       - id: destination_sqlite
       - id: log
@@ -257,8 +257,8 @@ steps:
     in:
       - id: INPUT
         source: fastqc1/OUTPUT
-      - id: uuid
-        source: run_uuid
+      - id: task_uuid
+        source: task_uuid
     out:
       - id: LOG
       - id: OUTPUT
@@ -269,8 +269,8 @@ steps:
     in:
       - id: INPUT
         source: fastqc2/OUTPUT
-      - id: uuid
-        source: run_uuid
+      - id: task_uuid
+        source: task_uuid
     out:
       - id: LOG
       - id: OUTPUT
@@ -281,8 +281,8 @@ steps:
     in:
       - id: INPUT
         source: fastqc_s/OUTPUT
-      - id: uuid
-        source: run_uuid
+      - id: task_uuid
+        source: task_uuid
     out:
       - id: LOG
       - id: OUTPUT
@@ -293,8 +293,8 @@ steps:
     in:
       - id: INPUT
         source: fastqc_o1/OUTPUT
-      - id: uuid
-        source: run_uuid
+      - id: task_uuid
+        source: task_uuid
     out:
       - id: LOG
       - id: OUTPUT
@@ -305,8 +305,8 @@ steps:
     in:
       - id: INPUT
         source: fastqc_o2/OUTPUT
-      - id: uuid
-        source: run_uuid
+      - id: task_uuid
+        source: task_uuid
     out:
       - id: LOG
       - id: OUTPUT
@@ -316,8 +316,8 @@ steps:
     in:
       - id: source_sqlite
         source: fastqc_db1/OUTPUT
-      - id: uuid
-        source: run_uuid
+      - id: task_uuid
+        source: task_uuid
     out:
       - id: destination_sqlite
       - id: log
@@ -327,8 +327,8 @@ steps:
     in:
       - id: source_sqlite
         source: fastqc_db2/OUTPUT
-      - id: uuid
-        source: run_uuid
+      - id: task_uuid
+        source: task_uuid
     out:
       - id: destination_sqlite
       - id: log
@@ -338,8 +338,8 @@ steps:
     in:
       - id: source_sqlite
         source: fastqc_db_s/OUTPUT
-      - id: uuid
-        source: run_uuid
+      - id: task_uuid
+        source: task_uuid
     out:
       - id: destination_sqlite
       - id: log
@@ -349,8 +349,8 @@ steps:
     in:
       - id: source_sqlite
         source: fastqc_db_o1/OUTPUT
-      - id: uuid
-        source: run_uuid
+      - id: task_uuid
+        source: task_uuid
     out:
       - id: destination_sqlite
       - id: log
@@ -360,8 +360,8 @@ steps:
     in:
       - id: source_sqlite
         source: fastqc_db_o2/OUTPUT
-      - id: uuid
-        source: run_uuid
+      - id: task_uuid
+        source: task_uuid
     out:
       - id: destination_sqlite
       - id: log
@@ -573,8 +573,8 @@ steps:
         valueFrom: $(self.basename)
       - id: thread_count
         source: thread_count
-      - id: uuid
-        source: run_uuid
+      - id: task_uuid
+        source: task_uuid
     out:
       - id: merge_sqlite_destination_sqlite
 
@@ -583,8 +583,8 @@ steps:
     in:
       - id: source_sqlite
         source: metrics_pe/merge_sqlite_destination_sqlite
-      - id: uuid
-        source: run_uuid
+      - id: task_uuid
+        source: task_uuid
     out:
       - id: destination_sqlite
       - id: log
@@ -606,8 +606,8 @@ steps:
         valueFrom: $(self.basename)
       - id: thread_count
         source: thread_count
-      - id: uuid
-        source: run_uuid
+      - id: task_uuid
+        source: task_uuid
     out:
       - id: merge_sqlite_destination_sqlite
 
@@ -616,8 +616,8 @@ steps:
     in:
       - id: source_sqlite
         source: metrics_se/merge_sqlite_destination_sqlite
-      - id: uuid
-        source: run_uuid
+      - id: task_uuid
+        source: task_uuid
     out:
       - id: destination_sqlite
       - id: log
@@ -709,8 +709,8 @@ steps:
         valueFrom: "markduplicates_readgroups"
       - id: metric_path
         source: picard_markduplicates/METRICS
-      - id: uuid
-        source: run_uuid
+      - id: task_uuid
+        source: task_uuid
     out:
       - id: sqlite
 
@@ -735,8 +735,8 @@ steps:
         valueFrom: "markduplicates_readgroups"
       - id: metric_path
         source: picard_validatesamfile_markduplicates/OUTPUT
-      - id: uuid
-        source: run_uuid
+      - id: task_uuid
+        source: task_uuid
     out:
       - id: sqlite
 
@@ -753,8 +753,8 @@ steps:
         valueFrom: "markduplicates_readgroups"
       - id: thread_count
         source: thread_count
-      - id: uuid
-        source: run_uuid
+      - id: task_uuid
+        source: task_uuid
     out:
       - id: merge_sqlite_destination_sqlite
 
@@ -766,7 +766,7 @@ steps:
       - id: knownSites
         source: known_snp
       - id: log_to_file
-        source: run_uuid
+        source: task_uuid
         valueFrom: $(self + "_bqsr.log" )
       - id: num_cpu_threads_per_data_thread
         source: thread_count
@@ -783,7 +783,7 @@ steps:
       - id: input_file
         source: picard_markduplicates/OUTPUT
       - id: log_to_file
-        source: run_uuid
+        source: task_uuid
         valueFrom: $(self + "_pr.log")
       - id: num_cpu_threads_per_data_thread
         source: thread_count
@@ -802,8 +802,8 @@ steps:
         source: picard_markduplicates/OUTPUT
       - id: input_state
         valueFrom: "markduplicates_readgroups"
-      - id: uuid
-        source: run_uuid
+      - id: task_uuid
+        source: task_uuid
     out:
       - id: merge_sqlite_destination_sqlite
 
@@ -826,8 +826,8 @@ steps:
           picard_markduplicates_to_sqlite/sqlite,
           integrity/merge_sqlite_destination_sqlite
         ]
-      - id: uuid
-        source: run_uuid
+      - id: task_uuid
+        source: task_uuid
     out:
       - id: destination_sqlite
       - id: log
