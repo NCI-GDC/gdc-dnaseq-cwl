@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: ubuntu:zesty-20170915
+    dockerPull: ubuntu:artful-20171019
   - class: InlineJavascriptRequirement
   - class: ShellCommandRequirement
 
