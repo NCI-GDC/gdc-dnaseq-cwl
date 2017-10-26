@@ -6,7 +6,7 @@ class: CommandLineTool
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/git-client:239651f2f67d001a2faf7e1f9e1836f5b618c21af388ecafefd21afa17f61778
+    dockerPull: quay.io/ncigdc/git-client:cd11e0475ba67cba39c5590533208bc38e82f5904b51ee487943f2b04f6c9469
   - class: InlineJavascriptRequirement
   # - class: EnvVarRequirement
   #   envDef:
