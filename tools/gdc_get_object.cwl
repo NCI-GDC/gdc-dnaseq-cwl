@@ -6,7 +6,7 @@ class: CommandLineTool
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/curl:584c4fa535adf9d52d9e1284339494f2c93eceb16434230f4388052aeb5bc5e1
+    dockerPull: quay.io/ncigdc/curl:c37090fe49ce21554b7d0550455a93b5a4a1548e4eea8c071414d8af5991c5fe
 
 inputs:
   - id: gdc_token

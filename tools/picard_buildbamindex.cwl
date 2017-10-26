@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/picard:52ac4bf00f5d846a34c67e02f329f2e57a12824dae7021d28866b2656234ff61
+    dockerPull: quay.io/ncigdc/picard:985a0dd0c65e5a92b9d8bd13a2333ae0474d963645c416907a0573572709f6b8
   - class: InitialWorkDirRequirement
     listing:
       - entryname: $(inputs.INPUT.basename)

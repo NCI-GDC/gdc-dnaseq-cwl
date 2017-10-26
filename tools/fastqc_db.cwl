@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/fastqc_db:cb0cd4c16cb54b3e47d8909f3eb71e02f98f94f9e8c19350e8edd989a0d7d48e
+    dockerPull: quay.io/ncigdc/fastqc_db:b9c09ea65f40e154d239ebf494f4cd14ed2526cb6b70f65f9d822d3ebd4f1594
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool

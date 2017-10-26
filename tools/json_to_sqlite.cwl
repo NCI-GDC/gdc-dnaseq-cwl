@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/json-to-sqlite:b774a9093653e63d4c37d6747d95e4a58dbbd1417cab39d02ee776d50e7e3ac1
+    dockerPull: quay.io/ncigdc/json-to-sqlite:43564cbca5b19e99d5d4ebf28987cde30facd6082854086967617fbe6be641eb
 
 class: CommandLineTool
 
