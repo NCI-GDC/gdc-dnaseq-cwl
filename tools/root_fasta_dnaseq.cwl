@@ -3,6 +3,8 @@
 cwlVersion: v1.0
 
 requirements:
+  - class: DockerRequirement
+    dockerPull: ubuntu:artful-20171019
   - class: InitialWorkDirRequirement
     listing:
       - entryname: $(inputs.fasta.basename)
