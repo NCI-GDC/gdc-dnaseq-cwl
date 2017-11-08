@@ -4,6 +4,11 @@ cwlVersion: v1.0
 
 class: Workflow
 
+requirements:
+  - class: InlineJavascriptRequirement
+  - class: MultipleInputFeatureRequirement
+  - class: StepInputExpressionRequirement
+
 inputs:
   - id: cwl_runner_repo
     type: string
