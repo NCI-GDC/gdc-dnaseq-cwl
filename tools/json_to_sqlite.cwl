@@ -14,10 +14,10 @@ inputs:
     inputBinding:
       prefix: --input_json
 
-  - id: job_uuid
+  - id: task_uuid 
     type: string
     inputBinding:
-      prefix: --job_uuid
+      prefix: --task_uuid
 
   - id: table_name
     type: string

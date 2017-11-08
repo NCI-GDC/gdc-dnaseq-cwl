@@ -4,6 +4,11 @@ cwlVersion: v1.0
 
 class: Workflow
 
+requirements:
+  - class: InlineJavascriptRequirement
+  - class: MultipleInputFeatureRequirement
+  - class: StepInputExpressionRequirement
+
 inputs:
   - id: cwl_runner_repo
     type: string
@@ -55,8 +60,6 @@ inputs:
     type: string
   - id: reference_sa_gdc_id
     type: string
-  - id: task_uuid
-    type: string
   - id: slurm_resource_cores
     type: long
   - id: slurm_resource_disk_gigabytes
@@ -65,10 +68,12 @@ inputs:
     type: long
   - id: status
     type: string
-  - id: status_table
-    type: string
   - id: step_token
     type: File
+  - id: table_name 
+    type: string
+  - id: task_uuid
+    type: string
   - id: thread_count
     type: long
 
@@ -151,16 +156,22 @@ steps:
           slurm_resource_mem_megabytes,
           thread_count
         ]
+      - id: float_keys
+        default: []
+      - id: float_values
+        default: []
+    out:
+      - id: output
 
   - id: json_to_sqlite
     run: ../../tools/json_to_sqlite.cwl
     in:
       - id: input_json
-        soiurce: emit_json/output
+        source: emit_json/output
       - id: task_uuid
         source: task_uuid
       - id: table_name
-        source: status_table
+        source: table_name 
     out:
       - id: sqlite
       - id: log

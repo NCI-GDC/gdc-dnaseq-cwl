@@ -472,7 +472,7 @@ steps:
       - id: fastqc_json_path
         source: fastqc_se_basicstats_json/OUTPUT
       - id: samse_maxOcc
-        valueFrom: 10
+        valueFrom: $(5+5)
       - id: thread_count
         source: thread_count
     out:

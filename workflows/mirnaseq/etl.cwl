@@ -190,7 +190,7 @@ steps:
       - id: output
  
   - id: transform
-    run: transform.cwl
+    run: transform_mirna.cwl
     in:
       - id: input_bam
         source: extract_bam/output
