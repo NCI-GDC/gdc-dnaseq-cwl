@@ -1,0 +1,36 @@
+{
+    "cwl_runner_branch": "${cwl_runner_branch}",
+    "cwl_runner_repo_hash": "${cwl_runner_repo_hash}",
+    "cwl_runner_url": "${cwl_runner_url}",
+    "cwl_runner_task_branch": "${cwl_runner_task_branch}",
+    "cwl_runner_task_repo": "${cwl_runner_task_repo}",
+    "cwl_runner_task_url": "${cwl_runner_task_url}",
+    "db_cred": {
+        "class": "File",
+        "path": "${db_cred}"
+    },
+    "db_cred_section": "${db_cred_section}",
+    "gdc_token": {
+        "class": "File",
+        "path": "${gdc_token}"
+    },
+    "input_bam_gdc_id": "${input_bam_gdc_id}",
+    "input_bam_file_size": ${input_bam_file_size},
+    "input_bam_md5sum": "${input_bam_md5sum}",
+    "known_snp_gdc_id": "${known_snp_gdc_id}",
+    "known_snp_index_gdc_id": "${known_snp_index_gdc_id}",
+    "reference_amb_gdc_id": "${reference_amb_gdc_id}",
+    "reference_ann_gdc_id": "${reference_ann_gdc_id}",
+    "reference_bwt_gdc_id": "${reference_bwt_gdc_id}",
+    "reference_dict_gdc_id": "${reference_dict_gdc_id}",
+    "reference_fa_gdc_id": "${reference_fa_gdc_id}",
+    "reference_fai_gdc_id": "${reference_fai_gdc_id}",
+    "reference_pac_gdc_id": "${reference_pac_gdc_id}",
+    "reference_sa_gdc_id": "${reference_sa_gdc_id}",
+    "slurm_resource_cores": ${slurm_resource_cores},
+    "slurm_resource_disk_gb": ${slurm_resource_disk_gigabytes},
+    "slurm_resource_mem_mb": ${slurm_resource_mem_megabytes},
+    "status_table": "${status_table}",
+    "task_uuid": "$(tast_uuid)",
+    "thread_count": ${thread_count}
+}
