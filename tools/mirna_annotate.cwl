@@ -5,11 +5,19 @@ cwlVersion: v1.0
 requirements:
   - class: DockerRequirement
     dockerPull: quay.io/ncigdc/mirna-profiler:latest
+  - class: InitialWorkDirRequirement
+    listing:
+      - entryname: $(inputs.sam.basename)
+        entry: $(inputs.sam)
   - class: ShellCommandRequirement
 
 class: CommandLineTool
 
 inputs:
+  - id: sam
+    format: "edam:format_2572"
+    type: File
+    
   - id: mirbase
     type: string
     default: "hg38"
@@ -39,11 +47,10 @@ inputs:
       prefix: -p
 
 outputs:
-  []
-  # - id: output
-  #   type: File
-  #   outputBinding:
-  #     glob: "pwd.txt"
+  - id: output
+    type: File
+    outputBinding:
+      glob: $(inputs.sam.basename)
 
 arguments:
   - valueFrom: "chmod 177 /tmp"
@@ -52,10 +59,6 @@ arguments:
 
   - valueFrom: "&& /usr/sbin/mysqld --defaults-file=/etc/mysql/my.cnf --user=mysql --daemonize"
     position: 1
-    shellQuote: false
-
-  - valueFrom: "&& touch test.sam"
-    position: 2
     shellQuote: false
 
   - valueFrom: "&& /root/mirna/v0.2.7/code/annotation/annotate.pl"
