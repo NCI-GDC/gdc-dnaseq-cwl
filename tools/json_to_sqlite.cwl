@@ -28,11 +28,11 @@ outputs:
   - id: sqlite
     type: File
     outputBinding:
-      glob: $(inputs.job_uuid).db
+      glob: $(inputs.task_uuid).db
 
   - id: log
     type: File
     outputBinding:
-      glob: $(inputs.job_uuid).log
+      glob: $(inputs.task_uuid).log
 
 baseCommand: [json_to_sqlite]
