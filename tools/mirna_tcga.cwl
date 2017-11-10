@@ -9,7 +9,12 @@ requirements:
     listing:
       - entryname: $(inputs.sam.basename)
         entry: $(inputs.sam)
-        writable: true
+      - entryname: $(inputs.sam.nameroot)_features/miRNA.txt
+        entry: $(inputs.stats_miRNA_txt)
+      - entryname: $(inputs.sam.nameroot)_features/crossmapped.txt
+        entry: $(inputs.stats_crossmapped_txt)
+      - entryname: $(inputs.sam.nameroot)_features/isoforms.txt
+        entry: $(inputs.stats_isoforms_txt)
   - class: ShellCommandRequirement
 
 class: CommandLineTool
@@ -19,7 +24,7 @@ inputs:
     format: "edam:format_2573"
     type: File
     
-  - id: mirbase
+  - id: mirbase_db
     type: string
     default: "hg38"
     inputBinding:
@@ -27,7 +32,7 @@ inputs:
       prefix: -m
       shellQuote: false
 
-  - id: ucsc_database
+  - id: genome_version
     type: string
     default: "hg38"
     inputBinding:
@@ -52,11 +57,14 @@ inputs:
       shellQuote: false
 
 outputs:
-  - id: output
-    format: "edam:format_2573"
+  - id: isoforms_quant
     type: File
     outputBinding:
-      glob: $(inputs.sam.basename)
+      glob: $(inputs.sam.nameroot)_features/tcga/isoforms.txt
+  - id: mirnas_quant
+    type: File
+    outputBinding:
+      glob: $(inputs.sam.nameroot)_features/tcga/mirnas.txt
 
 arguments:
   - valueFrom: "chmod 1777 /tmp"
@@ -67,7 +75,7 @@ arguments:
     position: 1
     shellQuote: false
 
-  - valueFrom: "&& /root/mirna/v0.2.7/code/annotation/annotate.pl"
+  - valueFrom: "&& /root/mirna/v0.2.7/code/custom_output/tcga/tcga.pl"
     position: 3
     shellQuote: false
 

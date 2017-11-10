@@ -7,40 +7,19 @@ requirements:
     dockerPull: quay.io/ncigdc/mirna-profiler:latest
   - class: InitialWorkDirRequirement
     listing:
-      - entryname: $(inputs.sam.basename)
-        entry: $(inputs.sam)
-        writable: true
+      - entryname: $(inputs.stats_mirna_species_txt.basename)
+        entry: $(inputs.stats_mirna_species_txt)
   - class: ShellCommandRequirement
 
 class: CommandLineTool
 
 inputs:
-  - id: sam
-    format: "edam:format_2573"
-    type: File
-    
-  - id: mirbase
+  - id: mirbase_db
     type: string
     default: "hg38"
     inputBinding:
       position: 90
       prefix: -m
-      shellQuote: false
-
-  - id: ucsc_database
-    type: string
-    default: "hg38"
-    inputBinding:
-      position: 91
-      prefix: -u
-      shellQuote: false
-
-  - id: species_code
-    type: string
-    default: "hsa"
-    inputBinding:
-      position: 92
-      prefix: -o
       shellQuote: false
 
   - id: project_directory
@@ -51,12 +30,30 @@ inputs:
       prefix: -p
       shellQuote: false
 
+  - id: species_code
+    type: string
+    default: "hsa"
+    inputBinding:
+      position: 92
+      prefix: -o
+      shellQuote: false
+
+  - id: stats_mirna_species_txt
+    type: File
+
 outputs:
-  - id: output
-    format: "edam:format_2573"
+  - id: expn_matrix_txt
     type: File
     outputBinding:
-      glob: $(inputs.sam.basename)
+      glob: expn_matrix.txt
+  - id: expn_matrix_norm_txt
+    type: File
+    outputBinding:
+      glob: expn_matrix_norm.txt
+  - id: expn_matrix_norm_log_txt
+    type: File
+    outputBinding:
+      glob: expn_matrix_norm_log.txt
 
 arguments:
   - valueFrom: "chmod 1777 /tmp"
@@ -67,7 +64,7 @@ arguments:
     position: 1
     shellQuote: false
 
-  - valueFrom: "&& /root/mirna/v0.2.7/code/annotation/annotate.pl"
+  - valueFrom: "&& /root/mirna/v0.2.7/code/library_stats/expression_matrix.pl"
     position: 3
     shellQuote: false
 
