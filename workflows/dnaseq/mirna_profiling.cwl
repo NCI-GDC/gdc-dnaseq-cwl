@@ -154,23 +154,23 @@ steps:
       - id: expn_matrix_norm_txt
       - id: expn_matrix_norm_log_txt
 
-  # - id: mirna_expression_matrix_mimat
-  #   run: ../../tools/mirna_expression_matrix_mimat.cwl
-  #   in:
-  #     - id: mirbase_db
-  #       source: mirbase_db
-  #     - id: project_dir
-  #       source: project_dir
-  #     - id: species_code
-  #       source: species_code
-  #     - id: stats_mirna_txt
-  #       source: mirna_alignment_stats/miRNA_txt
-  #     - id: stats_crossmapped_txt
-  #       source: mirna_alignment_stats/crossmapped_txt
-  #   out:
-  #     - id: expn_matrix_mimat.txt
-  #     - id: expn_matrix_mimat_norm_txt
-  #     - id: expn_matrix_mimat_norm_log_txt
+  - id: mirna_expression_matrix_mimat
+    run: ../../tools/mirna_expression_matrix_mimat.cwl
+    in:
+      - id: mirbase_db
+        source: mirbase_db
+      - id: project_directory
+        source: project_directory
+      - id: species_code
+        source: species_code
+      - id: stats_mirna_txt
+        source: mirna_alignment_stats/miRNA_txt
+      - id: stats_crossmapped_txt
+        source: mirna_alignment_stats/crossmapped_txt
+    out:
+      - id: expn_matrix_mimat.txt
+      - id: expn_matrix_mimat_norm_txt
+      - id: expn_matrix_mimat_norm_log_txt
 
   # - id: mirna_graph_libs
   #   run: ../../tools/mirna_graphlibs.cwl
