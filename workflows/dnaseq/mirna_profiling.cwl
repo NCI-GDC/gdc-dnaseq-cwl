@@ -18,7 +18,7 @@ inputs:
     type: string
   - id: sort_expression
     type: string
-  - id: project_dir
+  - id: project_directory
     type: string
   - id: ucsc_database
     type: string
@@ -31,10 +31,12 @@ outputs:
 
 steps:
   - id: samtools_bamtosam
-    run:  ../../tools/samtools_bamtosam.cwl
+    run:  ../../tools/samtools_view.cwl
     in:
       - id: INPUT
         source: bam
+      - id: output_format
+        valueFrom: "SAM"
     out:
       - id: OUTPUT
 
@@ -56,8 +58,8 @@ steps:
     in:
       - id: INPUT
         source: mir_adapter_report/OUTPUT
-      - id: EXPRESSION
-        source: sort_expression
+      - id: key
+        valueFrom: "1n"
       - id: OUTFILE
         source: mir_adapter_report/OUTPUT
         valueFrom: $(self.basename)
@@ -70,13 +72,13 @@ steps:
       - id: sam
         source: samtools_bamtosam/OUTPUT
       - id: mirbase
-        valueFrom: mirbase
+        source: mirbase_db
       - id: ucsc_database
-        valueFrom: ucsc_database
+        source: ucsc_database
       - id: species_code
-        valueFrom: species_code
+        source: species_code
       - id: project_directory
-        valueFrom: project_dir
+        source: project_directory
     out:
       - id: output
 
@@ -88,7 +90,7 @@ steps:
       - id: sam
         source: mirna_annotate/output
       - id: project_directory
-        valueFrom: project_dir
+        source: project_directory
     out:
       - id: alignment_stats_csv
       - id: 3_UTR_txt
@@ -113,26 +115,28 @@ steps:
       - id: softclip_taglengths_csv
       - id: srpRNA_txt
 
-  # - id: mirna_tcga
-  #   run: ../..//tools/mirna_tcga.cwl
-  #   in:
-  #     - id: sam
-  #       source: mirna_annotate/output
-  #     - id: mirbase_db
-  #       valueFrom: mirbase
-  #     - id: species_code
-  #       valueFrom: species_code
-  #     - id: genome_version
-  #       valueFrom: ucsc_database
-  #     - id: stats_miRNA_txt
-  #       source: mirna_alignment_stats/miRNA_txt
-  #     - id: stats_crossmapped_txt
-  #       source: mirna_alignment_stats/crossmapped_txt
-  #     - id: stats_isoforms_txt
-  #       source: mirna_alignment_stats/isoforms_txt
-  #   out:
-  #     - id: isoform_quant
-  #     - id: mirna_quant
+  - id: mirna_tcga
+    run: ../../tools/mirna_tcga.cwl
+    in:
+      - id: genome_version
+        source: ucsc_database
+      - id: mirbase_db
+        source: mirbase_db
+      - id: project_directory
+        source: project_directory
+      - id: species_code
+        source: species_code
+      - id: sam
+        source: mirna_annotate/output
+      - id: stats_miRNA_txt
+        source: mirna_alignment_stats/miRNA_txt
+      - id: stats_crossmapped_txt
+        source: mirna_alignment_stats/crossmapped_txt
+      - id: stats_isoforms_txt
+        source: mirna_alignment_stats/isoforms_txt
+    out:
+      - id: isoforms_quant
+      - id: mirnas_quant
 
   # - id: mirna_expression_matrix
   #   run: ../../tools/mirna_expression_matrix.cwl
@@ -140,7 +144,7 @@ steps:
   #     - id: mirbase_db
   #       source: mirbase
   #     - id: project_db
-  #       source: project_dir
+  #       source: project_directory
   #     - id: species_code
   #       source: species_code
   #     - id: stats_mirna_species_txt

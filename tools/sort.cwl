@@ -18,10 +18,18 @@ inputs:
     inputBinding:
       position: 1
 
-  - id: EXPRESSION
+  - id: key
     type: string
     inputBinding:
-      position: 0
+      prefix: --key=
+      separate: false
+
+  - id: field-separator
+    type: string
+    default: " "
+    inputBinding:
+      prefix: --field-separator=
+      separate: false
 
   - id: OUTFILE
     type: string

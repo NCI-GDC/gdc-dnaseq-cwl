@@ -9,58 +9,68 @@ requirements:
     listing:
       - entryname: $(inputs.sam.basename)
         entry: $(inputs.sam)
-      - entryname: $(inputs.sam.nameroot)_features/miRNA.txt
+      - entryname: $(inputs.stats_miRNA_txt.basename)
         entry: $(inputs.stats_miRNA_txt)
-      - entryname: $(inputs.sam.nameroot)_features/crossmapped.txt
+      - entryname: $(inputs.stats_crossmapped_txt.basename)
         entry: $(inputs.stats_crossmapped_txt)
-      - entryname: $(inputs.sam.nameroot)_features/isoforms.txt
+      - entryname: $(inputs.stats_isoforms_txt.basename)
         entry: $(inputs.stats_isoforms_txt)
   - class: ShellCommandRequirement
 
 class: CommandLineTool
 
 inputs:
-  - id: sam
-    format: "edam:format_2573"
-    type: File
-    
-  - id: mirbase_db
-    type: string
-    default: "hg38"
-    inputBinding:
-      position: 90
-      prefix: -m
-      shellQuote: false
-
   - id: genome_version
     type: string
     default: "hg38"
     inputBinding:
-      position: 91
-      prefix: -u
+      position: 90
+      prefix: -g
       shellQuote: false
 
-  - id: species_code
+  - id: mirbase_db
     type: string
-    default: "hsa"
+    default: "hg38"
     inputBinding:
-      position: 92
-      prefix: -o
+      position: 91
+      prefix: -m
       shellQuote: false
 
   - id: project_directory
     type: string
     default: "."
     inputBinding:
-      position: 93
+      position: 92
       prefix: -p
       shellQuote: false
+
+  - id: species_code
+    type: string
+    default: "hsa"
+    inputBinding:
+      position: 93
+      prefix: -o
+      shellQuote: false
+
+  - id: sam
+    format: "edam:format_2573"
+    type: File
+    
+  - id: stats_miRNA_txt
+    type: File
+
+  - id: stats_crossmapped_txt
+    type: File
+
+  - id: stats_isoforms_txt
+    type: File
 
 outputs:
   - id: isoforms_quant
     type: File
     outputBinding:
       glob: $(inputs.sam.nameroot)_features/tcga/isoforms.txt
+
   - id: mirnas_quant
     type: File
     outputBinding:
