@@ -46,10 +46,12 @@ outputs:
     type: File
     outputBinding:
       glob: expn_matrix.txt
+
   - id: expn_matrix_norm_txt
     type: File
     outputBinding:
       glob: expn_matrix_norm.txt
+
   - id: expn_matrix_norm_log_txt
     type: File
     outputBinding:

@@ -138,21 +138,21 @@ steps:
       - id: isoforms_quant
       - id: mirnas_quant
 
-  # - id: mirna_expression_matrix
-  #   run: ../../tools/mirna_expression_matrix.cwl
-  #   in:
-  #     - id: mirbase_db
-  #       source: mirbase
-  #     - id: project_db
-  #       source: project_directory
-  #     - id: species_code
-  #       source: species_code
-  #     - id: stats_mirna_species_txt
-  #       source: mirna_alignment_stats/mirna_species_txt
-  #   out:
-  #     - id: expn_matrix_txt
-  #     - id: expn_matrix_norm_txt
-  #     - id: expn_matrix_norm_log_txt
+  - id: mirna_expression_matrix
+    run: ../../tools/mirna_expression_matrix.cwl
+    in:
+      - id: mirbase_db
+        source: mirbase_db
+      - id: project_db
+        source: project_directory
+      - id: species_code
+        source: species_code
+      - id: stats_mirna_species_txt
+        source: mirna_alignment_stats/mirna_species_txt
+    out:
+      - id: expn_matrix_txt
+      - id: expn_matrix_norm_txt
+      - id: expn_matrix_norm_log_txt
 
   # - id: mirna_expression_matrix_mimat
   #   run: ../../tools/mirna_expression_matrix_mimat.cwl
