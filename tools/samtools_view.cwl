@@ -16,12 +16,6 @@ inputs:
     inputBinding:
       position: 0
 
-  - id: include_header
-    type: boolean
-    default: false
-    inputBinding:
-      prefix: -h
-
   - id: output_format
     type: string
     default: "BAM"
@@ -39,11 +33,16 @@ outputs:
     format: "edam:format_2572"
     type: File
     outputBinding:
-      glob: $(inputs.INPUT.basename)
+      glob: |
+        ${
+          return inputs.INPUT.nameroot + "." + inputs.output_format.toLowerCase();
+        }
 
 arguments:
-  - valueFrom: $(inputs.INPUT.basename)
-    inputBinding:
-      prefix: -o
+  - valueFrom: |
+      ${
+        return inputs.INPUT.nameroot + "." + inputs.output_format.toLowerCase();
+      }
+    prefix: -o
 
 baseCommand: [/usr/local/bin/samtools, view]
