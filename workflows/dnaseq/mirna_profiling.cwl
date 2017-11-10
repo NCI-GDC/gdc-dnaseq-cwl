@@ -163,12 +163,12 @@ steps:
         source: project_directory
       - id: species_code
         source: species_code
-      - id: stats_mirna_txt
-        source: mirna_alignment_stats/miRNA_txt
       - id: stats_crossmapped_txt
         source: mirna_alignment_stats/crossmapped_txt
+      - id: stats_mirna_txt
+        source: mirna_alignment_stats/miRNA_txt
     out:
-      - id: expn_matrix_mimat.txt
+      - id: expn_matrix_mimat_txt
       - id: expn_matrix_mimat_norm_txt
       - id: expn_matrix_mimat_norm_log_txt
 

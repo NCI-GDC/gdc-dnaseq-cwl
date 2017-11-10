@@ -28,7 +28,7 @@ inputs:
     type: string
     default: "."
     inputBinding:
-      position: 93
+      position: 91
       prefix: -p
       shellQuote: false
 
@@ -47,18 +47,20 @@ inputs:
     type: File
 
 outputs:
-  - id: expn_matrix_txt
+  - id: expn_matrix_mimat_txt
     type: File
     outputBinding:
-      glob: expn_matrix.txt
-  - id: expn_matrix_norm_txt
+      glob: expn_matrix_mimat.txt
+
+  - id: expn_matrix_mimat_norm_txt
     type: File
     outputBinding:
-      glob: expn_matrix_norm.txt
-  - id: expn_matrix_norm_log_txt
+      glob: expn_matrix_mimat_norm.txt
+
+  - id: expn_matrix_mimat_norm_log_txt
     type: File
     outputBinding:
-      glob: expn_matrix_norm_log.txt
+      glob: expn_matrix_mimat_norm_log.txt
 
 arguments:
   - valueFrom: "chmod 1777 /tmp"
@@ -69,7 +71,7 @@ arguments:
     position: 1
     shellQuote: false
 
-  - valueFrom: "&& /root/mirna/v0.2.7/code/library_stats/expression_matrix_minmat.pl"
+  - valueFrom: "&& /root/mirna/v0.2.7/code/library_stats/expression_matrix_mimat.pl"
     position: 3
     shellQuote: false
 
