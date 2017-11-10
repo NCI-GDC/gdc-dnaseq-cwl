@@ -16,6 +16,24 @@ inputs:
     inputBinding:
       position: 0
 
+  - id: include_header
+    type: boolean
+    default: false
+    inputBinding:
+      prefix: -h
+
+  - id: output_format
+    type: string
+    default: "BAM"
+    inputBinding:
+      prefix: --output-fmt
+
+  - id: threads
+    type: long
+    default: 1
+    inputBinding:
+      prefix: --threads
+
 outputs:
   - id: OUTPUT
     format: "edam:format_2572"
@@ -23,6 +41,9 @@ outputs:
     outputBinding:
       glob: $(inputs.INPUT.basename)
 
-stdout: $(inputs.INPUT.basename)
+arguments:
+  - valueFrom: $(inputs.INPUT.basename)
+    inputBinding:
+      prefix: -o
 
-baseCommand: [/usr/local/bin/samtools, view, -h]
+baseCommand: [/usr/local/bin/samtools, view]

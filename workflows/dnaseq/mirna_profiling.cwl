@@ -4,12 +4,19 @@ cwlVersion: v1.0
 
 class: Workflow
 
+requirements:
+  - class: StepInputExpressionRequirement
+
 inputs:
+  - id: awk_expression
+    type: string
   - id: bam
     type: File
   - id: mirbase_db
     type: string
   - id: species_code
+    type: string
+  - id: sort_expression
     type: string
   - id: project_dir
     type: string
@@ -37,10 +44,10 @@ steps:
       - id: INPUT
         source: samtools_bamtosam/OUTPUT
       - id: EXPRESSION
-        valueFrom: "{arr[length($10)]+=1} END {for (i in arr) {print i\" \"arr[i]}}"
+        source: awk_expression
       - id: OUTFILE
         source: samtools_bamtosam/OUTPUT
-        valueFrom: $(self.nameroot)"_adapter.report"
+        valueFrom: $(self.nameroot)_adapter.report
     out:
       - id: OUTPUT
 
@@ -50,7 +57,7 @@ steps:
       - id: INPUT
         source: mir_adapter_report/OUTPUT
       - id: EXPRESSION
-        valueFrom: "-t \" \" -k1n"
+        source: sort_expression
       - id: OUTFILE
         source: mir_adapter_report/OUTPUT
         valueFrom: $(self.basename)
