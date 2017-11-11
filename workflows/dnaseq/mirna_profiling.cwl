@@ -22,7 +22,6 @@ inputs:
     type: string
   - id: ucsc_database
     type: string
-    
 
 outputs:
   - id: samtool_bamtosam_output
@@ -40,7 +39,7 @@ steps:
     out:
       - id: OUTPUT
 
-  - id: mir_adapter_report
+  - id: mirna_adapter_report
     run: ../../tools/awk.cwl
     in:
       - id: INPUT
@@ -53,15 +52,15 @@ steps:
     out:
       - id: OUTPUT
 
-  - id: mir_adapter_report_sorted
+  - id: mirna_adapter_report_sorted
     run: ../../tools/sort.cwl
     in:
       - id: INPUT
-        source: mir_adapter_report/OUTPUT
+        source: mirna_adapter_report/OUTPUT
       - id: key
         valueFrom: "1n"
       - id: OUTFILE
-        source: mir_adapter_report/OUTPUT
+        source: mirna_adapter_report/OUTPUT
         valueFrom: $(self.basename)
     out:
       - id: OUTPUT
@@ -86,7 +85,7 @@ steps:
     run: ../../tools/mirna_alignment_stats.cwl
     in:
       - id: adapter_report
-        source: mir_adapter_report_sorted/OUTPUT
+        source: mirna_adapter_report_sorted/OUTPUT
       - id: sam
         source: mirna_annotate/output
       - id: project_directory
@@ -172,32 +171,24 @@ steps:
       - id: expn_matrix_mimat_norm_txt
       - id: expn_matrix_mimat_norm_log_txt
 
-  # - id: mirna_graph_libs
-  #   run: ../../tools/mirna_graphlibs.cwl
-  #   in:
-  #     - id: sam
-        
-  #     - id: mir_graph.filtered_taglen
-  #       source: mir_alignment_stats.filtered_taglen
-  #     - id: mir_graph.softclip_taglen
-  #       source: mir_alignment_stats.softclip_taglen
-  #     - id: mir_graph.adapter_report
-  #       source: mir_adapter_report.adapter_report
-  #     - id: mir_graph.chastity_taglen
-  #       source: mir_alignment_stats.chastity_taglen
-  #     - id: mir_graph.alignment_stats
-  #       source: mir_alignment_stats.alignment_stats
-  #     - id: mir_graph.uuid
-  #       source: uuid
-  #     - id: mir_graph.barcode
-  #       source: barcode
-  #     - id: mir_graph.db_cred_s3url
-  #       source: db_cred_s3url
-  #     - id: mir_graph.s3cfg_path
-  #       source: s3cfg_path
-  #   out:
-  #     - id: tags_jpg
-  #     - id: softclip_jpg
-  #     - id: chastity_jpg
-  #     - id: adapter_jpg
-  #     - id: saturation_jpg
+  - id: mirna_graph_libs
+    run: ../../tools/mirna_graph_libs.cwl
+    in:
+      - id: sam
+        source: mirna_annotate/output
+      - id: adapter_report
+        source: mirna_adapter_report_sorted/OUTPUT
+      - id: alignment_stats_csv
+        source: mirna_alignment_stats/alignment_stats_csv
+      - id: chastity_taglengths_csv
+        source: mirna_alignment_stats/chastity_taglengths_csv
+      - id: filtered_taglengths_csv
+        source: mirna_alignment_stats/filtered_taglengths_csv
+      - id: softclip_taglengths_csv
+        source: mirna_alignment_stats/softclip_taglengths_csv
+    out:
+      - id: adapter_jpg
+      - id: chastity_jpg
+      - id: saturation_jpg
+      - id: softclip_jpg
+      - id: tags_jpg

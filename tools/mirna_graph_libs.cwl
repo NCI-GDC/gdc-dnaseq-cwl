@@ -7,17 +7,39 @@ requirements:
     dockerPull: quay.io/ncigdc/mirna-profiler:latest
   - class: InitialWorkDirRequirement
     listing:
-      - entryname: $(inputs.stats_mirna_species_txt.basename)
-        entry: $(inputs.stats_mirna_species_txt)
+      - entryname: $(inputs.sam.basename)
+        entry: $(inputs.sam)
+      - entryname: $(inputs.adapter_report.basename)
+        entry: $(inputs.adapter_report)
+      - entryname: $(inputs.alignment_stats_csv.basename)
+        entry: $(inputs.alignment_stats_csv)
+      - entryname: $(inputs.chastity_taglengths_csv.basename)
+        entry: $(inputs.chastity_taglengths_csv)
+      - entryname: $(inputs.filtered_taglengths_csv.basename)
+        entry: $(inputs.filtered_taglengths_csv)
+      - entryname: $(inputs.softclip_taglengths_csv.basename)
+        entry: $(inputs.softclip_taglengths_csv)
   - class: ShellCommandRequirement
 
 class: CommandLineTool
 
 inputs:
-  - id: stats_alignment_stats_csv
+  - id: sam
     type: File
 
-  - id: sam
+  - id: adapter_report
+    type: File
+
+  - id: alignment_stats_csv
+    type: File
+
+  - id: chastity_taglengths_csv
+    type: File
+
+  - id: filtered_taglengths_csv
+    type: File
+
+  - id: softclip_taglengths_csv
     type: File
 
   - id: project_directory
@@ -28,29 +50,30 @@ inputs:
       prefix: -p
       shellQuote: false
 
-  - id: species_code
-    type: string
-    default: "hsa"
-    inputBinding:
-      position: 92
-      prefix: -o
-      shellQuote: false
-
-  - id: stats_mirna_species_txt
-    type: File
-
 outputs:
-  - id: expn_matrix_txt
+  - id: adapter_jpg
     type: File
     outputBinding:
-      glob: expn_matrix.txt
-  - id: expn_matrix_norm_txt
+      glob: $(inputs.sam.nameroot)_features/adapter.jpg
+
+  - id: chastity_jpg
     type: File
     outputBinding:
-      glob: expn_matrix_norm.txt
-  - id: expn_matrix_norm_log_txt
+      glob: $(inputs.sam.nameroot)_features/chastity.jpg
+
+  - id: saturation_jpg
     type: File
     outputBinding:
-      glob: expn_matrix_norm_log.txt
+      glob: $(inputs.sam.nameroot)_features/saturation.jpg
+
+  - id: softclip_jpg
+    type: File
+    outputBinding:
+      glob: $(inputs.sam.nameroot)_features/softclip.jpg
+
+  - id: tags_jpg
+    type: File
+    outputBinding:
+      glob: $(inputs.sam.nameroot)_features/tags.jpg
 
 baseCommand: [/root/mirna/v0.2.7/code/library_stats/graph_libs.pl]
