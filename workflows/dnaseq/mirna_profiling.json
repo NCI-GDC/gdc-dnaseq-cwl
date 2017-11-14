@@ -1,0 +1,12 @@
+{
+    "awk_expression": "{arr[length($10)]+=1} END {for (i in arr) {print i\" \"arr[i]}}",
+    "bam" : {
+        "class": "File",
+        "path": "/mnt/scratch/e045df57-b8c4-4687-97bb-63b9f7a0357b/113075.bam"
+    },
+    "mirbase_db": "hg38",
+    "sort_expression": "-t \" \" -k1n",
+    "species_code": "hsa",
+    "project_directory": ".",
+    "ucsc_database": "hg38"
+}
