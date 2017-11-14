@@ -764,19 +764,17 @@ steps:
     run: mirna_profiling.cwl
     in:
       - id: awk_expression
-        source: mirna_awk_expression
+        valueFrom: "{arr[length($10)]+=1} END {for (i in arr) {print i\" \"arr[i]}}"
       - id: bam
         source: picard_markduplicates/OUTPUT
       - id: mirbase_db
-        source: mirbase_db
+        valueFrom: "hg38"
       - id: species_code
-        source: species_code
-      - id: sort_expression
-        source: mirna_source_expression
+        valueFrom: "hsa"
       - id: project_directory
         valueFrom: "."
       - id: ucsc_database
-        source: mirna_ucsc_database
+        valueFrom: "hg38"
     out:
       - id: mirna_tcga_isoforms_quant
       - id: mirna_tcga_mirnas_quant
