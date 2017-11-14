@@ -760,6 +760,27 @@ steps:
     out:
       - id: merge_sqlite_destination_sqlite
 
+  - id: mirna_profiling
+    run: mirna_profiling.cwl
+    in:
+      - id: awk_expression
+        source: mirna_awk_expression
+      - id: bam
+        source: picard_markduplicates/OUTPUT
+      - id: mirbase_db
+        source: mirbase_db
+      - id: species_code
+        source: species_code
+      - id: sort_expression
+        source: mirna_source_expression
+      - id: project_directory
+        valueFrom: "."
+      - id: ucsc_database
+        source: mirna_ucsc_database
+    out:
+      - id: mirna_tcga_isoforms_quant
+      - id: mirna_tcga_mirnas_quant
+        
   - id: integrity
     run: integrity.cwl
     in:
