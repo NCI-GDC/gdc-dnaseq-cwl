@@ -244,6 +244,28 @@ steps:
       - id: mirna_profiling_mirna_tcga_mirnas_quant
       - id: picard_markduplicates_output
 
+  - id: rename_isoforms_quant
+    run: ../../tools/rename.cwl
+    in:
+      - id: INPUT
+        source: transform/mirna_profiling_mirna_tcga_isoforms_quant
+      - id: OUTNAME
+        source: input_bam_gdc_id
+        valueFrom: $(self).mirbase21.isoforms.quantification.txt
+    out:
+      - id: OUTPUT
+
+  - id: rename_mirnas_quant
+    run: ../../tools/rename.cwl
+    in:
+      - id: INPUT
+        source: transform/mirna_profiling_mirna_tcga_mirnas_quant
+      - id: OUTNAME
+        source: input_bam_gdc_id
+        valueFrom: $(self).mirbase21.mirnas.quantification.txt
+    out:
+      - id: OUTPUT
+
   # - id: load_bam
   #   run: ../../tools/gdc_put_object.cwl
   #   in:
