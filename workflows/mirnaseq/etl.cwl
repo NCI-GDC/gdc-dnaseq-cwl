@@ -41,6 +41,17 @@ inputs:
   - id: task_uuid
     type: string
 
+  - id: aws_config
+    type: File
+  - id: aws_shared_credentials
+    type: File
+  - id: endpoint_json
+    type: File
+  - id: load_bucket
+    type: string
+  - id: s3cfg_section
+    type: string
+
 outputs:
   - id: token
     type: File
@@ -244,6 +255,14 @@ steps:
       - id: mirna_profiling_mirna_tcga_mirnas_quant
       - id: picard_markduplicates_output
 
+  - id: tar_mirna_profiling
+    run: ../../tools/tar.cwl
+    in:
+      - id: file
+        source: [
+          
+        ]
+        
   - id: rename_isoforms_quant
     run: ../../tools/rename.cwl
     in:
@@ -266,36 +285,72 @@ steps:
     out:
       - id: OUTPUT
 
-  # - id: load_bam
-  #   run: ../../tools/gdc_put_object.cwl
-  #   in:
-  #     - id: input
-  #       source: transform/picard_markduplicates_output
-  #     - id: uuid
-  #       source: uuid
-  #   out:
-  #     - id: output
+  - id: load_bam
+    run: ../../tools/aws_s3_put.cwl
+    in:
+      - id: aws_config
+        source: aws_config
+      - id: aws_shared_credentials
+        source: aws_shared_credentials
+      - id: endpoint_json
+        source: endpoint_json
+      - id: input
+        source: transform/picard_markduplicates_output
+      - id: s3cfg_section
+        source: s3cfg_section
+      - id: s3uri
+        source: load_bucket
+        valueFrom: $(self + "/" inputs.task_uuid + "/")
+      - id: task_uuid
+        source: task_uuid
+        valueFrom: $(null)
+    out:
+      - id: output
 
-  # - id: load_bai
-  #   run: ../../tools/gdc_put_object.cwl
-  #   in:
-  #     - id: input
-  #       source: transform/picard_markduplicates_output
-  #       valueFrom: $(self.secondaryFiles[0])
-  #     - id: uuid
-  #       source: uuid
-  #   out:
-  #     - id: output
+  - id: load_bai
+    run: ../../tools/aws_s3_put.cwl
+    in:
+      - id: aws_config
+        source: aws_config
+      - id: aws_shared_credentials
+        source: aws_shared_credentials
+      - id: endpoint_json
+        source: endpoint_json
+      - id: input
+        source: transform/picard_markduplicates_output
+        valueFrom: $(self.secondaryFiles[0])
+      - id: s3cfg_section
+        source: s3cfg_section
+      - id: s3uri
+        source: load_bucket
+        valueFrom: $(self + "/" inputs.task_uuid + "/")
+      - id: task_uuid
+        source: task_uuid
+        valueFrom: $(null)
+    out:
+      - id: output
 
-  # - id: load_sqlite
-  #   run: ../../tools/gdc_put_object.cwl
-  #   in:
-  #     - id: input
-  #       source: transform/merge_all_sqlite_destination_sqlite
-  #     - id: uuid
-  #       source: uuid
-  #   out:
-  #     - id: output
+  - id: load_sqlite
+    run: ../../tools/aws_s3_put.cwl
+    in:
+      - id: aws_config
+        source: aws_config
+      - id: aws_shared_credentials
+        source: aws_shared_credentials
+      - id: endpoint_json
+        source: endpoint_json
+      - id: input
+        source: transform/merge_all_sqlite_destination_sqlite
+      - id: s3cfg_section
+        source: s3cfg_section
+      - id: s3uri
+        source: load_bucket
+        valueFrom: $(self + "/" inputs.task_uuid + "/")
+      - id: task_uuid
+        source: task_uuid
+        valueFrom: $(null)
+    out:
+      - id: output
 
   # - id: generate_token
   #   run: ../../tools/generate_load_token.cwl
