@@ -9,8 +9,10 @@ requirements:
     listing:
       - entryname: $(inputs.sam.basename)
         entry: $(inputs.sam)
+        writable: true
       - entryname: $(inputs.adapter_report.basename)
         entry: $(inputs.adapter_report)
+        writable: true
 
 class: CommandLineTool
 

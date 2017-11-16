@@ -16,6 +16,12 @@ inputs:
     inputBinding:
       position: 0
 
+  - id: header_included
+    type: boolean
+    default: true
+    inputBinding:
+      prefix: -h
+
   - id: output_format
     type: string
     default: "BAM"
