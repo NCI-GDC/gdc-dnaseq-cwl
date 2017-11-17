@@ -53,6 +53,24 @@ inputs:
     type: string
 
 outputs:
+  - id: s3_bam_url
+    type: string
+    source: generate_s3_bam_url/output
+  - id: s3_bai_url
+    type: string
+    source: generate_s3_bai_url/output
+  - id: s3_mirna_profiling_tar_url
+    type: string
+    source: generate_s3_mirna_profiling_tar_url/output
+  - id: s3_mirna_profiling_isoforms_quant_url
+    type: string
+    source: generate_s3_mirna_profiling_isoforms_quant_url/output
+  - id: s3_mirna_profiling_mirnas_quant_url
+    type: string
+    source: generate_s3_mirna_profiling_mirnas_quant_url/output
+  - id: s3_sqlite_url
+    type: string
+    source: generate_s3_sqlite_url/output
   - id: token
     type: File
     outputSource: generate_token/token
@@ -255,13 +273,67 @@ steps:
       - id: mirna_profiling_mirna_tcga_mirnas_quant
       - id: picard_markduplicates_output
 
+  - id: tar_mirna_profiling_bed
+    run: ../../tools/tar.cwl
+    in:
+      - id: INPUT
+        source: transform/mirna_profiling_mirna_alignment_stats_bed
+      - id: file
+        valueFrom: "bed.tar"
+      - id: xz
+        valueFrom: false
+    out:
+      - id: OUTPUT
+      
   - id: tar_mirna_profiling
     run: ../../tools/tar.cwl
     in:
-      - id: file
+      - id: INPUT
         source: [
-          
+          transform/mirna_profiling_mirna_adapter_report_sorted_output,
+          transform/mirna_profiling_mirna_alignment_stats_alignment_stats_csv,
+          transform/mirna_profiling_mirna_alignment_stats_3_UTR_txt,
+          transform/mirna_profiling_mirna_alignment_stats_5_UTR_txt,
+          transform/mirna_profiling_mirna_alignment_stats_Coding_Exon_txt,
+          transform/mirna_profiling_mirna_alignment_stats_Intron_txt,
+          transform/mirna_profiling_mirna_alignment_stats_LINE_txt,
+          transform/mirna_profiling_mirna_alignment_stats_LTR_txt,
+          transform/mirna_profiling_mirna_alignment_stats_SINE_txt,
+          tar_mirna_profiling_bed/OUTPUT,
+          transform/mirna_profiling_mirna_alignment_stats_chastity_taglengths_csv,
+          transform/mirna_profiling_mirna_alignment_stats_crossmapped_txt,
+          transform/mirna_profiling_mirna_alignment_stats_filtered_taglengths_csv,
+          transform/mirna_profiling_mirna_alignment_stats_isoforms_txt,
+          transform/mirna_profiling_mirna_alignment_stats_miRNA_txt,
+          transform/mirna_profiling_mirna_alignment_stats_mirna_species_txt,
+          transform/mirna_profiling_mirna_alignment_stats_rmsk_DNA_txt,
+          transform/mirna_profiling_mirna_alignment_stats_rmsk_Simple_repeat_txt,
+          transform/mirna_profiling_mirna_alignment_stats_rmsk_Unknown_txt,
+          transform/mirna_profiling_mirna_alignment_stats_scRNA_txt,
+          transform/mirna_profiling_mirna_alignment_stats_snRNA_txt,
+          transform/mirna_profiling_mirna_alignment_stats_softclip_taglengths_csv,
+          transform/mirna_profiling_mirna_alignment_stats_srpRNA_txt,
+          transform/mirna_profiling_mirna_expression_matrix_expn_matrix_txt,
+          transform/mirna_profiling_mirna_expression_matrix_expn_matrix_norm_txt,
+          transform/mirna_profiling_mirna_expression_matrix_expn_matrix_norm_log_txt,
+          transform/mirna_profiling_mirna_expression_matrix_mimat_expn_matrix_mimat_txt,
+          transform/mirna_profiling_mirna_expression_matrix_mimat_expn_matrix_mimat_norm_txt,
+          transform/mirna_profiling_mirna_expression_matrix_mimat_expn_matrix_mimat_norm_log_txt,
+          transform/mirna_profiling_mirna_graph_libs_adapter_jpg,
+          transform/mirna_profiling_mirna_graph_libs_chastity_jpg,
+          transform/mirna_profiling_mirna_graph_libs_saturation_jpg,
+          transform/mirna_profiling_mirna_graph_libs_softclip_jpg,
+          transform/mirna_profiling_mirna_graph_libs_tags_jpg,
+          transform/mirna_profiling_mirna_tcga_isoforms_quant,
+          transform/mirna_profiling_mirna_tcga_mirnas_quant,
+          transform/mirna_profiling_mirna_tcga_isoforms_quant,
+          transform/mirna_profiling_mirna_tcga_mirnas_quant
         ]
+      - id: file
+        source: task_uuid
+        valueFrom: $(self)_mirna_profiling.tar.xz
+    out:
+      - id: OUTPUT
         
   - id: rename_isoforms_quant
     run: ../../tools/rename.cwl
@@ -352,22 +424,159 @@ steps:
     out:
       - id: output
 
-  # - id: generate_token
-  #   run: ../../tools/generate_load_token.cwl
-  #   in:
-  #     - id: load1
-  #       source: load_bam/output
-  #     - id: load2
-  #       source: load_bai/output
-  #     - id: load3
-  #       source: load_sqlite/output
-  #   out:
-  #     - id: token
+  - id: load_tar_mirna_profiling
+    run: ../../tools/aws_s3_put.cwl
+    in:
+      - id: aws_config
+        source: aws_config
+      - id: aws_shared_credentials
+        source: aws_shared_credentials
+      - id: endpoint_json
+        source: endpoint_json
+      - id: input
+        source: tar_mirna_profiling/OUTPUT
+      - id: s3cfg_section
+        source: s3cfg_section
+      - id: s3uri
+        source: load_bucket
+        valueFrom: $(self + "/" inputs.task_uuid + "/")
+      - id: task_uuid
+        source: task_uuid
+        valueFrom: $(null)
+    out:
+      - id: output
 
+  - id: load_mirna_profiling_isoforms_quant
+    run: ../../tools/aws_s3_put.cwl
+    in:
+      - id: aws_config
+        source: aws_config
+      - id: aws_shared_credentials
+        source: aws_shared_credentials
+      - id: endpoint_json
+        source: endpoint_json
+      - id: input
+        source: rename_isoforms_quant/OUTPUT
+      - id: s3cfg_section
+        source: s3cfg_section
+      - id: s3uri
+        source: load_bucket
+        valueFrom: $(self + "/" inputs.task_uuid + "/")
+      - id: task_uuid
+        source: task_uuid
+        valueFrom: $(null)
+    out:
+      - id: output
+
+  - id: load_mirna_profiling_mirnas_quant
+    run: ../../tools/aws_s3_put.cwl
+    in:
+      - id: aws_config
+        source: aws_config
+      - id: aws_shared_credentials
+        source: aws_shared_credentials
+      - id: endpoint_json
+        source: endpoint_json
+      - id: input
+        source: rename_mirnas_quant/OUTPUT
+      - id: s3cfg_section
+        source: s3cfg_section
+      - id: s3uri
+        source: load_bucket
+        valueFrom: $(self + "/" inputs.task_uuid + "/")
+      - id: task_uuid
+        source: task_uuid
+        valueFrom: $(null)
+    out:
+      - id: output
+
+  - id: generate_s3_bam_url
+    run: ../../tools/generate_s3load_path.cwl
+    in:
+      - id: load_bucket
+        source: load_bucket
+      - id: filename
+        source: transform/picard_markduplicates_output
+        valueFrom: $(self.basename)
+      - id: task_uuid
+        source: task_uuid
+    out:
+      - id: output
+
+  - id: generate_s3_bai_url
+    run: ../../tools/generate_s3load_path.cwl
+    in:
+      - id: load_bucket
+        source: load_bucket
+      - id: filename
+        source: transform/picard_markduplicates_output
+        valueFrom: $(self.secondaryFiles[0].basename)
+      - id: task_uuid
+        source: task_uuid
+    out:
+      - id: output
+
+  - id: generate_s3_mirna_profiling_tar_url
+    run: ../../tools/generate_s3load_path.cwl
+    in:
+      - id: load_bucket
+        source: load_bucket
+      - id: filename
+        source: task_uuid
+        valueFrom: $(self)_mirna_profiling.tar.xz
+      - id: task_uuid
+        source: task_uuid
+    out:
+      - id: output
+
+  - id: generate_s3_mirna_profiling_isoforms_quant_url
+    run: ../../tools/generate_s3load_path.cwl
+    in:
+      - id: load_bucket
+        source: load_bucket
+      - id: filename
+        source: input_bam_gdc_id
+        valueFrom: $(self).mirbase21.isoforms.quantification.txt
+      - id: task_uuid
+        source: task_uuid
+    out:
+      - id: output
+
+  - id: generate_s3_mirna_profiling_mirnas_quant_url
+    run: ../../tools/generate_s3load_path.cwl
+    in:
+      - id: load_bucket
+        source: load_bucket
+      - id: filename
+        source: input_bam_gdc_id
+        valueFrom: $(self).mirbase21.mirnas.quantification.txt
+      - id: task_uuid
+        source: task_uuid
+    out:
+      - id: output
+        
   - id: generate_token
     run: ../../tools/generate_load_token.cwl
     in:
       - id: load1
         source: transform/merge_all_sqlite_destination_sqlite
+    out:
+      - id: token
+
+  - id: generate_token
+    run: ../../tools/generate_load_token.cwl
+    in:
+      - id: load1
+        source: load_bam/output
+      - id: load2
+        source: load_bai/output
+      - id: load3
+        source: load_mirna_profiling_isoforms_quant/output
+      - id: load4
+        source: load_mirna_profiling_mirnas_quant/output
+      - id: load5
+        source: load_tar_mirna_profiling/output
+      - id: load6
+        source: load_sqlite/output
     out:
       - id: token

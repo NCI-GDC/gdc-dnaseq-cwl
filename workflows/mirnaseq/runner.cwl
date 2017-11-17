@@ -157,6 +157,18 @@ steps:
         source: reference_pac_gdc_id
       - id: reference_sa_gdc_id
         source: reference_sa_gdc_id
+      - id: s3_bam_url
+        valueFrom: "NULL"
+      - id: s3_bai_url
+        valueFrom: "NULL"
+      - id: s3_mirna_profiling_tar_url
+        valueFrom: "NULL"
+      - id: s3_mirna_profiling_isoforms_quant_url
+        valueFrom: "NULL"
+      - id: s3_mirna_profiling_mirnas_quant_url
+        valueFrom: "NULL"
+      - id: s3_sqlite_url
+        valueFrom: "NULL"
       - id: slurm_resource_cores
         source: slurm_resource_cores
       - id: slurm_resource_disk_gigabytes
@@ -210,6 +222,12 @@ steps:
       - id: task_uuid
         source: task_uuid
     out:
+      - id: s3_bam_url
+      - id: s3_bai_url
+      - id: s3_mirna_profiling_tar_url
+      - id: s3_mirna_profiling_isoforms_quant_url
+      - id: s3_mirna_profiling_mirnas_quant_url
+      - id: s3_sqlite_url
       - id: token
 
   - id: status_complete
@@ -265,6 +283,18 @@ steps:
         source: reference_pac_gdc_id
       - id: reference_sa_gdc_id
         source: reference_sa_gdc_id
+      - id: s3_bam_url
+        source: etl/s3_bam_url
+      - id: s3_bai_url
+        source: etl/s3_bai_url
+      - id: s3_mirna_profiling_tar_url
+        source: etl/s3_mirna_profiling_tar_url
+      - id: s3_mirna_profiling_isoforms_quant_url
+        source: etl/s3_mirna_profiling_isoforms_quant_url
+      - id: s3_mirna_profiling_mirnas_quant_url
+        source: etl/s3_mirna_profiling_mirnas_quant_url
+      - id: s3_sqlite_url
+        source: etl/s3_sqlite_url
       - id: slurm_resource_cores
         source: slurm_resource_cores
       - id: slurm_resource_disk_gigabytes
