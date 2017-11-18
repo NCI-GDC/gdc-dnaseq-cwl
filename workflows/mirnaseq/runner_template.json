@@ -32,5 +32,19 @@
     "slurm_resource_mem_mb": ${slurm_resource_mem_megabytes},
     "status_table": "${status_table}",
     "task_uuid": "$(tast_uuid)",
-    "thread_count": ${thread_count}
+    "thread_count": ${thread_count},
+    "aws_config", {
+        "class": "File",
+        "path": "${aws_config}"
+    },
+    "aws_shared_credentials", {
+        "class": "File",
+        "path": "${aws_shared_credentials}"
+    },
+    "endpoint_json", {
+        "class": "File",
+        "path": "${endpoint_json}"
+    },
+    "load_bucket": "${load_bucket}",
+    "s3cfg_section": "${s3cfg_section}"
 }

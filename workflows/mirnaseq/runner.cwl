@@ -67,6 +67,17 @@ inputs:
   - id: thread_count
     type: long
 
+  - id: aws_config
+    type: File
+  - id: aws_shared_credentials
+    type: File
+  - id: endpoint_json
+    type: File
+  - id: load_bucket
+    type: string
+  - id: s3cfg_section
+    type: string
+
 outputs:
   - id: token
     type: File
