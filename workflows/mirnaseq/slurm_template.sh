@@ -17,8 +17,8 @@ CWL_WORKFLOW_REL_PATH=${xx_cwl_workflow_rel_path_xx}
 CWL_TASK_GIT_REPO=${xx_cwl_task_git_repo_xx}
 CWL_TASK_GIT_BRANCH=${xx_cwl_task_git_branch_xx}
 CWL_TASK_REL_PATH=${xx_cwl_task_rel_path_xx}
-CLONE_TASK_DIR=repos/task
-CLONE_WORKFLOW_DIR=repos/workflow
+TASK_DIR=repos/task
+WORKFLOW_DIR=repos/workflow
 
 
 function activate_virtualenv()
@@ -68,14 +68,14 @@ function main()
     local task_uuid=${TASK_UUID}
     local scratch_dir=${SCRATCH_DIR}
 
-    local task_dir=${scratch_dir}/${task_uuid}/
-    local clone_task_dir=${task_dir}/${CLONE_TASK_DIR}
-    local clone_workflow_dir=${task_dir}/${CLONE_WORKFLOW_DIR}
-    local task_path=${clone_task_dir}/${cwl_task_rel_path}
-    local workflow_path=${clone_workflow_dir}/${cwl_workflow_rel_path}
+    local work_dir=${scratch_dir}/${task_uuid}/
+    local workflow_dir=${work_dir}/${CLONE_WORKFLOW_DIR}
+    local workflow_path=${workflow_dir}/${cwl_workflow_rel_path}
+    local task_dir=${work_dir}/${TASK_DIR}
+    local task_path=${task_dir}/${cwl_task_rel_path}
 
-    get_workflow ${clone_workflow_dir}  ${cwl_workflow_git_repo} ${cwl_workflow_git_hash}
-    get_task ${clone_task_dir} ${cwl_task_git_repo} ${cwl_task_git_branch}
+    git_clone ${clone_workflow_dir}  ${cwl_workflow_git_repo} ${cwl_workflow_git_hash}
+    git_clone ${clone_task_dir} ${cwl_task_git_repo} ${cwl_task_git_branch}
     runner ${task_dir} ${task_path} ${workflow_path}
     if [ $? -ne 0 ]
     then
