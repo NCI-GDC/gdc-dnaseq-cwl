@@ -33,15 +33,15 @@
     "status_table": "${status_table}",
     "task_uuid": "$(tast_uuid)",
     "thread_count": 0,
-    "aws_config", {
+    "aws_config": {
         "class": "File",
         "path": "${aws_config}"
     },
-    "aws_shared_credentials", {
+    "aws_shared_credentials": {
         "class": "File",
         "path": "${aws_shared_credentials}"
     },
-    "endpoint_json", {
+    "endpoint_json": {
         "class": "File",
         "path": "${endpoint_json}"
     },
