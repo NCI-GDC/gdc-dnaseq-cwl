@@ -15,7 +15,7 @@
         "path": "${gdc_token}"
     },
     "input_bam_gdc_id": "${input_bam_gdc_id}",
-    "input_bam_file_size": ${input_bam_file_size},
+    "input_bam_file_size": 0,
     "input_bam_md5sum": "${input_bam_md5sum}",
     "known_snp_gdc_id": "${known_snp_gdc_id}",
     "known_snp_index_gdc_id": "${known_snp_index_gdc_id}",
@@ -27,12 +27,12 @@
     "reference_fai_gdc_id": "${reference_fai_gdc_id}",
     "reference_pac_gdc_id": "${reference_pac_gdc_id}",
     "reference_sa_gdc_id": "${reference_sa_gdc_id}",
-    "slurm_resource_cores": ${slurm_resource_cores},
-    "slurm_resource_disk_gb": ${slurm_resource_disk_gigabytes},
-    "slurm_resource_mem_mb": ${slurm_resource_mem_megabytes},
+    "slurm_resource_cores": 0,
+    "slurm_resource_disk_gb": 0,
+    "slurm_resource_mem_mb": 0,
     "status_table": "${status_table}",
     "task_uuid": "$(tast_uuid)",
-    "thread_count": ${thread_count},
+    "thread_count": 0,
     "aws_config", {
         "class": "File",
         "path": "${aws_config}"
