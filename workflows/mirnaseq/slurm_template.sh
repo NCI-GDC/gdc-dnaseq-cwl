@@ -20,7 +20,6 @@ CWL_TASK_REL_PATH=${xx_cwl_task_rel_path_xx}
 TASK_DIR=repos/task
 WORKFLOW_DIR=repos/workflow
 
-
 function activate_virtualenv()
 {
     local virtualenv_name=${1}
