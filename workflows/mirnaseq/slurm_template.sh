@@ -72,13 +72,16 @@ function main()
     local scratch_dir=${SCRATCH_DIR}
 
     local work_dir=${scratch_dir}/${task_uuid}/
-    local workflow_dir=${work_dir}/${CLONE_WORKFLOW_DIR}
+    local task_workflow_dir=${work_dir}/${WORKFLOW_DIR}
     local workflow_path=${workflow_dir}/${cwl_workflow_rel_path}
     local task_dir=${work_dir}/${TASK_DIR}
-    local task_path=${task_dir}/${cwl_task_rel_path}
+    local task_task_path=${task_dir}/${cwl_task_rel_path}
 
-    git_clone ${workflow_dir} ${cwl_workflow_git_hash} ${cwl_workflow_git_repo}
-    git_clone ${task_dir} ${cwl_task_git_branch} ${cwl_task_git_repo}
+    mkdir -p ${task_workflow_dir}
+    mkdir -p ${task_task_dir}
+
+    git_clone ${task_workflow_dir} ${cwl_workflow_git_hash} ${cwl_workflow_git_repo}
+    git_clone ${task_task_dir} ${cwl_task_git_branch} ${cwl_task_git_repo}
     runner ${task_dir} ${task_path} ${workflow_path}
     if [ $? -ne 0 ]
     then
