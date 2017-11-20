@@ -10,19 +10,19 @@ requirements:
   - class: StepInputExpressionRequirement
 
 inputs:
-  - id: cwl_runner_repo
+  - id: cwl_workflow_git_hash
     type: string
-  - id: cwl_runner_repo_hash
+  - id: cwl_workflow_git_repo
     type: string
-  - id: cwl_runner_url
+  - id: cwl_workflow_rel_path
     type: string
-  - id: cwl_runner_task_branch
+  - id: cwl_task_git_branch
     type: string
-  - id: cwl_runner_task_url
+  - id: cwl_task_git_hash
     type: string
-  - id: cwl_runner_task_repo
+  - id: cwl_task_git_repo
     type: string
-  - id: cwl_runner_task_repo_hash
+  - id: cwl_task_rel_path
     type: string
   - id: db_cred
     type: File
@@ -98,13 +98,13 @@ steps:
     in:
       - id: string_keys
         default: [
-          "cwl_runner_repo",
-          "cwl_runner_repo_hash",
-          "cwl_runner_url",
-          "cwl_runner_task_branch",
-          "cwl_runner_task_repo",
-          "cwl_runner_task_repo_hash",
-          "cwl_runner_task_url",
+          "cwl_workflow_git_hash",
+          "cwl_workflow_git_repo",
+          "cwl_workflow_rel_path",
+          "cwl_task_git_branch",
+          "cwl_task_git_hash",
+          "cwl_task_git_repo",
+          "cwl_task_rel_path",
           "hostname",
           "host_ipaddress",
           "host_macaddress",
@@ -130,13 +130,13 @@ steps:
         ]
       - id: string_values
         source: [
-          cwl_runner_repo,
-          cwl_runner_repo_hash,
-          cwl_runner_url,
-          cwl_runner_task_branch,
-          cwl_runner_task_repo,
-          cwl_runner_task_repo_hash,
-          cwl_runner_task_url,
+          cwl_workflow_git_hash,
+          cwl_workflow_git_repo,
+          cwl_workflow_rel_path,
+          cwl_task_git_branch,
+          cwl_task_git_hash,
+          cwl_task_git_repo,
+          cwl_task_rel_path,
           hostname,
           host_ipaddress,
           host_macaddress,

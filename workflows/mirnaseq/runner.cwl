@@ -10,17 +10,17 @@ requirements:
   - class: SubworkflowFeatureRequirement
 
 inputs:
-  - id: cwl_runner_repo
+  - id: cwl_workflow_git_hash
     type: string
-  - id: cwl_runner_repo_hash
+  - id: cwl_workflow_git_repo
     type: string
-  - id: cwl_runner_url
+  - id: cwl_workflow_rel_path
     type: string
-  - id: cwl_runner_task_branch
+  - id: cwl_task_git_branch
     type: string
-  - id: cwl_runner_task_repo
+  - id: cwl_task_git_repo
     type: string
-  - id: cwl_runner_task_url
+  - id: cwl_task_rel_path
     type: string
   - id: db_cred
     type: File
@@ -109,29 +109,29 @@ steps:
     run: ../../tools/emit_git_hash.cwl
     in:
       - id: repo
-        source: cwl_runner_task_repo
+        source: cwl_task_git_repo
       - id: branch
-        source: cwl_runner_task_branch
+        source: cwl_task_git_branch
     out:
       - id: output
 
   - id: status_running
     run: status_postgres.cwl
     in:
-      - id: cwl_runner_repo
-        source: cwl_runner_repo
-      - id: cwl_runner_repo_hash
-        source: cwl_runner_repo_hash
-      - id: cwl_runner_url
-        source: cwl_runner_url
-      - id: cwl_runner_task_branch
-        source: cwl_runner_task_branch
-      - id: cwl_runner_task_url
-        source: cwl_runner_task_url
-      - id: cwl_runner_task_repo
-        source: cwl_runner_task_repo
-      - id: cwl_runner_task_repo_hash
-        source: get_cwl_runner_task_repo_hash/output
+      - id: cwl_workflow_git_hash
+        source: cwl_runner_git_hash
+      - id: cwl_workflow_git_repo
+        source: cwl_workflow_git_repo
+      - id: cwl_workflow_rel_path
+        source: cwl_workflow_rel_path
+      - id: cwl_task_git_branch
+        source: cwl_task_git_branch
+      - id: cwl_task_git_hash
+        source: get_cwl_task_repo_hash/output
+      - id: cwl_task_git_repo
+        source: cwl_task_git_repo
+      - id: cwl_task_rel_path
+        source: cwl_task_rel_path
       - id: db_cred
         source: db_cred
       - id: db_cred_section
@@ -244,20 +244,20 @@ steps:
   - id: status_complete
     run: status_postgres.cwl
     in:
-      - id: cwl_runner_repo
-        source: cwl_runner_repo
-      - id: cwl_runner_repo_hash
-        source: cwl_runner_repo_hash
-      - id: cwl_runner_url
-        source: cwl_runner_url
-      - id: cwl_runner_task_branch
-        source: cwl_runner_task_branch
-      - id: cwl_runner_task_url
-        source: cwl_runner_task_url
-      - id: cwl_runner_task_repo
-        source: cwl_runner_task_repo
-      - id: cwl_runner_task_repo_hash
-        source: get_cwl_runner_task_repo_hash/output
+      - id: cwl_workflow_git_hash
+        source: cwl_runner_git_hash
+      - id: cwl_workflow_git_repo
+        source: cwl_workflow_git_repo
+      - id: cwl_workflow_rel_path
+        source: cwl_workflow_rel_path
+      - id: cwl_task_git_branch
+        source: cwl_task_git_branch
+      - id: cwl_task_git_hash
+        source: get_cwl_task_repo_hash/output
+      - id: cwl_task_git_repo
+        source: cwl_task_git_repo
+      - id: cwl_task_rel_path
+        source: cwl_task_rel_path
       - id: db_cred
         source: db_cred
       - id: db_cred_section

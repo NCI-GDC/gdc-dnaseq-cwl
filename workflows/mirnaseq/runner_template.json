@@ -1,10 +1,8 @@
 {
-    "cwl_runner_branch": "${cwl_runner_branch}",
-    "cwl_runner_repo_hash": "${cwl_runner_repo_hash}",
-    "cwl_runner_url": "${cwl_runner_url}",
-    "cwl_runner_task_branch": "${cwl_runner_task_branch}",
-    "cwl_runner_task_repo": "${cwl_runner_task_repo}",
-    "cwl_runner_task_url": "${cwl_runner_task_url}",
+    "cwl_workflow_git_repo": "${cwl_runner_branch}",
+    "cwl_workflow_git_hash": "${cwl_runner_repo_hash}",
+    "cwl_task_git_branch": "${cwl_runner_task_branch}",
+    "cwl_task_git_repo": "${cwl_runner_task_repo}",
     "db_cred": {
         "class": "File",
         "path": "${db_cred}"
