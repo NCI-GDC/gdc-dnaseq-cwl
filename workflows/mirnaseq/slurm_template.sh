@@ -35,13 +35,14 @@ function git_clone()
     local git_repo=${3}
 
     local repo=$(basename ${git_repo})
-    local repo_dir=${clone_dir}/"${git_repo%.*}"
+    local repo_dir=${clone_dir}/${repo}
     local prev_dir=$(pwd)
 
     export http_proxy=http://cloud-proxy:3128
     export https_proxy=http://cloud-proxy:3128
     cd ${clone_dir}
     git clone ${git_repo}
+    mkdir -p ${repo_dir}
     cd ${repo_dir}
     git checkout ${git_branch}
     cd ${prev_dir}
@@ -71,7 +72,7 @@ function main()
     local task_uuid=${TASK_UUID}
     local scratch_dir=${SCRATCH_DIR}
 
-    local work_dir=${scratch_dir}/${task_uuid}/
+    local work_dir=${scratch_dir}/${task_uuid}
     local workflow_dir=${work_dir}/${WORKFLOW_DIR}
     local workflow_path=${workflow_dir}/${cwl_workflow_rel_path}
     local task_dir=${work_dir}/${TASK_DIR}
