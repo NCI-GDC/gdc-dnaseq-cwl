@@ -35,7 +35,7 @@ function git_clone()
     local git_repo=${3}
 
     local repo=$(basename ${git_repo})
-    local repo_dir=${clone_dir}/"${repo%.*}"
+    local repo_dir=${clone_dir}/"${git_repo%.*}"
     local prev_dir=$(pwd)
 
     cd ${clone_dir}
