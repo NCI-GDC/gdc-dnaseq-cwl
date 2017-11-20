@@ -38,11 +38,15 @@ function git_clone()
     local repo_dir=${clone_dir}/"${git_repo%.*}"
     local prev_dir=$(pwd)
 
+    export http_proxy=http://cloud-proxy:3128
+    export https_proxy=http://cloud-proxy:3128
     cd ${clone_dir}
     git clone ${git_repo}
     cd ${repo_dir}
     git checkout ${git_branch}
     cd ${prev_dir}
+    unset http_proxy
+    unset https_proxy
 }
 
 function runner()
