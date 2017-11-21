@@ -104,7 +104,7 @@ function main()
         rm -rf ${task_dir}
         exit 1
     fi
-    rm -rf ${task_dir}
+    #rm -rf ${work_dir}
     
 }
 
