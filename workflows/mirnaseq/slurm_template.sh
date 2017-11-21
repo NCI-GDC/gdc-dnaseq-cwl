@@ -6,17 +6,15 @@
 #SBATCH --mem=${xx_slurm_resource_mem_megabytes_xx}
 #SBATCH --gres=SCRATCH:${xx_slurm_resource_disk_gigabytes_xx}
 
-##ENV VARIABLE
-SCRATCH_DIR=${xx_scratch_dir_xx}
-
-##TASK VARIABLE
-TASK_UUID=${xx_task_uuid_xx}
 CWL_WORKFLOW_GIT_REPO=${xx_cwl_workflow_git_repo_xx}
 CWL_WORKFLOW_GIT_HASH=${xx_cwl_workflow_git_hash_xx}
 CWL_WORKFLOW_REL_PATH=${xx_cwl_workflow_rel_path_xx}
 CWL_TASK_GIT_REPO=${xx_cwl_task_git_repo_xx}
 CWL_TASK_GIT_BRANCH=${xx_cwl_task_git_branch_xx}
 CWL_TASK_REL_PATH=${xx_cwl_task_rel_path_xx}
+SCRATCH_DIR=${xx_scratch_dir_xx}
+TASK_UUID=${xx_task_uuid_xx}
+VIRTUALENV_NAME=${xx_virtualenv_name_xx}
 TASK_DIR=repo/task
 WORKFLOW_DIR=repo/workflow
 
@@ -83,6 +81,7 @@ function main()
     local cwl_task_rel_path=${CWL_TASK_REL_PATH}
     local task_uuid=${TASK_UUID}
     local scratch_dir=${SCRATCH_DIR}
+    local virtualenv_name=${VIRTUALENV_NAME}
 
     local work_dir=${scratch_dir}/${task_uuid}
     local workflow_dir=${work_dir}/${WORKFLOW_DIR}
@@ -97,6 +96,7 @@ function main()
 
     git_clone ${workflow_dir} ${cwl_workflow_git_hash} ${cwl_workflow_git_repo}
     git_clone ${task_dir} ${cwl_task_git_branch} ${cwl_task_git_repo}
+    activate_virtualenv ${virtualenv_name}
     runner ${task_dir} ${task_path} ${workflow_path}
     if [ $? -ne 0 ]
     then
