@@ -105,7 +105,6 @@ function main()
         exit 1
     fi
     #rm -rf ${work_dir}
-    
 }
 
 main "$@"
