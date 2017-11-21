@@ -54,7 +54,7 @@ function git_clone()
 
     echo cd ${repo_dir}
     cd ${repo_dir}
-    ech git checkout ${git_branch}
+    echo git checkout ${git_branch}
     git checkout ${git_branch}
     echo cd ${prev_dir}
     cd ${prev_dir}
@@ -90,7 +90,9 @@ function main()
     local task_dir=${work_dir}/${TASK_DIR}
     local task_path=${task_dir}/${cwl_task_rel_path}
 
+    echo mkdir -p ${workflow_dir}
     mkdir -p ${workflow_dir}
+    echo mkdir -p ${task_dir}
     mkdir -p ${task_dir}
 
     git_clone ${workflow_dir} ${cwl_workflow_git_hash} ${cwl_workflow_git_repo}
