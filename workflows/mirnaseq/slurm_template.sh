@@ -36,25 +36,12 @@ function git_clone()
     local repo_dir=${clone_dir}/${repo}
     local prev_dir=$(pwd)
 
-    echo clone_dir=${clone_dir}
-    echo git_branch=${git_branch}
-    echo git_repo=${git_repo}
-    echo repo=${repo}
-    echo repo_dir=${repo_dir}
-    echo prev_dir=${prev_dir}
-    
     export http_proxy=http://cloud-proxy:3128
     export https_proxy=http://cloud-proxy:3128
-    echo cd ${clone_dir}
     cd ${clone_dir}
-    echo git clone ${git_repo}
     git clone ${git_repo}
-
-    echo cd ${repo_dir}
     cd ${repo_dir}
-    echo git checkout ${git_branch}
     git checkout ${git_branch}
-    echo cd ${prev_dir}
     cd ${prev_dir}
     unset http_proxy
     unset https_proxy
@@ -62,13 +49,19 @@ function git_clone()
 
 function runner()
 {
-    local cache_dir=${1}
-    local job_dir=${2}
-    local task_path=${3}
-    local tmp_dir=${4}
-    local workflow_path=${5}
+    local task_path=${1}
+    local workflow_path=${2}
+    local work_dir=${3}
 
-    cwltool  --debug --rm-tmpdir --rm-container --tmp-outdir-prefix ${cache_dir} --tmpdir-prefix ${tmp_dir} --custom-net bridge --outdir ${job_dir} ${workflow_path} ${task_path}
+    local prev_dir=$(pwd)
+    cd ${work_dir}
+    local cache_dir=cache
+    local tmp_dir=tmp
+    mkdir ${cache_dir}
+    mkdir ${tmp_dir}
+ 
+    cwltool  --debug --rm-tmpdir --rm-container --tmp-outdir-prefix ${cache_dir} --tmpdir-prefix ${tmp_dir} --custom-net bridge --outdir ${work_dir} ${workflow_path} ${task_path}
+    cd ${prev_dir}
 }
 
 function main()
@@ -97,7 +90,7 @@ function main()
     git_clone ${workflow_dir} ${cwl_workflow_git_hash} ${cwl_workflow_git_repo}
     git_clone ${task_dir} ${cwl_task_git_branch} ${cwl_task_git_repo}
     activate_virtualenv ${virtualenv_name}
-    runner ${task_dir} ${task_path} ${workflow_path}
+    runner ${task_path} ${workflow_path} ${work_dir}
     if [ $? -ne 0 ]
     then
         echo FAIL_RUNNER
