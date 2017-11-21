@@ -171,39 +171,39 @@ steps:
       - id: log
       - id: sqlite
 
-  # - id: picard_collectoxogmetrics
-  #   run: ../../tools/picard_collectoxogmetrics.cwl
-  #   in:
-  #     - id: DB_SNP
-  #       source: known_snp
-  #     - id: INPUT
-  #       source: bam
-  #     - id: REFERENCE_SEQUENCE
-  #       source: fasta
-  #   out:
-  #     - id: OUTPUT
+  - id: picard_collectoxogmetrics
+    run: ../../tools/picard_collectoxogmetrics.cwl
+    in:
+      - id: DB_SNP
+        source: known_snp
+      - id: INPUT
+        source: bam
+      - id: REFERENCE_SEQUENCE
+        source: fasta
+    out:
+      - id: OUTPUT
 
-  # - id: picard_collectoxogmetrics_to_sqlite
-  #   run: ../../tools/picard_collectoxogmetrics_to_sqlite.cwl
-  #   in:
-  #     - id: bam
-  #       source: bam
-  #       valueFrom: $(self.basename)
-  #     - id: fasta
-  #       source: fasta
-  #       valueFrom: $(self.basename)
-  #     - id: input_state
-  #       source: input_state
-  #     - id: metric_path
-  #       source: picard_collectoxogmetrics/OUTPUT
-  #     - id: task_uuid
-  #       source: task_uuid
-  #     - id: vcf
-  #       source: known_snp
-  #       valueFrom: $(self.basename)
-  #   out:
-  #     - id: log
-  #     - id: sqlite
+  - id: picard_collectoxogmetrics_to_sqlite
+    run: ../../tools/picard_collectoxogmetrics_to_sqlite.cwl
+    in:
+      - id: bam
+        source: bam
+        valueFrom: $(self.basename)
+      - id: fasta
+        source: fasta
+        valueFrom: $(self.basename)
+      - id: input_state
+        source: input_state
+      - id: metric_path
+        source: picard_collectoxogmetrics/OUTPUT
+      - id: task_uuid
+        source: task_uuid
+      - id: vcf
+        source: known_snp
+        valueFrom: $(self.basename)
+    out:
+      - id: log
+      - id: sqlite
 
   - id: picard_collectwgsmetrics
     run: ../../tools/picard_collectwgsmetrics.cwl
@@ -310,7 +310,7 @@ steps:
         source: [
 #          picard_collecthsmetrics_to_sqlite/sqlite,
           picard_collectmultiplemetrics_to_sqlite/sqlite,
-#          picard_collectoxogmetrics_to_sqlite/sqlite,
+          picard_collectoxogmetrics_to_sqlite/sqlite,
           picard_collectwgsmetrics_to_sqlite/sqlite,
           samtools_flagstat_to_sqlite/sqlite,
           samtools_idxstats_to_sqlite/sqlite,
