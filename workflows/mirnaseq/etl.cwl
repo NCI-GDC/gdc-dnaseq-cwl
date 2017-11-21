@@ -55,22 +55,22 @@ inputs:
 outputs:
   - id: s3_bam_url
     type: string
-    source: generate_s3_bam_url/output
+    outputSource: generate_s3_bam_url/output
   - id: s3_bai_url
     type: string
-    source: generate_s3_bai_url/output
+    outputSource: generate_s3_bai_url/output
   - id: s3_mirna_profiling_tar_url
     type: string
-    source: generate_s3_mirna_profiling_tar_url/output
+    outputSource: generate_s3_mirna_profiling_tar_url/output
   - id: s3_mirna_profiling_isoforms_quant_url
     type: string
-    source: generate_s3_mirna_profiling_isoforms_quant_url/output
+    outputSource: generate_s3_mirna_profiling_isoforms_quant_url/output
   - id: s3_mirna_profiling_mirnas_quant_url
     type: string
-    source: generate_s3_mirna_profiling_mirnas_quant_url/output
+    outpuSource: generate_s3_mirna_profiling_mirnas_quant_url/output
   - id: s3_sqlite_url
     type: string
-    source: generate_s3_sqlite_url/output
+    outputSource: generate_s3_sqlite_url/output
   - id: token
     type: File
     outputSource: generate_token/token
