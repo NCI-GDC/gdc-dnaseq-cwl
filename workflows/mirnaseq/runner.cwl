@@ -105,7 +105,7 @@ steps:
     out:
       - id: output
 
-  - id: get_cwl_runner_task_repo_hash
+  - id: get_cwl_task_repo_hash
     run: ../../tools/emit_git_hash.cwl
     in:
       - id: repo
@@ -119,7 +119,7 @@ steps:
     run: status_postgres.cwl
     in:
       - id: cwl_workflow_git_hash
-        source: cwl_runner_git_hash
+        source: cwl_workflow_git_hash
       - id: cwl_workflow_git_repo
         source: cwl_workflow_git_repo
       - id: cwl_workflow_rel_path
@@ -245,7 +245,7 @@ steps:
     run: status_postgres.cwl
     in:
       - id: cwl_workflow_git_hash
-        source: cwl_runner_git_hash
+        source: cwl_workflow_git_hash
       - id: cwl_workflow_git_repo
         source: cwl_workflow_git_repo
       - id: cwl_workflow_rel_path

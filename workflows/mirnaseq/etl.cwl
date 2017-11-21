@@ -269,8 +269,6 @@ steps:
       - id: mirna_profiling_mirna_graph_libs_tags_jpg
       - id: mirna_profiling_mirna_tcga_isoforms_quant
       - id: mirna_profiling_mirna_tcga_mirnas_quant
-      - id: mirna_profiling_mirna_tcga_isoforms_quant
-      - id: mirna_profiling_mirna_tcga_mirnas_quant
       - id: picard_markduplicates_output
 
   - id: tar_mirna_profiling_bed
@@ -324,8 +322,6 @@ steps:
           transform/mirna_profiling_mirna_graph_libs_saturation_jpg,
           transform/mirna_profiling_mirna_graph_libs_softclip_jpg,
           transform/mirna_profiling_mirna_graph_libs_tags_jpg,
-          transform/mirna_profiling_mirna_tcga_isoforms_quant,
-          transform/mirna_profiling_mirna_tcga_mirnas_quant,
           transform/mirna_profiling_mirna_tcga_isoforms_quant,
           transform/mirna_profiling_mirna_tcga_mirnas_quant
         ]
@@ -554,14 +550,19 @@ steps:
         source: task_uuid
     out:
       - id: output
-        
-  - id: generate_token
-    run: ../../tools/generate_load_token.cwl
+
+  - id: generate_s3_sqlite_url
+    run: ../../tools/generate_s3load_path.cwl
     in:
-      - id: load1
+      - id: load_bucket
+        source: load_bucket
+      - id: filename
         source: transform/merge_all_sqlite_destination_sqlite
+        valueFrom: $(self.basename)
+      - id: task_uuid
+        source: task_uuid
     out:
-      - id: token
+      - id: output
 
   - id: generate_token
     run: ../../tools/generate_load_token.cwl

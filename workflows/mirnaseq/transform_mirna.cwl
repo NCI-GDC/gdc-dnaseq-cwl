@@ -140,12 +140,6 @@ outputs:
   - id: mirna_profiling_mirna_tcga_mirnas_quant
     type: File
     outputSource: mirna_profiling/mirna_tcga_mirnas_quant
-  - id: mirna_profiling_mirna_tcga_isoforms_quant
-    type: File
-    outputSource: mirna_profiling/mirna_tcga_isoforms_quant
-  - id: mirna_profiling_mirna_tcga_mirnas_quant
-    type: File
-    outputSource: mirna_profiling/mirna_tcga_mirnas_quant
 
 steps:
   - id: samtools_bamtobam
@@ -926,8 +920,6 @@ steps:
       - id: mirna_graph_libs_saturation_jpg
       - id: mirna_graph_libs_softclip_jpg
       - id: mirna_graph_libs_tags_jpg
-      - id: mirna_tcga_isoforms_quant
-      - id: mirna_tcga_mirnas_quant
       - id: mirna_tcga_isoforms_quant
       - id: mirna_tcga_mirnas_quant
         
