@@ -38,13 +38,25 @@ function git_clone()
     local repo_dir=${clone_dir}/${repo}
     local prev_dir=$(pwd)
 
+    echo clone_dir=${clone_dir}
+    echo git_branch=${git_branch}
+    echo git_repo=${git_repo}
+    echo repo=${repo}
+    echo repo_dir=${repo_dir}
+    echo prev_dir=${prev_dir}
+    
     export http_proxy=http://cloud-proxy:3128
     export https_proxy=http://cloud-proxy:3128
+    echo cd ${clone_dir}
     cd ${clone_dir}
+    echo git clone ${git_repo}
     git clone ${git_repo}
-    mkdir -p ${repo_dir}
+
+    echo cd ${repo_dir}
     cd ${repo_dir}
+    ech git checkout ${git_branch}
     git checkout ${git_branch}
+    echo cd ${prev_dir}
     cd ${prev_dir}
     unset http_proxy
     unset https_proxy
