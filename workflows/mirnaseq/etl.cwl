@@ -5,9 +5,10 @@ cwlVersion: v1.0
 class: Workflow
 
 requirements:
- - class: InlineJavascriptRequirement
- - class: StepInputExpressionRequirement
- - class: SubworkflowFeatureRequirement
+  - class: MultipleInputFeatureRequirement
+  - class: InlineJavascriptRequirement
+  - class: StepInputExpressionRequirement
+  - class: SubworkflowFeatureRequirement
 
 inputs:
   - id: gdc_token
