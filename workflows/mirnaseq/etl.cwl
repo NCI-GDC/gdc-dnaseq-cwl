@@ -67,7 +67,7 @@ outputs:
     outputSource: generate_s3_mirna_profiling_isoforms_quant_url/output
   - id: s3_mirna_profiling_mirnas_quant_url
     type: string
-    outpuSource: generate_s3_mirna_profiling_mirnas_quant_url/output
+    outputSource: generate_s3_mirna_profiling_mirnas_quant_url/output
   - id: s3_sqlite_url
     type: string
     outputSource: generate_s3_sqlite_url/output
@@ -278,8 +278,6 @@ steps:
         source: transform/mirna_profiling_mirna_alignment_stats_bed
       - id: file
         valueFrom: "bed.tar"
-      - id: xz
-        valueFrom: false
     out:
       - id: OUTPUT
       

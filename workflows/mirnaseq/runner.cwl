@@ -232,6 +232,16 @@ steps:
         source: thread_count
       - id: task_uuid
         source: task_uuid
+      - id: aws_config
+        source: aws_config
+      - id: aws_shared_credentials
+        source: aws_shared_credentials
+      - id: endpoint_json
+        source: endpoint_json
+      - id: load_bucket
+        source: load_bucket
+      - id: s3cfg_section
+        source: s3cfg_section
     out:
       - id: s3_bam_url
       - id: s3_bai_url

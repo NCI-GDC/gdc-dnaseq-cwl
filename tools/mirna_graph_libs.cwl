@@ -62,7 +62,7 @@ outputs:
       glob: $(inputs.sam.nameroot)_features/$(inputs.sam.nameroot)_chastity.jpg
 
   - id: saturation_jpg
-    type: ["null", File]
+    type: [File]
     outputBinding:
       glob: $(inputs.sam.nameroot)_features/$(inputs.sam.nameroot)_saturation.jpg
 
