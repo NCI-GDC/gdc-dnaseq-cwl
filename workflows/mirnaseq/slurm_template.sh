@@ -60,7 +60,7 @@ function runner()
     mkdir ${cache_dir}
     mkdir ${tmp_dir}
  
-    cwltool --debug --rm-tmpdir --rm-container --no-read-only --tmp-outdir-prefix ${cache_dir}/ --tmpdir-prefix ${tmp_dir}/ --custom-net bridge --outdir ${work_dir} ${workflow_path} ${task_path}
+    cwltool --debug --rm-tmpdir --rm-container --no-read-only --no-match-user --tmp-outdir-prefix ${cache_dir}/ --tmpdir-prefix ${tmp_dir}/ --custom-net bridge --outdir ${work_dir} ${workflow_path} ${task_path}
     cd ${prev_dir}
 }
 
