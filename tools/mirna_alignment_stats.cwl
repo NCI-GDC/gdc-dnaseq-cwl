@@ -38,37 +38,37 @@ outputs:
       glob: alignment_stats.csv
 
   - id: 3_UTR_txt
-    type: [File]
+    type: File
     outputBinding:
       glob: $(inputs.sam.nameroot)_features/3_UTR.txt
 
   - id: 5_UTR_txt
-    type: [File]
+    type: File
     outputBinding:
       glob: $(inputs.sam.nameroot)_features/5_UTR.txt
 
   - id: Coding_Exon_txt
-    type: [File]
+    type: File
     outputBinding:
       glob: $(inputs.sam.nameroot)_features/Coding_Exon.txt
 
   - id: Intron_txt
-    type: [File]
+    type: File
     outputBinding:
       glob: $(inputs.sam.nameroot)_features/Intron.txt
 
   - id: LINE_txt
-    type: [File]
+    type: File
     outputBinding:
       glob: $(inputs.sam.nameroot)_features/LINE.txt
 
   - id: LTR_txt
-    type: [File]
+    type: File
     outputBinding:
       glob: $(inputs.sam.nameroot)_features/LTR.txt
 
   - id: SINE_txt
-    type: [File]
+    type: File
     outputBinding:
       glob: $(inputs.sam.nameroot)_features/SINE.txt
 
@@ -110,37 +110,52 @@ outputs:
       glob: $(inputs.sam.nameroot)_features/mirna_species.txt
 
   - id: rmsk_DNA_txt
-    type: [File]
+    type: File
     outputBinding:
       glob: $(inputs.sam.nameroot)_features/rmsk_DNA.txt
 
+  - id: rmsk_RNA_txt
+    type: File
+    outputBinding:
+      glob: $(inputs.sam.nameroot)_features/rmsk_RNA.txt
+
   - id: rmsk_Simple_repeat_txt
-    type: [File]
+    type: File
     outputBinding:
       glob: $(inputs.sam.nameroot)_features/rmsk_Simple_repeat.txt
 
   - id: rmsk_Unknown_txt
-    type: [File]
+    type: ["null", File]
     outputBinding:
       glob: $(inputs.sam.nameroot)_features/rmsk_Unknown.txt
+
+  - id: rRNA_txt
+    type: File
+    outputBinding:
+      glob: $(inputs.sam.nameroot)_features/rRNA.txt
 
   - id: scRNA_txt
     type: [File]
     outputBinding:
       glob: $(inputs.sam.nameroot)_features/scRNA.txt
 
+  - id: snoRNA_txt
+    type: File
+    outputBinding:
+      glob: $(inputs.sam.nameroot)_features/snoRNA.txt
+
   - id: snRNA_txt
-    type: [File]
+    type: File
     outputBinding:
       glob: $(inputs.sam.nameroot)_features/snRNA.txt
 
   - id: softclip_taglengths_csv
-    type: [File]
+    type: File
     outputBinding:
       glob: $(inputs.sam.nameroot)_features/softclip_taglengths.csv
 
   - id: srpRNA_txt
-    type: [File]
+    type: File
     outputBinding:
       glob: $(inputs.sam.nameroot)_features/srpRNA.txt
 

@@ -83,15 +83,24 @@ outputs:
   - id: mirna_profiling_mirna_alignment_stats_rmsk_DNA_txt
     type: File
     outputSource: mirna_profiling/mirna_alignment_stats_rmsk_DNA_txt
+  - id: mirna_profiling_mirna_alignment_stats_rmsk_RNA_txt
+    type: File
+    outputSource: mirna_profiling/mirna_alignment_stats_rmsk_RNA_txt
   - id: mirna_profiling_mirna_alignment_stats_rmsk_Simple_repeat_txt
     type: File
     outputSource: mirna_profiling/mirna_alignment_stats_rmsk_Simple_repeat_txt
   - id: mirna_profiling_mirna_alignment_stats_rmsk_Unknown_txt
     type: File
     outputSource: mirna_profiling/mirna_alignment_stats_rmsk_Unknown_txt
+  - id: mirna_profiling_mirna_alignment_stats_rRNA_txt
+    type: File
+    outputSource: mirna_profiling/mirna_alignment_stats_rRNA_txt
   - id: mirna_profiling_mirna_alignment_stats_scRNA_txt
     type: File
     outputSource: mirna_profiling/mirna_alignment_stats_scRNA_txt
+  - id: mirna_profiling_mirna_alignment_stats_snoRNA_txt
+    type: File
+    outputSource: mirna_profiling/mirna_alignment_stats_snoRNA_txt
   - id: mirna_profiling_mirna_alignment_stats_snRNA_txt
     type: File
     outputSource: mirna_profiling/mirna_alignment_stats_snRNA_txt
@@ -903,9 +912,12 @@ steps:
       - id: mirna_alignment_stats_miRNA_txt
       - id: mirna_alignment_stats_mirna_species_txt
       - id: mirna_alignment_stats_rmsk_DNA_txt
+      - id: mirna_alignment_stats_rmsk_RNA_txt
       - id: mirna_alignment_stats_rmsk_Simple_repeat_txt
       - id: mirna_alignment_stats_rmsk_Unknown_txt
+      - id: mirna_alignment_stats_rRNA_txt
       - id: mirna_alignment_stats_scRNA_txt
+      - id: mirna_alignment_stats_snoRNA_txt
       - id: mirna_alignment_stats_snRNA_txt
       - id: mirna_alignment_stats_softclip_taglengths_csv
       - id: mirna_alignment_stats_srpRNA_txt
