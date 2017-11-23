@@ -57,17 +57,17 @@ outputs:
       glob: $(inputs.sam.nameroot)_features/$(inputs.sam.nameroot)_adapter.jpg
 
   - id: chastity_jpg
-    type: File
+    type: ["null", File]
     outputBinding:
       glob: $(inputs.sam.nameroot)_features/$(inputs.sam.nameroot)_chastity.jpg
 
   - id: saturation_jpg
-    type: [File]
+    type: ["null", File]
     outputBinding:
       glob: $(inputs.sam.nameroot)_features/$(inputs.sam.nameroot)_saturation.jpg
 
   - id: softclip_jpg
-    type: File
+    type: ["null", File]
     outputBinding:
       glob: $(inputs.sam.nameroot)_features/$(inputs.sam.nameroot)_softclip.jpg
 
