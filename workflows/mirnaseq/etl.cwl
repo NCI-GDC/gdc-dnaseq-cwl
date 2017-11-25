@@ -373,7 +373,7 @@ steps:
         source: s3cfg_section
       - id: s3uri
         source: load_bucket
-        valueFrom: $(self + "/" task_uuid + "/")
+        valueFrom: $(self + "/" + inputs.task_uuid + "/")
       - id: task_uuid
         source: task_uuid
         valueFrom: $(null)
@@ -396,7 +396,7 @@ steps:
         source: s3cfg_section
       - id: s3uri
         source: load_bucket
-        valueFrom: $(self + "/" task_uuid + "/")
+        valueFrom: $(self + "/" + inputs.task_uuid + "/")
       - id: task_uuid
         source: task_uuid
         valueFrom: $(null)
@@ -418,7 +418,7 @@ steps:
         source: s3cfg_section
       - id: s3uri
         source: load_bucket
-        valueFrom: $(self + "/" task_uuid + "/")
+        valueFrom: $(self + "/" + inputs.task_uuid + "/")
       - id: task_uuid
         source: task_uuid
         valueFrom: $(null)
@@ -440,7 +440,7 @@ steps:
         source: s3cfg_section
       - id: s3uri
         source: load_bucket
-        valueFrom: $(self + "/" task_uuid + "/")
+        valueFrom: $(self + "/" + inputs.task_uuid + "/")
       - id: task_uuid
         source: task_uuid
         valueFrom: $(null)
@@ -462,7 +462,7 @@ steps:
         source: s3cfg_section
       - id: s3uri
         source: load_bucket
-        valueFrom: $(self + "/" task_uuid + "/")
+        valueFrom: $(self + "/" + inputs.task_uuid + "/")
       - id: task_uuid
         source: task_uuid
         valueFrom: $(null)
@@ -484,7 +484,7 @@ steps:
         source: s3cfg_section
       - id: s3uri
         source: load_bucket
-        valueFrom: $(self + "/" task_uuid + "/")
+        valueFrom: $(self + "/" + inputs.task_uuid + "/")
       - id: task_uuid
         source: task_uuid
         valueFrom: $(null)
