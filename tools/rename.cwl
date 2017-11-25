@@ -26,4 +26,4 @@ outputs:
     outputBinding:
       glob: $(inputs.OUTNAME)
 
-baseCommand: [/usr/bin/true]
+baseCommand: [/bin/true]
