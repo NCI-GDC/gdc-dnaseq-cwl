@@ -235,31 +235,32 @@ steps:
     out:
       - id: merge_all_sqlite_destination_sqlite
       - id: mirna_profiling_mirna_adapter_report_sorted_output
-      - id: mirna_profiling_mirna_alignment_stats_alignment_stats_csv
-      - id: mirna_profiling_mirna_alignment_stats_3_UTR_txt
-      - id: mirna_profiling_mirna_alignment_stats_5_UTR_txt
-      - id: mirna_profiling_mirna_alignment_stats_Coding_Exon_txt
-      - id: mirna_profiling_mirna_alignment_stats_Intron_txt
-      - id: mirna_profiling_mirna_alignment_stats_LINE_txt
-      - id: mirna_profiling_mirna_alignment_stats_LTR_txt
-      - id: mirna_profiling_mirna_alignment_stats_SINE_txt
-      - id: mirna_profiling_mirna_alignment_stats_bed
-      - id: mirna_profiling_mirna_alignment_stats_chastity_taglengths_csv
-      - id: mirna_profiling_mirna_alignment_stats_crossmapped_txt
-      - id: mirna_profiling_mirna_alignment_stats_filtered_taglengths_csv
-      - id: mirna_profiling_mirna_alignment_stats_isoforms_txt
-      - id: mirna_profiling_mirna_alignment_stats_miRNA_txt
-      - id: mirna_profiling_mirna_alignment_stats_mirna_species_txt
-      - id: mirna_profiling_mirna_alignment_stats_rmsk_DNA_txt
-      - id: mirna_profiling_mirna_alignment_stats_rmsk_RNA_txt
-      - id: mirna_profiling_mirna_alignment_stats_rmsk_Simple_repeat_txt
-      - id: mirna_profiling_mirna_alignment_stats_rmsk_Unknown_txt
-      - id: mirna_profiling_mirna_alignment_stats_rRNA_txt
-      - id: mirna_profiling_mirna_alignment_stats_scRNA_txt
-      - id: mirna_profiling_mirna_alignment_stats_snoRNA_txt
-      - id: mirna_profiling_mirna_alignment_stats_snRNA_txt
-      - id: mirna_profiling_mirna_alignment_stats_softclip_taglengths_csv
-      - id: mirna_profiling_mirna_alignment_stats_srpRNA_txt
+      - id: mirna_profiling_mirna_alignment_stats_features
+      # - id: mirna_profiling_mirna_alignment_stats_alignment_stats_csv
+      # - id: mirna_profiling_mirna_alignment_stats_3_UTR_txt
+      # - id: mirna_profiling_mirna_alignment_stats_5_UTR_txt
+      # - id: mirna_profiling_mirna_alignment_stats_Coding_Exon_txt
+      # - id: mirna_profiling_mirna_alignment_stats_Intron_txt
+      # - id: mirna_profiling_mirna_alignment_stats_LINE_txt
+      # - id: mirna_profiling_mirna_alignment_stats_LTR_txt
+      # - id: mirna_profiling_mirna_alignment_stats_SINE_txt
+      # - id: mirna_profiling_mirna_alignment_stats_bed
+      # - id: mirna_profiling_mirna_alignment_stats_chastity_taglengths_csv
+      # - id: mirna_profiling_mirna_alignment_stats_crossmapped_txt
+      # - id: mirna_profiling_mirna_alignment_stats_filtered_taglengths_csv
+      # - id: mirna_profiling_mirna_alignment_stats_isoforms_txt
+      # - id: mirna_profiling_mirna_alignment_stats_miRNA_txt
+      # - id: mirna_profiling_mirna_alignment_stats_mirna_species_txt
+      # - id: mirna_profiling_mirna_alignment_stats_rmsk_DNA_txt
+      # - id: mirna_profiling_mirna_alignment_stats_rmsk_RNA_txt
+      # - id: mirna_profiling_mirna_alignment_stats_rmsk_Simple_repeat_txt
+      # - id: mirna_profiling_mirna_alignment_stats_rmsk_Unknown_txt
+      # - id: mirna_profiling_mirna_alignment_stats_rRNA_txt
+      # - id: mirna_profiling_mirna_alignment_stats_scRNA_txt
+      # - id: mirna_profiling_mirna_alignment_stats_snoRNA_txt
+      # - id: mirna_profiling_mirna_alignment_stats_snRNA_txt
+      # - id: mirna_profiling_mirna_alignment_stats_softclip_taglengths_csv
+      # - id: mirna_profiling_mirna_alignment_stats_srpRNA_txt
       - id: mirna_profiling_mirna_expression_matrix_expn_matrix_txt
       - id: mirna_profiling_mirna_expression_matrix_expn_matrix_norm_txt
       - id: mirna_profiling_mirna_expression_matrix_expn_matrix_norm_log_txt
@@ -275,66 +276,66 @@ steps:
       - id: mirna_profiling_mirna_tcga_mirnas_quant
       - id: picard_markduplicates_output
 
-  - id: tar_mirna_profiling_bed
+  - id: tar_mirna_profiling_alignment_stats
     run: ../../tools/tar_dir.cwl
     in:
       - id: INPUT
-        source: transform/mirna_profiling_mirna_alignment_stats_bed
+        source: transform/mirna_profiling_mirna_alignment_stats_features
       - id: file
-        valueFrom: bed.tar.xz
+        valueFrom: features.tar.xz
     out:
       - id: OUTPUT
-      
-  - id: tar_mirna_profiling
-    run: ../../tools/tar.cwl
-    in:
-      - id: INPUT
-        source: [
-          transform/mirna_profiling_mirna_adapter_report_sorted_output,
-          transform/mirna_profiling_mirna_alignment_stats_alignment_stats_csv,
-          transform/mirna_profiling_mirna_alignment_stats_3_UTR_txt,
-          transform/mirna_profiling_mirna_alignment_stats_5_UTR_txt,
-          transform/mirna_profiling_mirna_alignment_stats_Coding_Exon_txt,
-          transform/mirna_profiling_mirna_alignment_stats_Intron_txt,
-          transform/mirna_profiling_mirna_alignment_stats_LINE_txt,
-          transform/mirna_profiling_mirna_alignment_stats_LTR_txt,
-          transform/mirna_profiling_mirna_alignment_stats_SINE_txt,
-          tar_mirna_profiling_bed/OUTPUT,
-          transform/mirna_profiling_mirna_alignment_stats_chastity_taglengths_csv,
-          transform/mirna_profiling_mirna_alignment_stats_crossmapped_txt,
-          transform/mirna_profiling_mirna_alignment_stats_filtered_taglengths_csv,
-          transform/mirna_profiling_mirna_alignment_stats_isoforms_txt,
-          transform/mirna_profiling_mirna_alignment_stats_miRNA_txt,
-          transform/mirna_profiling_mirna_alignment_stats_mirna_species_txt,
-          transform/mirna_profiling_mirna_alignment_stats_rmsk_DNA_txt,
-          transform/mirna_profiling_mirna_alignment_stats_rmsk_RNA_txt,
-          transform/mirna_profiling_mirna_alignment_stats_rmsk_Simple_repeat_txt,
-          transform/mirna_profiling_mirna_alignment_stats_rmsk_Unknown_txt,
-          transform/mirna_profiling_mirna_alignment_stats_rRNA_txt,
-          transform/mirna_profiling_mirna_alignment_stats_scRNA_txt,
-          transform/mirna_profiling_mirna_alignment_stats_snoRNA_txt,
-          transform/mirna_profiling_mirna_alignment_stats_snRNA_txt,
-          transform/mirna_profiling_mirna_alignment_stats_softclip_taglengths_csv,
-          transform/mirna_profiling_mirna_alignment_stats_srpRNA_txt,
-          transform/mirna_profiling_mirna_expression_matrix_expn_matrix_txt,
-          transform/mirna_profiling_mirna_expression_matrix_expn_matrix_norm_txt,
-          transform/mirna_profiling_mirna_expression_matrix_expn_matrix_norm_log_txt,
-          transform/mirna_profiling_mirna_expression_matrix_mimat_expn_matrix_mimat_txt,
-          transform/mirna_profiling_mirna_expression_matrix_mimat_expn_matrix_mimat_norm_txt,
-          transform/mirna_profiling_mirna_expression_matrix_mimat_expn_matrix_mimat_norm_log_txt,
-          transform/mirna_profiling_mirna_graph_libs_adapter_jpg,
-          transform/mirna_profiling_mirna_graph_libs_chastity_jpg,
-          transform/mirna_profiling_mirna_graph_libs_saturation_jpg,
-          transform/mirna_profiling_mirna_graph_libs_softclip_jpg,
-          transform/mirna_profiling_mirna_graph_libs_tags_jpg,
-          transform/mirna_profiling_mirna_tcga_isoforms_quant,
-          transform/mirna_profiling_mirna_tcga_mirnas_quant
-        ]
-      - id: file
-        source: task_uuid
-        valueFrom: $(self)_mirna_profiling.tar.xz
-    out:
-      - id: OUTPUT
+
+  # - id: tar_mirna_profiling
+  #   run: ../../tools/tar.cwl
+  #   in:
+  #     - id: INPUT
+  #       source: [
+  #         transform/mirna_profiling_mirna_adapter_report_sorted_output,
+  #         transform/mirna_profiling_mirna_alignment_stats_alignment_stats_csv,
+  #         transform/mirna_profiling_mirna_alignment_stats_3_UTR_txt,
+  #         transform/mirna_profiling_mirna_alignment_stats_5_UTR_txt,
+  #         transform/mirna_profiling_mirna_alignment_stats_Coding_Exon_txt,
+  #         transform/mirna_profiling_mirna_alignment_stats_Intron_txt,
+  #         transform/mirna_profiling_mirna_alignment_stats_LINE_txt,
+  #         transform/mirna_profiling_mirna_alignment_stats_LTR_txt,
+  #         transform/mirna_profiling_mirna_alignment_stats_SINE_txt,
+  #         tar_mirna_profiling_bed/OUTPUT,
+  #         transform/mirna_profiling_mirna_alignment_stats_chastity_taglengths_csv,
+  #         transform/mirna_profiling_mirna_alignment_stats_crossmapped_txt,
+  #         transform/mirna_profiling_mirna_alignment_stats_filtered_taglengths_csv,
+  #         transform/mirna_profiling_mirna_alignment_stats_isoforms_txt,
+  #         transform/mirna_profiling_mirna_alignment_stats_miRNA_txt,
+  #         transform/mirna_profiling_mirna_alignment_stats_mirna_species_txt,
+  #         transform/mirna_profiling_mirna_alignment_stats_rmsk_DNA_txt,
+  #         transform/mirna_profiling_mirna_alignment_stats_rmsk_RNA_txt,
+  #         transform/mirna_profiling_mirna_alignment_stats_rmsk_Simple_repeat_txt,
+  #         transform/mirna_profiling_mirna_alignment_stats_rmsk_Unknown_txt,
+  #         transform/mirna_profiling_mirna_alignment_stats_rRNA_txt,
+  #         transform/mirna_profiling_mirna_alignment_stats_scRNA_txt,
+  #         transform/mirna_profiling_mirna_alignment_stats_snoRNA_txt,
+  #         transform/mirna_profiling_mirna_alignment_stats_snRNA_txt,
+  #         transform/mirna_profiling_mirna_alignment_stats_softclip_taglengths_csv,
+  #         transform/mirna_profiling_mirna_alignment_stats_srpRNA_txt,
+  #         transform/mirna_profiling_mirna_expression_matrix_expn_matrix_txt,
+  #         transform/mirna_profiling_mirna_expression_matrix_expn_matrix_norm_txt,
+  #         transform/mirna_profiling_mirna_expression_matrix_expn_matrix_norm_log_txt,
+  #         transform/mirna_profiling_mirna_expression_matrix_mimat_expn_matrix_mimat_txt,
+  #         transform/mirna_profiling_mirna_expression_matrix_mimat_expn_matrix_mimat_norm_txt,
+  #         transform/mirna_profiling_mirna_expression_matrix_mimat_expn_matrix_mimat_norm_log_txt,
+  #         transform/mirna_profiling_mirna_graph_libs_adapter_jpg,
+  #         transform/mirna_profiling_mirna_graph_libs_chastity_jpg,
+  #         transform/mirna_profiling_mirna_graph_libs_saturation_jpg,
+  #         transform/mirna_profiling_mirna_graph_libs_softclip_jpg,
+  #         transform/mirna_profiling_mirna_graph_libs_tags_jpg,
+  #         transform/mirna_profiling_mirna_tcga_isoforms_quant,
+  #         transform/mirna_profiling_mirna_tcga_mirnas_quant
+  #       ]
+  #     - id: file
+  #       source: task_uuid
+  #       valueFrom: $(self)_mirna_profiling.tar.xz
+  #   out:
+  #     - id: OUTPUT
         
   - id: rename_isoforms_quant
     run: ../../tools/rename.cwl
@@ -425,7 +426,7 @@ steps:
     out:
       - id: output
 
-  - id: load_tar_mirna_profiling
+  - id: load_tar_mirna_profiling_alignment_stats
     run: ../../tools/aws_s3_put.cwl
     in:
       - id: aws_config
@@ -435,7 +436,7 @@ steps:
       - id: endpoint_json
         source: endpoint_json
       - id: input
-        source: tar_mirna_profiling/OUTPUT
+        source: tar_mirna_profiling_alignment_stats/OUTPUT
       - id: s3cfg_section
         source: s3cfg_section
       - id: s3uri

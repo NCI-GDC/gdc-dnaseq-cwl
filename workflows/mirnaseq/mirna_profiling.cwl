@@ -25,84 +25,87 @@ outputs:
   - id: mirna_adapter_report_sorted_output
     type: File
     outputSource: mirna_adapter_report_sorted/OUTPUT
-  - id: mirna_alignment_stats_alignment_stats_csv
-    type: File
-    outputSource: mirna_alignment_stats/alignment_stats_csv
-  - id: mirna_alignment_stats_3_UTR_txt
-    type: File
-    outputSource: mirna_alignment_stats/3_UTR_txt
-  - id: mirna_alignment_stats_5_UTR_txt
-    type: File
-    outputSource: mirna_alignment_stats/5_UTR_txt
-  - id: mirna_alignment_stats_Coding_Exon_txt
-    type: File
-    outputSource: mirna_alignment_stats/Coding_Exon_txt
-  - id: mirna_alignment_stats_Intron_txt
-    type: File
-    outputSource: mirna_alignment_stats/Intron_txt
-  - id: mirna_alignment_stats_LINE_txt
-    type: File
-    outputSource: mirna_alignment_stats/LINE_txt
-  - id: mirna_alignment_stats_LTR_txt
-    type: File
-    outputSource: mirna_alignment_stats/LTR_txt
-  - id: mirna_alignment_stats_SINE_txt
-    type: File
-    outputSource: mirna_alignment_stats/SINE_txt
-  - id: mirna_alignment_stats_bed
+  - id: mirna_alignment_stats_alignment_features
     type: Directory
-    outputSource: mirna_alignment_stats/bed
-  - id: mirna_alignment_stats_chastity_taglengths_csv
-    type: File
-    outputSource: mirna_alignment_stats/chastity_taglengths_csv
-  - id: mirna_alignment_stats_crossmapped_txt
-    type: File
-    outputSource: mirna_alignment_stats/crossmapped_txt
-  - id: mirna_alignment_stats_filtered_taglengths_csv
-    type: File
-    outputSource: mirna_alignment_stats/filtered_taglengths_csv
-  - id: mirna_alignment_stats_isoforms_txt
-    type: File
-    outputSource: mirna_alignment_stats/isoforms_txt
-  - id: mirna_alignment_stats_miRNA_txt
-    type: File
-    outputSource: mirna_alignment_stats/miRNA_txt
-  - id: mirna_alignment_stats_mirna_species_txt
-    type: File
-    outputSource: mirna_alignment_stats/mirna_species_txt
-  - id: mirna_alignment_stats_rmsk_DNA_txt
-    type: File
-    outputSource: mirna_alignment_stats/rmsk_DNA_txt
-  - id: mirna_alignment_stats_rmsk_RNA_txt
-    type: File
-    outputSource: mirna_alignment_stats/rmsk_RNA_txt
-  - id: mirna_alignment_stats_rmsk_Simple_repeat_txt
-    type: File
-    outputSource: mirna_alignment_stats/rmsk_Simple_repeat_txt
-  - id: mirna_alignment_stats_rmsk_Unknown_txt
-    type: File
-    outputSource: mirna_alignment_stats/rmsk_Unknown_txt
-  - id: mirna_alignment_stats_rRNA_txt
-    type: File
-    outputSource: mirna_alignment_stats/rRNA_txt
-  - id: mirna_alignment_stats_scRNA_txt
-    type: File
-    outputSource: mirna_alignment_stats/scRNA_txt
-  - id: mirna_alignment_stats_snoRNA_txt
-    type: File
-    outputSource: mirna_alignment_stats/snoRNA_txt
-  - id: mirna_alignment_stats_snRNA_txt
-    type: File
-    outputSource: mirna_alignment_stats/snRNA_txt
-  - id: mirna_alignment_stats_softclip_taglengths_csv
-    type: File
-    outputSource: mirna_alignment_stats/softclip_taglengths_csv
-  - id: mirna_alignment_stats_srpRNA_txt
-    type: File
-    outputSource: mirna_alignment_stats/srpRNA_txt
-  - id: mirna_expression_matrix_expn_matrix_txt
-    type: File
-    outputSource: mirna_expression_matrix/expn_matrix_txt
+    outputSource: mirna_alignment_stats/features
+  # - id: mirna_alignment_stats_alignment_stats_csv
+  #   type: File
+  #   outputSource: mirna_alignment_stats/alignment_stats_csv
+  # - id: mirna_alignment_stats_3_UTR_txt
+  #   type: File
+  #   outputSource: mirna_alignment_stats/3_UTR_txt
+  # - id: mirna_alignment_stats_5_UTR_txt
+  #   type: File
+  #   outputSource: mirna_alignment_stats/5_UTR_txt
+  # - id: mirna_alignment_stats_Coding_Exon_txt
+  #   type: File
+  #   outputSource: mirna_alignment_stats/Coding_Exon_txt
+  # - id: mirna_alignment_stats_Intron_txt
+  #   type: File
+  #   outputSource: mirna_alignment_stats/Intron_txt
+  # - id: mirna_alignment_stats_LINE_txt
+  #   type: File
+  #   outputSource: mirna_alignment_stats/LINE_txt
+  # - id: mirna_alignment_stats_LTR_txt
+  #   type: File
+  #   outputSource: mirna_alignment_stats/LTR_txt
+  # - id: mirna_alignment_stats_SINE_txt
+  #   type: File
+  #   outputSource: mirna_alignment_stats/SINE_txt
+  # - id: mirna_alignment_stats_bed
+  #   type: Directory
+  #   outputSource: mirna_alignment_stats/bed
+  # - id: mirna_alignment_stats_chastity_taglengths_csv
+  #   type: File
+  #   outputSource: mirna_alignment_stats/chastity_taglengths_csv
+  # - id: mirna_alignment_stats_crossmapped_txt
+  #   type: File
+  #   outputSource: mirna_alignment_stats/crossmapped_txt
+  # - id: mirna_alignment_stats_filtered_taglengths_csv
+  #   type: File
+  #   outputSource: mirna_alignment_stats/filtered_taglengths_csv
+  # - id: mirna_alignment_stats_isoforms_txt
+  #   type: File
+  #   outputSource: mirna_alignment_stats/isoforms_txt
+  # - id: mirna_alignment_stats_miRNA_txt
+  #   type: File
+  #   outputSource: mirna_alignment_stats/miRNA_txt
+  # - id: mirna_alignment_stats_mirna_species_txt
+  #   type: File
+  #   outputSource: mirna_alignment_stats/mirna_species_txt
+  # - id: mirna_alignment_stats_rmsk_DNA_txt
+  #   type: File
+  #   outputSource: mirna_alignment_stats/rmsk_DNA_txt
+  # - id: mirna_alignment_stats_rmsk_RNA_txt
+  #   type: File
+  #   outputSource: mirna_alignment_stats/rmsk_RNA_txt
+  # - id: mirna_alignment_stats_rmsk_Simple_repeat_txt
+  #   type: File
+  #   outputSource: mirna_alignment_stats/rmsk_Simple_repeat_txt
+  # - id: mirna_alignment_stats_rmsk_Unknown_txt
+  #   type: File
+  #   outputSource: mirna_alignment_stats/rmsk_Unknown_txt
+  # - id: mirna_alignment_stats_rRNA_txt
+  #   type: File
+  #   outputSource: mirna_alignment_stats/rRNA_txt
+  # - id: mirna_alignment_stats_scRNA_txt
+  #   type: File
+  #   outputSource: mirna_alignment_stats/scRNA_txt
+  # - id: mirna_alignment_stats_snoRNA_txt
+  #   type: File
+  #   outputSource: mirna_alignment_stats/snoRNA_txt
+  # - id: mirna_alignment_stats_snRNA_txt
+  #   type: File
+  #   outputSource: mirna_alignment_stats/snRNA_txt
+  # - id: mirna_alignment_stats_softclip_taglengths_csv
+  #   type: File
+  #   outputSource: mirna_alignment_stats/softclip_taglengths_csv
+  # - id: mirna_alignment_stats_srpRNA_txt
+  #   type: File
+  #   outputSource: mirna_alignment_stats/srpRNA_txt
+  # - id: mirna_expression_matrix_expn_matrix_txt
+  #   type: File
+  #   outputSource: mirna_expression_matrix/expn_matrix_txt
   - id: mirna_expression_matrix_expn_matrix_norm_txt
     type: File
     outputSource: mirna_expression_matrix/expn_matrix_norm_txt
@@ -203,31 +206,15 @@ steps:
       - id: project_directory
         source: project_directory
     out:
+      - id: features
       - id: alignment_stats_csv
-      - id: 3_UTR_txt
-      - id: 5_UTR_txt
-      - id: Coding_Exon_txt
-      - id: Intron_txt
-      - id: LINE_txt
-      - id: LTR_txt
-      - id: SINE_txt
-      - id: bed
       - id: chastity_taglengths_csv
       - id: crossmapped_txt
       - id: filtered_taglengths_csv
       - id: isoforms_txt
       - id: miRNA_txt
       - id: mirna_species_txt
-      - id: rmsk_DNA_txt
-      - id: rmsk_RNA_txt
-      - id: rmsk_Simple_repeat_txt
-      - id: rmsk_Unknown_txt
-      - id: rRNA_txt
-      - id: scRNA_txt
-      - id: snoRNA_txt
-      - id: snRNA_txt
       - id: softclip_taglengths_csv
-      - id: srpRNA_txt
 
   - id: mirna_tcga
     run: ../../tools/mirna_tcga.cwl
