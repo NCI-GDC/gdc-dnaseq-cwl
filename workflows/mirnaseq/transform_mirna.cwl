@@ -58,9 +58,7 @@ outputs:
     type: File
     outputSource: mirna_profiling/mirna_alignment_stats_SINE_txt
   - id: mirna_profiling_mirna_alignment_stats_bed
-    type:
-      type: array
-      items: File
+    type: Directory
     outputSource: mirna_profiling/mirna_alignment_stats_bed
   - id: mirna_profiling_mirna_alignment_stats_chastity_taglengths_csv
     type: File

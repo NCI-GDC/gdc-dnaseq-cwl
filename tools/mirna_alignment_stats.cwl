@@ -73,11 +73,9 @@ outputs:
       glob: $(inputs.sam.nameroot)_features/SINE.txt
 
   - id: bed
-    type:
-      type: array
-      items: File
+    type: Directory
     outputBinding:
-      glob: $(inputs.sam.nameroot)_features/bed/*.txt.gz
+      glob: $(inputs.sam.nameroot)_features/bed
 
   - id: chastity_taglengths_csv
     type: File

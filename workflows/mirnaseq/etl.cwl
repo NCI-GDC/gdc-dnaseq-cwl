@@ -276,12 +276,12 @@ steps:
       - id: picard_markduplicates_output
 
   - id: tar_mirna_profiling_bed
-    run: ../../tools/tar.cwl
+    run: ../../tools/tar_dir.cwl
     in:
       - id: INPUT
         source: transform/mirna_profiling_mirna_alignment_stats_bed
       - id: file
-        valueFrom: "bed.tar"
+        valueFrom: bed.tar.xz
     out:
       - id: OUTPUT
       
