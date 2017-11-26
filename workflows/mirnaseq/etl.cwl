@@ -582,7 +582,7 @@ steps:
       - id: load4
         source: load_mirna_profiling_mirnas_quant/output
       - id: load5
-        source: load_tar_mirna_profiling/output
+        source: load_tar_mirna_profiling_alignment_stats/output
       - id: load6
         source: load_sqlite/output
     out:
