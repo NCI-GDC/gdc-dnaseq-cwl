@@ -25,7 +25,7 @@ inputs:
 
   - id: xz
     type: boolean
-    default: true
+    default: false
     inputBinding:
       prefix: --xz
       position: 2

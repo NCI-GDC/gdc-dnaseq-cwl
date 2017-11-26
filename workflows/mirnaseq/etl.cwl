@@ -282,16 +282,17 @@ steps:
       - id: INPUT
         source: transform/mirna_profiling_mirna_alignment_stats_features
       - id: file
-        valueFrom: features.tar.xz
+        valueFrom: features.tar
     out:
       - id: OUTPUT
 
-  # - id: tar_mirna_profiling
-  #   run: ../../tools/tar.cwl
-  #   in:
-  #     - id: INPUT
-  #       source: [
-  #         transform/mirna_profiling_mirna_adapter_report_sorted_output,
+  - id: tar_mirna_profiling
+    run: ../../tools/tar.cwl
+    in:
+      - id: INPUT
+        source: [
+          transform/mirna_profiling_mirna_adapter_report_sorted_output,
+          tar_mirna_profiling_alignment_stats/OUTPUT
   #         transform/mirna_profiling_mirna_alignment_stats_alignment_stats_csv,
   #         transform/mirna_profiling_mirna_alignment_stats_3_UTR_txt,
   #         transform/mirna_profiling_mirna_alignment_stats_5_UTR_txt,
@@ -317,25 +318,25 @@ steps:
   #         transform/mirna_profiling_mirna_alignment_stats_snRNA_txt,
   #         transform/mirna_profiling_mirna_alignment_stats_softclip_taglengths_csv,
   #         transform/mirna_profiling_mirna_alignment_stats_srpRNA_txt,
-  #         transform/mirna_profiling_mirna_expression_matrix_expn_matrix_txt,
-  #         transform/mirna_profiling_mirna_expression_matrix_expn_matrix_norm_txt,
-  #         transform/mirna_profiling_mirna_expression_matrix_expn_matrix_norm_log_txt,
-  #         transform/mirna_profiling_mirna_expression_matrix_mimat_expn_matrix_mimat_txt,
-  #         transform/mirna_profiling_mirna_expression_matrix_mimat_expn_matrix_mimat_norm_txt,
-  #         transform/mirna_profiling_mirna_expression_matrix_mimat_expn_matrix_mimat_norm_log_txt,
-  #         transform/mirna_profiling_mirna_graph_libs_adapter_jpg,
-  #         transform/mirna_profiling_mirna_graph_libs_chastity_jpg,
-  #         transform/mirna_profiling_mirna_graph_libs_saturation_jpg,
-  #         transform/mirna_profiling_mirna_graph_libs_softclip_jpg,
-  #         transform/mirna_profiling_mirna_graph_libs_tags_jpg,
-  #         transform/mirna_profiling_mirna_tcga_isoforms_quant,
-  #         transform/mirna_profiling_mirna_tcga_mirnas_quant
-  #       ]
-  #     - id: file
-  #       source: task_uuid
-  #       valueFrom: $(self)_mirna_profiling.tar.xz
-  #   out:
-  #     - id: OUTPUT
+          transform/mirna_profiling_mirna_expression_matrix_expn_matrix_txt,
+          transform/mirna_profiling_mirna_expression_matrix_expn_matrix_norm_txt,
+          transform/mirna_profiling_mirna_expression_matrix_expn_matrix_norm_log_txt,
+          transform/mirna_profiling_mirna_expression_matrix_mimat_expn_matrix_mimat_txt,
+          transform/mirna_profiling_mirna_expression_matrix_mimat_expn_matrix_mimat_norm_txt,
+          transform/mirna_profiling_mirna_expression_matrix_mimat_expn_matrix_mimat_norm_log_txt,
+          transform/mirna_profiling_mirna_graph_libs_adapter_jpg,
+          transform/mirna_profiling_mirna_graph_libs_chastity_jpg,
+          transform/mirna_profiling_mirna_graph_libs_saturation_jpg,
+          transform/mirna_profiling_mirna_graph_libs_softclip_jpg,
+          transform/mirna_profiling_mirna_graph_libs_tags_jpg,
+          transform/mirna_profiling_mirna_tcga_isoforms_quant,
+          transform/mirna_profiling_mirna_tcga_mirnas_quant
+        ]
+      - id: file
+        source: task_uuid
+        valueFrom: $(self)_mirna_profiling.tar.xz
+    out:
+      - id: OUTPUT
         
   - id: rename_isoforms_quant
     run: ../../tools/rename.cwl
@@ -426,7 +427,7 @@ steps:
     out:
       - id: output
 
-  - id: load_tar_mirna_profiling_alignment_stats
+  - id: load_tar_mirna_profiling
     run: ../../tools/aws_s3_put.cwl
     in:
       - id: aws_config
@@ -436,7 +437,7 @@ steps:
       - id: endpoint_json
         source: endpoint_json
       - id: input
-        source: tar_mirna_profiling_alignment_stats/OUTPUT
+        source: tar_mirna_profiling/OUTPUT
       - id: s3cfg_section
         source: s3cfg_section
       - id: s3uri
@@ -582,7 +583,7 @@ steps:
       - id: load4
         source: load_mirna_profiling_mirnas_quant/output
       - id: load5
-        source: load_tar_mirna_profiling_alignment_stats/output
+        source: load_tar_mirna_profiling/output
       - id: load6
         source: load_sqlite/output
     out:
