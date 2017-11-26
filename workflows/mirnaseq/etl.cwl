@@ -292,7 +292,7 @@ steps:
       - id: INPUT
         source: [
           transform/mirna_profiling_mirna_adapter_report_sorted_output,
-          tar_mirna_profiling_alignment_stats/OUTPUT
+          tar_mirna_profiling_alignment_stats/OUTPUT,
   #         transform/mirna_profiling_mirna_alignment_stats_alignment_stats_csv,
   #         transform/mirna_profiling_mirna_alignment_stats_3_UTR_txt,
   #         transform/mirna_profiling_mirna_alignment_stats_5_UTR_txt,

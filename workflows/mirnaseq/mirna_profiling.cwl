@@ -25,7 +25,7 @@ outputs:
   - id: mirna_adapter_report_sorted_output
     type: File
     outputSource: mirna_adapter_report_sorted/OUTPUT
-  - id: mirna_alignment_stats_alignment_features
+  - id: mirna_alignment_stats_features
     type: Directory
     outputSource: mirna_alignment_stats/features
   # - id: mirna_alignment_stats_alignment_stats_csv
@@ -103,9 +103,9 @@ outputs:
   # - id: mirna_alignment_stats_srpRNA_txt
   #   type: File
   #   outputSource: mirna_alignment_stats/srpRNA_txt
-  # - id: mirna_expression_matrix_expn_matrix_txt
-  #   type: File
-  #   outputSource: mirna_expression_matrix/expn_matrix_txt
+  - id: mirna_expression_matrix_expn_matrix_txt
+    type: File
+    outputSource: mirna_expression_matrix/expn_matrix_txt
   - id: mirna_expression_matrix_expn_matrix_norm_txt
     type: File
     outputSource: mirna_expression_matrix/expn_matrix_norm_txt
