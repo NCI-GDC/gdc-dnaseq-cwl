@@ -121,21 +121,9 @@ outputs:
   - id: mirna_expression_matrix_mimat_expn_matrix_mimat_norm_log_txt
     type: File
     outputSource: mirna_expression_matrix_mimat/expn_matrix_mimat_norm_log_txt
-  - id: mirna_graph_libs_adapter_jpg
-    type: File
-    outputSource: mirna_graph_libs/adapter_jpg
-  - id: mirna_graph_libs_chastity_jpg
-    type: File
-    outputSource: mirna_graph_libs/chastity_jpg
-  - id: mirna_graph_libs_saturation_jpg
-    type: File
-    outputSource: mirna_graph_libs/saturation_jpg
-  - id: mirna_graph_libs_softclip_jpg
-    type: File
-    outputSource: mirna_graph_libs/softclip_jpg
-  - id: mirna_graph_libs_tags_jpg
-    type: File
-    outputSource: mirna_graph_libs/tags_jpg
+  - id: mirna_graph_libs_jpgs
+    type: Directory
+    outputSource: mirna_graph_libs/jpgs
   - id: mirna_tcga_isoforms_quant
     type: File
     outputSource: mirna_tcga/isoforms_quant
@@ -289,8 +277,4 @@ steps:
       - id: softclip_taglengths_csv
         source: mirna_alignment_stats/softclip_taglengths_csv
     out:
-      - id: adapter_jpg
-      - id: chastity_jpg
-      - id: saturation_jpg
-      - id: softclip_jpg
-      - id: tags_jpg
+      - id: jpgs

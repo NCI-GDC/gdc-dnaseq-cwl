@@ -51,29 +51,9 @@ inputs:
       shellQuote: false
 
 outputs:
-  - id: adapter_jpg
-    type: File
+  - id: jpgs
+    type: Directory
     outputBinding:
-      glob: $(inputs.sam.nameroot)_features/$(inputs.sam.nameroot)_adapter.jpg
-
-  - id: chastity_jpg
-    type: ["null", File]
-    outputBinding:
-      glob: $(inputs.sam.nameroot)_features/$(inputs.sam.nameroot)_chastity.jpg
-
-  - id: saturation_jpg
-    type: ["null", File]
-    outputBinding:
-      glob: $(inputs.sam.nameroot)_features/$(inputs.sam.nameroot)_saturation.jpg
-
-  - id: softclip_jpg
-    type: ["null", File]
-    outputBinding:
-      glob: $(inputs.sam.nameroot)_features/$(inputs.sam.nameroot)_softclip.jpg
-
-  - id: tags_jpg
-    type: File
-    outputBinding:
-      glob: $(inputs.sam.nameroot)_features/$(inputs.sam.nameroot)_tags.jpg
+      glob: $(inputs.sam.nameroot)_features
 
 baseCommand: [/root/mirna/v0.2.7/code/library_stats/graph_libs.pl]

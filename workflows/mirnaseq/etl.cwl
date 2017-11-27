@@ -267,11 +267,7 @@ steps:
       - id: mirna_profiling_mirna_expression_matrix_mimat_expn_matrix_mimat_txt
       - id: mirna_profiling_mirna_expression_matrix_mimat_expn_matrix_mimat_norm_txt
       - id: mirna_profiling_mirna_expression_matrix_mimat_expn_matrix_mimat_norm_log_txt
-      - id: mirna_profiling_mirna_graph_libs_adapter_jpg
-      - id: mirna_profiling_mirna_graph_libs_chastity_jpg
-      - id: mirna_profiling_mirna_graph_libs_saturation_jpg
-      - id: mirna_profiling_mirna_graph_libs_softclip_jpg
-      - id: mirna_profiling_mirna_graph_libs_tags_jpg
+      - id: mirna_profiling_mirna_graph_libs_jpgs
       - id: mirna_profiling_mirna_tcga_isoforms_quant
       - id: mirna_profiling_mirna_tcga_mirnas_quant
       - id: picard_markduplicates_output
@@ -286,6 +282,16 @@ steps:
     out:
       - id: OUTPUT
 
+  - id: tar_mirna_profiling_graph_libs
+    run: ../../tools/tar_dir.cwl
+    in:
+      - id: INPUT
+        source: transform/mirna_profiling_mirna_graph_libs_jpgs
+      - id: file
+        valueFrom: graph_libs_jpgs.tar
+    out:
+      - id: OUTPUT
+
   - id: tar_mirna_profiling
     run: ../../tools/tar.cwl
     in:
@@ -293,6 +299,7 @@ steps:
         source: [
           transform/mirna_profiling_mirna_adapter_report_sorted_output,
           tar_mirna_profiling_alignment_stats/OUTPUT,
+          tar_mirna_profiling_graph_libs/OUTPUT,
   #         transform/mirna_profiling_mirna_alignment_stats_alignment_stats_csv,
   #         transform/mirna_profiling_mirna_alignment_stats_3_UTR_txt,
   #         transform/mirna_profiling_mirna_alignment_stats_5_UTR_txt,
@@ -324,11 +331,6 @@ steps:
           transform/mirna_profiling_mirna_expression_matrix_mimat_expn_matrix_mimat_txt,
           transform/mirna_profiling_mirna_expression_matrix_mimat_expn_matrix_mimat_norm_txt,
           transform/mirna_profiling_mirna_expression_matrix_mimat_expn_matrix_mimat_norm_log_txt,
-          transform/mirna_profiling_mirna_graph_libs_adapter_jpg,
-          transform/mirna_profiling_mirna_graph_libs_chastity_jpg,
-          transform/mirna_profiling_mirna_graph_libs_saturation_jpg,
-          transform/mirna_profiling_mirna_graph_libs_softclip_jpg,
-          transform/mirna_profiling_mirna_graph_libs_tags_jpg,
           transform/mirna_profiling_mirna_tcga_isoforms_quant,
           transform/mirna_profiling_mirna_tcga_mirnas_quant
         ]
