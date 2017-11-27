@@ -79,9 +79,7 @@ inputs:
     type: string
 
 outputs:
-  - id: token
-    type: File
-    outputSource: status_complete/token
+  []
 
 steps:
   - id: get_hostname
