@@ -12,17 +12,18 @@ inputs:
     type: File
     inputBinding:
       prefix: -c
+      position: 0
+
+  - id: download
+    type: string
+    default: download
+    inputBinding:
+      position: 1
 
   - id: download_handle
     type: string
     inputBinding:
       position: 99
-
-  - id: file_path
-    type: string
-    default: "."
-    inputBinding:
-      prefix: --file_path
 
 outputs:
   - id: output
@@ -30,4 +31,4 @@ outputs:
     outputBinding:
       glob: "*"
     
-baseCommand: [/usr/local/bin/bio_client.py, download]
+baseCommand: [/usr/local/bin/bio_client.py]
