@@ -54,14 +54,12 @@ function runner()
     local work_dir=${3}
 
     local prev_dir=$(pwd)
-    cd ${work_dir}
     local cache_dir=cache
     local tmp_dir=tmp
     mkdir ${cache_dir}
     mkdir ${tmp_dir}
  
     cwltool --debug --rm-tmpdir --rm-container --no-read-only --no-match-user --tmp-outdir-prefix ${cache_dir}/ --tmpdir-prefix ${tmp_dir}/ --custom-net bridge --outdir ${work_dir} ${workflow_path} ${task_path}
-    cd ${prev_dir}
 }
 
 function main()
