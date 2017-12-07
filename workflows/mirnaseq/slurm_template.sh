@@ -10,7 +10,7 @@ CWL_WORKFLOW_GIT_REPO=${xx_cwl_workflow_git_repo_xx}
 CWL_WORKFLOW_GIT_HASH=${xx_cwl_workflow_git_hash_xx}
 CWL_WORKFLOW_REL_PATH=${xx_cwl_workflow_rel_path_xx}
 CWL_TASK_GIT_REPO=${xx_cwl_task_git_repo_xx}
-CWL_TASK_GIT_BRANCH=${xx_cwl_task_git_branch_xx}
+CWL_TASK_GIT_HASH=${xx_cwl_task_git_hash_xx}
 CWL_TASK_REL_PATH=${xx_cwl_task_rel_path_xx}
 SCRATCH_DIR=${xx_scratch_dir_xx}
 TASK_UUID=${xx_task_uuid_xx}
@@ -54,8 +54,9 @@ function runner()
     local work_dir=${3}
 
     local prev_dir=$(pwd)
-    local cache_dir=cache
-    local tmp_dir=tmp
+    local cache_dir=${work_dir}/cache
+    local tmp_dir=${work_dir}/tmp
+
     mkdir ${cache_dir}
     mkdir ${tmp_dir}
  
@@ -68,7 +69,7 @@ function main()
     local cwl_workflow_git_hash=${CWL_WORKFLOW_GIT_HASH}
     local cwl_workflow_rel_path=${CWL_WORKFLOW_REL_PATH}
     local cwl_task_git_repo=${CWL_TASK_GIT_REPO}
-    local cwl_task_git_branch=${CWL_TASK_GIT_BRANCH}
+    local cwl_task_git_hash=${CWL_TASK_GIT_HASH}
     local cwl_task_rel_path=${CWL_TASK_REL_PATH}
     local task_uuid=${TASK_UUID}
     local scratch_dir=${SCRATCH_DIR}
