@@ -47,6 +47,22 @@ function git_clone()
     unset https_proxy
 }
 
+function git_archive()
+{
+    local clone_dir=${1}
+    local git_hash=${2}
+    local git_repo=${3}
+
+    export http_proxy=http://cloud-proxy:3128
+    export https_proxy=http://cloud-proxy:3128
+    local prev_dir=$(pwd)
+    cd ${clone_dir}
+    git archive --remote=${git_repo} ${git_hash} ${git_rel_path} | tar -O -xf -
+    cd ${prev_dir}
+    unset http_proxy
+    unset https_proxy    
+}
+
 function runner()
 {
     local task_path=${1}
@@ -84,7 +100,7 @@ function main()
     mkdir -p ${task_dir}
 
     git_clone ${workflow_dir} ${cwl_workflow_git_hash} ${cwl_workflow_git_repo}
-    git_clone ${task_dir} ${cwl_task_git_branch} ${cwl_task_git_repo}
+    git_archive ${task_dir} ${cwl_task_git_branch} ${cwl_task_git_repo}
     activate_virtualenv ${virtualenv_name}
     runner ${task_path} ${workflow_path} ${work_dir}
     if [ $? -ne 0 ]
