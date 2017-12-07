@@ -53,7 +53,6 @@ function runner()
     local workflow_path=${2}
     local work_dir=${3}
 
-    local prev_dir=$(pwd)
     local cache_dir=${work_dir}/cache
     local tmp_dir=${work_dir}/tmp
 
