@@ -2,7 +2,6 @@
     "cwl_workflow_git_repo": "${cwl_workflow_git_repo}",
     "cwl_workflow_git_hash": "${cwl_workflow_git_hash}",
     "cwl_workflow_rel_path": "${cwl_workflow_rel_path}",
-    "cwl_task_git_branch": "${cwl_task_git_branch}",
     "cwl_task_git_repo": "${cwl_task_git_repo}",
     "cwl_task_rel_path": "${cwl_task_rel_path}",
     "db_cred": {
