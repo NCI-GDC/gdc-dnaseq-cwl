@@ -14,6 +14,12 @@ inputs:
       prefix: -c
       position: 0
 
+  - id: dir_path
+    type: string
+    default: "."
+    inputBinding:
+      prefix: --dir_path
+
   - id: download
     type: string
     default: download
