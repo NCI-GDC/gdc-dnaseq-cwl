@@ -26,41 +26,23 @@ function activate_virtualenv()
     source ${HOME}/.virtualenvs/${virtualenv_name}/bin/activate
 }
 
-function git_clone()
+function git_fetch_commit()
 {
     local clone_dir=${1}
-    local git_branch=${2}
+    local git_commit=${2}
     local git_repo=${3}
 
     local repo=$(basename ${git_repo})
     local repo_dir=${clone_dir}/${repo}
     local prev_dir=$(pwd)
 
-    export http_proxy=http://cloud-proxy:3128
-    export https_proxy=http://cloud-proxy:3128
-    cd ${clone_dir}
-    git clone ${git_repo}
+    mkdir -p ${repo_dir}
     cd ${repo_dir}
-    git checkout ${git_branch}
+    git init
+    git remote add origin ${git_repo}
+    git fetch --depth 1 origin ${git_commit}
+    git checkout FETCH_HEAD
     cd ${prev_dir}
-    unset http_proxy
-    unset https_proxy
-}
-
-function git_archive()
-{
-    local clone_dir=${1}
-    local git_hash=${2}
-    local git_repo=${3}
-
-    export http_proxy=http://cloud-proxy:3128
-    export https_proxy=http://cloud-proxy:3128
-    local prev_dir=$(pwd)
-    cd ${clone_dir}
-    git archive --remote=${git_repo} ${git_hash} ${git_rel_path} | tar -O -xf -
-    cd ${prev_dir}
-    unset http_proxy
-    unset https_proxy    
 }
 
 function runner()
@@ -99,8 +81,8 @@ function main()
     mkdir -p ${workflow_dir}
     mkdir -p ${task_dir}
 
-    git_clone ${workflow_dir} ${cwl_workflow_git_hash} ${cwl_workflow_git_repo}
-    git_archive ${task_dir} ${cwl_task_git_branch} ${cwl_task_git_repo}
+    git_fetch_commit ${workflow_dir} ${cwl_workflow_git_hash} ${cwl_workflow_git_repo}
+    git_fetch_commit ${task_dir} ${cwl_task_git_hash} ${cwl_task_git_repo}
     activate_virtualenv ${virtualenv_name}
     runner ${task_path} ${workflow_path} ${work_dir}
     if [ $? -ne 0 ]
