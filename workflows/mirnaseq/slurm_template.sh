@@ -32,7 +32,10 @@ function git_fetch_commit()
     local git_commit=${2}
     local git_repo=${3}
 
-    local repo=$(basename ${git_repo})
+    IFS=':' read -ra git_repo_array <<< ${git_repo}
+    local proj_repo=${git_repo_array[-1]}
+    local repo=$(basename ${proj_repo})
+    # local repo=$(basename ${git_repo})
     local repo_dir=${clone_dir}/${repo}
     local prev_dir=$(pwd)
 
