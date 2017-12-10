@@ -16,7 +16,7 @@ inputs:
     type: string
   - id: cwl_workflow_rel_path
     type: string
-  - id: cwl_task_git_branch
+  - id: cwl_task_git_hash
     type: string
   - id: cwl_task_git_repo
     type: string
@@ -103,16 +103,6 @@ steps:
     out:
       - id: output
 
-  - id: get_cwl_task_repo_hash
-    run: ../../tools/emit_git_hash.cwl
-    in:
-      - id: repo
-        source: cwl_task_git_repo
-      - id: branch
-        source: cwl_task_git_branch
-    out:
-      - id: output
-
   - id: status_running
     run: status_postgres.cwl
     in:
@@ -122,10 +112,8 @@ steps:
         source: cwl_workflow_git_repo
       - id: cwl_workflow_rel_path
         source: cwl_workflow_rel_path
-      - id: cwl_task_git_branch
-        source: cwl_task_git_branch
       - id: cwl_task_git_hash
-        source: get_cwl_task_repo_hash/output
+        source: cwl_task_git_hash
       - id: cwl_task_git_repo
         source: cwl_task_git_repo
       - id: cwl_task_rel_path
@@ -258,10 +246,8 @@ steps:
         source: cwl_workflow_git_repo
       - id: cwl_workflow_rel_path
         source: cwl_workflow_rel_path
-      - id: cwl_task_git_branch
-        source: cwl_task_git_branch
       - id: cwl_task_git_hash
-        source: get_cwl_task_repo_hash/output
+        source: cwl_task_git_hash
       - id: cwl_task_git_repo
         source: cwl_task_git_repo
       - id: cwl_task_rel_path

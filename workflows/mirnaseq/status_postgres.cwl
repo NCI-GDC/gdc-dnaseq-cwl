@@ -16,8 +16,6 @@ inputs:
     type: string
   - id: cwl_workflow_rel_path
     type: string
-  - id: cwl_task_git_branch
-    type: string
   - id: cwl_task_git_hash
     type: string
   - id: cwl_task_git_repo
@@ -136,7 +134,7 @@ steps:
           cwl_workflow_git_hash,
           cwl_workflow_git_repo,
           cwl_workflow_rel_path,
-          cwl_task_git_branch,
+          cwl_task_git_hash,
           cwl_task_git_hash,
           cwl_task_git_repo,
           cwl_task_rel_path,
