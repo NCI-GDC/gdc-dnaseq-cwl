@@ -57,7 +57,7 @@ function git_fetch_commit()
     echo git remote add origin ${git_repo}
     git remote add origin ${git_repo}
     echo git fetch --depth 1 origin ${git_commit}
-    git fetch --depth 1 origin ${git_commit}
+    eval "$(ssh-agent -s)" && ssh-add ${HOME}/.ssh/slurm_id_rsa && git fetch --depth 1 origin ${git_commit}
     echo git checkout FETCH_HEAD
     git checkout FETCH_HEAD
     echo cd ${prev_dir}
