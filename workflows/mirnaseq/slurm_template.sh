@@ -35,32 +35,15 @@ function git_fetch_commit()
     IFS=':' read -ra git_repo_array <<< ${git_repo}
     local proj_repo=${git_repo_array[-1]}
     local repo=$(basename ${proj_repo})
-    # local repo=$(basename ${git_repo})
     local repo_dir=${clone_dir}/${repo}
     local prev_dir=$(pwd)
 
-    echo clone_dir=${clone_dir}
-    echo git_commit=${git_commit}
-    echo git_repo=${git_repo}
-
-    echo repo=${repo}
-    echo repo_dir=${repo_dir}
-    echo prev_dir=${prev_dir}
-
-    echo pwd=$(pwd)
-    echo mkdir -p ${repo_dir}
     mkdir -p ${repo_dir}
-    echo cd ${repo_dir}
     cd ${repo_dir}
-    echo git init
     git init
-    echo git remote add origin ${git_repo}
     git remote add origin ${git_repo}
-    echo git fetch --depth 1 origin ${git_commit}
     eval "$(ssh-agent -s)" && ssh-add ${HOME}/.ssh/slurm_id_rsa && git fetch --depth 1 origin ${git_commit}
-    echo git checkout FETCH_HEAD
     git checkout FETCH_HEAD
-    echo cd ${prev_dir}
     cd ${prev_dir}
 }
 
