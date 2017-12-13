@@ -19,6 +19,7 @@ inputs:
     default: "."
     inputBinding:
       prefix: --dir_path
+      position: 99
 
   - id: download
     type: string
@@ -29,7 +30,7 @@ inputs:
   - id: download_handle
     type: string
     inputBinding:
-      position: 99
+      position: 98
 
 outputs:
   - id: output
