@@ -32,6 +32,6 @@
     "slurm_resource_disk_gigabytes": 0,
     "slurm_resource_mem_megabytes": 0,
     "status_table": "${status_table}",
-    "task_uuid": "$(tast_uuid)",
+    "task_uuid": "$(task_uuid)",
     "thread_count": 0,
 }
