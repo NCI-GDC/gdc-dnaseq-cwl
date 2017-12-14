@@ -10,6 +10,10 @@ requirements:
   - class: SubworkflowFeatureRequirement
 
 inputs:
+  - id: bioclient_config
+    type: File
+  - id: bioclient_load_bucket
+    type: string
   - id: cwl_workflow_git_hash
     type: string
   - id: cwl_workflow_git_repo
@@ -26,8 +30,6 @@ inputs:
     type: File
   - id: db_cred_section
     type: string
-  - id: gdc_token
-    type: File
   - id: input_bam_gdc_id
     type: string
   - id: input_bam_file_size
@@ -67,19 +69,25 @@ inputs:
   - id: thread_count
     type: long
 
-  - id: aws_config
-    type: File
-  - id: aws_shared_credentials
-    type: File
-  - id: endpoint_json
-    type: File
-  - id: load_bucket
-    type: string
-  - id: s3cfg_section
-    type: string
-
 outputs:
-  []
+  - id: indexd_bam_uuid
+    type: string
+    outputSource: emit_bam_uuid/output
+  - id: indexd_bai_uuid
+    type: string
+    outputSource: emit_bai_uuid/output
+  - id: indexd_mirna_profiling_tar_uuid
+    type: string
+    outputSource: emit_mirna_profiling_tar_uuid/output
+  - id: indexd_mirna_profiling_isoforms_quant_uuid
+    type: string
+    outputSource: emit_mirna_profiling_isoforms_quant_uuid/output
+  - id: indexd_mirna_profiling_mirnas_quant_uuid
+    type: string
+    outputSource: emit_mirna_profiling_mirnas_quant_uuid/output
+  - id: indexd_sqlite_uuid
+    type: string
+    outputSource: emit_sqlite_uuid/output
 
 steps:
   - id: get_hostname
@@ -154,17 +162,17 @@ steps:
         source: reference_pac_gdc_id
       - id: reference_sa_gdc_id
         source: reference_sa_gdc_id
-      - id: s3_bam_url
+      - id: indexd_bam_uuid
         valueFrom: "NULL"
-      - id: s3_bai_url
+      - id: indexd_bai_uuid
         valueFrom: "NULL"
-      - id: s3_mirna_profiling_tar_url
+      - id: indexd_mirna_profiling_tar_uuid
         valueFrom: "NULL"
-      - id: s3_mirna_profiling_isoforms_quant_url
+      - id: indexd_mirna_profiling_isoforms_quant_uuid
         valueFrom: "NULL"
-      - id: s3_mirna_profiling_mirnas_quant_url
+      - id: indexd_mirna_profiling_mirnas_quant_uuid
         valueFrom: "NULL"
-      - id: s3_sqlite_url
+      - id: indexd_sqlite_uuid
         valueFrom: "NULL"
       - id: slurm_resource_cores
         source: slurm_resource_cores
@@ -175,7 +183,7 @@ steps:
       - id: status
         valueFrom: "RUNNING"
       - id: step_token
-        source: gdc_token
+        source: bioclient_config
       - id: table_name
         source: status_table
       - id: task_uuid
@@ -188,8 +196,10 @@ steps:
   - id: etl
     run: etl.cwl
     in:
-      - id: gdc_token
-        source: gdc_token
+      - id: bioclient_config
+        source: bioclient_config
+      - id: bioclient_load_bucket
+        source: bioclient_load_bucket
       - id: input_bam_gdc_id
         source: input_bam_gdc_id
       - id: known_snp_gdc_id
@@ -218,25 +228,75 @@ steps:
         source: thread_count
       - id: task_uuid
         source: task_uuid
-      - id: aws_config
-        source: aws_config
-      - id: aws_shared_credentials
-        source: aws_shared_credentials
-      - id: endpoint_json
-        source: endpoint_json
-      - id: load_bucket
-        source: load_bucket
-      - id: s3cfg_section
-        source: s3cfg_section
     out:
-      - id: s3_bam_url
-      - id: s3_bai_url
-      - id: s3_mirna_profiling_tar_url
-      - id: s3_mirna_profiling_isoforms_quant_url
-      - id: s3_mirna_profiling_mirnas_quant_url
-      - id: s3_sqlite_url
+      - id: indexd_bam_json
+      - id: indexd_bai_json
+      - id: indexd_mirna_profiling_tar_json
+      - id: indexd_mirna_profiling_isoforms_quant_json
+      - id: indexd_mirna_profiling_mirnas_quant_json
+      - id: indexd_sqlite_json
       - id: token
 
+  - id: emit_bam_uuid
+    run: ../../tools/emit_json_value.cwl
+    in:
+      - id: input
+        source: etl/indexd_bam_json
+      - id: key
+        valueFrom: did
+    out:
+      - id: output
+        
+  - id: emit_bai_uuid
+    run: ../../tools/emit_json_value.cwl
+    in:
+      - id: input
+        source: etl/indexd_bai_json
+      - id: key
+        valueFrom: did
+    out:
+      - id: output
+        
+  - id: emit_sqlite_uuid
+    run: ../../tools/emit_json_value.cwl
+    in:
+      - id: input
+        source: etl/indexd_sqlite_json
+      - id: key
+        valueFrom: did
+    out:
+      - id: output
+        
+  - id: emit_mirna_profiling_tar_uuid
+    run: ../../tools/emit_json_value.cwl
+    in:
+      - id: input
+        source: etl/indexd_mirna_profiling_tar_json
+      - id: key
+        valueFrom: did
+    out:
+      - id: output
+        
+  - id: emit_mirna_profiling_isoforms_quant_uuid
+    run: ../../tools/emit_json_value.cwl
+    in:
+      - id: input
+        source: etl/indexd_mirna_profiling_isoforms_quant_json
+      - id: key
+        valueFrom: did
+    out:
+      - id: output
+        
+  - id: emit_mirna_profiling_mirnas_quant_uuid
+    run: ../../tools/emit_json_value.cwl
+    in:
+      - id: input
+        source: etl/indexd_mirna_profiling_mirnas_quant_json
+      - id: key
+        valueFrom: did
+    out:
+      - id: output
+        
   - id: status_complete
     run: status_postgres.cwl
     in:
@@ -288,18 +348,18 @@ steps:
         source: reference_pac_gdc_id
       - id: reference_sa_gdc_id
         source: reference_sa_gdc_id
-      - id: s3_bam_url
-        source: etl/s3_bam_url
-      - id: s3_bai_url
-        source: etl/s3_bai_url
-      - id: s3_mirna_profiling_tar_url
-        source: etl/s3_mirna_profiling_tar_url
-      - id: s3_mirna_profiling_isoforms_quant_url
-        source: etl/s3_mirna_profiling_isoforms_quant_url
-      - id: s3_mirna_profiling_mirnas_quant_url
-        source: etl/s3_mirna_profiling_mirnas_quant_url
-      - id: s3_sqlite_url
-        source: etl/s3_sqlite_url
+      - id: indexd_bam_uuid
+        source: emit_bam_uuid/output
+      - id: indexd_bai_uuid
+        source: emit_bai_uuid/output
+      - id: indexd_mirna_profiling_tar_uuid
+        source: emit_mirna_profiling_tar_uuid/output
+      - id: indexd_mirna_profiling_isoforms_quant_uuid
+        source: emit_mirna_profiling_isoforms_quant_uuid/output
+      - id: indexd_mirna_profiling_mirnas_quant_uuid
+        source: emit_mirna_profiling_mirnas_quant_uuid/output
+      - id: indexd_sqlite_uuid
+        source: emit_sqlite_uuid/output
       - id: slurm_resource_cores
         source: slurm_resource_cores
       - id: slurm_resource_disk_gigabytes

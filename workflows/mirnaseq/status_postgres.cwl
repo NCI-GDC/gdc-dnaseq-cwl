@@ -58,17 +58,17 @@ inputs:
     type: string
   - id: reference_sa_gdc_id
     type: string
-  - id: s3_bam_url
+  - id: indexd_bam_uuid
     type: string
-  - id: s3_bai_url
+  - id: indexd_bai_uuid
     type: string
-  - id: s3_mirna_profiling_tar_url
+  - id: indexd_mirna_profiling_tar_uuid
     type: string
-  - id: s3_mirna_profiling_isoforms_quant_url
+  - id: indexd_mirna_profiling_isoforms_quant_uuid
     type: string
-  - id: s3_mirna_profiling_mirnas_quant_url
+  - id: indexd_mirna_profiling_mirnas_quant_uuid
     type: string
-  - id: s3_sqlite_url
+  - id: indexd_sqlite_uuid
     type: string
   - id: slurm_resource_cores
     type: long
@@ -120,12 +120,12 @@ steps:
           "reference_fai_gdc_id",
           "reference_pac_gdc_id",
           "reference_sa_gdc_id",
-          "s3_bam_url",
-          "s3_bai_url",
-          "s3_mirna_profiling_tar_url",
-          "s3_mirna_profiling_isoforms_quant_url",
-          "s3_mirna_profiling_mirnas_quant_url",
-          "s3_sqlite_url",
+          "indexd_bam_uuid",
+          "indexd_bai_uuid",
+          "indexd_mirna_profiling_tar_uuid",
+          "indexd_mirna_profiling_isoforms_quant_uuid",
+          "indexd_mirna_profiling_mirnas_quant_uuid",
+          "indexd_sqlite_uuid",
           "status",
           "task_uuid"
         ]
@@ -153,12 +153,12 @@ steps:
           reference_fai_gdc_id,
           reference_pac_gdc_id,
           reference_sa_gdc_id,
-          s3_bam_url,
-          s3_bai_url,
-          s3_mirna_profiling_tar_url,
-          s3_mirna_profiling_isoforms_quant_url,
-          s3_mirna_profiling_mirnas_quant_url,
-          s3_sqlite_url,
+          indexd_bam_uuid,
+          indexd_bai_uuid,
+          indexd_mirna_profiling_tar_uuid,
+          indexd_mirna_profiling_isoforms_quant_uuid,
+          indexd_mirna_profiling_mirnas_quant_uuid,
+          indexd_sqlite_uuid,
           status,
           task_uuid
         ]

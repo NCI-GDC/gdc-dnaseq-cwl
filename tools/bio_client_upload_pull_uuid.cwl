@@ -32,11 +32,10 @@ inputs:
       position: 99
 
 outputs:
-  []
-  # - id: output
-  #   type: File
-  #   outputBinding:
-  #     glob: "upload.json"
+  - id: output
+    type: File
+    outputBinding:
+      glob: "upload.json"
 
 arguments:
   - valueFrom: $(inputs.input.basename)
