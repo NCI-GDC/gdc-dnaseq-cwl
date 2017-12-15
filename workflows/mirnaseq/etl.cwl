@@ -312,7 +312,7 @@ steps:
         source: transform/picard_markduplicates_output
       - id: upload-bucket
         source: bioclient_load_bucket
-        valueFrom: $(self + "/" + inputs.task_uuid + "/")
+        valueFrom: $(self + "/" + inputs.task_uuid)
       - id: task_uuid
         source: task_uuid
         valueFrom: $(null)
@@ -329,7 +329,7 @@ steps:
         valueFrom: $(self.secondaryFiles[0])
       - id: upload-bucket
         source: bioclient_load_bucket
-        valueFrom: $(self + "/" + inputs.task_uuid + "/")
+        valueFrom: $(self + "/" + inputs.task_uuid)
       - id: task_uuid
         source: task_uuid
         valueFrom: $(null)
@@ -345,7 +345,7 @@ steps:
         source: transform/merge_all_sqlite_destination_sqlite
       - id: upload-bucket
         source: bioclient_load_bucket
-        valueFrom: $(self + "/" + inputs.task_uuid + "/")
+        valueFrom: $(self + "/" + inputs.task_uuid)
       - id: task_uuid
         source: task_uuid
         valueFrom: $(null)
@@ -361,7 +361,7 @@ steps:
         source: tar_mirna_profiling/OUTPUT
       - id: upload-bucket
         source: bioclient_load_bucket
-        valueFrom: $(self + "/" + inputs.task_uuid + "/")
+        valueFrom: $(self + "/" + inputs.task_uuid)
       - id: task_uuid
         source: task_uuid
         valueFrom: $(null)
@@ -377,7 +377,7 @@ steps:
         source: rename_isoforms_quant/OUTPUT
       - id: upload-bucket
         source: bioclient_load_bucket
-        valueFrom: $(self + "/" + inputs.task_uuid + "/")
+        valueFrom: $(self + "/" + inputs.task_uuid)
       - id: task_uuid
         source: task_uuid
         valueFrom: $(null)
@@ -393,7 +393,7 @@ steps:
         source: rename_mirnas_quant/OUTPUT
       - id: upload-bucket
         source: bioclient_load_bucket
-        valueFrom: $(self + "/" + inputs.task_uuid + "/")
+        valueFrom: $(self + "/" + inputs.task_uuid)
       - id: task_uuid
         source: task_uuid
         valueFrom: $(null)
