@@ -100,7 +100,7 @@ function main()
 
     git_fetch_commit ${workflow_dir} ${cwl_workflow_git_hash} ${cwl_workflow_git_repo}
     git_fetch_commit ${task_dir} ${cwl_task_git_hash} ${cwl_task_git_repo}
-    sed -i "s/\${xx_cwl_task_git_hash_xx}/${cwl_task_git_hash}/" ${task_path}
+    sed -i "s/\${cwl_task_git_hash}/${xx_cwl_task_git_hash_xx}/" ${task_path}
     activate_virtualenv ${virtualenv_name}
     runner ${task_path} ${workflow_path} ${work_dir}
     if [ $? -ne 0 ]
