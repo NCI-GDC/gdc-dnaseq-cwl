@@ -106,10 +106,10 @@ function main()
     if [ $? -ne 0 ]
     then
         echo FAIL_RUNNER
-        sudo rm -rf ${work_dir}
+        #sudo rm -rf ${work_dir}
         exit 1
     fi
-    sudo rm -rf ${work_dir}
+    #sudo rm -rf ${work_dir}
 }
 
 main "$@"
