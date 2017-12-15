@@ -4888,7 +4888,7 @@
                         {
                             "id": "#etl.cwl/load_bam/upload-bucket", 
                             "source": "#etl.cwl/bioclient_load_bucket", 
-                            "valueFrom": "$(self + \"/\" + inputs.task_uuid + \"/\")"
+                            "valueFrom": "$(self + \"/\" + inputs.task_uuid)"
                         }, 
                         {
                             "id": "#etl.cwl/load_bam/task_uuid", 
@@ -4918,7 +4918,7 @@
                         {
                             "id": "#etl.cwl/load_bai/upload-bucket", 
                             "source": "#etl.cwl/bioclient_load_bucket", 
-                            "valueFrom": "$(self + \"/\" + inputs.task_uuid + \"/\")"
+                            "valueFrom": "$(self + \"/\" + inputs.task_uuid)"
                         }, 
                         {
                             "id": "#etl.cwl/load_bai/task_uuid", 
@@ -4947,7 +4947,7 @@
                         {
                             "id": "#etl.cwl/load_sqlite/upload-bucket", 
                             "source": "#etl.cwl/bioclient_load_bucket", 
-                            "valueFrom": "$(self + \"/\" + inputs.task_uuid + \"/\")"
+                            "valueFrom": "$(self + \"/\" + inputs.task_uuid)"
                         }, 
                         {
                             "id": "#etl.cwl/load_sqlite/task_uuid", 
@@ -4976,7 +4976,7 @@
                         {
                             "id": "#etl.cwl/load_tar_mirna_profiling/upload-bucket", 
                             "source": "#etl.cwl/bioclient_load_bucket", 
-                            "valueFrom": "$(self + \"/\" + inputs.task_uuid + \"/\")"
+                            "valueFrom": "$(self + \"/\" + inputs.task_uuid)"
                         }, 
                         {
                             "id": "#etl.cwl/load_tar_mirna_profiling/task_uuid", 
@@ -5005,7 +5005,7 @@
                         {
                             "id": "#etl.cwl/load_mirna_profiling_isoforms_quant/upload-bucket", 
                             "source": "#etl.cwl/bioclient_load_bucket", 
-                            "valueFrom": "$(self + \"/\" + inputs.task_uuid + \"/\")"
+                            "valueFrom": "$(self + \"/\" + inputs.task_uuid)"
                         }, 
                         {
                             "id": "#etl.cwl/load_mirna_profiling_isoforms_quant/task_uuid", 
@@ -5034,7 +5034,7 @@
                         {
                             "id": "#etl.cwl/load_mirna_profiling_mirnas_quant/upload-bucket", 
                             "source": "#etl.cwl/bioclient_load_bucket", 
-                            "valueFrom": "$(self + \"/\" + inputs.task_uuid + \"/\")"
+                            "valueFrom": "$(self + \"/\" + inputs.task_uuid)"
                         }, 
                         {
                             "id": "#etl.cwl/load_mirna_profiling_mirnas_quant/task_uuid", 
