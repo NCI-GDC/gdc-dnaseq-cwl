@@ -26,6 +26,12 @@ inputs:
       prefix: --upload-bucket
       position: 2
 
+  - id: upload-key
+    type: string
+    inputBinding:
+      prefix: --upload_key
+      position: 3
+
   - id: input
     type: File
     inputBinding:
@@ -35,12 +41,6 @@ outputs:
   - id: output
     type: File
     outputBinding:
-      glob: "upload.json"
+      glob: "upload.json"      
 
-arguments:
-  - valueFrom: $(inputs.input.basename)
-    prefix: --upload_key
-    position: 3
-      
-      
 baseCommand: [/usr/local/bin/bio_client.py]
