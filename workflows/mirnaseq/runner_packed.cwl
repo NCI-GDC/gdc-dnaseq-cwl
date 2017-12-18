@@ -155,7 +155,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/bio-client:0f5a85f883ad4a40bda37dfaf6868ffee31b290d3effbd74ce6fdc675129748b"
+                    "dockerPull": "quay.io/ncigdc/bio-client:2730081f4e2efa4dd0fcca0bb7e843dfd73d2714415ffd8da0eee71193b9b751"
                 }
             ], 
             "inputs": [
@@ -211,7 +211,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/bio-client:0f5a85f883ad4a40bda37dfaf6868ffee31b290d3effbd74ce6fdc675129748b"
+                    "dockerPull": "quay.io/ncigdc/bio-client:2730081f4e2efa4dd0fcca0bb7e843dfd73d2714415ffd8da0eee71193b9b751"
                 }
             ], 
             "inputs": [
@@ -240,6 +240,14 @@
                     }
                 }, 
                 {
+                    "id": "#bio_client_upload_pull_uuid.cwl/upload-key", 
+                    "type": "string", 
+                    "inputBinding": {
+                        "prefix": "--upload_key", 
+                        "position": 3
+                    }
+                }, 
+                {
                     "id": "#bio_client_upload_pull_uuid.cwl/input", 
                     "type": "File", 
                     "inputBinding": {
@@ -252,15 +260,8 @@
                     "id": "#bio_client_upload_pull_uuid.cwl/output", 
                     "type": "File", 
                     "outputBinding": {
-                        "glob": "upload.json"
+                        "glob": "*_upload.json"
                     }
-                }
-            ], 
-            "arguments": [
-                {
-                    "valueFrom": "$(inputs.input.basename)", 
-                    "prefix": "--upload_key", 
-                    "position": 3
                 }
             ], 
             "baseCommand": [
@@ -4887,8 +4888,11 @@
                         }, 
                         {
                             "id": "#etl.cwl/load_bam/upload-bucket", 
-                            "source": "#etl.cwl/bioclient_load_bucket", 
-                            "valueFrom": "$(self + \"/\" + inputs.task_uuid)"
+                            "source": "#etl.cwl/bioclient_load_bucket"
+                        }, 
+                        {
+                            "id": "#etl.cwl/load_bam/upload-key", 
+                            "valueFrom": "$(inputs.task_uuid)/$(inputs.input.basename)"
                         }, 
                         {
                             "id": "#etl.cwl/load_bam/task_uuid", 
@@ -4917,8 +4921,11 @@
                         }, 
                         {
                             "id": "#etl.cwl/load_bai/upload-bucket", 
-                            "source": "#etl.cwl/bioclient_load_bucket", 
-                            "valueFrom": "$(self + \"/\" + inputs.task_uuid)"
+                            "source": "#etl.cwl/bioclient_load_bucket"
+                        }, 
+                        {
+                            "id": "#etl.cwl/load_bai/upload-key", 
+                            "valueFrom": "$(inputs.task_uuid)/$(inputs.input.basename)"
                         }, 
                         {
                             "id": "#etl.cwl/load_bai/task_uuid", 
@@ -4946,8 +4953,11 @@
                         }, 
                         {
                             "id": "#etl.cwl/load_sqlite/upload-bucket", 
-                            "source": "#etl.cwl/bioclient_load_bucket", 
-                            "valueFrom": "$(self + \"/\" + inputs.task_uuid)"
+                            "source": "#etl.cwl/bioclient_load_bucket"
+                        }, 
+                        {
+                            "id": "#etl.cwl/load_sqlite/upload-key", 
+                            "valueFrom": "$(inputs.task_uuid)/$(inputs.input.basename)"
                         }, 
                         {
                             "id": "#etl.cwl/load_sqlite/task_uuid", 
@@ -4975,8 +4985,11 @@
                         }, 
                         {
                             "id": "#etl.cwl/load_tar_mirna_profiling/upload-bucket", 
-                            "source": "#etl.cwl/bioclient_load_bucket", 
-                            "valueFrom": "$(self + \"/\" + inputs.task_uuid)"
+                            "source": "#etl.cwl/bioclient_load_bucket"
+                        }, 
+                        {
+                            "id": "#etl.cwl/load_tar_mirna_profiling/upload-key", 
+                            "valueFrom": "$(inputs.task_uuid)/$(inputs.input.basename)"
                         }, 
                         {
                             "id": "#etl.cwl/load_tar_mirna_profiling/task_uuid", 
@@ -5004,8 +5017,11 @@
                         }, 
                         {
                             "id": "#etl.cwl/load_mirna_profiling_isoforms_quant/upload-bucket", 
-                            "source": "#etl.cwl/bioclient_load_bucket", 
-                            "valueFrom": "$(self + \"/\" + inputs.task_uuid)"
+                            "source": "#etl.cwl/bioclient_load_bucket"
+                        }, 
+                        {
+                            "id": "#etl.cwl/load_mirna_profiling_isoforms_quant/upload-key", 
+                            "valueFrom": "$(inputs.task_uuid)/$(inputs.input.basename)"
                         }, 
                         {
                             "id": "#etl.cwl/load_mirna_profiling_isoforms_quant/task_uuid", 
@@ -5033,8 +5049,11 @@
                         }, 
                         {
                             "id": "#etl.cwl/load_mirna_profiling_mirnas_quant/upload-bucket", 
-                            "source": "#etl.cwl/bioclient_load_bucket", 
-                            "valueFrom": "$(self + \"/\" + inputs.task_uuid)"
+                            "source": "#etl.cwl/bioclient_load_bucket"
+                        }, 
+                        {
+                            "id": "#etl.cwl/load_mirna_profiling_mirnas_quant/upload-key", 
+                            "valueFrom": "$(inputs.task_uuid)/$(inputs.input.basename)"
                         }, 
                         {
                             "id": "#etl.cwl/load_mirna_profiling_mirnas_quant/task_uuid", 

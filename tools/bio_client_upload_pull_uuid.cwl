@@ -5,7 +5,7 @@ cwlVersion: v1.0
 class: CommandLineTool
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/bio-client:0f5a85f883ad4a40bda37dfaf6868ffee31b290d3effbd74ce6fdc675129748b
+    dockerPull: quay.io/ncigdc/bio-client:2730081f4e2efa4dd0fcca0bb7e843dfd73d2714415ffd8da0eee71193b9b751
 
 inputs:
   - id: config-file
