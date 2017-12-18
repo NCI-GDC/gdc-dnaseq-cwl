@@ -41,6 +41,6 @@ outputs:
   - id: output
     type: File
     outputBinding:
-      glob: "upload.json"      
+      glob: "*_upload.json"      
 
 baseCommand: [/usr/local/bin/bio_client.py]
