@@ -1278,32 +1278,6 @@
         {
             "requirements": [
                 {
-                    "class": "InlineJavascriptRequirement"
-                }
-            ], 
-            "class": "ExpressionTool", 
-            "inputs": [
-                {
-                    "id": "#json_file_to_string.cwl/input", 
-                    "type": "File", 
-                    "inputBinding": {
-                        "loadContents": true, 
-                        "valueFrom": "$(null)"
-                    }
-                }
-            ], 
-            "outputs": [
-                {
-                    "id": "#json_file_to_string.cwl/output", 
-                    "type": "string"
-                }
-            ], 
-            "expression": "${\n  return {'output': inputs.input.contents}\n}\n", 
-            "id": "#json_file_to_string.cwl"
-        }, 
-        {
-            "requirements": [
-                {
                     "class": "DockerRequirement", 
                     "dockerPull": "quay.io/ncigdc/json-to-sqlite:43564cbca5b19e99d5d4ebf28987cde30facd6082854086967617fbe6be641eb"
                 }
@@ -4395,33 +4369,33 @@
             "outputs": [
                 {
                     "id": "#etl.cwl/indexd_bam_json", 
-                    "type": "string", 
-                    "outputSource": "#etl.cwl/emit_indexd_bam_json/output"
+                    "type": "File", 
+                    "outputSource": "#etl.cwl/load_bam/output"
                 }, 
                 {
                     "id": "#etl.cwl/indexd_bai_json", 
-                    "type": "string", 
-                    "outputSource": "#etl.cwl/emit_indexd_bai_json/output"
+                    "type": "File", 
+                    "outputSource": "#etl.cwl/load_bai/output"
                 }, 
                 {
                     "id": "#etl.cwl/indexd_mirna_profiling_tar_json", 
-                    "type": "string", 
-                    "outputSource": "#etl.cwl/emit_indexd_mirna_profiling_tar_json/output"
+                    "type": "File", 
+                    "outputSource": "#etl.cwl/load_tar_mirna_profiling/output"
                 }, 
                 {
                     "id": "#etl.cwl/indexd_mirna_profiling_isoforms_quant_json", 
-                    "type": "string", 
-                    "outputSource": "#etl.cwl/emit_indexd_mirna_profiling_isoforms_quant_json/output"
+                    "type": "File", 
+                    "outputSource": "#etl.cwl/load_mirna_profiling_isoforms_quant/output"
                 }, 
                 {
                     "id": "#etl.cwl/indexd_mirna_profiling_mirnas_quant_json", 
-                    "type": "string", 
-                    "outputSource": "#etl.cwl/emit_indexd_mirna_profiling_mirnas_quant_json/output"
+                    "type": "File", 
+                    "outputSource": "#etl.cwl/load_mirna_profiling_mirnas_quant/output"
                 }, 
                 {
                     "id": "#etl.cwl/indexd_sqlite_json", 
-                    "type": "string", 
-                    "outputSource": "#etl.cwl/emit_indexd_sqlite_json/output"
+                    "type": "File", 
+                    "outputSource": "#etl.cwl/load_sqlite/output"
                 }, 
                 {
                     "id": "#etl.cwl/token", 
@@ -5068,96 +5042,6 @@
                     "out": [
                         {
                             "id": "#etl.cwl/load_mirna_profiling_mirnas_quant/output"
-                        }
-                    ]
-                }, 
-                {
-                    "id": "#etl.cwl/emit_indexd_bam_json", 
-                    "run": "#json_file_to_string.cwl", 
-                    "in": [
-                        {
-                            "id": "#etl.cwl/emit_indexd_bam_json/input", 
-                            "source": "#etl.cwl/load_bam/output"
-                        }
-                    ], 
-                    "out": [
-                        {
-                            "id": "#etl.cwl/emit_indexd_bam_json/output"
-                        }
-                    ]
-                }, 
-                {
-                    "id": "#etl.cwl/emit_indexd_bai_json", 
-                    "run": "#json_file_to_string.cwl", 
-                    "in": [
-                        {
-                            "id": "#etl.cwl/emit_indexd_bai_json/input", 
-                            "source": "#etl.cwl/load_bai/output"
-                        }
-                    ], 
-                    "out": [
-                        {
-                            "id": "#etl.cwl/emit_indexd_bai_json/output"
-                        }
-                    ]
-                }, 
-                {
-                    "id": "#etl.cwl/emit_indexd_mirna_profiling_tar_json", 
-                    "run": "#json_file_to_string.cwl", 
-                    "in": [
-                        {
-                            "id": "#etl.cwl/emit_indexd_mirna_profiling_tar_json/input", 
-                            "source": "#etl.cwl/load_tar_mirna_profiling/output"
-                        }
-                    ], 
-                    "out": [
-                        {
-                            "id": "#etl.cwl/emit_indexd_mirna_profiling_tar_json/output"
-                        }
-                    ]
-                }, 
-                {
-                    "id": "#etl.cwl/emit_indexd_mirna_profiling_isoforms_quant_json", 
-                    "run": "#json_file_to_string.cwl", 
-                    "in": [
-                        {
-                            "id": "#etl.cwl/emit_indexd_mirna_profiling_isoforms_quant_json/input", 
-                            "source": "#etl.cwl/load_mirna_profiling_isoforms_quant/output"
-                        }
-                    ], 
-                    "out": [
-                        {
-                            "id": "#etl.cwl/emit_indexd_mirna_profiling_isoforms_quant_json/output"
-                        }
-                    ]
-                }, 
-                {
-                    "id": "#etl.cwl/emit_indexd_mirna_profiling_mirnas_quant_json", 
-                    "run": "#json_file_to_string.cwl", 
-                    "in": [
-                        {
-                            "id": "#etl.cwl/emit_indexd_mirna_profiling_mirnas_quant_json/input", 
-                            "source": "#etl.cwl/load_mirna_profiling_mirnas_quant/output"
-                        }
-                    ], 
-                    "out": [
-                        {
-                            "id": "#etl.cwl/emit_indexd_mirna_profiling_mirnas_quant_json/output"
-                        }
-                    ]
-                }, 
-                {
-                    "id": "#etl.cwl/emit_indexd_sqlite_json", 
-                    "run": "#json_file_to_string.cwl", 
-                    "in": [
-                        {
-                            "id": "#etl.cwl/emit_indexd_sqlite_json/input", 
-                            "source": "#etl.cwl/load_sqlite/output"
-                        }
-                    ], 
-                    "out": [
-                        {
-                            "id": "#etl.cwl/emit_indexd_sqlite_json/output"
                         }
                     ]
                 }, 
