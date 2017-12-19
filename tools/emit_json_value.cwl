@@ -9,7 +9,10 @@ class: ExpressionTool
 
 inputs:
   - id: input
-    type: string
+    type: File
+    inputBinding:
+      loadContents: true
+      valueFrom: $(null)
 
   - id: key
     type: string
@@ -20,8 +23,8 @@ outputs:
 
 expression: |
   ${
-    var output_value = inputs.input[inputs.key];
-    return {'output': output_value}
+    var output_value = JSON.parse(inputs.input.contents)[inputs.key];
+    return {'output': output_value};
   }
 
 
