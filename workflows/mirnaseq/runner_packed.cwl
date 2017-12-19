@@ -818,7 +818,11 @@
             "inputs": [
                 {
                     "id": "#emit_json_value.cwl/input", 
-                    "type": "string"
+                    "type": "File", 
+                    "inputBinding": {
+                        "loadContents": true, 
+                        "valueFrom": "$(null)"
+                    }
                 }, 
                 {
                     "id": "#emit_json_value.cwl/key", 
@@ -831,7 +835,7 @@
                     "type": "string"
                 }
             ], 
-            "expression": "${\n  var output_value = inputs.input[inputs.key];\n  return {'output': output_value}\n}\n", 
+            "expression": "${\n  var output_value = JSON.parse(inputs.input.contents)[inputs.key];\n  return {'output': output_value};\n}\n", 
             "id": "#emit_json_value.cwl"
         }, 
         {
