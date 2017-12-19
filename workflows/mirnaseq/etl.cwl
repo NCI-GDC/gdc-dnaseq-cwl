@@ -46,23 +46,23 @@ inputs:
 
 outputs:
   - id: indexd_bam_json
-    type: string
-    outputSource: emit_indexd_bam_json/output
+    type: File
+    outputSource: load_bam/output
   - id: indexd_bai_json
-    type: string
-    outputSource: emit_indexd_bai_json/output
+    type: File
+    outputSource: load_bai/output
   - id: indexd_mirna_profiling_tar_json
-    type: string
-    outputSource: emit_indexd_mirna_profiling_tar_json/output
+    type: File
+    outputSource: load_tar_mirna_profiling/output
   - id: indexd_mirna_profiling_isoforms_quant_json
-    type: string
-    outputSource: emit_indexd_mirna_profiling_isoforms_quant_json/output
+    type: File
+    outputSource: load_mirna_profiling_isoforms_quant/output
   - id: indexd_mirna_profiling_mirnas_quant_json
-    type: string
-    outputSource: emit_indexd_mirna_profiling_mirnas_quant_json/output
+    type: File
+    outputSource: load_mirna_profiling_mirnas_quant/output
   - id: indexd_sqlite_json
-    type: string
-    outputSource: emit_indexd_sqlite_json/output
+    type: File
+    outputSource: load_sqlite/output
   - id: token
     type: File
     outputSource: generate_token/token
@@ -403,54 +403,6 @@ steps:
       - id: task_uuid
         source: task_uuid
         valueFrom: $(null)
-    out:
-      - id: output
-
-  - id: emit_indexd_bam_json
-    run: ../../tools/json_file_to_string.cwl
-    in:
-      - id: input
-        source: load_bam/output
-    out:
-      - id: output
-
-  - id: emit_indexd_bai_json
-    run: ../../tools/json_file_to_string.cwl
-    in:
-      - id: input
-        source: load_bai/output
-    out:
-      - id: output
-
-  - id: emit_indexd_mirna_profiling_tar_json
-    run: ../../tools/json_file_to_string.cwl
-    in:
-      - id: input
-        source: load_tar_mirna_profiling/output
-    out:
-      - id: output
-
-  - id: emit_indexd_mirna_profiling_isoforms_quant_json
-    run: ../../tools/json_file_to_string.cwl
-    in:
-      - id: input
-        source: load_mirna_profiling_isoforms_quant/output
-    out:
-      - id: output
-
-  - id: emit_indexd_mirna_profiling_mirnas_quant_json
-    run: ../../tools/json_file_to_string.cwl
-    in:
-      - id: input
-        source: load_mirna_profiling_mirnas_quant/output
-    out:
-      - id: output
-
-  - id: emit_indexd_sqlite_json
-    run: ../../tools/json_file_to_string.cwl
-    in:
-      - id: input
-        source: load_sqlite/output
     out:
       - id: output
 
