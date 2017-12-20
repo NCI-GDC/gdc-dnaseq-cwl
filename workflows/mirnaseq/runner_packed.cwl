@@ -6056,7 +6056,7 @@
                             "source": "#mirna_profiling.cwl/mirbase_db"
                         }, 
                         {
-                            "id": "#mirna_profiling.cwl/mirna_expression_matrix/project_db", 
+                            "id": "#mirna_profiling.cwl/mirna_expression_matrix/project_directory", 
                             "source": "#mirna_profiling.cwl/project_directory"
                         }, 
                         {

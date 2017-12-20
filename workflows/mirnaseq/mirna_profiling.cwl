@@ -232,7 +232,7 @@ steps:
     in:
       - id: mirbase_db
         source: mirbase_db
-      - id: project_db
+      - id: project_directory
         source: project_directory
       - id: species_code
         source: species_code
