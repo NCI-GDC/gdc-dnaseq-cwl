@@ -6,12 +6,16 @@ requirements:
   - class: InlineJavascriptRequirement
   - class: DockerRequirement
     dockerPull: quay.io/ncigdc/bwa:fac166f93639cbbd4f19db5d07eaf9fa0e1e31f667dd6375d3fc1c995992cd49
-  - class: ResourceRequirement
-    coresMin: 6
-    coresMax: 6
-    ramMin: 6000
-    ramMax: 6000
   - class: ShellCommandRequirement
+  - class: ResourceRequirement
+    coresMin: 1
+    coresMax: 1
+    ramMin: 10000
+    ramMax: 10000
+    tmpdirMin: $(2 * (inputs.fastq.size))
+    tmpdirMax: $(2 * (inputs.fastq.size))
+    outdirMin: $(2 * (inputs.fastq.size))
+    outdirMax: $(2 * (inputs.fastq.size))
 
 class: CommandLineTool
 

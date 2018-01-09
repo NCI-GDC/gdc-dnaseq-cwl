@@ -6,6 +6,15 @@ requirements:
   - class: DockerRequirement
     dockerPull: quay.io/ncigdc/readgroup_json_db:0b69833722a66236e9519ce1d3955368a645c4bcf26d1f7416bbacbdc5deef9b
   - class: InlineJavascriptRequirement
+  - class: ResourceRequirement
+    coresMin: 1
+    coresMax: 1
+    ramMin: 500
+    ramMax: 500
+    tmpdirMin: 1
+    tmpdirMax: 1
+    outdirMin: 1
+    outdirMax: 1
 
 class: CommandLineTool
 

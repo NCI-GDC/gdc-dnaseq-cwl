@@ -6,6 +6,15 @@ requirements:
   - class: DockerRequirement
     dockerPull: quay.io/ncigdc/picard_metrics_sqlite:bbb809fe71a61233801e376068c734539ee58e080d704c6ddc759e24ec59eaaf
   - class: InlineJavascriptRequirement
+  - class: ResourceRequirement
+    coresMin: 1
+    coresMax: 1
+    ramMin: 500
+    ramMax: 500
+    tmpdirMin: 1
+    tmpdirMax: 1
+    outdirMin: 1
+    outdirMax: 1
 
 class: CommandLineTool
 

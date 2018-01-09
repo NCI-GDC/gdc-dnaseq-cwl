@@ -6,6 +6,15 @@ requirements:
   - class: DockerRequirement
     dockerPull: quay.io/ncigdc/biobambam:5f20c171e7f2b2a0a6e11d65dff5d8c2efafd2e09c26ab19695f6a47a438e823
   - class: InlineJavascriptRequirement
+  - class: ResourceRequirement
+    coresMin: 1
+    coresMax: 1
+    ramMin: 2000
+    ramMax: 2000
+    tmpdirMin: $(inputs.filename.size * 0.9)
+    tmpdirMax: $(inputs.filename.size * 0.9)
+    outdirMin: $(inputs.filename.size * 0.9)
+    outdirMax: $(inputs.filename.size * 0.9)
 
 class: CommandLineTool
 

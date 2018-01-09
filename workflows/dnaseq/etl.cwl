@@ -48,111 +48,111 @@ outputs:
 
 steps:
   - id: extract_bam
-    run: ../../tools/gdc_get_object.cwl
+    run: ../../tools/bio_client_download.cwl
     in:
-      - id: gdc_token
-        source: gdc_token
-      - id: gdc_uuid
+      - id: config-file
+        source: bioclient_config
+      - id: download_handle
         source: input_bam_gdc_id
     out:
       - id: output
 
   - id: extract_known_snp
-    run: ../../tools/gdc_get_object.cwl
+    run: ../../tools/bio_client_download.cwl
     in:
-      - id: gdc_token
-        source: gdc_token
-      - id: gdc_uuid
+      - id: config-file
+        source: bioclient_config
+      - id: download_handle
         source: known_snp_gdc_id
     out:
       - id: output
 
   - id: extract_known_snp_index
-    run: ../../tools/gdc_get_object.cwl
+    run: ../../tools/bio_client_download.cwl
     in:
-      - id: gdc_token
-        source: gdc_token
-      - id: gdc_uuid
+      - id: config-file
+        source: bioclient_config
+      - id: download_handle
         source: known_snp_index_gdc_id
     out:
       - id: output
 
   - id: extract_ref_fa
-    run: ../../tools/gdc_get_object.cwl
+    run: ../../tools/bio_client_download.cwl
     in:
-      - id: gdc_token
-        source: gdc_token
-      - id: gdc_uuid
+      - id: config-file
+        source: bioclient_config
+      - id: download_handle
         source: reference_fa_gdc_id
     out:
       - id: output
 
   - id: extract_ref_fai
-    run: ../../tools/gdc_get_object.cwl
+    run: ../../tools/bio_client_download.cwl
     in:
-      - id: gdc_token
-        source: gdc_token
-      - id: gdc_uuid
+      - id: config-file
+        source: bioclient_config
+      - id: download_handle
         source: reference_fai_gdc_id
     out:
       - id: output
 
   - id: extract_ref_dict
-    run: ../../tools/gdc_get_object.cwl
+    run: ../../tools/bio_client_download.cwl
     in:
-      - id: gdc_token
-        source: gdc_token
-      - id: gdc_uuid
+      - id: config-file
+        source: bioclient_config
+      - id: download_handle
         source: reference_dict_gdc_id
     out:
       - id: output
 
   - id: extract_ref_amb
-    run: ../../tools/gdc_get_object.cwl
+    run: ../../tools/bio_client_download.cwl
     in:
-      - id: gdc_token
-        source: gdc_token
-      - id: gdc_uuid
+      - id: config-file
+        source: bioclient_config
+      - id: download_handle
         source: reference_amb_gdc_id
     out:
       - id: output
 
   - id: extract_ref_ann
-    run: ../../tools/gdc_get_object.cwl
+    run: ../../tools/bio_client_download.cwl
     in:
-      - id: gdc_token
-        source: gdc_token
-      - id: gdc_uuid
+      - id: config-file
+        source: bioclient_config
+      - id: download_handle
         source: reference_ann_gdc_id
     out:
       - id: output
 
   - id: extract_ref_bwt
-    run: ../../tools/gdc_get_object.cwl
+    run: ../../tools/bio_client_download.cwl
     in:
-      - id: gdc_token
-        source: gdc_token
-      - id: gdc_uuid
+      - id: config-file
+        source: bioclient_config
+      - id: download_handle
         source: reference_bwt_gdc_id
     out:
       - id: output
 
   - id: extract_ref_pac
-    run: ../../tools/gdc_get_object.cwl
+    run: ../../tools/bio_client_download.cwl
     in:
-      - id: gdc_token
-        source: gdc_token
-      - id: gdc_uuid
+      - id: config-file
+        source: bioclient_config
+      - id: download_handle
         source: reference_pac_gdc_id
     out:
       - id: output
 
   - id: extract_ref_sa
-    run: ../../tools/gdc_get_object.cwl
+    run: ../../tools/bio_client_download.cwl
     in:
-      - id: gdc_token
-        source: gdc_token
-      - id: gdc_uuid
+      - id: config-file
+        source: bioclient_config
+      - id: download_handle
         source: reference_sa_gdc_id
     out:
       - id: output
@@ -206,48 +206,70 @@ steps:
       - id: picard_markduplicates_output
       - id: merge_all_sqlite_destination_sqlite
 
-  # - id: load_bam
-  #   run: ../../tools/gdc_put_object.cwl
-  #   in:
-  #     - id: input
-  #       source: transform/picard_markduplicates_output
-  #     - id: uuid
-  #       source: uuid
-  #   out:
-  #     - id: output
+  - id: load_bam
+    run: ../../tools/bio_client_upload_pull_uuid.cwl
+    in:
+      - id: config-file
+        source: bioclient_config
+      - id: input
+        source: transform/picard_markduplicates_output
+      - id: upload-bucket
+        source: bioclient_load_bucket
+      - id: upload-key
+        valueFrom: $(inputs.task_uuid)/$(inputs.input.basename)
+      - id: task_uuid
+        source: task_uuid
+        valueFrom: $(null)
+    out:
+      - id: output
 
-  # - id: load_bai
-  #   run: ../../tools/gdc_put_object.cwl
-  #   in:
-  #     - id: input
-  #       source: transform/picard_markduplicates_output
-  #       valueFrom: $(self.secondaryFiles[0])
-  #     - id: uuid
-  #       source: uuid
-  #   out:
-  #     - id: output
+  - id: load_bai
+    run: ../../tools/bio_client_upload_pull_uuid.cwl
+    in:
+      - id: config-file
+        source: bioclient_config
+      - id: input
+        source: transform/picard_markduplicates_output
+        valueFrom: $(self.secondaryFiles[0])
+      - id: upload-bucket
+        source: bioclient_load_bucket
+      - id: upload-key
+        valueFrom: $(inputs.task_uuid)/$(inputs.input.basename)
+      - id: task_uuid
+        source: task_uuid
+        valueFrom: $(null)
+    out:
+      - id: output
 
-  # - id: load_sqlite
-  #   run: ../../tools/gdc_put_object.cwl
-  #   in:
-  #     - id: input
-  #       source: transform/merge_all_sqlite_destination_sqlite
-  #     - id: uuid
-  #       source: uuid
-  #   out:
-  #     - id: output
+  - id: load_sqlite
+    run: ../../tools/bio_client_upload_pull_uuid.cwl
+    in:
+      - id: config-file
+        source: bioclient_config
+      - id: input
+        source: transform/merge_all_sqlite_destination_sqlite
+        valueFrom: $(self.secondaryFiles[0])
+      - id: upload-bucket
+        source: bioclient_load_bucket
+      - id: upload-key
+        valueFrom: $(inputs.task_uuid)/$(inputs.input.basename)
+      - id: task_uuid
+        source: task_uuid
+        valueFrom: $(null)
+    out:
+      - id: output
 
-  # - id: generate_token
-  #   run: ../../tools/generate_load_token.cwl
-  #   in:
-  #     - id: load1
-  #       source: load_bam/output
-  #     - id: load2
-  #       source: load_bai/output
-  #     - id: load3
-  #       source: load_sqlite/output
-  #   out:
-  #     - id: token
+  - id: generate_token
+    run: ../../tools/generate_load_token.cwl
+    in:
+      - id: load1
+        source: load_bam/output
+      - id: load2
+        source: load_bai/output
+      - id: load3
+        source: load_sqlite/output
+    out:
+      - id: token
 
   - id: generate_token
     run: ../../tools/generate_load_token.cwl

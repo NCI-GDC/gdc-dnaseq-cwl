@@ -7,6 +7,15 @@ requirements:
     dockerPull: quay.io/ncigdc/fastq_remove_duplicate_qname:5762be5de2178b6078621e09836019106c78b2e07bfdbcf2c74ab147fb844e34
   - class: InlineJavascriptRequirement
   - class: ShellCommandRequirement
+  - class: ResourceRequirement
+    coresMin: 1
+    coresMax: 1
+    ramMin: 5000
+    ramMax: 5000
+    tmpdirMin: $(inputs.INPUT.size)
+    tmpdirMax: $(inputs.INPUT.size)
+    outdirMin: $(inputs.INPUT.size)
+    outdirMax: $(inputs.INPUT.size)
 
 class: CommandLineTool
 

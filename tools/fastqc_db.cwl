@@ -6,6 +6,15 @@ requirements:
   - class: DockerRequirement
     dockerPull: quay.io/ncigdc/fastqc_db:b9c09ea65f40e154d239ebf494f4cd14ed2526cb6b70f65f9d822d3ebd4f1594
   - class: InlineJavascriptRequirement
+  - class: ResourceRequirement
+    coresMin: 1
+    coresMax: 1
+    ramMin: 2000
+    ramMax: 2000
+    tmpdirMin: 100
+    tmpdirMax: 100
+    outdirMin: 10
+    outdirMax: 10
 
 class: CommandLineTool
 
