@@ -24,9 +24,9 @@ inputs:
     type: string
 
 outputs:
-  - id: picard_markduplicates_output
+  - id: gatk_printreads_output_bam
     type: File
-    outputSource: picard_markduplicates/OUTPUT
+    outputSource: gatk_printreads/output_bam
   - id: merge_all_sqlite_destination_sqlite
     type: File
     outputSource: merge_all_sqlite/destination_sqlite
