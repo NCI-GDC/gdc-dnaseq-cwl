@@ -796,12 +796,12 @@ steps:
     run: integrity.cwl
     in:
       - id: bai
-        source: picard_markduplicates/OUTPUT
+        source: gatk_printreads/output_bam
         valueFrom: $(self.secondaryFiles[0])
       - id: bam
-        source: picard_markduplicates/OUTPUT
+        source: gatk_printreads/output_bam
       - id: input_state
-        valueFrom: "markduplicates_readgroups"
+        valueFrom: "gatk_printreads"
       - id: task_uuid
         source: task_uuid
     out:
