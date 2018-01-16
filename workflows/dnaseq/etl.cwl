@@ -14,26 +14,48 @@ inputs:
     type: File
   - id: input_bam_gdc_id
     type: string
+  - id: input_bam_file_size
+    type: long
   - id: known_snp_gdc_id
     type: string
+  - id: known_snp_file_size
+    type: long
   - id: known_snp_index_gdc_id
     type: string
+  - id: known_snp_index_file_size
+    type: long
   - id: reference_amb_gdc_id
     type: string
+  - id: reference_amb_file_size
+    type: long
   - id: reference_ann_gdc_id
     type: string
+  - id: reference_ann_file_size
+    type: long
   - id: reference_bwt_gdc_id
     type: string
+  - id: reference_bwt_file_size
+    type: long
   - id: reference_dict_gdc_id
     type: string
+  - id: reference_dict_file_size
+    type: long
   - id: reference_fa_gdc_id
     type: string
+  - id: reference_fa_file_size
+    type: long
   - id: reference_fai_gdc_id
     type: string
+  - id: reference_fai_file_size
+    type: long
   - id: reference_pac_gdc_id
     type: string
+  - id: reference_pac_file_size
+    type: long
   - id: reference_sa_gdc_id
     type: string
+  - id: reference_sa_file_size
+    type: long
   - id: start_token
     type: File
   - id: thread_count
@@ -54,6 +76,8 @@ steps:
         source: bioclient_config
       - id: download_handle
         source: input_bam_gdc_id
+      - id: file_size
+        source: input_bam_file_size
     out:
       - id: output
 
@@ -64,6 +88,8 @@ steps:
         source: bioclient_config
       - id: download_handle
         source: known_snp_gdc_id
+      - id: file_size
+        source: known_snp_file_size
     out:
       - id: output
 
@@ -74,86 +100,104 @@ steps:
         source: bioclient_config
       - id: download_handle
         source: known_snp_index_gdc_id
+      - id: file_size
+        source: known_snp_index_file_size
     out:
       - id: output
 
-  - id: extract_ref_fa
-    run: ../../tools/bio_client_download.cwl
-    in:
-      - id: config-file
-        source: bioclient_config
-      - id: download_handle
-        source: reference_fa_gdc_id
-    out:
-      - id: output
-
-  - id: extract_ref_fai
-    run: ../../tools/bio_client_download.cwl
-    in:
-      - id: config-file
-        source: bioclient_config
-      - id: download_handle
-        source: reference_fai_gdc_id
-    out:
-      - id: output
-
-  - id: extract_ref_dict
-    run: ../../tools/bio_client_download.cwl
-    in:
-      - id: config-file
-        source: bioclient_config
-      - id: download_handle
-        source: reference_dict_gdc_id
-    out:
-      - id: output
-
-  - id: extract_ref_amb
+  - id: extract_reference_amb
     run: ../../tools/bio_client_download.cwl
     in:
       - id: config-file
         source: bioclient_config
       - id: download_handle
         source: reference_amb_gdc_id
+      - id: file_size
+        source: reference_amb_file_size
     out:
       - id: output
 
-  - id: extract_ref_ann
+  - id: extract_reference_ann
     run: ../../tools/bio_client_download.cwl
     in:
       - id: config-file
         source: bioclient_config
       - id: download_handle
         source: reference_ann_gdc_id
+      - id: file_size
+        source: reference_ann_file_size
     out:
       - id: output
 
-  - id: extract_ref_bwt
+  - id: extract_reference_bwt
     run: ../../tools/bio_client_download.cwl
     in:
       - id: config-file
         source: bioclient_config
       - id: download_handle
         source: reference_bwt_gdc_id
+      - id: file_size
+        source: reference_bwt_file_size
     out:
       - id: output
 
-  - id: extract_ref_pac
+  - id: extract_reference_dict
+    run: ../../tools/bio_client_download.cwl
+    in:
+      - id: config-file
+        source: bioclient_config
+      - id: download_handle
+        source: reference_dict_gdc_id
+      - id: file_size
+        source: reference_dict_file_size
+    out:
+      - id: output
+
+  - id: extract_reference_fa
+    run: ../../tools/bio_client_download.cwl
+    in:
+      - id: config-file
+        source: bioclient_config
+      - id: download_handle
+        source: reference_fa_gdc_id
+      - id: file_size
+        source: reference_fa_file_size
+    out:
+      - id: output
+
+  - id: extract_reference_fai
+    run: ../../tools/bio_client_download.cwl
+    in:
+      - id: config-file
+        source: bioclient_config
+      - id: download_handle
+        source: reference_fai_gdc_id
+      - id: file_size
+        source: reference_fai_file_size
+    out:
+      - id: output
+
+  - id: extract_reference_pac
     run: ../../tools/bio_client_download.cwl
     in:
       - id: config-file
         source: bioclient_config
       - id: download_handle
         source: reference_pac_gdc_id
+      - id: file_size
+        source: reference_pac_file_size
     out:
       - id: output
 
-  - id: extract_ref_sa
+  - id: extract_reference_sa
     run: ../../tools/bio_client_download.cwl
     in:
       - id: config-file
         source: bioclient_config
       - id: download_handle
         source: reference_sa_gdc_id
+      - id: file_size
+        source: reference_sa_file_size
     out:
       - id: output
 
@@ -161,21 +205,21 @@ steps:
     run: ../../tools/root_fasta_dnaseq.cwl
     in:
       - id: fasta
-        source: extract_ref_fa/output
+        source: extract_reference_fa/output
       - id: fasta_amb
-        source: extract_ref_amb/output
+        source: extract_reference_amb/output
       - id: fasta_ann
-        source: extract_ref_ann/output
+        source: extract_reference_ann/output
       - id: fasta_bwt
-        source: extract_ref_bwt/output
+        source: extract_reference_bwt/output
       - id: fasta_dict
-        source: extract_ref_dict/output
+        source: extract_reference_dict/output
       - id: fasta_fai
-        source: extract_ref_fai/output
+        source: extract_reference_fai/output
       - id: fasta_pac
-        source: extract_ref_pac/output
+        source: extract_reference_pac/output
       - id: fasta_sa
-        source: extract_ref_sa/output
+        source: extract_reference_sa/output
     out:
       - id: output
 
@@ -203,7 +247,7 @@ steps:
       - id: task_uuid
         source: task_uuid
     out:
-      - id: picard_markduplicates_output
+      - id: gatk_printreads_output_bam
       - id: merge_all_sqlite_destination_sqlite
 
   - id: load_bam
@@ -212,7 +256,7 @@ steps:
       - id: config-file
         source: bioclient_config
       - id: input
-        source: transform/picard_markduplicates_output
+        source: transform/gatk_printreads_output_bam
       - id: upload-bucket
         source: bioclient_load_bucket
       - id: upload-key
@@ -229,7 +273,7 @@ steps:
       - id: config-file
         source: bioclient_config
       - id: input
-        source: transform/picard_markduplicates_output
+        source: transform/gatk_printreads_output_bam
         valueFrom: $(self.secondaryFiles[0])
       - id: upload-bucket
         source: bioclient_load_bucket
@@ -268,13 +312,5 @@ steps:
         source: load_bai/output
       - id: load3
         source: load_sqlite/output
-    out:
-      - id: token
-
-  - id: generate_token
-    run: ../../tools/generate_load_token.cwl
-    in:
-      - id: load1
-        source: transform/merge_all_sqlite_destination_sqlite
     out:
       - id: token
