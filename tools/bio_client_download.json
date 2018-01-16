@@ -1,0 +1,8 @@
+{
+    "config-file": {
+        "class": "File",
+        "path": "/home/ubuntu/config.json"
+    },
+    "download_handle": "722acb2b-d998-4bf2-aae1-f9a5748719b4",
+    "file_size": 1000
+}
