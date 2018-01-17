@@ -55,21 +55,21 @@ inputs:
       inputBinding:
         prefix: "--source_sqlite"
 
-  - id: task_uuid
+  - id: job_uuid
     type: string
     inputBinding:
-      prefix: "--task_uuid"
+      prefix: "--job_uuid"
 
 outputs:
   - id: destination_sqlite
     format: "edam:format_3621"
     type: File
     outputBinding:
-      glob: $(inputs.task_uuid + ".db")
+      glob: $(inputs.job_uuid + ".db")
 
   - id: log
     type: File
     outputBinding:
-      glob: $(inputs.task_uuid + ".log")
+      glob: $(inputs.job_uuid + ".log")
 
 baseCommand: [/usr/local/bin/merge_sqlite]

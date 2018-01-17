@@ -24,16 +24,16 @@ inputs:
     inputBinding:
       prefix: --INPUT
 
-  - id: task_uuid
+  - id: job_uuid
     type: string
     inputBinding:
-      prefix: --task_uuid
+      prefix: --job_uuid
 
 outputs:
   - id: LOG
     type: File
     outputBinding:
-      glob: $(inputs.task_uuid + ".log")
+      glob: $(inputs.job_uuid + ".log")
 
   - id: OUTPUT
     type: File

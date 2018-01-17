@@ -60,7 +60,7 @@ inputs:
     type: File
   - id: thread_count
     type: long
-  - id: task_uuid
+  - id: job_uuid
     type: string
 
 outputs:
@@ -244,8 +244,8 @@ steps:
         source: root_fasta_files/output
       - id: thread_count
         source: thread_count
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: gatk_printreads_output_bam
       - id: merge_all_sqlite_destination_sqlite
@@ -260,9 +260,9 @@ steps:
       - id: upload-bucket
         source: bioclient_load_bucket
       - id: upload-key
-        valueFrom: $(inputs.task_uuid)/$(inputs.input.basename)
-      - id: task_uuid
-        source: task_uuid
+        valueFrom: $(inputs.job_uuid)/$(inputs.input.basename)
+      - id: job_uuid
+        source: job_uuid
         valueFrom: $(null)
     out:
       - id: output
@@ -278,9 +278,9 @@ steps:
       - id: upload-bucket
         source: bioclient_load_bucket
       - id: upload-key
-        valueFrom: $(inputs.task_uuid)/$(inputs.input.basename)
-      - id: task_uuid
-        source: task_uuid
+        valueFrom: $(inputs.job_uuid)/$(inputs.input.basename)
+      - id: job_uuid
+        source: job_uuid
         valueFrom: $(null)
     out:
       - id: output
@@ -296,9 +296,9 @@ steps:
       - id: upload-bucket
         source: bioclient_load_bucket
       - id: upload-key
-        valueFrom: $(inputs.task_uuid)/$(inputs.input.basename)
-      - id: task_uuid
-        source: task_uuid
+        valueFrom: $(inputs.job_uuid)/$(inputs.input.basename)
+      - id: job_uuid
+        source: job_uuid
         valueFrom: $(null)
     out:
       - id: output

@@ -34,21 +34,21 @@ inputs:
     inputBinding:
       prefix: --metric_path
 
-  - id: task_uuid
+  - id: job_uuid
     type: string
     inputBinding:
-      prefix: --task_uuid
+      prefix: --job_uuid
 
 outputs:
   - id: log
     type: File
     outputBinding:
-      glob: $(inputs.task_uuid+"_picard_ValidateSamFile.log")
+      glob: $(inputs.job_uuid+"_picard_ValidateSamFile.log")
 
   - id: sqlite
     type: File
     format: "edam:format_3621"
     outputBinding:
-      glob: $(inputs.task_uuid + ".db")
+      glob: $(inputs.job_uuid + ".db")
 
 baseCommand: [/usr/local/bin/picard_metrics_sqlite, --metric_name, ValidateSamFile]

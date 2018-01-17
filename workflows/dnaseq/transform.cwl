@@ -20,13 +20,13 @@ inputs:
     type: File
   - id: thread_count
     type: long
-  - id: task_uuid
+  - id: job_uuid
     type: string
 
 outputs:
-  - id: gatk_printreads_output_bam
+  - id: output_bam
     type: File
-    outputSource: gatk_printreads/output_bam
+    outputSource: picard_markduplicates/OUTPUT
   - id: merge_all_sqlite_destination_sqlite
     type: File
     outputSource: merge_all_sqlite/destination_sqlite
@@ -61,8 +61,8 @@ steps:
         valueFrom: "original"
       - id: metric_path
         source: picard_validatesamfile_original/OUTPUT
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: sqlite
 
@@ -179,8 +179,8 @@ steps:
     in:
       - id: json_path
         source: bam_readgroup_to_json/OUTPUT
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: log
       - id: output_sqlite
@@ -190,8 +190,8 @@ steps:
     in:
       - id: source_sqlite
         source: readgroup_json_db/output_sqlite
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: destination_sqlite
       - id: log
@@ -257,8 +257,8 @@ steps:
     in:
       - id: INPUT
         source: fastqc1/OUTPUT
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: LOG
       - id: OUTPUT
@@ -269,8 +269,8 @@ steps:
     in:
       - id: INPUT
         source: fastqc2/OUTPUT
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: LOG
       - id: OUTPUT
@@ -281,8 +281,8 @@ steps:
     in:
       - id: INPUT
         source: fastqc_s/OUTPUT
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: LOG
       - id: OUTPUT
@@ -293,8 +293,8 @@ steps:
     in:
       - id: INPUT
         source: fastqc_o1/OUTPUT
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: LOG
       - id: OUTPUT
@@ -305,8 +305,8 @@ steps:
     in:
       - id: INPUT
         source: fastqc_o2/OUTPUT
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: LOG
       - id: OUTPUT
@@ -316,8 +316,8 @@ steps:
     in:
       - id: source_sqlite
         source: fastqc_db1/OUTPUT
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: destination_sqlite
       - id: log
@@ -327,8 +327,8 @@ steps:
     in:
       - id: source_sqlite
         source: fastqc_db2/OUTPUT
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: destination_sqlite
       - id: log
@@ -338,8 +338,8 @@ steps:
     in:
       - id: source_sqlite
         source: fastqc_db_s/OUTPUT
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: destination_sqlite
       - id: log
@@ -349,8 +349,8 @@ steps:
     in:
       - id: source_sqlite
         source: fastqc_db_o1/OUTPUT
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: destination_sqlite
       - id: log
@@ -360,8 +360,8 @@ steps:
     in:
       - id: source_sqlite
         source: fastqc_db_o2/OUTPUT
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: destination_sqlite
       - id: log
@@ -573,8 +573,8 @@ steps:
         valueFrom: $(self.basename)
       - id: thread_count
         source: thread_count
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: merge_sqlite_destination_sqlite
 
@@ -583,8 +583,8 @@ steps:
     in:
       - id: source_sqlite
         source: metrics_pe/merge_sqlite_destination_sqlite
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: destination_sqlite
       - id: log
@@ -606,8 +606,8 @@ steps:
         valueFrom: $(self.basename)
       - id: thread_count
         source: thread_count
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: merge_sqlite_destination_sqlite
 
@@ -616,8 +616,8 @@ steps:
     in:
       - id: source_sqlite
         source: metrics_se/merge_sqlite_destination_sqlite
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: destination_sqlite
       - id: log
@@ -709,8 +709,8 @@ steps:
         valueFrom: "markduplicates_readgroups"
       - id: metric_path
         source: picard_markduplicates/METRICS
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: sqlite
 
@@ -735,8 +735,8 @@ steps:
         valueFrom: "markduplicates_readgroups"
       - id: metric_path
         source: picard_validatesamfile_markduplicates/OUTPUT
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: sqlite
 
@@ -753,57 +753,72 @@ steps:
         valueFrom: "markduplicates_readgroups"
       - id: thread_count
         source: thread_count
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: merge_sqlite_destination_sqlite
 
-  - id: gatk_baserecalibrator
-    run: ../../tools/gatk4_baserecalibrator.cwl
-    in:
-      - id: input_file
-        source: picard_markduplicates/OUTPUT
-      - id: knownSites
-        source: known_snp
-      - id: log_to_file
-        source: task_uuid
-        valueFrom: $(self + "_bqsr.log" )
-      - id: num_cpu_threads_per_data_thread
-        source: thread_count
-      - id: reference_sequence
-        source: reference_sequence
-    out:
-      - id: output_grp
+  # - id: gatk_baserecalibrator
+  #   run: ../../tools/gatk4_baserecalibrator.cwl
+  #   in:
+  #     - id: input_file
+  #       source: picard_markduplicates/OUTPUT
+  #     - id: knownSites
+  #       source: known_snp
+  #     - id: log_to_file
+  #       source: job_uuid
+  #       valueFrom: $(self + "_bqsr.log" )
+  #     - id: num_cpu_threads_per_data_thread
+  #       source: thread_count
+  #     - id: reference_sequence
+  #       source: reference_sequence
+  #   out:
+  #     - id: output_grp
 
-  - id: gatk_printreads
-    run: ../../tools/gatk4_printreads.cwl
-    in:
-      - id: BQSR
-        source: gatk_baserecalibrator/output_grp
-      - id: input_file
-        source: picard_markduplicates/OUTPUT
-      - id: log_to_file
-        source: task_uuid
-        valueFrom: $(self + "_pr.log")
-      - id: num_cpu_threads_per_data_thread
-        source: thread_count
-      - id: reference_sequence
-        source: reference_sequence
-    out:
-      - id: output_bam
+  # - id: gatk_printreads
+  #   run: ../../tools/gatk4_printreads.cwl
+  #   in:
+  #     - id: BQSR
+  #       source: gatk_baserecalibrator/output_grp
+  #     - id: input_file
+  #       source: picard_markduplicates/OUTPUT
+  #     - id: log_to_file
+  #       source: job_uuid
+  #       valueFrom: $(self + "_pr.log")
+  #     - id: num_cpu_threads_per_data_thread
+  #       source: thread_count
+  #     - id: reference_sequence
+  #       source: reference_sequence
+  #   out:
+  #     - id: output_bam
+
+  # - id: integrity
+  #   run: integrity.cwl
+  #   in:
+  #     - id: bai
+  #       source: gatk_printreads/output_bam
+  #       valueFrom: $(self.secondaryFiles[0])
+  #     - id: bam
+  #       source: gatk_printreads/output_bam
+  #     - id: input_state
+  #       valueFrom: "gatk_printreads"
+  #     - id: job_uuid
+  #       source: job_uuid
+  #   out:
+  #     - id: merge_sqlite_destination_sqlite
 
   - id: integrity
     run: integrity.cwl
     in:
       - id: bai
-        source: gatk_printreads/output_bam
+        source: picard_markduplicates/OUTPUT
         valueFrom: $(self.secondaryFiles[0])
       - id: bam
-        source: gatk_printreads/output_bam
+        source: picard_markduplicates/OUTPUT
       - id: input_state
-        valueFrom: "gatk_printreads"
-      - id: task_uuid
-        source: task_uuid
+        valueFrom: "markduplicates_readgroups"
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: merge_sqlite_destination_sqlite
 
@@ -826,8 +841,8 @@ steps:
           picard_markduplicates_to_sqlite/sqlite,
           integrity/merge_sqlite_destination_sqlite
         ]
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: destination_sqlite
       - id: log

@@ -39,20 +39,20 @@ inputs:
     inputBinding:
       prefix: "--sha256sum_path"
 
-  - id: task_uuid
+  - id: job_uuid
     type: string
     inputBinding:
-      prefix: "--task_uuid"
+      prefix: "--job_uuid"
 
 outputs:
   - id: LOG
     type: File
     outputBinding:
-      glob: $(inputs.task_uuid + ".log")
+      glob: $(inputs.job_uuid + ".log")
 
   - id: OUTPUT
     type: File
     outputBinding:
-      glob: $(inputs.task_uuid + ".db")
+      glob: $(inputs.job_uuid + ".db")
 
 baseCommand: [/usr/local/bin/integrity_to_sqlite]

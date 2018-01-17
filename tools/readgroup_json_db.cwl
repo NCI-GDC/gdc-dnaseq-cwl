@@ -25,21 +25,21 @@ inputs:
     inputBinding:
       prefix: --json_path
 
-  - id: task_uuid
+  - id: job_uuid
     type: string
     inputBinding:
-      prefix: --task_uuid
+      prefix: --job_uuid
 
 outputs:
   - id: log
     type: File
     outputBinding:
-      glob: $(inputs.task_uuid +".log")
+      glob: $(inputs.job_uuid +".log")
 
   - id: output_sqlite
     type: File
     format: "edam:format_3621"
     outputBinding:
-      glob: $(inputs.task_uuid + ".db")         
+      glob: $(inputs.job_uuid + ".db")         
           
 baseCommand: [/usr/local/bin/readgroup_json_db]
