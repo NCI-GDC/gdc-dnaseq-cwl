@@ -759,7 +759,7 @@ steps:
       - id: merge_sqlite_destination_sqlite
 
   - id: gatk_baserecalibrator
-    run: ../../tools/gatk_baserecalibrator.cwl
+    run: ../../tools/gatk4_baserecalibrator.cwl
     in:
       - id: input_file
         source: picard_markduplicates/OUTPUT
@@ -776,7 +776,7 @@ steps:
       - id: output_grp
 
   - id: gatk_printreads
-    run: ../../tools/gatk_printreads.cwl
+    run: ../../tools/gatk4_printreads.cwl
     in:
       - id: BQSR
         source: gatk_baserecalibrator/output_grp
