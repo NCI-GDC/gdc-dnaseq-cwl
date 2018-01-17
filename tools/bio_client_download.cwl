@@ -11,10 +11,10 @@ requirements:
     coresMax: 1
     ramMin: 2000
     ramMax: 2000
-    tmpdirMin: $(inputs.file_size)
-    tmpdirMax: $(inputs.file_size)
-    outdirMin: $(inputs.file_size)
-    outdirMax: $(inputs.file_size)
+    tmpdirMin: $(Math.ceil (inputs.file_size / 1048576))
+    tmpdirMax: $(Math.ceil (inputs.file_size / 1048576))
+    outdirMin: $(Math.ceil (inputs.file_size / 1048576))
+    outdirMax: $(Math.ceil (inputs.file_size / 1048576))
 
 inputs:
   - id: config-file

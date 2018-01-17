@@ -6,6 +6,15 @@ class: CommandLineTool
 requirements:
   - class: DockerRequirement
     dockerPull: quay.io/ncigdc/bio-client:09adc5f3c26dcc575531a38ee32d9adb104cf040270f76bae93c36d1b69b5010
+  - class: ResourceRequirement
+    coresMin: 1
+    coresMax: 1
+    ramMin: 1000
+    ramMax: 1000
+    tmpdirMin: 1
+    tmpdirMax: 1
+    outdirMin: 1
+    outdirMax: 1
 
 inputs:
   - id: config-file

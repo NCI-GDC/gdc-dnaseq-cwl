@@ -2,6 +2,17 @@
 
 cwlVersion: v1.0
 
+requirements:
+  - class: ResourceRequirement
+    coresMin: 1
+    coresMax: 1
+    ramMin: 500
+    ramMax: 500
+    tmpdirMin: 1
+    tmpdirMax: 1
+    outdirMin: 1
+    outdirMax: 1
+
 class: CommandLineTool
 
 inputs:

@@ -9,8 +9,8 @@ requirements:
   - class: ResourceRequirement
     coresMin: 1
     coresMax: 1
-    ramMin: 2000
-    ramMax: 2000
+    ramMin: 5000
+    ramMax: 5000
     tmpdirMin: 1000
     tmpdirMax: 1000
     outdirMin: 1000
@@ -41,7 +41,7 @@ inputs:
       separate: false
 
   - id: MAX_OUTPUT
-    type: int
+    type: long
     default: 2147483647
     inputBinding:
       prefix: MAX_OUTPUT=

@@ -9,12 +9,12 @@ requirements:
   - class: ResourceRequirement
     coresMin: 1
     coresMax: 1
-    ramMin: 2000
-    ramMax: 2000
-    tmpdirMin: 1
-    tmpdirMax: 1
-    outdirMin: 1
-    outdirMax: 1
+    ramMin: 1000
+    ramMax: 1000
+    tmpdirMin: 5
+    tmpdirMax: 5
+    outdirMin: 5
+    outdirMax: 5
 
 class: CommandLineTool
 

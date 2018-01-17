@@ -6,6 +6,15 @@ requirements:
   - class: DockerRequirement
     dockerPull: quay.io/ncigdc/picard:6a031f4df1907fd13a58c9351855008b9dd8c5793560cb0d81ba4196d31dc88b
   - class: InlineJavascriptRequirement
+  - class: ResourceRequirement
+    coresMin: 1
+    coresMax: 1
+    ramMin: 15000
+    ramMax: 15000
+    tmpdirMin: $(Math.ceil(1.1 * inputs.input.size / 1048576))
+    tmpdirMax: $(Math.ceil(1.1 * inputs.input.size / 1048576))
+    outdirMin: $(Math.ceil(1.1 * inputs.input.size / 1048576))
+    outdirMax: $(Math.ceil(1.1 * inputs.input.size / 1048576))
 
 class: CommandLineTool
 

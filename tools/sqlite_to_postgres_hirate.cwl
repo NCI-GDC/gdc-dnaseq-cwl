@@ -6,6 +6,16 @@ requirements:
   - class: DockerRequirement
     dockerPull: quay.io/ncigdc/sqlite_to_postgres:407f904dd4303ffa496089dc68c456af391724fc697a32372b00f8a6aaa6c82f
   - class: InlineJavascriptRequirement
+  - class: ResourceRequirement
+    coresMin: 1
+    coresMax: 1
+    ramMin: 1000
+    ramMax: 1000
+    tmpdirMin: 1
+    tmpdirMax: 1
+    outdirMin: 1
+    outdirMax: 1
+
 
 class: CommandLineTool
 
@@ -25,15 +35,15 @@ inputs:
     inputBinding:
       prefix: --source_sqlite_path
 
-  - id: task_uuid
+  - id: job_uuid
     type: string
     inputBinding:
-      prefix: --task_uuid
+      prefix: --job_uuid
 
 outputs:
   - id: log
     type: File
     outputBinding:
-      glob: $(inputs.task_uuid + ".log")
+      glob: $(inputs.job_uuid + ".log")
           
 baseCommand: [sqlite_to_postgres]

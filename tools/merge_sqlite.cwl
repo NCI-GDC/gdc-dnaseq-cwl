@@ -9,27 +9,27 @@ requirements:
   - class: ResourceRequirement
     coresMin: 1
     coresMax: 1
-    ramMin: 500
-    ramMax: 500
+    ramMin: 1000
+    ramMax: 1000
     tmpdirMin: |
       ${
-      int req_space = 0;
+      var req_space = 0;
       for (i = 0; i < inputs.source_sqlite.length; i++) {
           req_space += inputs.source_sqlite[i].size;
         }
-      return Math.ceil(2 * req_space / 1048576);
+      return Math.ceil(2 * (req_space / 1048576));
       }      
     tmpdirMax: |
       ${
-      int req_space = 0;
+      var req_space = 0;
       for (i = 0; i < inputs.source_sqlite.length; i++) {
           req_space += inputs.source_sqlite[i].size;
         }
-      return Math.ceil(2 * req_space / 1048576);
+      return Math.ceil(2 * (req_space / 1048576));
       }      
     outdirMin: |
       ${
-      int req_space = 0;
+      var req_space = 0;
       for (i = 0; i < inputs.source_sqlite.length; i++) {
           req_space += inputs.source_sqlite[i].size;
         }
@@ -37,7 +37,7 @@ requirements:
       }      
     outdirMax: |
       ${
-      int req_space = 0;
+      var req_space = 0;
       for (i = 0; i < inputs.source_sqlite.length; i++) {
           req_space += inputs.source_sqlite[i].size;
         }

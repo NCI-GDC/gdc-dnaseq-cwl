@@ -8,14 +8,14 @@ requirements:
     dockerPull: quay.io/ncigdc/bwa:fac166f93639cbbd4f19db5d07eaf9fa0e1e31f667dd6375d3fc1c995992cd49
   - class: ShellCommandRequirement
   - class: ResourceRequirement
-    coresMin: 1
-    coresMax: 1
+    coresMin: $(inputs.thread_count)
+    coresMax: $(inputs.thread_count)
     ramMin: 10000
     ramMax: 10000
-    tmpdirMin: $(2 * (inputs.fastq.size))
-    tmpdirMax: $(2 * (inputs.fastq.size))
-    outdirMin: $(2 * (inputs.fastq.size))
-    outdirMax: $(2 * (inputs.fastq.size))
+    tmpdirMin: $(Math.ceil(2 * (inputs.fastq.size) / 1048576))
+    tmpdirMax: $(Math.ceil(2 * (inputs.fastq.size) / 1048576))
+    outdirMin: $(Math.ceil(2 * (inputs.fastq.size) / 1048576))
+    outdirMax: $(Math.ceil(2 * (inputs.fastq.size) / 1048576))
 
 class: CommandLineTool
 

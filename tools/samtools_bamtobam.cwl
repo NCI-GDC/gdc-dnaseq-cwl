@@ -9,12 +9,12 @@ requirements:
   - class: ResourceRequirement
     coresMin: 1
     coresMax: 1
-    ramMin: 500
-    ramMax: 500
-    tmpdirMin: $(inputs.INPUT.size * 2.1)
-    tmpdirMax: $(inputs.INPUT.size * 2.1)
-    outdirMin: $(inputs.INPUT.size * 1.1)
-    outdirMax: $(inputs.INPUT.size * 1.1)
+    ramMin: 2000
+    ramMax: 2000
+    tmpdirMin: $(Math.ceil(2.1 * inputs.INPUT.size / 1048576))
+    tmpdirMax: $(Math.ceil(2.1 * inputs.INPUT.size / 1048576))
+    outdirMin: $(Math.ceil(1.1 * inputs.INPUT.size / 1048576))
+    outdirMax: $(Math.ceil(1.1 * inputs.INPUT.size / 1048576))
 
 class: CommandLineTool
 

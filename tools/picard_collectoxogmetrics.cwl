@@ -11,10 +11,10 @@ requirements:
     coresMax: 1
     ramMin: 10000
     ramMax: 10000
-    tmpdirMin: 1
-    tmpdirMax: 1
-    outdirMin: 1
-    outdirMax: 1
+    tmpdirMin: 5
+    tmpdirMax: 5
+    outdirMin: 5
+    outdirMax: 5
 
 class: CommandLineTool
 
