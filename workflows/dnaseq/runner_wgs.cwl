@@ -147,6 +147,12 @@ steps:
         source: get_host_ipaddress/output
       - id: host_macaddress
         source: get_host_macaddress/output
+      - id: indexd_bam_uuid
+        valueFrom: "NULL"
+      - id: indexd_bai_uuid
+        valueFrom: "NULL"
+      - id: indexd_sqlite_uuid
+        valueFrom: "NULL"
       - id: input_bam_gdc_id
         source: input_bam_gdc_id
       - id: input_bam_file_size
@@ -266,7 +272,40 @@ steps:
       - id: job_uuid
         source: job_uuid
     out:
+      - id: indexd_bam_json
+      - id: indexd_bai_json
+      - id: indexd_sqlite_json
       - id: token
+
+  - id: emit_bam_uuid
+    run: ../../tools/emit_json_value.cwl
+    in:
+      - id: input
+        source: etl/indexd_bam_json
+      - id: key
+        valueFrom: did
+    out:
+      - id: output
+        
+  - id: emit_bai_uuid
+    run: ../../tools/emit_json_value.cwl
+    in:
+      - id: input
+        source: etl/indexd_bai_json
+      - id: key
+        valueFrom: did
+    out:
+      - id: output
+        
+  - id: emit_sqlite_uuid
+    run: ../../tools/emit_json_value.cwl
+    in:
+      - id: input
+        source: etl/indexd_sqlite_json
+      - id: key
+        valueFrom: did
+    out:
+      - id: output
 
   - id: status_complete
     run: status_postgres.cwl
@@ -293,6 +332,12 @@ steps:
         source: get_host_ipaddress/output
       - id: host_macaddress
         source: get_host_macaddress/output
+      - id: indexd_bam_uuid
+        source: emit_bam_uuid/output
+      - id: indexd_bai_uuid
+        source: emit_bai_uuid/output
+      - id: indexd_sqlite_uuid
+        source: emit_sqlite_uuid/output
       - id: input_bam_gdc_id
         source: input_bam_gdc_id
       - id: input_bam_file_size

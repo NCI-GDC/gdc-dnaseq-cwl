@@ -106,9 +106,11 @@ function main()
     if [ $? -ne 0 ]
     then
         echo FAIL_RUNNER
+        kill $SSH_AGENT_PID
         #sudo rm -rf ${work_dir}
         exit 1
     fi
+    kill $SSH_AGENT_PID
     #sudo rm -rf ${work_dir}
 }
 
