@@ -14,7 +14,7 @@ requirements:
     tmpdirMin: |
       ${
       var req_space = 0;
-      for (i = 0; i < inputs.source_sqlite.length; i++) {
+      for (var i = 0; i < inputs.source_sqlite.length; i++) {
           req_space += inputs.source_sqlite[i].size;
         }
       return Math.ceil(2 * (req_space / 1048576));
@@ -22,7 +22,7 @@ requirements:
     tmpdirMax: |
       ${
       var req_space = 0;
-      for (i = 0; i < inputs.source_sqlite.length; i++) {
+      for (var i = 0; i < inputs.source_sqlite.length; i++) {
           req_space += inputs.source_sqlite[i].size;
         }
       return Math.ceil(2 * (req_space / 1048576));
@@ -30,7 +30,7 @@ requirements:
     outdirMin: |
       ${
       var req_space = 0;
-      for (i = 0; i < inputs.source_sqlite.length; i++) {
+      for (var i = 0; i < inputs.source_sqlite.length; i++) {
           req_space += inputs.source_sqlite[i].size;
         }
       return Math.ceil(req_space / 1048576);
@@ -38,7 +38,7 @@ requirements:
     outdirMax: |
       ${
       var req_space = 0;
-      for (i = 0; i < inputs.source_sqlite.length; i++) {
+      for (var i = 0; i < inputs.source_sqlite.length; i++) {
           req_space += inputs.source_sqlite[i].size;
         }
       return Math.ceil(req_space / 1048576);
