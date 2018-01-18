@@ -10,8 +10,6 @@ requirements:
  - class: SubworkflowFeatureRequirement
 
 inputs:
-  - id: gdc_token
-    type: File
   - id: input_bam_gdc_id
     type: string
   - id: input_bam_file_size
