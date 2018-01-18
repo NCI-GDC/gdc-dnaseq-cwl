@@ -10,10 +10,10 @@ requirements:
     coresMax: 1
     ramMin: 1000
     ramMax: 1000
-    tmpdirMin: $(Math.ceil(1.1 * inputs.input.size / 1048576))
-    tmpdirMax: $(Math.ceil(1.1 * inputs.input.size / 1048576))
-    outdirMin: $(Math.ceil(1.1 * inputs.input.size / 1048576))
-    outdirMax: $(Math.ceil(1.1 * inputs.input.size / 1048576))
+    tmpdirMin: 10
+    tmpdirMax: 10
+    outdirMin: 10
+    outdirMax: 10
 
 class: CommandLineTool
 
