@@ -18,6 +18,7 @@
     "input_bam_gdc_id": "${input_bam_gdc_id}",
     "input_bam_file_size": 0,
     "input_bam_md5sum": "${input_bam_md5sum}",
+    "job_uuid": "$(job_uuid)",
     "known_snp_gdc_id": "${known_snp_gdc_id}",
     "known_snp_file_size": 0,
     "known_snp_index_gdc_id": "${known_snp_index_gdc_id}",
