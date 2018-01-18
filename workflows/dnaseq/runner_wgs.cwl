@@ -202,7 +202,7 @@ steps:
       - id: status
         valueFrom: "RUNNING"
       - id: step_token
-        source: gdc_token
+        source: bioclient_config
       - id: table_name
         source: status_table
       - id: job_uuid
@@ -215,8 +215,6 @@ steps:
   - id: etl
     run: etl.cwl
     in:
-      - id: gdc_token
-        source: gdc_token
       - id: input_bam_gdc_id
         source: input_bam_gdc_id
       - id: input_bam_file_size
