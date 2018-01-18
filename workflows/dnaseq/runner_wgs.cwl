@@ -221,6 +221,10 @@ steps:
   - id: etl
     run: etl.cwl
     in:
+      - id: bioclient_config
+        source: bioclient_config
+      - id: bioclient_load_bucket
+        source: bioclient_load_bucket
       - id: input_bam_gdc_id
         source: input_bam_gdc_id
       - id: input_bam_file_size

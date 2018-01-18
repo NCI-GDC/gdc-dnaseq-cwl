@@ -10,6 +10,10 @@ requirements:
  - class: SubworkflowFeatureRequirement
 
 inputs:
+  - id: bioclient_config
+    type: File
+  - id: bioclient_load_bucket
+    type: string
   - id: input_bam_gdc_id
     type: string
   - id: input_bam_file_size
