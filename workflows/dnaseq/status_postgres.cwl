@@ -32,6 +32,12 @@ inputs:
     type: string
   - id: host_macaddress
     type: string
+  - id: indexd_bam_uuid
+    type: string
+  - id: indexd_bai_uuid
+    type: string
+  - id: indexd_sqlite_uuid
+    type: string
   - id: input_bam_gdc_id
     type: string
   - id: input_bam_file_size
@@ -57,12 +63,6 @@ inputs:
   - id: reference_pac_gdc_id
     type: string
   - id: reference_sa_gdc_id
-    type: string
-  - id: indexd_bam_uuid
-    type: string
-  - id: indexd_bai_uuid
-    type: string
-  - id: indexd_sqlite_uuid
     type: string
   - id: job_uuid
     type: string
