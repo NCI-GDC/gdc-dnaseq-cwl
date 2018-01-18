@@ -52,6 +52,8 @@ function git_fetch_commit()
     git init
     echo git remote add origin ${git_repo}
     git remote add origin ${git_repo}
+    echo git fetch --depth 1 origin ${git_commit}
+    git fetch --depth 1 origin ${git_commit}
     echo git checkout FETCH_HEAD
     git checkout FETCH_HEAD
     cd ${prev_dir}
@@ -96,7 +98,7 @@ function main()
     mkdir -p ${workflow_dir}
     mkdir -p ${job_dir}
 
-    eval "$(ssh-agent -s)" && ssh-add ${HOME}/.ssh/slurm_id_rsa && git fetch --depth 1 origin ${git_commit}
+    eval "$(ssh-agent -s)" && ssh-add ${HOME}/.ssh/slurm_id_rsa
     git_fetch_commit ${workflow_dir} ${cwl_workflow_git_hash} ${cwl_workflow_git_repo}
     git_fetch_commit ${job_dir} ${cwl_job_git_hash} ${cwl_job_git_repo}
     sed -i "s/cwl_job_git_hash_value/${xx_cwl_job_git_hash_xx}/" ${job_path}
