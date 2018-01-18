@@ -258,8 +258,8 @@ steps:
       - id: job_uuid
         source: job_uuid
     out:
-      - id: gatk_printreads_output_bam
-      - id: merge_all_sqlite_destination_sqlite
+      - id: output_bam
+      - id: sqlite
 
   - id: load_bam
     run: ../../tools/bio_client_upload_pull_uuid.cwl
@@ -267,7 +267,7 @@ steps:
       - id: config-file
         source: bioclient_config
       - id: input
-        source: transform/gatk_printreads_output_bam
+        source: transform/output_bam
       - id: upload-bucket
         source: bioclient_load_bucket
       - id: upload-key
@@ -284,7 +284,7 @@ steps:
       - id: config-file
         source: bioclient_config
       - id: input
-        source: transform/gatk_printreads_output_bam
+        source: transform/output_bam
         valueFrom: $(self.secondaryFiles[0])
       - id: upload-bucket
         source: bioclient_load_bucket
@@ -302,7 +302,7 @@ steps:
       - id: config-file
         source: bioclient_config
       - id: input
-        source: transform/merge_all_sqlite_destination_sqlite
+        source: transform/sqlite
         valueFrom: $(self.secondaryFiles[0])
       - id: upload-bucket
         source: bioclient_load_bucket

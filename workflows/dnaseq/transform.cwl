@@ -27,7 +27,7 @@ outputs:
   - id: output_bam
     type: File
     outputSource: picard_markduplicates/OUTPUT
-  - id: merge_all_sqlite_destination_sqlite
+  - id: sqlite
     type: File
     outputSource: merge_all_sqlite/destination_sqlite
 
