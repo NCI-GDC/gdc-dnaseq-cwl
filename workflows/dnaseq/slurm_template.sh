@@ -16,7 +16,7 @@ SCRATCH_DIR=${xx_scratch_dir_xx}
 JOB_UUID=${xx_job_uuid_xx}
 VIRTUALENV_NAME=${xx_virtualenv_name_xx}
 JOB_DIR=repo/job
-WORKFLOW_DIR=repo/workflow
+WORKFLOW_DIR=repo/workflows
 
 function activate_virtualenv()
 {
