@@ -164,6 +164,12 @@ steps:
           slurm_resource_mem_megabytes,
           thread_count
         ]
+      - id: float_keys
+        default: []
+      - id: float_values
+        default: []
+    out:
+      - id: output
 
   - id: json_to_sqlite
     run: ../../tools/json_to_sqlite.cwl
