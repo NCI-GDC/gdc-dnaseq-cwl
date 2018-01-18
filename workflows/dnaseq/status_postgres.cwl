@@ -175,7 +175,7 @@ steps:
     run: ../../tools/json_to_sqlite.cwl
     in:
       - id: input_json
-        soiurce: emit_json/output
+        source: emit_json/output
       - id: job_uuid
         source: job_uuid
       - id: table_name
