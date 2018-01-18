@@ -155,7 +155,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/bio-client:2730081f4e2efa4dd0fcca0bb7e843dfd73d2714415ffd8da0eee71193b9b751"
+                    "dockerPull": "quay.io/ncigdc/bio-client:bb6975c12cf8df54733a302f381090f56c4aa8a4ff920172a2881e62617857b1
                 }
             ], 
             "inputs": [
@@ -211,7 +211,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/bio-client:2730081f4e2efa4dd0fcca0bb7e843dfd73d2714415ffd8da0eee71193b9b751"
+                    "dockerPull": "quay.io/ncigdc/bio-client:bb6975c12cf8df54733a302f381090f56c4aa8a4ff920172a2881e62617857b1
                 }
             ], 
             "inputs": [
@@ -1088,7 +1088,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/fastqc_db:b9c09ea65f40e154d239ebf494f4cd14ed2526cb6b70f65f9d822d3ebd4f1594"
+                    "dockerPull": "quay.io/ncigdc/fastqc_db:04e29e72e0fcf2f19538ed323b4f99049f7ace55b60f18ec000696dcf93a2f3d
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -1210,7 +1210,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/integrity_to_sqlite:40edb00dd1679ad7019ee4b8c634aadc1e8aa66e6baac8d0a72b7389dbac76bf"
+                    "dockerPull": "quay.io/ncigdc/integrity_to_sqlite:a04168d6b256dbc4f7776b2eeb1475544a9dbda16f402be5874f7ac5787a8161
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -1402,7 +1402,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/merge_sqlite:32bf383b197503e795278332d3c8bd5944f736f25ebaedb25a3a104252c3b76f"
+                    "dockerPull": "quay.io/ncigdc/merge_sqlite:cf56e47dabbe46b6bc8377006a63b7d4dc98e557fb78237bbaaf4e4068caf6bc
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -2322,7 +2322,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:bbb809fe71a61233801e376068c734539ee58e080d704c6ddc759e24ec59eaaf"
+                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:3cf06d97543ff4ad3dc404453ca34dd79cdd16bb2082be98a74a47a82cc638dd
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -2571,7 +2571,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:bbb809fe71a61233801e376068c734539ee58e080d704c6ddc759e24ec59eaaf"
+                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:3cf06d97543ff4ad3dc404453ca34dd79cdd16bb2082be98a74a47a82cc638dd
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -2713,7 +2713,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:bbb809fe71a61233801e376068c734539ee58e080d704c6ddc759e24ec59eaaf"
+                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:3cf06d97543ff4ad3dc404453ca34dd79cdd16bb2082be98a74a47a82cc638dd
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -2873,7 +2873,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:bbb809fe71a61233801e376068c734539ee58e080d704c6ddc759e24ec59eaaf"
+                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:3cf06d97543ff4ad3dc404453ca34dd79cdd16bb2082be98a74a47a82cc638dd
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -3258,7 +3258,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:bbb809fe71a61233801e376068c734539ee58e080d704c6ddc759e24ec59eaaf"
+                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:3cf06d97543ff4ad3dc404453ca34dd79cdd16bb2082be98a74a47a82cc638dd
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -3323,7 +3323,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/readgroup_json_db:0b69833722a66236e9519ce1d3955368a645c4bcf26d1f7416bbacbdc5deef9b"
+                    "dockerPull": "quay.io/ncigdc/readgroup_json_db:5f22fc3c135943fb6851f93c487eb04a362609f19e729f920972a6798e33c45f
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -3650,7 +3650,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/samtools_metrics_sqlite:45b161680b60ab2fcd2fab718632769b9a3329af376f11dac6f673e702f1df7e"
+                    "dockerPull": "quay.io/ncigdc/samtools_metrics_sqlite:6daf917ea4e9f1df29c4af1bf1bd9f1278945781b55e53170bc9bb0fe9881f5c
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -3754,7 +3754,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/samtools_metrics_sqlite:45b161680b60ab2fcd2fab718632769b9a3329af376f11dac6f673e702f1df7e"
+                    "dockerPull": "quay.io/ncigdc/samtools_metrics_sqlite:6daf917ea4e9f1df29c4af1bf1bd9f1278945781b55e53170bc9bb0fe9881f5c
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -3855,7 +3855,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/samtools_metrics_sqlite:45b161680b60ab2fcd2fab718632769b9a3329af376f11dac6f673e702f1df7e"
+                    "dockerPull": "quay.io/ncigdc/samtools_metrics_sqlite:6daf917ea4e9f1df29c4af1bf1bd9f1278945781b55e53170bc9bb0fe9881f5c
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -4110,7 +4110,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/sqlite_to_postgres:407f904dd4303ffa496089dc68c456af391724fc697a32372b00f8a6aaa6c82f"
+                    "dockerPull": "quay.io/ncigdc/sqlite_to_postgres:6ac493aa9b27dbb3fd4cbb4912e6e62a535f5692e510f0212fbddc53c2d1cc56
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
