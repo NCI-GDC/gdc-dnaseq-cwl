@@ -1279,7 +1279,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/json-to-sqlite:43564cbca5b19e99d5d4ebf28987cde30facd6082854086967617fbe6be641eb"
+                    "dockerPull": "quay.io/ncigdc/json-to-sqlite:31ff9a121cb13085eff7b7fb85db8b461f05b18bee1eb1b7586030dcbde8dc85
                 }
             ], 
             "class": "CommandLineTool", 
