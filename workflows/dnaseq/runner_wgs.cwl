@@ -209,7 +209,7 @@ steps:
         valueFrom: "RUNNING"
       - id: step_token
         source: bioclient_config
-      - id: table_name
+      - id: status_table
         source: status_table
       - id: job_uuid
         source: job_uuid
@@ -378,7 +378,7 @@ steps:
         valueFrom: "COMPLETE"
       - id: step_token
         source: etl/token
-      - id: table_name
+      - id: status_table
         source: status_table
       - id: job_uuid
         source: job_uuid
