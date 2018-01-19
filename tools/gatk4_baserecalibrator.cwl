@@ -47,11 +47,6 @@ outputs:
     outputBinding:
       glob: $(inputs.input.nameroot + "_bqsr.grp")
 
-  - id: output_log
-    type: File
-    outputBinding:
-      glob: $(inputs.log_to_file)
-
 arguments:
   - valueFrom: $(inputs.input.nameroot + "_bqsr.grp")
     prefix: --output
