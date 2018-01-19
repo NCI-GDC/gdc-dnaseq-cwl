@@ -717,9 +717,9 @@ steps:
   - id: gatk_baserecalibrator
     run: ../../tools/gatk4_baserecalibrator.cwl
     in:
-      - id: input_file
+      - id: input
         source: picard_markduplicates/OUTPUT
-      - id: knownSites
+      - id: known-sites
         source: known_snp
       - id: reference
         source: reference_sequence
