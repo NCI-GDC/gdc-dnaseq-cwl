@@ -26,7 +26,7 @@ inputs:
 outputs:
   - id: output_bam
     type: File
-    outputSource: picard_markduplicates/OUTPUT
+    outputSource: gatk_applybqsr/output_bam
   - id: sqlite
     type: File
     outputSource: merge_all_sqlite/destination_sqlite
@@ -714,43 +714,81 @@ steps:
     out:
       - id: sqlite
 
-  - id: picard_validatesamfile_markduplicates
+  - id: gatk_baserecalibrator
+    run: ../../tools/gatk4_baserecalibrator.cwl
+    in:
+      - id: input_file
+        source: picard_markduplicates/OUTPUT
+      - id: knownSites
+        source: known_snp
+      - id: reference
+        source: reference_sequence
+    out:
+      - id: output_grp
+
+  - id: gatk_applybqsr
+    run: ../../tools/gatk4_applybqsr.cwl
+    in:
+      - id: input
+        source: picard_markduplicates/OUTPUT
+      - id: bqsr-recal-file
+        source: gatk_baserecalibrator/output_grp
+    out:
+      - id: output_bam
+
+  - id: integrity
+    run: integrity.cwl
+    in:
+      - id: bai
+        source: gatk_applybqsr/output_bam
+        valueFrom: $(self.secondaryFiles[0])
+      - id: bam
+        source: gatk_applybqsr/output_bam
+      - id: input_state
+        valueFrom: "gatk_applybqsr"
+      - id: job_uuid
+        source: job_uuid
+    out:
+      - id: merge_sqlite_destination_sqlite
+
+
+  - id: picard_validatesamfile_bqsr
     run: ../../tools/picard_validatesamfile.cwl
     in:
       - id: INPUT
-        source: picard_markduplicates/OUTPUT
+        source: gatk_applybqsr/output_bam
       - id: VALIDATION_STRINGENCY
         valueFrom: "STRICT"
     out:
       - id: OUTPUT
 
   #need eof and dup QNAME detection
-  - id: picard_validatesamfile_markdupl_to_sqlite
+  - id: picard_validatesamfile_bqsr_to_sqlite
     run: ../../tools/picard_validatesamfile_to_sqlite.cwl
     in:
       - id: bam
-        source: input_bam
+        source: gatk_applybqsr/output_bam
         valueFrom: $(self.basename)
       - id: input_state
-        valueFrom: "markduplicates_readgroups"
+        valueFrom: "gatk_applybqsr_readgroups"
       - id: metric_path
-        source: picard_validatesamfile_markduplicates/OUTPUT
+        source: picard_validatesamfile_bqsr/OUTPUT
       - id: job_uuid
         source: job_uuid
     out:
       - id: sqlite
 
-  - id: metrics_markduplicates
+  - id: metrics_bqsr
     run: mixed_library_metrics.cwl
     in:
       - id: bam
-        source: picard_markduplicates/OUTPUT
+        source: gatk_applybqsr/output_bam
       - id: known_snp
         source: known_snp
       - id: fasta
         source: reference_sequence
       - id: input_state
-        valueFrom: "markduplicates_readgroups"
+        valueFrom: "gatk_applybqsr_readgroups"
       - id: thread_count
         source: thread_count
       - id: job_uuid
@@ -758,69 +796,20 @@ steps:
     out:
       - id: merge_sqlite_destination_sqlite
 
-  # - id: gatk_baserecalibrator
-  #   run: ../../tools/gatk4_baserecalibrator.cwl
-  #   in:
-  #     - id: input_file
-  #       source: picard_markduplicates/OUTPUT
-  #     - id: knownSites
-  #       source: known_snp
-  #     - id: log_to_file
-  #       source: job_uuid
-  #       valueFrom: $(self + "_bqsr.log" )
-  #     - id: num_cpu_threads_per_data_thread
-  #       source: thread_count
-  #     - id: reference_sequence
-  #       source: reference_sequence
-  #   out:
-  #     - id: output_grp
-
-  # - id: gatk_printreads
-  #   run: ../../tools/gatk4_printreads.cwl
-  #   in:
-  #     - id: BQSR
-  #       source: gatk_baserecalibrator/output_grp
-  #     - id: input_file
-  #       source: picard_markduplicates/OUTPUT
-  #     - id: log_to_file
-  #       source: job_uuid
-  #       valueFrom: $(self + "_pr.log")
-  #     - id: num_cpu_threads_per_data_thread
-  #       source: thread_count
-  #     - id: reference_sequence
-  #       source: reference_sequence
-  #   out:
-  #     - id: output_bam
-
   # - id: integrity
   #   run: integrity.cwl
   #   in:
   #     - id: bai
-  #       source: gatk_printreads/output_bam
+  #       source: picard_markduplicates/OUTPUT
   #       valueFrom: $(self.secondaryFiles[0])
   #     - id: bam
-  #       source: gatk_printreads/output_bam
+  #       source: picard_markduplicates/OUTPUT
   #     - id: input_state
-  #       valueFrom: "gatk_printreads"
+  #       valueFrom: "markduplicates_readgroups"
   #     - id: job_uuid
   #       source: job_uuid
   #   out:
   #     - id: merge_sqlite_destination_sqlite
-
-  - id: integrity
-    run: integrity.cwl
-    in:
-      - id: bai
-        source: picard_markduplicates/OUTPUT
-        valueFrom: $(self.secondaryFiles[0])
-      - id: bam
-        source: picard_markduplicates/OUTPUT
-      - id: input_state
-        valueFrom: "markduplicates_readgroups"
-      - id: job_uuid
-        source: job_uuid
-    out:
-      - id: merge_sqlite_destination_sqlite
 
   - id: merge_all_sqlite
     run: ../../tools/merge_sqlite.cwl
@@ -828,7 +817,7 @@ steps:
       - id: source_sqlite
         source: [
           picard_validatesamfile_original_to_sqlite/sqlite,
-          picard_validatesamfile_markdupl_to_sqlite/sqlite,
+          picard_validatesamfile_bqsr_to_sqlite/sqlite,
           merge_readgroup_json_db/destination_sqlite,
           merge_fastqc_db1_sqlite/destination_sqlite,
           merge_fastqc_db2_sqlite/destination_sqlite,
@@ -837,7 +826,7 @@ steps:
           merge_fastqc_db_o2_sqlite/destination_sqlite,
           merge_metrics_pe/destination_sqlite,
           merge_metrics_se/destination_sqlite,
-          metrics_markduplicates/merge_sqlite_destination_sqlite,
+          metrics_bqsr/merge_sqlite_destination_sqlite,
           picard_markduplicates_to_sqlite/sqlite,
           integrity/merge_sqlite_destination_sqlite
         ]
