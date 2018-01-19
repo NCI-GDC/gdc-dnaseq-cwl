@@ -303,7 +303,6 @@ steps:
         source: bioclient_config
       - id: input
         source: transform/sqlite
-        valueFrom: $(self.secondaryFiles[0])
       - id: upload-bucket
         source: bioclient_load_bucket
       - id: upload-key
