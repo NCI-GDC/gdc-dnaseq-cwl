@@ -1,0 +1,10 @@
+{
+    "input": {
+        "class": "File",
+        "path": "/mnt/scratch/TCGA-B0-4846-01A-01W-1359-10_gapfillers_Illumina_gdc_realn.bam"
+    },
+    "bqsr-recal-file": {
+        "class": "File",
+        "path": "/mnt/scratch/TCGA-B0-4846-01A-01W-1359-10_gapfillers_Illumina_gdc_realn.bam.grp"
+    }
+}
