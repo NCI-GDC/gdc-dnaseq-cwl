@@ -289,7 +289,7 @@ steps:
       - id: upload-bucket
         source: bioclient_load_bucket
       - id: upload-key
-        valueFrom: $(inputs.job_uuid)/$(inputs.input.basename)
+        valueFrom: $(inputs.job_uuid)/$(inputs.input.nameroot).bai
       - id: job_uuid
         source: job_uuid
         valueFrom: $(null)
