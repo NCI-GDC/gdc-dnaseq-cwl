@@ -112,8 +112,8 @@ steps:
         source: emit_CN/output
       - id: RUN_DATE
         source: emit_DT/output
-      # - id: MAX_RECORDS_IN_RAM
-      #   valueFrom: 500000
+      - id: MAX_RECORDS_IN_RAM
+        default: 500000
       - id: CREATE_INDEX
         valueFrom: "false"
     out:
