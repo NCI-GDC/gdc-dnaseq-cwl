@@ -176,8 +176,8 @@ inputs:
       separate: false
 
   - id: CREATE_INDEX
-    type: string
-    default: "true"
+    type: ["null", enum]
+    symbols: ["true", "false"]
     inputBinding:
       prefix: CREATE_INDEX=
       separate: false
