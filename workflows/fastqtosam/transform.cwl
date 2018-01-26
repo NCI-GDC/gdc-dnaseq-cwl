@@ -9,10 +9,8 @@ requirements:
   - class: SubworkflowFeatureRequirement
 
 inputs:
-  - id: read_groups
-    type:
-      type: array
-      items: File
+  - id: bam_name
+    type: string
   - id: fastq_1
     type:
       type: array
@@ -22,6 +20,10 @@ inputs:
       type: array
       items: File
   - id: fastq_s
+    type:
+      type: array
+      items: File
+  - id: read_groups
     type:
       type: array
       items: File
@@ -91,17 +93,17 @@ steps:
     out:
       - id: output_bam
 
-  # - id: fastqtosam_se
-  #   run: fastqtosam_se.cwl
-  #   scatter: [fastq_s, read_group_json]
-  #   scatterMethod: "dotproduct"
-  #   in:
-  #     - id: fastq_
-  #       source: sort_scattered_fastq_s/OUTPUT
-  #     - id: readgroup_json_path
-  #       source: decider_fastqtosam_se/output_readgroup_paths
-  #   out:
-  #     - id: OUTPUT
+  - id: fastqtosam_se
+    run: fastqtosam_se.cwl
+    scatter: [fastq_s, read_group_json]
+    scatterMethod: "dotproduct"
+    in:
+      - id: fastq_s
+        source: sort_scattered_fastq_s/OUTPUT
+      - id: read_group_json
+        source: decider_fastqtosam_se/output_readgroup_paths
+    out:
+      - id: output_bam
 
   # - id: picard_mergesamfiles_pe
   #   run: ../../picard_mergesamfiles.cwl
