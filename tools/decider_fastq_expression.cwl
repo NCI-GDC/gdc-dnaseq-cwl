@@ -56,6 +56,9 @@ expression: |
         else if (endsWith(fastq_name, '_s.fq.gz')) {
           return -8
         }
+        else if (endsWith(fastq_name, 'R.fq.gz')) {
+          return -7
+        }
         else {
           exit()
         }
