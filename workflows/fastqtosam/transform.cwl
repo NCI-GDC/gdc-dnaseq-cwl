@@ -92,16 +92,14 @@ steps:
       - id: output_bam
 
   # - id: fastqtosam_se
-  #   run: ../../tools/picard_fastqtosam.cwl
-  #   scatter: [fastq, readgroup_json_path]
+  #   run: fastqtosam_se.cwl
+  #   scatter: [fastq_s, read_group_json]
   #   scatterMethod: "dotproduct"
   #   in:
-  #     - id: fasta
-  #       source: reference_sequence
-  #     - id: fastq
+  #     - id: fastq_
   #       source: sort_scattered_fastq_s/OUTPUT
   #     - id: readgroup_json_path
-  #       source: decider_bwa_se/output_readgroup_paths
+  #       source: decider_fastqtosam_se/output_readgroup_paths
   #   out:
   #     - id: OUTPUT
 
