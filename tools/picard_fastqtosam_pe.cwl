@@ -9,8 +9,8 @@ requirements:
   - class: ResourceRequirement
     coresMin: 1
     coresMax: 1
-    ramMin: 15000
-    ramMax: 15000
+    ramMin: 10000
+    ramMax: 10000
     tmpdirMin: $(Math.ceil(1.1 * (inputs.FASTQ.size + inputs.FASTQ2.size) / 1048576))
     tmpdirMax: $(Math.ceil(1.1 * (inputs.FASTQ.size + inputs.FASTQ2.size) / 1048576))
     outdirMin: $(Math.ceil(1.1 * (inputs.FASTQ.size + inputs.FASTQ2.size) / 1048576))
@@ -58,9 +58,9 @@ inputs:
       separate: false
 
   # https://gatkforums.broadinstitute.org/gatk/discussion/6472/read-groups
+  # ["ILLUMINA", "SOLID", "LS454", "HELICOS", "PACBIO"]
   - id: PLATFORM
-    type: ["null", enum]
-    symbols: ["ILLUMINA", "SOLID", "LS454", "HELICOS", "PACBIO"]
+    type: ["null", string]
     inputBinding:
       prefix: PLATFORM=
       separate: false
@@ -91,11 +91,12 @@ inputs:
 
   - id: COMMENT
     type:
-      type: array
-      items: string
-      inputBinding:
-        prefix: COMMENT=
-        separate: false
+      - "null"
+      - type: array
+        items: string
+        inputBinding:
+          prefix: COMMENT=
+          separate: false
 
   - id: DESCRIPTION
     type: ["null", string]
@@ -110,8 +111,10 @@ inputs:
       separate: false
 
   - id: SORT_ORDER
-    type: ["null", enum]
-    symbols: [unsorted, queryname, coordinate, duplicate, unknown]
+    type:
+      - "null"
+      - type: enum
+        symbols: [unsorted, queryname, coordinate, duplicate, unknown]
     inputBinding:
       prefix: SORT_ORDER=
       separate: false
@@ -129,8 +132,10 @@ inputs:
       separate: false
 
   - id: ALLOW_AND_IGNORE_EMPTY_LINES
-    type: ["null", enum]
-    symbols: ["true", "false"]
+    type:
+      - "null"
+      - type: enum
+        symbols: ["true", "false"]
     inputBinding:
       prefix: ALLOW_AND_IGNORE_EMPTY_LINES=
       separate: false
@@ -143,22 +148,28 @@ inputs:
       separate: false
 
   - id: VERBOSITY
-    type: ["null", enum]
-    symbols: [ERROR, WARNING, INFO, DEBUG]
+    type:
+      - "null"
+      - type: enum
+        symbols: [ERROR, WARNING, INFO, DEBUG]
     inputBinding:
       prefix: VERBOSITY=
       separate: false
 
   - id: QUIET
-    type: ["null", enum]
-    symbols: ["true", "false"]
+    type:
+      - "null"
+      - type: enum
+        symbols: ["true", "false"]
     inputBinding:
       prefix: QUIET=
       separate: false
 
   - id: VALIDATION_STRINGENCY
-    type: ["null", enum]
-    symbols: [STRICT, LENIENT, SILENT]
+    type:
+      - "null"
+      - type: enum
+        symbols: [STRICT, LENIENT, SILENT]
     inputBinding:
       prefix: VALIDATION_STRINGENCY=
       separate: false
@@ -176,15 +187,19 @@ inputs:
       separate: false
 
   - id: CREATE_INDEX
-    type: ["null", enum]
-    symbols: ["true", "false"]
+    type:
+      - "null"
+      - type: enum
+        symbols: ["true", "false"]
     inputBinding:
       prefix: CREATE_INDEX=
       separate: false
 
   - id: CREATE_MD5_FILE
-    type: ["null", enum]
-    symbols: ["true", "false"]
+    type:
+      - "null"
+      - type: enum
+        symbols: ["true", "false"]
     inputBinding:
       prefix: CREATE_MD5_FILE=
       separate: false
@@ -194,10 +209,10 @@ outputs:
     type: File
     format: "edam:format_2572"
     outputBinding:
-      glob: $(inputs.INPUT.READ_GROUP_NAME).bam
+      glob: $(inputs.READ_GROUP_NAME).bam
 
 arguments:
-  - valueFrom: $(inputs.INPUT.READ_GROUP_NAME).bam
+  - valueFrom: $(inputs.READ_GROUP_NAME).bam
     prefix: OUTPUT=
     separate: false
 
