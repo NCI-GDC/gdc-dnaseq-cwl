@@ -5,7 +5,9 @@ cwlVersion: v1.0
 class: Workflow
 
 requirements:
+  - class: InlineJavascriptRequirement
   - class: ScatterFeatureRequirement
+  - class: StepInputExpressionRequirement
   - class: SubworkflowFeatureRequirement
 
 inputs:
@@ -105,27 +107,27 @@ steps:
     out:
       - id: output_bam
 
-  # - id: picard_mergesamfiles_pe
-  #   run: ../../picard_mergesamfiles.cwl
-  #   in:
-  #     - id: INPUT
-  #       source: picard_sortsam_pe/SORTED_OUTPUT
-  #     - id: OUTPUT
-  #       source: input_bam
-  #       valueFrom: $(self.basename)
-  #   out:
-  #     - id: MERGED_OUTPUT
+  - id: picard_mergesamfiles_pe
+    run: ../../tools/picard_mergesamfiles.cwl
+    in:
+      - id: INPUT
+        source: fastqtosam_pe/output_bam
+      - id: OUTPUT
+        source: bam_name
+        valueFrom: $(self.slice(0,-4)).pe.bam
+    out:
+      - id: MERGED_OUTPUT
 
-  # - id: picard_mergesamfiles_se
-  #   run: ../../tools/picard_mergesamfiles.cwl
-  #   in:
-  #     - id: INPUT
-  #       source: picard_sortsam_se/SORTED_OUTPUT
-  #     - id: OUTPUT
-  #       source: input_bam
-  #       valueFrom: $(self.basename)
-  #   out:
-  #     - id: MERGED_OUTPUT
+  - id: picard_mergesamfiles_se
+    run: ../../tools/picard_mergesamfiles.cwl
+    in:
+      - id: INPUT
+        source: fastqtosam_se/output_bam
+      - id: OUTPUT
+        source: bam_name
+        valueFrom: $(self.slice(0,-4)).se.bam
+    out:
+      - id: MERGED_OUTPUT
 
   # - id: picard_mergesamfiles
   #   run: ../../tools/picard_mergesamfiles.cwl
