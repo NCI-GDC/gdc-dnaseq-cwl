@@ -6,6 +6,7 @@ class: Workflow
 
 requirements:
   - class: InlineJavascriptRequirement
+  - class: MultipleInputFeatureRequirement
   - class: ScatterFeatureRequirement
   - class: StepInputExpressionRequirement
   - class: SubworkflowFeatureRequirement
@@ -31,10 +32,9 @@ inputs:
       items: File
 
 outputs:
-  []
-  # - id: output_bam
-  #   type: File
-  #   outputSource: picard_mergesamfiles/MERGED_OUTPUT
+  - id: output_bam
+    type: File
+    outputSource: picard_mergesamfiles/MERGED_OUTPUT
 
 steps:
   - id: sort_scattered_fastq_1
@@ -129,16 +129,15 @@ steps:
     out:
       - id: MERGED_OUTPUT
 
-  # - id: picard_mergesamfiles
-  #   run: ../../tools/picard_mergesamfiles.cwl
-  #   in:
-  #     - id: INPUT
-  #       source: [
-  #       picard_mergesamfiles_pe/MERGED_OUTPUT,
-  #       picard_mergesamfiles_se/MERGED_OUTPUT
-  #       ]
-  #     - id: OUTPUT
-  #       source: input_bam
-  #       valueFrom: $(self.basename.slice(0,-4) + "_gdc_ubam.bam")
-  #   out:
-  #     - id: MERGED_OUTPUT
+  - id: picard_mergesamfiles
+    run: ../../tools/picard_mergesamfiles.cwl
+    in:
+      - id: INPUT
+        source: [
+        picard_mergesamfiles_pe/MERGED_OUTPUT,
+        picard_mergesamfiles_se/MERGED_OUTPUT
+        ]
+      - id: OUTPUT
+        source: bam_name
+    out:
+      - id: MERGED_OUTPUT
