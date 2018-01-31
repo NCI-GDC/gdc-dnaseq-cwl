@@ -23,7 +23,6 @@ outputs:
 
 expression: |
   ${
-  
     var output = "";
     for (var i = 0; i < inputs.readgroup_pe_uuids.length; i++) {
       var readgroup = inputs.readgroup_pe_uuids[i];
@@ -34,6 +33,3 @@ expression: |
     var final_output = output.slice(0, -1); 
     return {'output': final_output}
   }
-
-
-
