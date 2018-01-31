@@ -5,9 +5,10 @@ cwlVersion: v1.0
 class: Workflow
 
 requirements:
- - class: InlineJavascriptRequirement
- - class: StepInputExpressionRequirement
- - class: SubworkflowFeatureRequirement
+  - $import: ../../tools/readgroup_no_pu.yaml
+  - class: InlineJavascriptRequirement
+  - class: StepInputExpressionRequirement
+  - class: SubworkflowFeatureRequirement
 
 inputs:
   - id: bam_name
@@ -16,30 +17,16 @@ inputs:
     type: File
   - id: bioclient_load_bucket
     type: string
-  - id: fastq_1_gdc_id
+  - id: job_uuid
+    type: string
+  - id: readgroup_pe_uuid
     type:
       type: array
-      items: string
-  - id: fastq_1_file_size
+      items:  ../../tools/readgroup_no_pu.yaml#readgroup_pe_uuid
+  - id: readgroup_se_uuid
     type:
       type: array
-      items: long
-  - id: fastq_2_gdc_id
-    type:
-      type: array
-      items: string
-  - id: fastq_2_file_size
-    type:
-      type: array
-      items: long
-  - id: fastq_s_gdc_id
-    type:
-      type: array
-      items: string
-  - id: fastq_s_file_size
-    type:
-      type: array
-      items: long
+      items:  ../../tools/readgroup_no_pu.yaml#readgroup_se_uuid
   - id: start_token
     type: File
 
@@ -52,58 +39,17 @@ outputs:
     outputSource: generate_token/token
 
 steps:
-  - id: extract_fastq_1
-    run: ../../tools/bio_client_download.cwl
-    scatter: download_handle
-    in:
-      - id: config-file
-        source: bioclient_config
-      - id: download_handle
-        source: fastq_1_gdc_id
-      - id: file_size
-        source: fastq_1_file_size
-    out:
-      - id: output
-
-  - id: extract_fastq_2
-    run: ../../tools/bio_client_download.cwl
-    scatter: download_handle
-    in:
-      - id: config-file
-        source: bioclient_config
-      - id: download_handle
-        source: fastq_2_gdc_id
-      - id: file_size
-        source: fastq_2_file_size
-    out:
-      - id: output
-
-  - id: extract_fastq_2
-    run: ../../tools/bio_client_download.cwl
-    scatter: download_handle
-    in:
-      - id: config-file
-        source: bioclient_config
-      - id: download_handle
-        source: fastq_2_gdc_id
-      - id: file_size
-        source: fastq_2_file_size
-    out:
-      - id: output
-
   - id: transform
     run: transform.cwl
     in:
       - id: bam_name
         source: bam_name
-      - id: fastq_1
-        source: extract_fastq_1/output
-      - id: fastq_2
-        source: extract_fastq_2/output
-      - id: fastq_s
-        source: extract_fastq_s/output
-      - id: read_groups
-        source: 
+      - id: bioclient_config
+        source: bioclient_config
+      - id: readgroup_pe_uuid
+        source: readgroup_pe_uuid
+      - id: readgroup_se_uuid
+        source: readgroup_se_uuid
     out:
       - id: output_bam
 
@@ -117,10 +63,7 @@ steps:
       - id: upload-bucket
         source: bioclient_load_bucket
       - id: upload-key
-        valueFrom: $(inputs.job_uuid)/$(inputs.input.basename)
-      - id: job_uuid
-        source: job_uuid
-        valueFrom: $(null)
+        valueFrom: job_uuid/bam_name
     out:
       - id: output
 

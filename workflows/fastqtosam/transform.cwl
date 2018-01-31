@@ -5,31 +5,25 @@ cwlVersion: v1.0
 class: Workflow
 
 requirements:
+  - $import: ../../tools/readgroup_no_pu.yaml
   - class: InlineJavascriptRequirement
   - class: MultipleInputFeatureRequirement
   - class: ScatterFeatureRequirement
-  - class: StepInputExpressionRequirement
   - class: SubworkflowFeatureRequirement
 
 inputs:
   - id: bam_name
     type: string
-  - id: fastq_1
-    type:
+  - id: bioclient_config
+    type: File
+  - id: readgroup_pe_uuid
+    type: 
       type: array
-      items: File
-  - id: fastq_2
-    type:
+      items: ../../tools/readgroup_no_pu.yaml#readgroup_pe_uuid
+  - id: readgroup_se_uuid
+    type: 
       type: array
-      items: File
-  - id: fastq_s
-    type:
-      type: array
-      items: File
-  - id: read_groups
-    type:
-      type: array
-      items: File
+      items: ../../tools/readgroup_no_pu.yaml#readgroup_se_uuid
 
 outputs:
   - id: output_bam
@@ -37,73 +31,25 @@ outputs:
     outputSource: picard_mergesamfiles/MERGED_OUTPUT
 
 steps:
-  - id: sort_scattered_fastq_1
-    run: ../../tools/sort_scatter_expression.cwl
-    in:
-      - id: INPUT
-        source: fastq_1
-    out:
-      - id: OUTPUT
-
-  - id: sort_scattered_fastq_2
-    run: ../../tools/sort_scatter_expression.cwl
-    in:
-      - id: INPUT
-        source: fastq_2
-    out:
-      - id: OUTPUT
-
-  - id: sort_scattered_fastq_s
-    run: ../../tools/sort_scatter_expression.cwl
-    in:
-      - id: INPUT
-        source: fastq_s
-    out:
-      - id: OUTPUT
-
-  - id: decider_fastqtosam_pe
-    run: ../../tools/decider_fastq_expression.cwl
-    in:
-      - id: fastq_path
-        source: sort_scattered_fastq_1/OUTPUT
-      - id: readgroup_path
-        source: read_groups
-    out:
-      - id: output_readgroup_paths
-
-  - id: decider_fastqtosam_se
-    run: ../../tools/decider_fastq_expression.cwl
-    in:
-      - id: fastq_path
-        source: sort_scattered_fastq_s/OUTPUT
-      - id: readgroup_path
-        source: read_groups
-    out:
-      - id: output_readgroup_paths
-
   - id: fastqtosam_pe
     run: fastqtosam_pe.cwl
-    scatter: [fastq_1, fastq_2, read_group_json]
-    scatterMethod: "dotproduct"
+    scatter: [readgroup_pe_uuid]
     in:
-      - id: fastq_1
-        source: sort_scattered_fastq_1/OUTPUT
-      - id: fastq_2
-        source: sort_scattered_fastq_2/OUTPUT
-      - id: read_group_json
-        source: decider_fastqtosam_pe/output_readgroup_paths
+      - id: bioclient_config
+        source: bioclient_config
+      - id: readgroup_pe_uuid
+        source: readgroup_pe_uuid
     out:
       - id: output_bam
 
   - id: fastqtosam_se
     run: fastqtosam_se.cwl
-    scatter: [fastq_s, read_group_json]
-    scatterMethod: "dotproduct"
+    scatter: [readgroup_se_uuid]
     in:
-      - id: fastq_s
-        source: sort_scattered_fastq_s/OUTPUT
-      - id: read_group_json
-        source: decider_fastqtosam_se/output_readgroup_paths
+      - id: bioclient_config
+        source: bioclient_config
+      - id: readgroup_se_uuid
+        source: readgroup_se_uuid
     out:
       - id: output_bam
 
@@ -114,7 +60,7 @@ steps:
         source: fastqtosam_pe/output_bam
       - id: OUTPUT
         source: bam_name
-        valueFrom: $(self.slice(0,-4)).pe.bam
+        valueFrom:  $(self.slice(0,-4)).pe.bam
     out:
       - id: MERGED_OUTPUT
 
@@ -125,7 +71,7 @@ steps:
         source: fastqtosam_se/output_bam
       - id: OUTPUT
         source: bam_name
-        valueFrom: $(self.slice(0,-4)).se.bam
+        valueFrom:  $(self.slice(0,-4)).se.bam
     out:
       - id: MERGED_OUTPUT
 
