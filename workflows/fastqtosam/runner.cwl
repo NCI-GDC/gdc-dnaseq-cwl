@@ -51,8 +51,6 @@ inputs:
     type: string
   - id: job_uuid
     type: string
-  - id: thread_count
-    type: long
 
 outputs:
   - id: indexd_bam_uuid
@@ -126,8 +124,6 @@ steps:
         source: status_table
       - id: job_uuid
         source: job_uuid
-      - id: thread_count
-        source: thread_count
     out:
       - id: token
 
@@ -207,7 +203,5 @@ steps:
         source: status_table
       - id: job_uuid
         source: job_uuid
-      - id: thread_count
-        source: thread_count
     out:
       - id: token
