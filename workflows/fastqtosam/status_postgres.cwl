@@ -66,13 +66,35 @@ outputs:
     outputSource: sqlite_to_postgres/log
 
 steps:
-  - id: concat_pe_forward_fastq_uuid_string
-    run: ../../tools/concat_readgroup_pe_string.cwl
+  - id: pe_forward_fastq_uuid_string
+    run: ../../tools/emit_readgroup_pe_string.cwl
     in:
-      - id: readgroups
+      - id: readgroup_pe_uuid
         source: readgroup_pe_uuid
       - id: key
         valueFrom: forward_fastq_uuid
+    out:
+      - id: output
+
+  - id: pe_reverse_fastq_uuid_string
+    run: ../../tools/emit_readgroup_pe_string.cwl
+    in:
+      - id: readgroup_pe_uuid
+        source: readgroup_pe_uuid
+      - id: key
+        valueFrom: forward_fastq_uuid
+    out:
+      - id: output
+
+  - id: se_forward_fastq_uuid_string
+    run: ../../tools/emit_readgroup_se_string.cwl
+    in:
+      - id: readgroup_se_uuid
+        source: readgroup_se_uuid
+      - id: key
+        valueFrom: forward_fastq_uuid
+    out:
+      - id: output
 
   - id: emit_json
     run: ../../tools/emit_json.cwl
@@ -86,11 +108,8 @@ steps:
           "cwl_job_git_repo",
           "cwl_job_rel_path",
           "readgroup_pe_forward_fastq_uuid",
-          "readgroup_pe_forward_fastq_file_size",
           "readgroup_pe_reverse_fastq_uuid",
-          "readgroup_pe_reverse_fastq_file_size",
           "readgroup_se_forward_fastq_uuid",
-          "readgroup_se_forward_fastq_file_size",
           "hostname",
           "host_ipaddress",
           "host_macaddress",
@@ -106,12 +125,9 @@ steps:
           cwl_job_git_hash,
           cwl_job_git_repo,
           cwl_job_rel_path,
-          readgroup_pe_forward_fastq_uuid,
-          readgroup_pe_forward_fastq_file_size,
-          readgroup_pe_reverse_fastq_uuid,
-          readgroup_pe_reverse_fastq_file_size,
-          readgroup_se_forward_fastq_uuid,
-          readgroup_se_forward_fastq_file_size,
+          pe_forward_fastq_uuid_string/output,
+          pe_reverse_fastq_uuid_string/output,
+          se_forward_fastq_uuid_string/output,
           hostname,
           host_ipaddress,
           host_macaddress,
@@ -121,7 +137,6 @@ steps:
         ]
       - id: long_keys
         default: [
-          "input_bam_file_size",
           "slurm_resource_cores",
           "slurm_resource_disk_gigabytes",
           "slurm_resource_mem_megabytes",
@@ -129,7 +144,6 @@ steps:
         ]
       - id: long_values
         source: [
-          input_bam_file_size,
           slurm_resource_cores,
           slurm_resource_disk_gigabytes,
           slurm_resource_mem_megabytes,
