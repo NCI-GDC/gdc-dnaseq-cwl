@@ -57,8 +57,6 @@ inputs:
     type: string
   - id: step_token
     type: File
-  - id: thread_count
-    type: long
 
 outputs:
   - id: token
@@ -140,14 +138,12 @@ steps:
           "slurm_resource_cores",
           "slurm_resource_disk_gigabytes",
           "slurm_resource_mem_megabytes",
-          "thread_count"
         ]
       - id: long_values
         source: [
           slurm_resource_cores,
           slurm_resource_disk_gigabytes,
           slurm_resource_mem_megabytes,
-          thread_count
         ]
       - id: float_keys
         default: []
