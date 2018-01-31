@@ -29,7 +29,7 @@ expression: |
       var readgroup_uuid = readgroup[inputs.key];
       output += readgroup_uuid + ',';
     }
-    
+
     var final_output = output.slice(0, -1); 
     return {'output': final_output}
   }
