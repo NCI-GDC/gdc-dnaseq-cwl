@@ -1,0 +1,24 @@
+readgroup_pe_uuids:
+  - readgroup_meta:
+      CN: "BI"
+      DT: "2017"
+      ID: "218DN"
+      LB: "218DN"
+      PL: "Illumina"
+      SM: "sample"
+    forward_fastq_uuid: "auuid"
+    forward_fastq_file_size: 0
+    reverse_fastq_uuid: "buuid"
+    reverse_fastq_file_size: 0
+  - readgroup_meta:
+      CN: "BI"
+      DT: "2017"
+      ID: "218DO"
+      LB: "218DO"
+      PL: "Illumina"
+      SM: "sample"
+    forward_fastq_uuid: "cuuid"
+    forward_fastq_file_size: 0
+    reverse_fastq_uuid: "duuid"
+    reverse_fastq_file_size: 0
+key: "forward_fastq_uuid"
