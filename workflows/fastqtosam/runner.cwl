@@ -81,55 +81,55 @@ steps:
     out:
       - id: output
 
-  # - id: status_running
-  #   run: status_postgres.cwl
-  #   in:
-  #     - id: cwl_workflow_git_hash
-  #       source: cwl_workflow_git_hash
-  #     - id: cwl_workflow_git_repo
-  #       source: cwl_workflow_git_repo
-  #     - id: cwl_workflow_rel_path
-  #       source: cwl_workflow_rel_path
-  #     - id: cwl_job_git_hash
-  #       source: cwl_job_git_hash
-  #     - id: cwl_job_git_repo
-  #       source: cwl_job_git_repo
-  #     - id: cwl_job_rel_path
-  #       source: cwl_job_rel_path
-  #     - id: db_cred
-  #       source: db_cred
-  #     - id: db_cred_section
-  #       source: db_cred_section
-  #     - id: hostname
-  #       source: get_hostname/output
-  #     - id: host_ipaddress
-  #       source: get_host_ipaddress/output
-  #     - id: host_macaddress
-  #       source: get_host_macaddress/output
-  #     - id: indexd_bam_uuid
-  #       valueFrom: "NULL"
-  #     - id: readgroup_pe_uuid
-  #       source: readgroup_pe_uuid
-  #     - id: readgroup_se_uuid
-  #       source: readgroup_se_uuid
-  #     - id: slurm_resource_cores
-  #       source: slurm_resource_cores
-  #     - id: slurm_resource_disk_gigabytes
-  #       source: slurm_resource_disk_gigabytes
-  #     - id: slurm_resource_mem_megabytes
-  #       source: slurm_resource_mem_megabytes
-  #     - id: status
-  #       valueFrom: "RUNNING"
-  #     - id: step_token
-  #       source: bioclient_config
-  #     - id: status_table
-  #       source: status_table
-  #     - id: job_uuid
-  #       source: job_uuid
-  #     - id: thread_count
-  #       source: thread_count
-  #   out:
-  #     - id: token
+  - id: status_running
+    run: status_postgres.cwl
+    in:
+      - id: cwl_workflow_git_hash
+        source: cwl_workflow_git_hash
+      - id: cwl_workflow_git_repo
+        source: cwl_workflow_git_repo
+      - id: cwl_workflow_rel_path
+        source: cwl_workflow_rel_path
+      - id: cwl_job_git_hash
+        source: cwl_job_git_hash
+      - id: cwl_job_git_repo
+        source: cwl_job_git_repo
+      - id: cwl_job_rel_path
+        source: cwl_job_rel_path
+      - id: db_cred
+        source: db_cred
+      - id: db_cred_section
+        source: db_cred_section
+      - id: hostname
+        source: get_hostname/output
+      - id: host_ipaddress
+        source: get_host_ipaddress/output
+      - id: host_macaddress
+        source: get_host_macaddress/output
+      - id: indexd_bam_uuid
+        valueFrom: "NULL"
+      - id: readgroup_pe_uuid
+        source: readgroup_pe_uuid
+      - id: readgroup_se_uuid
+        source: readgroup_se_uuid
+      - id: slurm_resource_cores
+        source: slurm_resource_cores
+      - id: slurm_resource_disk_gigabytes
+        source: slurm_resource_disk_gigabytes
+      - id: slurm_resource_mem_megabytes
+        source: slurm_resource_mem_megabytes
+      - id: status
+        valueFrom: "RUNNING"
+      - id: step_token
+        source: bioclient_config
+      - id: status_table
+        source: status_table
+      - id: job_uuid
+        source: job_uuid
+      - id: thread_count
+        source: thread_count
+    out:
+      - id: token
 
   - id: etl
     run: etl.cwl
@@ -147,7 +147,7 @@ steps:
       - id: readgroup_se_uuid
         source: readgroup_se_uuid
       - id: start_token
-        source: bioclient_config #status_running/token
+        source: status_running/token
     out:
       - id: indexd_bam_json
       - id: token
@@ -162,52 +162,52 @@ steps:
     out:
       - id: output
 
-  # - id: status_complete
-  #   run: status_postgres.cwl
-  #   in:
-  #     - id: cwl_workflow_git_hash
-  #       source: cwl_workflow_git_hash
-  #     - id: cwl_workflow_git_repo
-  #       source: cwl_workflow_git_repo
-  #     - id: cwl_workflow_rel_path
-  #       source: cwl_workflow_rel_path
-  #     - id: cwl_job_git_hash
-  #       source: cwl_job_git_hash
-  #     - id: cwl_job_git_repo
-  #       source: cwl_job_git_repo
-  #     - id: cwl_job_rel_path
-  #       source: cwl_job_rel_path
-  #     - id: db_cred
-  #       source: db_cred
-  #     - id: db_cred_section
-  #       source: db_cred_section
-  #     - id: hostname
-  #       source: get_hostname/output
-  #     - id: host_ipaddress
-  #       source: get_host_ipaddress/output
-  #     - id: host_macaddress
-  #       source: get_host_macaddress/output
-  #     - id: indexd_bam_uuid
-  #       source: emit_bam_uuid/output
-  #     - id: readgroup_pe_uuid
-  #       source: readgroup_pe_uuid
-  #     - id: readgroup_se_uuid
-  #       source: readgroup_se_uuid
-  #     - id: slurm_resource_cores
-  #       source: slurm_resource_cores
-  #     - id: slurm_resource_disk_gigabytes
-  #       source: slurm_resource_disk_gigabytes
-  #     - id: slurm_resource_mem_megabytes
-  #       source: slurm_resource_mem_megabytes
-  #     - id: status
-  #       valueFrom: "COMPLETE"
-  #     - id: step_token
-  #       source: etl/token
-  #     - id: status_table
-  #       source: status_table
-  #     - id: job_uuid
-  #       source: job_uuid
-  #     - id: thread_count
-  #       source: thread_count
-  #   out:
-  #     - id: token
+  - id: status_complete
+    run: status_postgres.cwl
+    in:
+      - id: cwl_workflow_git_hash
+        source: cwl_workflow_git_hash
+      - id: cwl_workflow_git_repo
+        source: cwl_workflow_git_repo
+      - id: cwl_workflow_rel_path
+        source: cwl_workflow_rel_path
+      - id: cwl_job_git_hash
+        source: cwl_job_git_hash
+      - id: cwl_job_git_repo
+        source: cwl_job_git_repo
+      - id: cwl_job_rel_path
+        source: cwl_job_rel_path
+      - id: db_cred
+        source: db_cred
+      - id: db_cred_section
+        source: db_cred_section
+      - id: hostname
+        source: get_hostname/output
+      - id: host_ipaddress
+        source: get_host_ipaddress/output
+      - id: host_macaddress
+        source: get_host_macaddress/output
+      - id: indexd_bam_uuid
+        source: emit_bam_uuid/output
+      - id: readgroup_pe_uuid
+        source: readgroup_pe_uuid
+      - id: readgroup_se_uuid
+        source: readgroup_se_uuid
+      - id: slurm_resource_cores
+        source: slurm_resource_cores
+      - id: slurm_resource_disk_gigabytes
+        source: slurm_resource_disk_gigabytes
+      - id: slurm_resource_mem_megabytes
+        source: slurm_resource_mem_megabytes
+      - id: status
+        valueFrom: "COMPLETE"
+      - id: step_token
+        source: etl/token
+      - id: status_table
+        source: status_table
+      - id: job_uuid
+        source: job_uuid
+      - id: thread_count
+        source: thread_count
+    out:
+      - id: token
