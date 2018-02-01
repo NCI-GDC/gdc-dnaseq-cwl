@@ -17,11 +17,11 @@
     },
     "db_cred_section": "${db_cred_section}",
     "job_uuid": "$(job_uuid)",
-    "readgroup_pe_uuid_dict": [
-        "${readgroup_pe_uuid_dict}"
+    "readgroup_pe_list": [
+        "${readgroup_pe_list}"
     ],
-    "readgroup_se_uuid_dict": [
-        "${readgroup_se_uuid_dict}"
+    "readgroup_se_list": [
+        "${readgroup_se_list}"
     ],
     "slurm_resource_cores": 0,
     "slurm_resource_disk_gigabytes": 0,
