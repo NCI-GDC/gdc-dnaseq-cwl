@@ -33,6 +33,8 @@ inputs:
     type: File
   - id: db_cred_section
     type: string
+  - id: job_uuid
+    type: string
   - id: readgroup_pe_uuid
     type:
       type: array
@@ -48,8 +50,6 @@ inputs:
   - id: slurm_resource_mem_megabytes
     type: long
   - id: status_table
-    type: string
-  - id: job_uuid
     type: string
 
 outputs:
