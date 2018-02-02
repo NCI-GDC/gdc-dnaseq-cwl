@@ -7,9 +7,9 @@
     "cwl_workflow_git_repo": "${cwl_workflow_git_repo}",
     "cwl_workflow_git_hash": "${cwl_workflow_git_hash}",
     "cwl_workflow_rel_path": "${cwl_workflow_rel_path}",
-    "cwl_task_git_repo": "${cwl_task_git_repo}",
-    "cwl_task_git_hash": "${cwl_task_git_hash}",
-    "cwl_task_rel_path": "${cwl_task_rel_path}",
+    "cwl_job_git_repo": "${cwl_job_git_repo}",
+    "cwl_job_git_hash": "${cwl_job_git_hash}",
+    "cwl_job_rel_path": "${cwl_job_rel_path}",
     "db_cred": {
         "class": "File",
         "path": "${db_cred}"
@@ -32,6 +32,6 @@
     "slurm_resource_disk_gigabytes": 0,
     "slurm_resource_mem_megabytes": 0,
     "status_table": "${status_table}",
-    "task_uuid": "$(task_uuid)",
+    "job_uuid": "$(job_uuid)",
     "thread_count": 0,
 }

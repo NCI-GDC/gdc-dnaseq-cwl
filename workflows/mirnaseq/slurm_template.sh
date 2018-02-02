@@ -9,13 +9,13 @@
 CWL_WORKFLOW_GIT_REPO=${xx_cwl_workflow_git_repo_xx}
 CWL_WORKFLOW_GIT_HASH=${xx_cwl_workflow_git_hash_xx}
 CWL_WORKFLOW_REL_PATH=${xx_cwl_workflow_rel_path_xx}
-CWL_TASK_GIT_REPO=${xx_cwl_task_git_repo_xx}
-CWL_TASK_GIT_HASH=${xx_cwl_task_git_hash_xx}
-CWL_TASK_REL_PATH=${xx_cwl_task_rel_path_xx}
+CWL_JOB_GIT_REPO=${xx_cwl_job_git_repo_xx}
+CWL_JOB_GIT_HASH=${xx_cwl_job_git_hash_xx}
+CWL_JOB_REL_PATH=${xx_cwl_job_rel_path_xx}
 SCRATCH_DIR=${xx_scratch_dir_xx}
-TASK_UUID=${xx_task_uuid_xx}
+JOB_UUID=${xx_job_uuid_xx}
 VIRTUALENV_NAME=${xx_virtualenv_name_xx}
-TASK_DIR=repo/task
+JOB_DIR=repo/job
 WORKFLOW_DIR=repo/workflow
 
 function activate_virtualenv()
@@ -61,7 +61,7 @@ function git_fetch_commit()
 
 function runner()
 {
-    local task_path=${1}
+    local job_path=${1}
     local workflow_path=${2}
     local work_dir=${3}
 
@@ -73,8 +73,8 @@ function runner()
     echo mkdir ${tmp_dir}
     mkdir ${tmp_dir}
 
-    echo cwltool --debug --rm-tmpdir --rm-container --no-read-only --no-match-user --tmp-outdir-prefix ${cache_dir}/ --tmpdir-prefix ${tmp_dir}/ --custom-net bridge --outdir ${work_dir} ${workflow_path} ${task_path}
-    cwltool --debug --rm-tmpdir --rm-container --no-read-only --no-match-user --tmp-outdir-prefix ${cache_dir}/ --tmpdir-prefix ${tmp_dir}/ --custom-net bridge --outdir ${work_dir} ${workflow_path} ${task_path}
+    echo cwltool --debug --rm-tmpdir --rm-container --no-read-only --no-match-user --tmp-outdir-prefix ${cache_dir}/ --tmpdir-prefix ${tmp_dir}/ --custom-net bridge --outdir ${work_dir} ${workflow_path} ${job_path}
+    cwltool --debug --rm-tmpdir --rm-container --no-read-only --no-match-user --tmp-outdir-prefix ${cache_dir}/ --tmpdir-prefix ${tmp_dir}/ --custom-net bridge --outdir ${work_dir} ${workflow_path} ${job_path}
 }
 
 function main()
@@ -82,27 +82,27 @@ function main()
     local cwl_workflow_git_repo=${CWL_WORKFLOW_GIT_REPO}
     local cwl_workflow_git_hash=${CWL_WORKFLOW_GIT_HASH}
     local cwl_workflow_rel_path=${CWL_WORKFLOW_REL_PATH}
-    local cwl_task_git_repo=${CWL_TASK_GIT_REPO}
-    local cwl_task_git_hash=${CWL_TASK_GIT_HASH}
-    local cwl_task_rel_path=${CWL_TASK_REL_PATH}
-    local task_uuid=${TASK_UUID}
+    local cwl_job_git_repo=${CWL_JOB_GIT_REPO}
+    local cwl_job_git_hash=${CWL_JOB_GIT_HASH}
+    local cwl_job_rel_path=${CWL_JOB_REL_PATH}
+    local job_uuid=${JOB_UUID}
     local scratch_dir=${SCRATCH_DIR}
     local virtualenv_name=${VIRTUALENV_NAME}
 
-    local work_dir=${scratch_dir}/${task_uuid}
+    local work_dir=${scratch_dir}/${job_uuid}
     local workflow_dir=${work_dir}/${WORKFLOW_DIR}
     local workflow_path=${workflow_dir}/${cwl_workflow_rel_path}
-    local task_dir=${work_dir}/${TASK_DIR}
-    local task_path=${task_dir}/${cwl_task_rel_path}
+    local job_dir=${work_dir}/${JOB_DIR}
+    local job_path=${job_dir}/${cwl_job_rel_path}
 
     mkdir -p ${workflow_dir}
-    mkdir -p ${task_dir}
+    mkdir -p ${job_dir}
 
     git_fetch_commit ${workflow_dir} ${cwl_workflow_git_hash} ${cwl_workflow_git_repo}
-    git_fetch_commit ${task_dir} ${cwl_task_git_hash} ${cwl_task_git_repo}
-    sed -i "s/cwl_task_git_hash_value/${xx_cwl_task_git_hash_xx}/" ${task_path}
+    git_fetch_commit ${job_dir} ${cwl_job_git_hash} ${cwl_job_git_repo}
+    sed -i "s/cwl_job_git_hash_value/${xx_cwl_job_git_hash_xx}/" ${job_path}
     activate_virtualenv ${virtualenv_name}
-    runner ${task_path} ${workflow_path} ${work_dir}
+    runner ${job_path} ${workflow_path} ${work_dir}
     if [ $? -ne 0 ]
     then
         echo FAIL_RUNNER

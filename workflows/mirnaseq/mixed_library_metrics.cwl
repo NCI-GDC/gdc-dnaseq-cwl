@@ -18,7 +18,7 @@ inputs:
     type: string
   - id: thread_count
     type: long
-  - id: task_uuid
+  - id: job_uuid
     type: string
 
 outputs:
@@ -61,8 +61,8 @@ steps:
         valueFrom: $(self.basename)
       - id: input_state
         source: input_state
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
       - id: vcf
         source: known_snp
         valueFrom: $(self.basename)
@@ -119,8 +119,8 @@ steps:
         source: input_state
       - id: metric_path
         source: picard_collectoxogmetrics/OUTPUT
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
       - id: vcf
         source: known_snp
         valueFrom: $(self.basename)
@@ -151,8 +151,8 @@ steps:
         source: input_state
       - id: metric_path
         source: picard_collectwgsmetrics/OUTPUT
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: log
       - id: sqlite
@@ -175,8 +175,8 @@ steps:
         source: input_state
       - id: metric_path
         source: samtools_flagstat/OUTPUT
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: sqlite
 
@@ -198,8 +198,8 @@ steps:
         source: input_state
       - id: metric_path
         source: samtools_idxstats/OUTPUT
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: sqlite
 
@@ -221,8 +221,8 @@ steps:
         source: input_state
       - id: metric_path
         source: samtools_stats/OUTPUT
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: sqlite
 
@@ -238,8 +238,8 @@ steps:
           samtools_idxstats_to_sqlite/sqlite,
           samtools_stats_to_sqlite/sqlite
         ]
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: destination_sqlite
       - id: log

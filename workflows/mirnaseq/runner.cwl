@@ -38,24 +38,44 @@ inputs:
     type: string
   - id: known_snp_gdc_id
     type: string
+  - id: known_snp_file_size
+    type: long
   - id: known_snp_index_gdc_id
     type: string
+  - id: known_snp_index_file_size
+    type: long
   - id: reference_amb_gdc_id
     type: string
+  - id: reference_amb_file_size
+    type: long
   - id: reference_ann_gdc_id
     type: string
+  - id: reference_ann_file_size
+    type: long
   - id: reference_bwt_gdc_id
     type: string
+  - id: reference_bwt_file_size
+    type: long
   - id: reference_dict_gdc_id
     type: string
+  - id: reference_dict_file_size
+    type: long
   - id: reference_fa_gdc_id
     type: string
+  - id: reference_fa_file_size
+    type: long
   - id: reference_fai_gdc_id
     type: string
+  - id: reference_fai_file_size
+    type: long
   - id: reference_pac_gdc_id
     type: string
+  - id: reference_pac_file_size
+    type: long
   - id: reference_sa_gdc_id
     type: string
+  - id: reference_sa_file_size
+    type: long
   - id: slurm_resource_cores
     type: long
   - id: slurm_resource_disk_gigabytes
@@ -64,7 +84,7 @@ inputs:
     type: long
   - id: status_table
     type: string
-  - id: task_uuid
+  - id: job_uuid
     type: string
   - id: thread_count
     type: long
@@ -144,24 +164,44 @@ steps:
         source: input_bam_md5sum
       - id: known_snp_gdc_id
         source: known_snp_gdc_id
+      - id: known_snp_file_size
+        source: known_snp_file_size
       - id: known_snp_index_gdc_id
         source: known_snp_index_gdc_id
+      - id: known_snp_index_file_size
+        source: known_snp_index_file_size
       - id: reference_amb_gdc_id
         source: reference_amb_gdc_id
+      - id: reference_amb_file_size
+        source: reference_amb_file_size
       - id: reference_ann_gdc_id
         source: reference_ann_gdc_id
+      - id: reference_ann_file_size
+        source: reference_ann_file_size
       - id: reference_bwt_gdc_id
         source: reference_bwt_gdc_id
+      - id: reference_bwt_file_size
+        source: reference_bwt_file_size
       - id: reference_dict_gdc_id
         source: reference_dict_gdc_id
+      - id: reference_dict_file_size
+        source: reference_dict_file_size
       - id: reference_fa_gdc_id
         source: reference_fa_gdc_id
+      - id: reference_fa_file_size
+        source: reference_fa_file_size
       - id: reference_fai_gdc_id
         source: reference_fai_gdc_id
+      - id: reference_fai_file_size
+        source: reference_fai_file_size
       - id: reference_pac_gdc_id
         source: reference_pac_gdc_id
+      - id: reference_pac_file_size
+        source: reference_pac_file_size
       - id: reference_sa_gdc_id
         source: reference_sa_gdc_id
+      - id: reference_sa_file_size
+        source: reference_sa_file_size
       - id: indexd_bam_uuid
         valueFrom: "NULL"
       - id: indexd_bai_uuid
@@ -186,8 +226,8 @@ steps:
         source: bioclient_config
       - id: table_name
         source: status_table
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
       - id: thread_count
         source: thread_count
     out:
@@ -202,32 +242,54 @@ steps:
         source: bioclient_load_bucket
       - id: input_bam_gdc_id
         source: input_bam_gdc_id
+      - id: input_bam_file_size
+        source: input_bam_file_size
       - id: known_snp_gdc_id
         source: known_snp_gdc_id
+      - id: known_snp_file_size
+        source: known_snp_file_size
       - id: known_snp_index_gdc_id
         source: known_snp_index_gdc_id
+      - id: known_snp_index_file_size
+        source: known_snp_index_file_size
       - id: reference_amb_gdc_id
         source: reference_amb_gdc_id
+      - id: reference_amb_file_size
+        source: reference_amb_file_size
       - id: reference_ann_gdc_id
         source: reference_ann_gdc_id
+      - id: reference_ann_file_size
+        source: reference_ann_file_size
       - id: reference_bwt_gdc_id
         source: reference_bwt_gdc_id
+      - id: reference_bwt_file_size
+        source: reference_bwt_file_size
       - id: reference_dict_gdc_id
         source: reference_dict_gdc_id
+      - id: reference_dict_file_size
+        source: reference_dict_file_size
       - id: reference_fa_gdc_id
         source: reference_fa_gdc_id
+      - id: reference_fa_file_size
+        source: reference_fa_file_size
       - id: reference_fai_gdc_id
         source: reference_fai_gdc_id
+      - id: reference_fai_file_size
+        source: reference_fai_file_size
       - id: reference_pac_gdc_id
         source: reference_pac_gdc_id
+      - id: reference_pac_file_size
+        source: reference_pac_file_size
       - id: reference_sa_gdc_id
         source: reference_sa_gdc_id
+      - id: reference_sa_file_size
+        source: reference_sa_file_size
       - id: start_token
         source: status_running/token
       - id: thread_count
         source: thread_count
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: indexd_bam_json
       - id: indexd_bai_json
@@ -330,24 +392,44 @@ steps:
         source: input_bam_md5sum
       - id: known_snp_gdc_id
         source: known_snp_gdc_id
+      - id: known_snp_file_size
+        source: known_snp_file_size
       - id: known_snp_index_gdc_id
         source: known_snp_index_gdc_id
+      - id: known_snp_index_file_size
+        source: known_snp_index_file_size
       - id: reference_amb_gdc_id
         source: reference_amb_gdc_id
+      - id: reference_amb_file_size
+        source: reference_amb_file_size
       - id: reference_ann_gdc_id
         source: reference_ann_gdc_id
+      - id: reference_ann_file_size
+        source: reference_ann_file_size
       - id: reference_bwt_gdc_id
         source: reference_bwt_gdc_id
+      - id: reference_bwt_file_size
+        source: reference_bwt_file_size
       - id: reference_dict_gdc_id
         source: reference_dict_gdc_id
+      - id: reference_dict_file_size
+        source: reference_dict_file_size
       - id: reference_fa_gdc_id
         source: reference_fa_gdc_id
+      - id: reference_fa_file_size
+        source: reference_fa_file_size
       - id: reference_fai_gdc_id
         source: reference_fai_gdc_id
+      - id: reference_fai_file_size
+        source: reference_fai_file_size
       - id: reference_pac_gdc_id
         source: reference_pac_gdc_id
+      - id: reference_pac_file_size
+        source: reference_pac_file_size
       - id: reference_sa_gdc_id
         source: reference_sa_gdc_id
+      - id: reference_sa_file_size
+        source: reference_sa_file_size
       - id: indexd_bam_uuid
         source: emit_bam_uuid/output
       - id: indexd_bai_uuid
@@ -372,8 +454,8 @@ steps:
         source: etl/token
       - id: table_name
         source: status_table
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
       - id: thread_count
         source: thread_count
     out:

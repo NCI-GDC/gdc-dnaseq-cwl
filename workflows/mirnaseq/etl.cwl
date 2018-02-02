@@ -17,31 +17,53 @@ inputs:
     type: string
   - id: input_bam_gdc_id
     type: string
+  - id: input_bam_file_size
+    type: long
   - id: known_snp_gdc_id
     type: string
+  - id: known_snp_file_size
+    type: long
   - id: known_snp_index_gdc_id
     type: string
+  - id: known_snp_index_file_size
+    type: long
   - id: reference_amb_gdc_id
     type: string
+  - id: reference_amb_file_size
+    type: long
   - id: reference_ann_gdc_id
     type: string
+  - id: reference_ann_file_size
+    type: long
   - id: reference_bwt_gdc_id
     type: string
+  - id: reference_bwt_file_size
+    type: long
   - id: reference_dict_gdc_id
     type: string
+  - id: reference_dict_file_size
+    type: long
   - id: reference_fa_gdc_id
     type: string
+  - id: reference_fa_file_size
+    type: long
   - id: reference_fai_gdc_id
     type: string
+  - id: reference_fai_file_size
+    type: long
   - id: reference_pac_gdc_id
     type: string
+  - id: reference_pac_file_size
+    type: long
   - id: reference_sa_gdc_id
     type: string
+  - id: reference_sa_file_size
+    type: long
   - id: start_token
     type: File
   - id: thread_count
     type: long
-  - id: task_uuid
+  - id: job_uuid
     type: string
 
 outputs:
@@ -75,6 +97,8 @@ steps:
         source: bioclient_config
       - id: download_handle
         source: input_bam_gdc_id
+      - id: file_size
+        source: input_bam_file_size
     out:
       - id: output
 
@@ -85,6 +109,8 @@ steps:
         source: bioclient_config
       - id: download_handle
         source: known_snp_gdc_id
+      - id: file_size
+        source: known_snp_file_size
     out:
       - id: output
 
@@ -95,6 +121,8 @@ steps:
         source: bioclient_config
       - id: download_handle
         source: known_snp_index_gdc_id
+      - id: file_size
+        source: known_snp_index_file_size
     out:
       - id: output
 
@@ -105,6 +133,8 @@ steps:
         source: bioclient_config
       - id: download_handle
         source: reference_fa_gdc_id
+      - id: file_size
+        source: reference_fa_file_size
     out:
       - id: output
 
@@ -115,6 +145,8 @@ steps:
         source: bioclient_config
       - id: download_handle
         source: reference_fai_gdc_id
+      - id: file_size
+        source: reference_fai_file_size
     out:
       - id: output
 
@@ -125,6 +157,8 @@ steps:
         source: bioclient_config
       - id: download_handle
         source: reference_dict_gdc_id
+      - id: file_size
+        source: reference_dict_file_size
     out:
       - id: output
 
@@ -135,6 +169,8 @@ steps:
         source: bioclient_config
       - id: download_handle
         source: reference_amb_gdc_id
+      - id: file_size
+        source: reference_amb_file_size
     out:
       - id: output
 
@@ -145,6 +181,8 @@ steps:
         source: bioclient_config
       - id: download_handle
         source: reference_ann_gdc_id
+      - id: file_size
+        source: reference_ann_file_size
     out:
       - id: output
 
@@ -155,6 +193,8 @@ steps:
         source: bioclient_config
       - id: download_handle
         source: reference_bwt_gdc_id
+      - id: file_size
+        source: reference_bwt_file_size
     out:
       - id: output
 
@@ -165,6 +205,8 @@ steps:
         source: bioclient_config
       - id: download_handle
         source: reference_pac_gdc_id
+      - id: file_size
+        source: reference_pac_file_size
     out:
       - id: output
 
@@ -175,6 +217,8 @@ steps:
         source: bioclient_config
       - id: download_handle
         source: reference_sa_gdc_id
+      - id: file_size
+        source: reference_sa_file_size
     out:
       - id: output
 
@@ -221,8 +265,8 @@ steps:
         source: root_fasta_files/output
       - id: thread_count
         source: thread_count
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: merge_all_sqlite_destination_sqlite
       - id: mirna_profiling_mirna_adapter_report_sorted_output
@@ -276,7 +320,7 @@ steps:
           transform/mirna_profiling_mirna_tcga_mirnas_quant
         ]
       - id: file
-        source: task_uuid
+        source: job_uuid
         valueFrom: $(self)_mirna_profiling.tar.xz
     out:
       - id: OUTPUT
@@ -313,9 +357,9 @@ steps:
       - id: upload-bucket
         source: bioclient_load_bucket
       - id: upload-key
-        valueFrom: $(inputs.task_uuid)/$(inputs.input.basename)
-      - id: task_uuid
-        source: task_uuid
+        valueFrom: $(inputs.job_uuid)/$(inputs.input.basename)
+      - id: job_uuid
+        source: job_uuid
         valueFrom: $(null)
     out:
       - id: output
@@ -331,9 +375,9 @@ steps:
       - id: upload-bucket
         source: bioclient_load_bucket
       - id: upload-key
-        valueFrom: $(inputs.task_uuid)/$(inputs.input.basename)
-      - id: task_uuid
-        source: task_uuid
+        valueFrom: $(inputs.job_uuid)/$(inputs.input.basename)
+      - id: job_uuid
+        source: job_uuid
         valueFrom: $(null)
     out:
       - id: output
@@ -348,9 +392,9 @@ steps:
       - id: upload-bucket
         source: bioclient_load_bucket
       - id: upload-key
-        valueFrom: $(inputs.task_uuid)/$(inputs.input.basename)
-      - id: task_uuid
-        source: task_uuid
+        valueFrom: $(inputs.job_uuid)/$(inputs.input.basename)
+      - id: job_uuid
+        source: job_uuid
         valueFrom: $(null)
     out:
       - id: output
@@ -365,9 +409,9 @@ steps:
       - id: upload-bucket
         source: bioclient_load_bucket
       - id: upload-key
-        valueFrom: $(inputs.task_uuid)/$(inputs.input.basename)
-      - id: task_uuid
-        source: task_uuid
+        valueFrom: $(inputs.job_uuid)/$(inputs.input.basename)
+      - id: job_uuid
+        source: job_uuid
         valueFrom: $(null)
     out:
       - id: output
@@ -382,9 +426,9 @@ steps:
       - id: upload-bucket
         source: bioclient_load_bucket
       - id: upload-key
-        valueFrom: $(inputs.task_uuid)/$(inputs.input.basename)
-      - id: task_uuid
-        source: task_uuid
+        valueFrom: $(inputs.job_uuid)/$(inputs.input.basename)
+      - id: job_uuid
+        source: job_uuid
         valueFrom: $(null)
     out:
       - id: output
@@ -399,9 +443,9 @@ steps:
       - id: upload-bucket
         source: bioclient_load_bucket
       - id: upload-key
-        valueFrom: $(inputs.task_uuid)/$(inputs.input.basename)
-      - id: task_uuid
-        source: task_uuid
+        valueFrom: $(inputs.job_uuid)/$(inputs.input.basename)
+      - id: job_uuid
+        source: job_uuid
         valueFrom: $(null)
     out:
       - id: output
