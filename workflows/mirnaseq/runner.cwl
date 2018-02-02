@@ -20,11 +20,11 @@ inputs:
     type: string
   - id: cwl_workflow_rel_path
     type: string
-  - id: cwl_task_git_hash
+  - id: cwl_job_git_hash
     type: string
-  - id: cwl_task_git_repo
+  - id: cwl_job_git_repo
     type: string
-  - id: cwl_task_rel_path
+  - id: cwl_job_rel_path
     type: string
   - id: db_cred
     type: File
@@ -140,12 +140,12 @@ steps:
         source: cwl_workflow_git_repo
       - id: cwl_workflow_rel_path
         source: cwl_workflow_rel_path
-      - id: cwl_task_git_hash
-        source: cwl_task_git_hash
-      - id: cwl_task_git_repo
-        source: cwl_task_git_repo
-      - id: cwl_task_rel_path
-        source: cwl_task_rel_path
+      - id: cwl_job_git_hash
+        source: cwl_job_git_hash
+      - id: cwl_job_git_repo
+        source: cwl_job_git_repo
+      - id: cwl_job_rel_path
+        source: cwl_job_rel_path
       - id: db_cred
         source: db_cred
       - id: db_cred_section
@@ -368,12 +368,12 @@ steps:
         source: cwl_workflow_git_repo
       - id: cwl_workflow_rel_path
         source: cwl_workflow_rel_path
-      - id: cwl_task_git_hash
-        source: cwl_task_git_hash
-      - id: cwl_task_git_repo
-        source: cwl_task_git_repo
-      - id: cwl_task_rel_path
-        source: cwl_task_rel_path
+      - id: cwl_job_git_hash
+        source: cwl_job_git_hash
+      - id: cwl_job_git_repo
+        source: cwl_job_git_repo
+      - id: cwl_job_rel_path
+        source: cwl_job_rel_path
       - id: db_cred
         source: db_cred
       - id: db_cred_section

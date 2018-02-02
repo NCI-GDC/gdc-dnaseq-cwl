@@ -16,11 +16,11 @@ inputs:
     type: string
   - id: cwl_workflow_rel_path
     type: string
-  - id: cwl_task_git_hash
+  - id: cwl_job_git_hash
     type: string
-  - id: cwl_task_git_repo
+  - id: cwl_job_git_repo
     type: string
-  - id: cwl_task_rel_path
+  - id: cwl_job_rel_path
     type: string
   - id: db_cred
     type: File
@@ -121,9 +121,9 @@ steps:
           "cwl_workflow_git_hash",
           "cwl_workflow_git_repo",
           "cwl_workflow_rel_path",
-          "cwl_task_git_hash",
-          "cwl_task_git_repo",
-          "cwl_task_rel_path",
+          "cwl_job_git_hash",
+          "cwl_job_git_repo",
+          "cwl_job_rel_path",
           "hostname",
           "host_ipaddress",
           "host_macaddress",
@@ -153,9 +153,9 @@ steps:
           cwl_workflow_git_hash,
           cwl_workflow_git_repo,
           cwl_workflow_rel_path,
-          cwl_task_git_hash,
-          cwl_task_git_repo,
-          cwl_task_rel_path,
+          cwl_job_git_hash,
+          cwl_job_git_repo,
+          cwl_job_rel_path,
           hostname,
           host_ipaddress,
           host_macaddress,
