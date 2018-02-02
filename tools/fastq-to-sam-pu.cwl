@@ -21,7 +21,7 @@ outputs:
     outputBinding:
       glob: $(inputs.fastq_path.nameroot).pu.out
       loadContents: true
-      outputEval: $(self[0].contents)
+      outputEval: $(self[0].contents.trim())
 
 stdout: $(inputs.fastq_path.nameroot).pu.out
 
