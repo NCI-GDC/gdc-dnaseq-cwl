@@ -35,11 +35,11 @@ inputs:
     type: string
   - id: job_uuid
     type: string
-  - id: readgroup_pe_uuid
+  - id: readgroup_pe_list
     type:
       type: array
       items:  ../../tools/readgroup_no_pu.yaml#readgroup_pe_uuid
-  - id: readgroup_se_uuid
+  - id: readgroup_se_list
     type:
       type: array
       items:  ../../tools/readgroup_no_pu.yaml#readgroup_se_uuid
@@ -107,9 +107,9 @@ steps:
       - id: indexd_bam_uuid
         valueFrom: "NULL"
       - id: readgroup_pe_uuid
-        source: readgroup_pe_uuid
+        source: readgroup_pe_list
       - id: readgroup_se_uuid
-        source: readgroup_se_uuid
+        source: readgroup_se_list
       - id: slurm_resource_cores
         source: slurm_resource_cores
       - id: slurm_resource_disk_gigabytes
@@ -139,9 +139,9 @@ steps:
       - id: job_uuid
         source: job_uuid
       - id: readgroup_pe_uuid
-        source: readgroup_pe_uuid
+        source: readgroup_pe_list
       - id: readgroup_se_uuid
-        source: readgroup_se_uuid
+        source: readgroup_se_list
       - id: start_token
         source: status_running/token
     out:
@@ -186,9 +186,9 @@ steps:
       - id: indexd_bam_uuid
         source: emit_bam_uuid/output
       - id: readgroup_pe_uuid
-        source: readgroup_pe_uuid
+        source: readgroup_pe_list
       - id: readgroup_se_uuid
-        source: readgroup_se_uuid
+        source: readgroup_se_list
       - id: slurm_resource_cores
         source: slurm_resource_cores
       - id: slurm_resource_disk_gigabytes
