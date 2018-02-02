@@ -52,12 +52,12 @@ function git_fetch_commit()
     git init
     echo git remote add origin ${git_repo}
     git remote add origin ${git_repo}
-    git pull
-    git checkout ${git_commit}
-    #echo git fetch --depth 1 origin ${git_commit}
-    #git fetch --depth 1 origin ${git_commit}
-    #echo git checkout FETCH_HEAD
-    #git checkout FETCH_HEAD
+    #git pull
+    #git checkout ${git_commit}
+    echo git fetch --depth 1 origin ${git_commit}
+    git fetch --depth 1 origin ${git_commit}
+    echo git checkout FETCH_HEAD
+    git checkout FETCH_HEAD
     cd ${prev_dir}
 }
 
