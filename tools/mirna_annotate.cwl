@@ -63,12 +63,16 @@ arguments:
     position: 0
     shellQuote: false
 
-  - valueFrom: "&& /usr/sbin/mysqld --defaults-file=/etc/mysql/my.cnf --user=mysql --daemonize"
+  - valueFrom: "&& sudo /usr/sbin/mysqld --defaults-file=/etc/mysql/my.cnf --user=mysql --daemonize"
     position: 1
     shellQuote: false
 
   - valueFrom: "&& /root/mirna/v0.2.7/code/annotation/annotate.pl"
     position: 3
     shellQuote: false
+
+  # - valueFrom: "&& sudo chown -R ubuntu:ubuntu /var/spool/cwl"
+  #   position: 94
+  #   shellQuote: false
 
 baseCommand: []
