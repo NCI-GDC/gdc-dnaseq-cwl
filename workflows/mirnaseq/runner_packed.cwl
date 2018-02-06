@@ -155,7 +155,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/bio-client:bb6975c12cf8df54733a302f381090f56c4aa8a4ff920172a2881e62617857b1
+                    "dockerPull": "quay.io/ncigdc/bio-client:e288e40fd559904f035b41262f6b6582fcc3652f68e6483e6a15d7bddbbd8a65
                 }
             ], 
             "inputs": [
@@ -211,7 +211,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/bio-client:bb6975c12cf8df54733a302f381090f56c4aa8a4ff920172a2881e62617857b1
+                    "dockerPull": "quay.io/ncigdc/bio-client:e288e40fd559904f035b41262f6b6582fcc3652f68e6483e6a15d7bddbbd8a65
                 }
             ], 
             "inputs": [
