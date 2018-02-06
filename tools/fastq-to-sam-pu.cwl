@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/fastq-to-sam-pu:latest
+    dockerPull: quay.io/ncigdc/fastq-to-sam-pu:455c68b6b3345f7c0c1e7d21430da82a270560f874489e9059e28cf3cac20612
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
