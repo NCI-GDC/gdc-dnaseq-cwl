@@ -1,4 +1,3 @@
-
 #!/usr/bin/env cwl-runner
 
 cwlVersion: v1.0
@@ -6,7 +5,7 @@ cwlVersion: v1.0
 class: CommandLineTool
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/bio-client:e288e40fd559904f035b41262f6b6582fcc3652f68e6483e6a15d7bddbbd8a65
+    dockerPull: quay.io/ncigdc/bio-client:3b6a57756856285b1e36b61c0c35d4c4061d241667166c4ceb079c9e8197ea05
   - class: ResourceRequirement
     coresMin: 1
     coresMax: 1
