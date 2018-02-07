@@ -24,6 +24,10 @@ inputs:
     type: 
       type: array
       items: ../../tools/readgroup_no_pu.yaml#readgroup_se_uuid
+  - id: bam_uuid
+    type: 
+      type: array
+      items: string
 
 outputs:
   - id: output_bam
