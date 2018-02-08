@@ -155,7 +155,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/bio-client:e288e40fd559904f035b41262f6b6582fcc3652f68e6483e6a15d7bddbbd8a65
+                    "dockerPull": "quay.io/ncigdc/bio-client:ecfb12c2f41276f29862c1603f806b5478f9845405c5e2af5c7c0538f93425d9
                 }
             ], 
             "inputs": [
@@ -211,7 +211,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/bio-client:e288e40fd559904f035b41262f6b6582fcc3652f68e6483e6a15d7bddbbd8a65
+                    "dockerPull": "quay.io/ncigdc/bio-client:ecfb12c2f41276f29862c1603f806b5478f9845405c5e2af5c7c0538f93425d9
                 }
             ], 
             "inputs": [
@@ -1455,7 +1455,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/mirna-profiler:bd6f4799a457e0e0fde6dca548801c789656173fe529fd1706dc79adce0085f8"
+                    "dockerPull": "quay.io/ncigdc/mirna-profiler:70d6ea90ae099de24f0e9099c24ff750b207f740af20865151eafdf6725cc8fe
                 }, 
                 {
                     "class": "InitialWorkDirRequirement", 
@@ -1568,7 +1568,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/mirna-profiler:bd6f4799a457e0e0fde6dca548801c789656173fe529fd1706dc79adce0085f8"
+                    "dockerPull": "quay.io/ncigdc/mirna-profiler:70d6ea90ae099de24f0e9099c24ff750b207f740af20865151eafdf6725cc8fe
                 }, 
                 {
                     "class": "InitialWorkDirRequirement", 
@@ -1666,7 +1666,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/mirna-profiler:bd6f4799a457e0e0fde6dca548801c789656173fe529fd1706dc79adce0085f8"
+                    "dockerPull": "quay.io/ncigdc/mirna-profiler:70d6ea90ae099de24f0e9099c24ff750b207f740af20865151eafdf6725cc8fe
                 }, 
                 {
                     "class": "InitialWorkDirRequirement", 
@@ -1765,7 +1765,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/mirna-profiler:bd6f4799a457e0e0fde6dca548801c789656173fe529fd1706dc79adce0085f8"
+                    "dockerPull": "quay.io/ncigdc/mirna-profiler:70d6ea90ae099de24f0e9099c24ff750b207f740af20865151eafdf6725cc8fe
                 }, 
                 {
                     "class": "InitialWorkDirRequirement", 
@@ -1872,7 +1872,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/mirna-profiler:bd6f4799a457e0e0fde6dca548801c789656173fe529fd1706dc79adce0085f8"
+                    "dockerPull": "quay.io/ncigdc/mirna-profiler:70d6ea90ae099de24f0e9099c24ff750b207f740af20865151eafdf6725cc8fe
                 }, 
                 {
                     "class": "InitialWorkDirRequirement", 
@@ -1962,7 +1962,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/mirna-profiler:bd6f4799a457e0e0fde6dca548801c789656173fe529fd1706dc79adce0085f8"
+                    "dockerPull": "quay.io/ncigdc/mirna-profiler:70d6ea90ae099de24f0e9099c24ff750b207f740af20865151eafdf6725cc8fe
                 }, 
                 {
                     "class": "InitialWorkDirRequirement", 
