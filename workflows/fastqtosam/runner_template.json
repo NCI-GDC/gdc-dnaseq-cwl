@@ -17,6 +17,9 @@
     },
     "db_cred_section": "${db_cred_section}",
     "job_uuid": "$(job_uuid)",
+    "bam_record_list": [
+        "${bam_record_list}"
+    ],
     "readgroup_pe_list": [
         "${readgroup_pe_list}"
     ],
