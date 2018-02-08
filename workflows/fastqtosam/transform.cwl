@@ -5,9 +5,7 @@ cwlVersion: v1.0
 class: Workflow
 
 requirements:
-  - $import:
-      - ../../tools/readgroup_no_pu.yaml
-      - ../../tools/bam.yaml
+  - $import: ../../tools/readgroup_no_pu.yaml
   - class: InlineJavascriptRequirement
   - class: MultipleInputFeatureRequirement
   - class: ScatterFeatureRequirement
@@ -29,7 +27,7 @@ inputs:
   - id: bam_record_uuids
     type: 
       type: array
-      items: ../../tools/bam.yaml#bam_record_uuid
+      items: ../../tools/readgroup_no_pu.yaml#bam_record_uuid
 
 outputs:
   - id: output_bam
@@ -59,16 +57,16 @@ steps:
     out:
       - id: output_bam
 
-  # - id: bamtobam
-  #   run: bamtobam.cwl
-  #   scatter: [bam_record_uuid]
-  #   in:
-  #     - id: bioclient_config
-  #       source: bioclient_config
-  #     - id: bam_record_uuid
-  #       source: bam_record_uuids
-  #   out:
-  #     - id: output_bam
+  - id: bamtobam
+    run: bamtobam.cwl
+    scatter: [bam_record_uuid]
+    in:
+      - id: bioclient_config
+        source: bioclient_config
+      - id: bam_record_uuid
+        source: bam_record_uuids
+    out:
+      - id: output_bam
 
   - id: picard_mergesamfiles_pe
     run: ../../tools/picard_mergesamfiles.cwl
@@ -90,22 +88,22 @@ steps:
     out:
       - id: MERGED_OUTPUT
 
-  # - id: picard_mergesamfiles_bam
-  #   run: ../../tools/picard_mergesamfiles.cwl
-  #   in:
-  #     - id: INPUT
-  #       source: fastqtosam_se/output_bam
-  #     - id: OUTPUT
-  #       valueFrom:  $(bam_name).bam
-  #   out:
-  #     - id: MERGED_OUTPUT
+  - id: picard_mergesamfiles_bam
+    run: ../../tools/picard_mergesamfiles.cwl
+    in:
+      - id: INPUT
+        source: fastqtosam_se/output_bam
+      - id: OUTPUT
+        valueFrom:  $(bam_name).bam
+    out:
+      - id: MERGED_OUTPUT
 
   - id: picard_mergesamfiles
     run: ../../tools/picard_mergesamfiles.cwl
     in:
       - id: INPUT
         source: [
-        # picard_mergesamfiles_bam/MERGED_OUTPUT,
+        picard_mergesamfiles_bam/MERGED_OUTPUT,
         picard_mergesamfiles_pe/MERGED_OUTPUT,
         picard_mergesamfiles_se/MERGED_OUTPUT
         ]

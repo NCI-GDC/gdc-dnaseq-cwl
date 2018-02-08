@@ -19,14 +19,18 @@ inputs:
     type: string
   - id: job_uuid
     type: string
-  - id: readgroup_pe_uuid
+  - id: readgroup_pe_uuids
     type:
       type: array
       items:  ../../tools/readgroup_no_pu.yaml#readgroup_pe_uuid
-  - id: readgroup_se_uuid
+  - id: readgroup_se_uuids
     type:
       type: array
       items:  ../../tools/readgroup_no_pu.yaml#readgroup_se_uuid
+  - id: bam_record_uuids
+    type: 
+      type: array
+      items: ../../tools/readgroup_no_pu.yaml#bam_record_uuid
   - id: start_token
     type: File
 
@@ -46,10 +50,12 @@ steps:
         source: bam_name
       - id: bioclient_config
         source: bioclient_config
-      - id: readgroup_pe_uuid
-        source: readgroup_pe_uuid
-      - id: readgroup_se_uuid
-        source: readgroup_se_uuid
+      - id: readgroup_pe_uuids
+        source: readgroup_pe_uuids
+      - id: readgroup_se_uuids
+        source: readgroup_se_uuids
+      - id: bam_record_uuids
+        source: bam_record_uuids
     out:
       - id: output_bam
 

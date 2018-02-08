@@ -57,3 +57,11 @@ types:
         type: string
       - name: forward_fastq_file_size
         type: long
+
+  - name: bam_record_uuid
+    type: record
+    fields:
+      - name: bam_uuid
+        type: string
+      - name: bam_file_size
+        type: long

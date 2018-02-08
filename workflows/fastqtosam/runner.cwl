@@ -43,6 +43,10 @@ inputs:
     type:
       type: array
       items:  ../../tools/readgroup_no_pu.yaml#readgroup_se_uuid
+  - id: bam_record_list
+    type: 
+      type: array
+      items: ../../tools/readgroup_no_pu.yaml#bam_record_uuid
   - id: slurm_resource_cores
     type: long
   - id: slurm_resource_disk_gigabytes
@@ -138,10 +142,12 @@ steps:
         source: bioclient_load_bucket
       - id: job_uuid
         source: job_uuid
-      - id: readgroup_pe_uuid
+      - id: readgroup_pe_uuids
         source: readgroup_pe_list
-      - id: readgroup_se_uuid
+      - id: readgroup_se_uuids
         source: readgroup_se_list
+      - id: bam_record_uuids
+        source: bam_record_list
       - id: start_token
         source: status_running/token
     out:
