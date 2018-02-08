@@ -56,4 +56,4 @@ outputs:
     outputBinding:
       glob: $(inputs.sam.nameroot)_features
 
-baseCommand: [/root/mirna/v0.2.7/code/library_stats/graph_libs.pl]
+baseCommand: [/usr/mirna/v0.2.7/code/library_stats/graph_libs.pl]

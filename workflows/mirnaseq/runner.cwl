@@ -105,9 +105,9 @@ outputs:
   - id: indexd_mirna_profiling_mirnas_quant_uuid
     type: string
     outputSource: emit_mirna_profiling_mirnas_quant_uuid/output
-  - id: indexd_sqlite_uuid
-    type: string
-    outputSource: emit_sqlite_uuid/output
+  # - id: indexd_sqlite_uuid
+  #   type: string
+  #   outputSource: emit_sqlite_uuid/output
 
 steps:
   - id: get_hostname
@@ -296,7 +296,7 @@ steps:
       - id: indexd_mirna_profiling_tar_json
       - id: indexd_mirna_profiling_isoforms_quant_json
       - id: indexd_mirna_profiling_mirnas_quant_json
-      - id: indexd_sqlite_json
+      # - id: indexd_sqlite_json
       - id: token
 
   - id: emit_bam_uuid
@@ -319,15 +319,15 @@ steps:
     out:
       - id: output
         
-  - id: emit_sqlite_uuid
-    run: ../../tools/emit_json_value.cwl
-    in:
-      - id: input
-        source: etl/indexd_sqlite_json
-      - id: key
-        valueFrom: did
-    out:
-      - id: output
+  # - id: emit_sqlite_uuid
+  #   run: ../../tools/emit_json_value.cwl
+  #   in:
+  #     - id: input
+  #       source: etl/indexd_sqlite_json
+  #     - id: key
+  #       valueFrom: did
+  #   out:
+  #     - id: output
         
   - id: emit_mirna_profiling_tar_uuid
     run: ../../tools/emit_json_value.cwl
@@ -441,7 +441,7 @@ steps:
       - id: indexd_mirna_profiling_mirnas_quant_uuid
         source: emit_mirna_profiling_mirnas_quant_uuid/output
       - id: indexd_sqlite_uuid
-        source: emit_sqlite_uuid/output
+        valueFrom: "NULL" #source: emit_sqlite_uuid/output
       - id: slurm_resource_cores
         source: slurm_resource_cores
       - id: slurm_resource_disk_gigabytes

@@ -77,15 +77,15 @@ outputs:
       glob: $(inputs.sam.nameroot)_features/tcga/mirnas.txt
 
 arguments:
-  - valueFrom: "chmod 1777 /tmp"
+  - valueFrom: "sudo chmod 1777 /tmp"
     position: 0
     shellQuote: false
 
-  - valueFrom: "&& /usr/sbin/mysqld --defaults-file=/etc/mysql/my.cnf --user=mysql --daemonize"
+  - valueFrom: "&& sudo /usr/sbin/mysqld --defaults-file=/etc/mysql/my.cnf --user=mysql --daemonize"
     position: 1
     shellQuote: false
 
-  - valueFrom: "&& /root/mirna/v0.2.7/code/custom_output/tcga/tcga.pl"
+  - valueFrom: "&& /usr/mirna/v0.2.7/code/custom_output/tcga/tcga.pl"
     position: 3
     shellQuote: false
 

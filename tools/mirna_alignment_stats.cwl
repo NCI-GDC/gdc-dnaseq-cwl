@@ -82,4 +82,4 @@ outputs:
     outputBinding:
       glob: $(inputs.sam.nameroot)_features/softclip_taglengths.csv
 
-baseCommand: [/root/mirna/v0.2.7/code/library_stats/alignment_stats.pl]
+baseCommand: [/usr/mirna/v0.2.7/code/library_stats/alignment_stats.pl]

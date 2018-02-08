@@ -27,9 +27,9 @@ outputs:
   - id: picard_markduplicates_output
     type: File
     outputSource: picard_markduplicates/OUTPUT
-  - id: merge_all_sqlite_destination_sqlite
-    type: File
-    outputSource: merge_all_sqlite/destination_sqlite
+  # - id: merge_all_sqlite_destination_sqlite
+  #   type: File
+  #   outputSource: merge_all_sqlite/destination_sqlite
   - id: mirna_profiling_mirna_adapter_report_sorted_output
     type: File
     outputSource: mirna_profiling/mirna_adapter_report_sorted_output
@@ -73,31 +73,31 @@ steps:
     out:
       - id: OUTPUT
 
-  - id: picard_validatesamfile_original
-    run: ../../tools/picard_validatesamfile.cwl
-    in:
-      - id: INPUT
-        source: samtools_bamtobam/OUTPUT
-      - id: VALIDATION_STRINGENCY
-        valueFrom: "LENIENT"
-    out:
-      - id: OUTPUT
+  # - id: picard_validatesamfile_original
+  #   run: ../../tools/picard_validatesamfile.cwl
+  #   in:
+  #     - id: INPUT
+  #       source: samtools_bamtobam/OUTPUT
+  #     - id: VALIDATION_STRINGENCY
+  #       valueFrom: "LENIENT"
+  #   out:
+  #     - id: OUTPUT
 
-  # need eof and dup QNAME detection
-  - id: picard_validatesamfile_original_to_sqlite
-    run: ../../tools/picard_validatesamfile_to_sqlite.cwl
-    in:
-      - id: bam
-        source: input_bam
-        valueFrom: $(self.basename)
-      - id: input_state
-        valueFrom: "original"
-      - id: metric_path
-        source: picard_validatesamfile_original/OUTPUT
-      - id: job_uuid
-        source: job_uuid
-    out:
-      - id: sqlite
+  # # need eof and dup QNAME detection
+  # - id: picard_validatesamfile_original_to_sqlite
+  #   run: ../../tools/picard_validatesamfile_to_sqlite.cwl
+  #   in:
+  #     - id: bam
+  #       source: input_bam
+  #       valueFrom: $(self.basename)
+  #     - id: input_state
+  #       valueFrom: "original"
+  #     - id: metric_path
+  #       source: picard_validatesamfile_original/OUTPUT
+  #     - id: job_uuid
+  #       source: job_uuid
+  #   out:
+  #     - id: sqlite
 
   - id: biobambam_bamtofastq
     run: ../../tools/biobambam2_bamtofastq.cwl
@@ -591,71 +591,71 @@ steps:
     out:
       - id: SORTED_OUTPUT
 
-  - id: metrics_pe
-    run: metrics.cwl
-    scatter: bam
-    in:
-      - id: bam
-        source: picard_sortsam_pe/SORTED_OUTPUT
-      - id: known_snp
-        source: known_snp
-      - id: fasta
-        source: reference_sequence
-      - id: input_state
-        valueFrom: "sorted_readgroup"
-      - id: parent_bam
-        source: input_bam
-        valueFrom: $(self.basename)
-      - id: thread_count
-        source: thread_count
-      - id: job_uuid
-        source: job_uuid
-    out:
-      - id: merge_sqlite_destination_sqlite
+  # - id: metrics_pe
+  #   run: metrics.cwl
+  #   scatter: bam
+  #   in:
+  #     - id: bam
+  #       source: picard_sortsam_pe/SORTED_OUTPUT
+  #     - id: known_snp
+  #       source: known_snp
+  #     - id: fasta
+  #       source: reference_sequence
+  #     - id: input_state
+  #       valueFrom: "sorted_readgroup"
+  #     - id: parent_bam
+  #       source: input_bam
+  #       valueFrom: $(self.basename)
+  #     - id: thread_count
+  #       source: thread_count
+  #     - id: job_uuid
+  #       source: job_uuid
+  #   out:
+  #     - id: merge_sqlite_destination_sqlite
 
-  - id: merge_metrics_pe
-    run: ../../tools/merge_sqlite.cwl
-    in:
-      - id: source_sqlite
-        source: metrics_pe/merge_sqlite_destination_sqlite
-      - id: job_uuid
-        source: job_uuid
-    out:
-      - id: destination_sqlite
-      - id: log
+  # - id: merge_metrics_pe
+  #   run: ../../tools/merge_sqlite.cwl
+  #   in:
+  #     - id: source_sqlite
+  #       source: metrics_pe/merge_sqlite_destination_sqlite
+  #     - id: job_uuid
+  #       source: job_uuid
+  #   out:
+  #     - id: destination_sqlite
+  #     - id: log
 
-  - id: metrics_se
-    run: metrics.cwl
-    scatter: bam
-    in:
-      - id: bam
-        source: picard_sortsam_se/SORTED_OUTPUT
-      - id: known_snp
-        source: known_snp
-      - id: fasta
-        source: reference_sequence
-      - id: input_state
-        valueFrom: "sorted_readgroup"
-      - id: parent_bam
-        source: input_bam
-        valueFrom: $(self.basename)
-      - id: thread_count
-        source: thread_count
-      - id: job_uuid
-        source: job_uuid
-    out:
-      - id: merge_sqlite_destination_sqlite
+  # - id: metrics_se
+  #   run: metrics.cwl
+  #   scatter: bam
+  #   in:
+  #     - id: bam
+  #       source: picard_sortsam_se/SORTED_OUTPUT
+  #     - id: known_snp
+  #       source: known_snp
+  #     - id: fasta
+  #       source: reference_sequence
+  #     - id: input_state
+  #       valueFrom: "sorted_readgroup"
+  #     - id: parent_bam
+  #       source: input_bam
+  #       valueFrom: $(self.basename)
+  #     - id: thread_count
+  #       source: thread_count
+  #     - id: job_uuid
+  #       source: job_uuid
+  #   out:
+  #     - id: merge_sqlite_destination_sqlite
 
-  - id: merge_metrics_se
-    run: ../../tools/merge_sqlite.cwl
-    in:
-      - id: source_sqlite
-        source: metrics_se/merge_sqlite_destination_sqlite
-      - id: job_uuid
-        source: job_uuid
-    out:
-      - id: destination_sqlite
-      - id: log
+  # - id: merge_metrics_se
+  #   run: ../../tools/merge_sqlite.cwl
+  #   in:
+  #     - id: source_sqlite
+  #       source: metrics_se/merge_sqlite_destination_sqlite
+  #     - id: job_uuid
+  #       source: job_uuid
+  #   out:
+  #     - id: destination_sqlite
+  #     - id: log
 
   - id: picard_mergesamfiles_pe
     run: ../../tools/picard_mergesamfiles.cwl
@@ -734,64 +734,64 @@ steps:
       - id: OUTPUT
       - id: METRICS
 
-  - id: picard_markduplicates_to_sqlite
-    run: ../../tools/picard_markduplicates_to_sqlite.cwl
-    in:
-      - id: bam
-        source: picard_markduplicates/OUTPUT
-        valueFrom: $(self.basename)
-      - id: input_state
-        valueFrom: "markduplicates_readgroups"
-      - id: metric_path
-        source: picard_markduplicates/METRICS
-      - id: job_uuid
-        source: job_uuid
-    out:
-      - id: sqlite
+  # - id: picard_markduplicates_to_sqlite
+  #   run: ../../tools/picard_markduplicates_to_sqlite.cwl
+  #   in:
+  #     - id: bam
+  #       source: picard_markduplicates/OUTPUT
+  #       valueFrom: $(self.basename)
+  #     - id: input_state
+  #       valueFrom: "markduplicates_readgroups"
+  #     - id: metric_path
+  #       source: picard_markduplicates/METRICS
+  #     - id: job_uuid
+  #       source: job_uuid
+  #   out:
+  #     - id: sqlite
 
-  - id: picard_validatesamfile_markduplicates
-    run: ../../tools/picard_validatesamfile.cwl
-    in:
-      - id: INPUT
-        source: picard_markduplicates/OUTPUT
-      - id: VALIDATION_STRINGENCY
-        valueFrom: "STRICT"
-    out:
-      - id: OUTPUT
+  # - id: picard_validatesamfile_markduplicates
+  #   run: ../../tools/picard_validatesamfile.cwl
+  #   in:
+  #     - id: INPUT
+  #       source: picard_markduplicates/OUTPUT
+  #     - id: VALIDATION_STRINGENCY
+  #       valueFrom: "STRICT"
+  #   out:
+  #     - id: OUTPUT
 
-  #need eof and dup QNAME detection
-  - id: picard_validatesamfile_markdupl_to_sqlite
-    run: ../../tools/picard_validatesamfile_to_sqlite.cwl
-    in:
-      - id: bam
-        source: input_bam
-        valueFrom: $(self.basename)
-      - id: input_state
-        valueFrom: "markduplicates_readgroups"
-      - id: metric_path
-        source: picard_validatesamfile_markduplicates/OUTPUT
-      - id: job_uuid
-        source: job_uuid
-    out:
-      - id: sqlite
+  # #need eof and dup QNAME detection
+  # - id: picard_validatesamfile_markdupl_to_sqlite
+  #   run: ../../tools/picard_validatesamfile_to_sqlite.cwl
+  #   in:
+  #     - id: bam
+  #       source: input_bam
+  #       valueFrom: $(self.basename)
+  #     - id: input_state
+  #       valueFrom: "markduplicates_readgroups"
+  #     - id: metric_path
+  #       source: picard_validatesamfile_markduplicates/OUTPUT
+  #     - id: job_uuid
+  #       source: job_uuid
+  #   out:
+  #     - id: sqlite
 
-  - id: metrics_markduplicates
-    run: mixed_library_metrics.cwl
-    in:
-      - id: bam
-        source: picard_markduplicates/OUTPUT
-      - id: known_snp
-        source: known_snp
-      - id: fasta
-        source: reference_sequence
-      - id: input_state
-        valueFrom: "markduplicates_readgroups"
-      - id: thread_count
-        source: thread_count
-      - id: job_uuid
-        source: job_uuid
-    out:
-      - id: merge_sqlite_destination_sqlite
+  # - id: metrics_markduplicates
+  #   run: mixed_library_metrics.cwl
+  #   in:
+  #     - id: bam
+  #       source: picard_markduplicates/OUTPUT
+  #     - id: known_snp
+  #       source: known_snp
+  #     - id: fasta
+  #       source: reference_sequence
+  #     - id: input_state
+  #       valueFrom: "markduplicates_readgroups"
+  #     - id: thread_count
+  #       source: thread_count
+  #     - id: job_uuid
+  #       source: job_uuid
+  #   out:
+  #     - id: merge_sqlite_destination_sqlite
 
   - id: mirna_profiling
     run: mirna_profiling.cwl
@@ -821,42 +821,42 @@ steps:
       - id: mirna_tcga_isoforms_quant
       - id: mirna_tcga_mirnas_quant
         
-  - id: integrity
-    run: integrity.cwl
-    in:
-      - id: bai
-        source: picard_markduplicates/OUTPUT
-        valueFrom: $(self.secondaryFiles[0])
-      - id: bam
-        source: picard_markduplicates/OUTPUT
-      - id: input_state
-        valueFrom: "markduplicates_readgroups"
-      - id: job_uuid
-        source: job_uuid
-    out:
-      - id: merge_sqlite_destination_sqlite
+  # - id: integrity
+  #   run: integrity.cwl
+  #   in:
+  #     - id: bai
+  #       source: picard_markduplicates/OUTPUT
+  #       valueFrom: $(self.secondaryFiles[0])
+  #     - id: bam
+  #       source: picard_markduplicates/OUTPUT
+  #     - id: input_state
+  #       valueFrom: "markduplicates_readgroups"
+  #     - id: job_uuid
+  #       source: job_uuid
+  #   out:
+  #     - id: merge_sqlite_destination_sqlite
 
-  - id: merge_all_sqlite
-    run: ../../tools/merge_sqlite.cwl
-    in:
-      - id: source_sqlite
-        source: [
-          picard_validatesamfile_original_to_sqlite/sqlite,
-          picard_validatesamfile_markdupl_to_sqlite/sqlite,
-          merge_readgroup_json_db/destination_sqlite,
-          merge_fastqc_db1_sqlite/destination_sqlite,
-          merge_fastqc_db2_sqlite/destination_sqlite,
-          merge_fastqc_db_s_sqlite/destination_sqlite,
-          merge_fastqc_db_o1_sqlite/destination_sqlite,
-          merge_fastqc_db_o2_sqlite/destination_sqlite,
-          merge_metrics_pe/destination_sqlite,
-          merge_metrics_se/destination_sqlite,
-          metrics_markduplicates/merge_sqlite_destination_sqlite,
-          picard_markduplicates_to_sqlite/sqlite,
-          integrity/merge_sqlite_destination_sqlite
-        ]
-      - id: job_uuid
-        source: job_uuid
-    out:
-      - id: destination_sqlite
-      - id: log
+  # - id: merge_all_sqlite
+  #   run: ../../tools/merge_sqlite.cwl
+  #   in:
+  #     - id: source_sqlite
+  #       source: [
+  #         picard_validatesamfile_original_to_sqlite/sqlite,
+  #         picard_validatesamfile_markdupl_to_sqlite/sqlite,
+  #         merge_readgroup_json_db/destination_sqlite,
+  #         merge_fastqc_db1_sqlite/destination_sqlite,
+  #         merge_fastqc_db2_sqlite/destination_sqlite,
+  #         merge_fastqc_db_s_sqlite/destination_sqlite,
+  #         merge_fastqc_db_o1_sqlite/destination_sqlite,
+  #         merge_fastqc_db_o2_sqlite/destination_sqlite,
+  #         merge_metrics_pe/destination_sqlite,
+  #         merge_metrics_se/destination_sqlite,
+  #         metrics_markduplicates/merge_sqlite_destination_sqlite,
+  #         picard_markduplicates_to_sqlite/sqlite,
+  #         integrity/merge_sqlite_destination_sqlite
+  #       ]
+  #     - id: job_uuid
+  #       source: job_uuid
+  #   out:
+  #     - id: destination_sqlite
+  #     - id: log
