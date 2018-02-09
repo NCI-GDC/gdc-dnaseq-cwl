@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/mirna-profiler:70d6ea90ae099de24f0e9099c24ff750b207f740af20865151eafdf6725cc8fe
+    dockerPull: quay.io/ncigdc/mirna-profiler:39a8d6c2250993c9af74a62eb05b42956b086900fbc91a9cb84ed415a643fea5
   - class: InitialWorkDirRequirement
     listing:
       - entryname: $(inputs.sam.basename)
