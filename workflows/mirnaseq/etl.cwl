@@ -82,9 +82,9 @@ outputs:
   - id: indexd_mirna_profiling_mirnas_quant_json
     type: File
     outputSource: load_mirna_profiling_mirnas_quant/output
-  # - id: indexd_sqlite_json
-  #   type: File
-  #   outputSource: load_sqlite/output
+  - id: indexd_sqlite_json
+    type: File
+    outputSource: load_sqlite/output
   - id: token
     type: File
     outputSource: generate_token/token
@@ -268,7 +268,7 @@ steps:
       - id: job_uuid
         source: job_uuid
     out:
-      # - id: merge_all_sqlite_destination_sqlite
+      - id: merge_all_sqlite_destination_sqlite
       - id: mirna_profiling_mirna_adapter_report_sorted_output
       - id: mirna_profiling_mirna_alignment_stats_features
       - id: mirna_profiling_mirna_expression_matrix_expn_matrix_txt
@@ -382,22 +382,22 @@ steps:
     out:
       - id: output
 
-  # - id: load_sqlite
-  #   run: ../../tools/bio_client_upload_pull_uuid.cwl
-  #   in:
-  #     - id: config-file
-  #       source: bioclient_config
-  #     - id: input
-  #       source: transform/merge_all_sqlite_destination_sqlite
-  #     - id: upload-bucket
-  #       source: bioclient_load_bucket
-  #     - id: upload-key
-  #       valueFrom: $(inputs.job_uuid)/$(inputs.input.basename)
-  #     - id: job_uuid
-  #       source: job_uuid
-  #       valueFrom: $(null)
-  #   out:
-  #     - id: output
+  - id: load_sqlite
+    run: ../../tools/bio_client_upload_pull_uuid.cwl
+    in:
+      - id: config-file
+        source: bioclient_config
+      - id: input
+        source: transform/merge_all_sqlite_destination_sqlite
+      - id: upload-bucket
+        source: bioclient_load_bucket
+      - id: upload-key
+        valueFrom: $(inputs.job_uuid)/$(inputs.input.basename)
+      - id: job_uuid
+        source: job_uuid
+        valueFrom: $(null)
+    out:
+      - id: output
 
   - id: load_tar_mirna_profiling
     run: ../../tools/bio_client_upload_pull_uuid.cwl
@@ -463,7 +463,7 @@ steps:
         source: load_mirna_profiling_mirnas_quant/output
       - id: load5
         source: load_tar_mirna_profiling/output
-      # - id: load6
-      #   source: load_sqlite/output
+      - id: load6
+        source: load_sqlite/output
     out:
       - id: token
