@@ -15,6 +15,10 @@ types:
         type: string
       - name: SM
         type: string
+      - name: flow_cell_barcode
+        type: string
+      - name: multiplex_barcode
+        type: string
 
   - name: readgroup_pe
     type: record
@@ -61,6 +65,8 @@ types:
   - name: bam_record_uuid
     type: record
     fields:
+      - name: readgroup_meta
+        type: readgroup_meta
       - name: bam_uuid
         type: string
       - name: bam_file_size
