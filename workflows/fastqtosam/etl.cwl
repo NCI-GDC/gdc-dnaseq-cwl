@@ -19,18 +19,18 @@ inputs:
     type: string
   - id: job_uuid
     type: string
-  - id: readgroup_pe_uuids
+  - id: readgroup_fastq_pe_list
     type:
       type: array
-      items:  ../../tools/readgroup_no_pu.yaml#readgroup_pe_uuid
-  - id: readgroup_se_uuids
+      items:  ../../tools/readgroup_no_pu.yaml#readgroup_fastq_pe
+  - id: readgroup_fastq_se_list
     type:
       type: array
-      items:  ../../tools/readgroup_no_pu.yaml#readgroup_se_uuid
-  - id: bam_record_uuids
+      items:  ../../tools/readgroup_no_pu.yaml#readgroup_fastq_se
+  - id: readgroups_bam_list
     type: 
       type: array
-      items: ../../tools/readgroup_no_pu.yaml#bam_record_uuid
+      items: ../../tools/readgroup_no_pu.yaml#readgroups_bam
   - id: start_token
     type: File
 
@@ -50,12 +50,12 @@ steps:
         source: bam_name
       - id: bioclient_config
         source: bioclient_config
-      - id: readgroup_pe_uuids
-        source: readgroup_pe_uuids
-      - id: readgroup_se_uuids
-        source: readgroup_se_uuids
-      - id: bam_record_uuids
-        source: bam_record_uuids
+      - id: readgroup_fastq_pe_list
+        source: readgroup_fastq_pe_list
+      - id: readgroup_fastq_se_list
+        source: readgroup_fastq_se_list
+      - id: readgroups_bam_list
+        source: readgroups_bam_list
     out:
       - id: output_bam
 

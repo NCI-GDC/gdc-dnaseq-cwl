@@ -11,8 +11,8 @@ requirements:
 inputs:
   - id: bioclient_config
     type: File
-  - id: readgroup_se_uuid
-    type: ../../tools/readgroup_no_pu.yaml#readgroup_se_uuid
+  - id: readgroup_fastq_se
+    type: ../../tools/readgroup_no_pu.yaml#readgroup_fastq_se
 
 outputs:
   - id: output_bam
@@ -26,10 +26,10 @@ steps:
       - id: config-file
         source: bioclient_config
       - id: download_handle
-        source: readgroup_se_uuid
+        source: readgroup_fastq_se
         valueFrom: $(self.forward_fastq_uuid)
       - id: file_size
-        source: readgroup_se_uuid
+        source: readgroup_fastq_se
         valueFrom: $(self.forward_fastq_file_size)
     out:
       - id: output
@@ -48,24 +48,24 @@ steps:
       - id: FASTQ
         source: extract_forward_fastq/output
       - id: READ_GROUP_NAME
-        source: readgroup_se_uuid
+        source: readgroup_fastq_se
         valueFrom: $(self.readgroup_meta.ID)
       - id: SAMPLE_NAME
-        source: readgroup_se_uuid
+        source: readgroup_fastq_se
         valueFrom: $(self.readgroup_meta.SM)
       - id: LIBRARY_NAME
-        source: readgroup_se_uuid
+        source: readgroup_fastq_se
         valueFrom: $(self.readgroup_meta.LB)
       - id: PLATFORM_UNIT
         source: emit_pu/output
       - id: PLATFORM
-        source: readgroup_se_uuid
+        source: readgroup_fastq_se
         valueFrom: $(self.readgroup_meta.PL)
       - id: SEQUENCING_CENTER
-        source: readgroup_se_uuid
+        source: readgroup_fastq_se
         valueFrom: $(self.readgroup_meta.CN)
       - id: RUN_DATE
-        source: readgroup_se_uuid
+        source: readgroup_fastq_se
         valueFrom: $(self.readgroup_meta.DT)
       - id: MAX_RECORDS_IN_RAM
         default: 500000

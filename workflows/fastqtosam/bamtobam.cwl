@@ -11,8 +11,8 @@ requirements:
 inputs:
   - id: bioclient_config
     type: File
-  - id: bam_record_uuid
-    type: ../../tools/readgroup_no_pu.yaml#bam_record_uuid
+  - id: readgroups_bam
+    type: ../../tools/readgroup_no_pu.yaml#readgroups_bam
 
 outputs:
   - id: output_bam
@@ -26,10 +26,10 @@ steps:
       - id: config-file
         source: bioclient_config
       - id: download_handle
-        source: bam_record_uuid
+        source: readgroups_bam
         valueFrom: $(self.bam_uuid)
       - id: file_size
-        source: bam_record_uuid
+        source: readgroups_bam
         valueFrom: $(self.bam_file_size)
     out:
       - id: output

@@ -9,10 +9,10 @@ requirements:
 class: ExpressionTool
 
 inputs:
-  - id: readgroup_se_uuid
+  - id: readgroup_fastq_se_list
     type:
       type: array
-      items: readgroup_no_pu.yaml#readgroup_se_uuid
+      items: readgroup_no_pu.yaml#readgroup_fastq_se
 
   - id: key
     type: string

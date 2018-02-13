@@ -37,14 +37,14 @@ inputs:
     type: string
   - id: job_uuid
     type: string
-  - id: readgroup_pe_uuid
+  - id: readgroup_fastq_pe_list
     type:
       type: array
-      items:  ../../tools/readgroup_no_pu.yaml#readgroup_pe_uuid
-  - id: readgroup_se_uuid
+      items:  ../../tools/readgroup_no_pu.yaml#readgroup_fastq_pe
+  - id: readgroup_fastq_se_list
     type:
       type: array
-      items:  ../../tools/readgroup_no_pu.yaml#readgroup_se_uuid
+      items:  ../../tools/readgroup_no_pu.yaml#readgroup_fastq_se
   - id: slurm_resource_cores
     type: long
   - id: slurm_resource_disk_gigabytes
@@ -67,8 +67,8 @@ steps:
   - id: pe_forward_fastq_uuid_string
     run: ../../tools/emit_readgroup_pe_string.cwl
     in:
-      - id: readgroup_pe_uuid
-        source: readgroup_pe_uuid
+      - id: readgroup_fastq_pe_list
+        source: readgroup_fastq_pe_list
       - id: key
         valueFrom: forward_fastq_uuid
     out:
@@ -77,18 +77,18 @@ steps:
   - id: pe_reverse_fastq_uuid_string
     run: ../../tools/emit_readgroup_pe_string.cwl
     in:
-      - id: readgroup_pe_uuid
-        source: readgroup_pe_uuid
+      - id: readgroup_fastq_pe_list
+        source: readgroup_fastq_pe_list
       - id: key
-        valueFrom: forward_fastq_uuid
+        valueFrom: reverse_fastq_uuid
     out:
       - id: output
 
   - id: se_forward_fastq_uuid_string
     run: ../../tools/emit_readgroup_se_string.cwl
     in:
-      - id: readgroup_se_uuid
-        source: readgroup_se_uuid
+      - id: readgroup_fastq_se_list
+        source: readgroup_fastq_se_list
       - id: key
         valueFrom: forward_fastq_uuid
     out:

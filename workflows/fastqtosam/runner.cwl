@@ -35,18 +35,18 @@ inputs:
     type: string
   - id: job_uuid
     type: string
-  - id: readgroup_pe_list
+  - id: readgroup_fastq_pe_list
     type:
       type: array
-      items:  ../../tools/readgroup_no_pu.yaml#readgroup_pe_uuid
-  - id: readgroup_se_list
+      items:  ../../tools/readgroup_no_pu.yaml#readgroup_fastq_pe
+  - id: readgroup_fastq_se_list
     type:
       type: array
-      items:  ../../tools/readgroup_no_pu.yaml#readgroup_se_uuid
-  - id: bam_record_list
+      items:  ../../tools/readgroup_no_pu.yaml#readgroup_fastq_se
+  - id: readgroups_bam_list
     type: 
       type: array
-      items: ../../tools/readgroup_no_pu.yaml#bam_record_uuid
+      items: ../../tools/readgroup_no_pu.yaml#readgroups_bam
   - id: slurm_resource_cores
     type: long
   - id: slurm_resource_disk_gigabytes
@@ -110,10 +110,10 @@ steps:
         source: get_host_macaddress/output
       - id: indexd_bam_uuid
         valueFrom: "NULL"
-      - id: readgroup_pe_uuid
-        source: readgroup_pe_list
-      - id: readgroup_se_uuid
-        source: readgroup_se_list
+      - id: readgroup_fastq_pe_list
+        source: readgroup_fastq_pe_list
+      - id: readgroup_fastq_se_list
+        source: readgroup_fastq_se_list
       - id: slurm_resource_cores
         source: slurm_resource_cores
       - id: slurm_resource_disk_gigabytes
@@ -142,12 +142,12 @@ steps:
         source: bioclient_load_bucket
       - id: job_uuid
         source: job_uuid
-      - id: readgroup_pe_uuids
-        source: readgroup_pe_list
-      - id: readgroup_se_uuids
-        source: readgroup_se_list
-      - id: bam_record_uuids
-        source: bam_record_list
+      - id: readgroup_fastq_pe_list
+        source: readgroup_fastq_pe_list
+      - id: readgroup_fastq_se_list
+        source: readgroup_fastq_se_list
+      - id: readgroups_bam_list
+        source: readgroups_bam_list
       - id: start_token
         source: status_running/token
     out:
@@ -191,10 +191,10 @@ steps:
         source: get_host_macaddress/output
       - id: indexd_bam_uuid
         source: emit_bam_uuid/output
-      - id: readgroup_pe_uuid
-        source: readgroup_pe_list
-      - id: readgroup_se_uuid
-        source: readgroup_se_list
+      - id: readgroup_fastq_pe_list
+        source: readgroup_fastq_pe_list
+      - id: readgroup_fastq_se_list
+        source: readgroup_fastq_se_list
       - id: slurm_resource_cores
         source: slurm_resource_cores
       - id: slurm_resource_disk_gigabytes

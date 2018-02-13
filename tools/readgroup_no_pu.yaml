@@ -13,6 +13,8 @@ types:
         type: string
       - name: PL
         type: string
+      - name: PM
+        type: string
       - name: SM
         type: string
       - name: flow_cell_barcode
@@ -20,17 +22,17 @@ types:
       - name: multiplex_barcode
         type: string
 
-  - name: readgroup_pe
-    type: record
-    fields:
-      - name: readgroup_meta
-        type: readgroup_meta
-      - name: forward_fastq
-        type: File
-      - name: reverse_fastq
-        type: File
+  # - name: readgroup_pe
+  #   type: record
+  #   fields:
+  #     - name: readgroup_meta
+  #       type: readgroup_meta
+  #     - name: forward_fastq
+  #       type: File
+  #     - name: reverse_fastq
+  #       type: File
 
-  - name: readgroup_pe_uuid
+  - name: readgroup_fastq_pe
     type: record
     fields:
       - name: readgroup_meta
@@ -44,15 +46,15 @@ types:
       - name: reverse_fastq_file_size
         type: long
 
-  - name: readgroup_se
-    type: record
-    fields:
-      - name: readgroup_meta
-        type: readgroup_meta
-      - name: forward_fastq
-        type: File
+  # - name: readgroup_se
+  #   type: record
+  #   fields:
+  #     - name: readgroup_meta
+  #       type: readgroup_meta
+  #     - name: forward_fastq
+  #       type: File
 
-  - name: readgroup_se_uuid
+  - name: readgroup_fastq_se
     type: record
     fields:
       - name: readgroup_meta
@@ -62,7 +64,7 @@ types:
       - name: forward_fastq_file_size
         type: long
 
-  - name: bam_record_uuid
+  - name: readgroups_bam
     type: record
     fields:
       - name: bam_uuid

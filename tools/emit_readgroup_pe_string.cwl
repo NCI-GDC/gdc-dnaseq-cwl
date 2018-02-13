@@ -9,10 +9,10 @@ requirements:
 class: ExpressionTool
 
 inputs:
-  - id: readgroup_pe_uuid
+  - id: readgroup_fastq_pe_list
     type:
       type: array
-      items: readgroup_no_pu.yaml#readgroup_pe_uuid
+      items: readgroup_no_pu.yaml#readgroup_fastq_pe
 
   - id: key
     type: string
@@ -24,8 +24,8 @@ outputs:
 expression: |
   ${
     var output = "";
-    for (var i = 0; i < inputs.readgroup_pe_uuid.length; i++) {
-      var readgroup = inputs.readgroup_pe_uuid[i];
+    for (var i = 0; i < inputs.readgroup_fastq_pe_list.length; i++) {
+      var readgroup = inputs.readgroup_fastq_pe_list[i];
       var readgroup_uuid = readgroup[inputs.key];
       output += readgroup_uuid + ',';
     }

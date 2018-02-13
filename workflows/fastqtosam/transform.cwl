@@ -16,18 +16,18 @@ inputs:
     type: string
   - id: bioclient_config
     type: File
-  - id: readgroup_pe_uuids
+  - id: readgroup_fastq_pe_list
     type: 
       type: array
-      items: ../../tools/readgroup_no_pu.yaml#readgroup_pe_uuid
-  - id: readgroup_se_uuids
+      items: ../../tools/readgroup_no_pu.yaml#readgroup_fastq_pe
+  - id: readgroup_fastq_se_list
     type: 
       type: array
-      items: ../../tools/readgroup_no_pu.yaml#readgroup_se_uuid
-  - id: bam_record_uuids
+      items: ../../tools/readgroup_no_pu.yaml#readgroup_fastq_se
+  - id: readgroups_bam_list
     type: 
       type: array
-      items: ../../tools/readgroup_no_pu.yaml#bam_record_uuid
+      items: ../../tools/readgroup_no_pu.yaml#readgroups_bam
 
 outputs:
   - id: output_bam
@@ -37,34 +37,34 @@ outputs:
 steps:
   - id: fastqtosam_pe
     run: fastqtosam_pe.cwl
-    scatter: [readgroup_pe_uuid]
+    scatter: [readgroup_fastq_pe]
     in:
       - id: bioclient_config
         source: bioclient_config
-      - id: readgroup_pe_uuid
-        source: readgroup_pe_uuids
+      - id: readgroup_fastq_pe
+        source: readgroup_fastq_pe_list
     out:
       - id: output_bam
 
   - id: fastqtosam_se
     run: fastqtosam_se.cwl
-    scatter: [readgroup_se_uuid]
+    scatter: [readgroup_fastq_se]
     in:
       - id: bioclient_config
         source: bioclient_config
-      - id: readgroup_se_uuid
-        source: readgroup_se_uuids
+      - id: readgroup_fastq_se
+        source: readgroup_fastq_se_list
     out:
       - id: output_bam
 
   - id: bamtobam
     run: bamtobam.cwl
-    scatter: [bam_record_uuid]
+    scatter: [readgroups_bam]
     in:
       - id: bioclient_config
         source: bioclient_config
-      - id: bam_record_uuid
-        source: bam_record_uuids
+      - id: readgroups_bam
+        source: readgroups_bam_list
     out:
       - id: output_bam
 
