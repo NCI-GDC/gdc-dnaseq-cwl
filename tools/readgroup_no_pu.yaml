@@ -65,9 +65,12 @@ types:
   - name: bam_record_uuid
     type: record
     fields:
-      - name: readgroup_meta
-        type: readgroup_meta
       - name: bam_uuid
         type: string
       - name: bam_file_size
         type: long
+      - name: readgroup_meta_list
+        type:
+          type: array
+          items: readgroup_meta
+ 
