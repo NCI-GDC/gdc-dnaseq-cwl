@@ -74,7 +74,8 @@ steps:
       - id: INPUT
         source: fastqtosam_pe/output_bam
       - id: OUTPUT
-        valueFrom:  $(bam_name.slice(0,-4)).pe.bam
+        source: bam_name
+        valueFrom: $(self.slice(0,-4)).pe.bam
     out:
       - id: MERGED_OUTPUT
 
@@ -84,7 +85,8 @@ steps:
       - id: INPUT
         source: fastqtosam_se/output_bam
       - id: OUTPUT
-        valueFrom:  $(bam_name.slice(0,-4)).se.bam
+        source: bam_name
+        valueFrom: $(self.slice(0,-4)).se.bam
     out:
       - id: MERGED_OUTPUT
 
@@ -92,9 +94,10 @@ steps:
     run: ../../tools/picard_mergesamfiles.cwl
     in:
       - id: INPUT
-        source: fastqtosam_se/output_bam
+        source: bamtobam/output_bam
       - id: OUTPUT
-        valueFrom:  $(bam_name).bam
+        source: bam_name
+        valueFrom: $(self).bam
     out:
       - id: MERGED_OUTPUT
 
