@@ -75,8 +75,8 @@ function runner()
     echo mkdir ${tmp_dir}
     mkdir ${tmp_dir}
 
-    echo cwltool --debug --rm-tmpdir --rm-container --tmp-outdir-prefix ${cache_dir}/ --tmpdir-prefix ${tmp_dir}/ --custom-net bridge --outdir ${work_dir} ${workflow_path} ${job_path}
-    cwltool --debug --rm-tmpdir --rm-container --tmp-outdir-prefix ${cache_dir}/ --tmpdir-prefix ${tmp_dir}/ --custom-net bridge --outdir ${work_dir} ${workflow_path} ${job_path}
+    echo cwltool --no-compute-checksum --debug --rm-tmpdir --rm-container --tmp-outdir-prefix ${cache_dir}/ --tmpdir-prefix ${tmp_dir}/ --custom-net bridge --outdir ${work_dir} ${workflow_path} ${job_path}
+    cwltool --no-compute-checksum --debug --rm-tmpdir --rm-container --tmp-outdir-prefix ${cache_dir}/ --tmpdir-prefix ${tmp_dir}/ --custom-net bridge --outdir ${work_dir} ${workflow_path} ${job_path}
 }
 
 function main()
