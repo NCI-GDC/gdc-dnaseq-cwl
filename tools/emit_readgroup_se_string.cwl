@@ -24,8 +24,8 @@ outputs:
 expression: |
   ${
     var output = "";
-    for (var i = 0; i < inputs.readgroup_se_uuid.length; i++) {
-      var readgroup = inputs.readgroup_se_uuid[i];
+    for (var i = 0; i < inputs.readgroup_fastq_se_list.length; i++) {
+      var readgroup = inputs.readgroup_fastq_se_list[i];
       var readgroup_uuid = readgroup[inputs.key];
       output += readgroup_uuid + ',';
     }
