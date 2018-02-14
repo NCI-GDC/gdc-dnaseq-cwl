@@ -6,7 +6,7 @@ types:
       - name: CN
         type: string
       - name: DT
-        type: string
+        type: ["null", string]
       - name: ID
         type: string
       - name: LB
@@ -14,13 +14,13 @@ types:
       - name: PL
         type: string
       - name: PM
-        type: string
+        type: ["null", string]
       - name: SM
         type: string
       - name: flow_cell_barcode
-        type: string
+        type: ["null", string]
       - name: multiplex_barcode
-        type: string
+        type: ["null", string]
 
   # - name: readgroup_pe
   #   type: record
