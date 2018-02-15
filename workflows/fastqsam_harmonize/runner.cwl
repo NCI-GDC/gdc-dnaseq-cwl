@@ -5,11 +5,14 @@ cwlVersion: v1.0
 class: Workflow
 
 requirements:
+  - $import: ../../tools/readgroup_uuid.yml
   - class: InlineJavascriptRequirement
   - class: StepInputExpressionRequirement
   - class: SubworkflowFeatureRequirement
 
 inputs:
+  - id: bam_name
+    type: string
   - id: bioclient_config
     type: File
   - id: bioclient_load_bucket
@@ -30,11 +33,27 @@ inputs:
     type: File
   - id: db_cred_section
     type: string
-  - id: input_bam_gdc_id
+  - id: job_uuid
     type: string
-  - id: input_bam_file_size
+  - id: readgroup_fastq_pe_list
+    type:
+      type: array
+      items:  ../../tools/readgroup_uuid.yml#readgroup_fastq_pe
+  - id: readgroup_fastq_se_list
+    type:
+      type: array
+      items:  ../../tools/readgroup_uuid.yml#readgroup_fastq_se
+  - id: readgroups_bam_list
+    type: 
+      type: array
+      items: ../../tools/readgroup_uuid.yml#readgroups_bam
+  - id: slurm_resource_cores
     type: long
-  - id: input_bam_md5sum
+  - id: slurm_resource_disk_gigabytes
+    type: long
+  - id: slurm_resource_mem_megabytes
+    type: long
+  - id: status_table
     type: string
   - id: known_snp_gdc_id
     type: string
@@ -76,16 +95,6 @@ inputs:
     type: string
   - id: reference_sa_file_size
     type: long
-  - id: slurm_resource_cores
-    type: long
-  - id: slurm_resource_disk_gigabytes
-    type: long
-  - id: slurm_resource_mem_megabytes
-    type: long
-  - id: status_table
-    type: string
-  - id: job_uuid
-    type: string
   - id: thread_count
     type: long
 
@@ -149,56 +158,10 @@ steps:
         source: get_host_macaddress/output
       - id: indexd_bam_uuid
         valueFrom: "NULL"
-      - id: indexd_bai_uuid
-        valueFrom: "NULL"
-      - id: indexd_sqlite_uuid
-        valueFrom: "NULL"
-      - id: input_bam_gdc_id
-        source: input_bam_gdc_id
-      - id: input_bam_file_size
-        source: input_bam_file_size
-      - id: input_bam_md5sum
-        source: input_bam_md5sum
-      - id: known_snp_gdc_id
-        source: known_snp_gdc_id
-      - id: known_snp_file_size
-        source: known_snp_file_size
-      - id: known_snp_index_gdc_id
-        source: known_snp_index_gdc_id
-      - id: known_snp_index_file_size
-        source: known_snp_index_file_size
-      - id: reference_amb_gdc_id
-        source: reference_amb_gdc_id
-      - id: reference_amb_file_size
-        source: reference_amb_file_size
-      - id: reference_ann_gdc_id
-        source: reference_ann_gdc_id
-      - id: reference_ann_file_size
-        source: reference_ann_file_size
-      - id: reference_bwt_gdc_id
-        source: reference_bwt_gdc_id
-      - id: reference_bwt_file_size
-        source: reference_bwt_file_size
-      - id: reference_dict_gdc_id
-        source: reference_dict_gdc_id
-      - id: reference_dict_file_size
-        source: reference_dict_file_size
-      - id: reference_fa_gdc_id
-        source: reference_fa_gdc_id
-      - id: reference_fa_file_size
-        source: reference_fa_file_size
-      - id: reference_fai_gdc_id
-        source: reference_fai_gdc_id
-      - id: reference_fai_file_size
-        source: reference_fai_file_size
-      - id: reference_pac_gdc_id
-        source: reference_pac_gdc_id
-      - id: reference_pac_file_size
-        source: reference_pac_file_size
-      - id: reference_sa_gdc_id
-        source: reference_sa_gdc_id
-      - id: reference_sa_file_size
-        source: reference_sa_file_size
+      - id: readgroup_fastq_pe_uuid_list
+        source: readgroup_fastq_pe_uuid_list
+      - id: readgroup_fastq_se_uuid_list
+        source: readgroup_fastq_se_uuid_list
       - id: slurm_resource_cores
         source: slurm_resource_cores
       - id: slurm_resource_disk_gigabytes
@@ -213,22 +176,6 @@ steps:
         source: status_table
       - id: job_uuid
         source: job_uuid
-      - id: thread_count
-        source: thread_count
-    out:
-      - id: token
-
-  - id: etl
-    run: etl.cwl
-    in:
-      - id: bioclient_config
-        source: bioclient_config
-      - id: bioclient_load_bucket
-        source: bioclient_load_bucket
-      - id: input_bam_gdc_id
-        source: input_bam_gdc_id
-      - id: input_bam_file_size
-        source: input_bam_file_size
       - id: known_snp_gdc_id
         source: known_snp_gdc_id
       - id: known_snp_file_size
@@ -269,12 +216,72 @@ steps:
         source: reference_sa_gdc_id
       - id: reference_sa_file_size
         source: reference_sa_file_size
-      - id: start_token
-        source: status_running/token
       - id: thread_count
         source: thread_count
+    out:
+      - id: token
+
+  - id: etl
+    run: etl.cwl
+    in:
+      - id: bam_name
+        source: bam_name
+      - id: bioclient_config
+        source: bioclient_config
+      - id: bioclient_load_bucket
+        source: bioclient_load_bucket
       - id: job_uuid
         source: job_uuid
+      - id: readgroup_fastq_pe_uuid_list
+        source: readgroup_fastq_pe_uuid_list
+      - id: readgroup_fastq_se_uuid_list
+        source: readgroup_fastq_se_uuid_list
+      - id: readgroups_bam_list
+        source: readgroups_bam_list
+      - id: start_token
+        source: status_running/token
+      - id: known_snp_gdc_id
+        source: known_snp_gdc_id
+      - id: known_snp_file_size
+        source: known_snp_file_size
+      - id: known_snp_index_gdc_id
+        source: known_snp_index_gdc_id
+      - id: known_snp_index_file_size
+        source: known_snp_index_file_size
+      - id: reference_amb_gdc_id
+        source: reference_amb_gdc_id
+      - id: reference_amb_file_size
+        source: reference_amb_file_size
+      - id: reference_ann_gdc_id
+        source: reference_ann_gdc_id
+      - id: reference_ann_file_size
+        source: reference_ann_file_size
+      - id: reference_bwt_gdc_id
+        source: reference_bwt_gdc_id
+      - id: reference_bwt_file_size
+        source: reference_bwt_file_size
+      - id: reference_dict_gdc_id
+        source: reference_dict_gdc_id
+      - id: reference_dict_file_size
+        source: reference_dict_file_size
+      - id: reference_fa_gdc_id
+        source: reference_fa_gdc_id
+      - id: reference_fa_file_size
+        source: reference_fa_file_size
+      - id: reference_fai_gdc_id
+        source: reference_fai_gdc_id
+      - id: reference_fai_file_size
+        source: reference_fai_file_size
+      - id: reference_pac_gdc_id
+        source: reference_pac_gdc_id
+      - id: reference_pac_file_size
+        source: reference_pac_file_size
+      - id: reference_sa_gdc_id
+        source: reference_sa_gdc_id
+      - id: reference_sa_file_size
+        source: reference_sa_file_size
+      - id: thread_count
+        source: thread_count
     out:
       - id: indexd_bam_json
       - id: indexd_bai_json
@@ -338,36 +345,10 @@ steps:
         source: get_host_macaddress/output
       - id: indexd_bam_uuid
         source: emit_bam_uuid/output
-      - id: indexd_bai_uuid
-        source: emit_bai_uuid/output
-      - id: indexd_sqlite_uuid
-        source: emit_sqlite_uuid/output
-      - id: input_bam_gdc_id
-        source: input_bam_gdc_id
-      - id: input_bam_file_size
-        source: input_bam_file_size
-      - id: input_bam_md5sum
-        source: input_bam_md5sum
-      - id: known_snp_gdc_id
-        source: known_snp_gdc_id
-      - id: known_snp_index_gdc_id
-        source: known_snp_index_gdc_id
-      - id: reference_amb_gdc_id
-        source: reference_amb_gdc_id
-      - id: reference_ann_gdc_id
-        source: reference_ann_gdc_id
-      - id: reference_bwt_gdc_id
-        source: reference_bwt_gdc_id
-      - id: reference_dict_gdc_id
-        source: reference_dict_gdc_id
-      - id: reference_fa_gdc_id
-        source: reference_fa_gdc_id
-      - id: reference_fai_gdc_id
-        source: reference_fai_gdc_id
-      - id: reference_pac_gdc_id
-        source: reference_pac_gdc_id
-      - id: reference_sa_gdc_id
-        source: reference_sa_gdc_id
+      - id: readgroup_fastq_pe_uuid_list
+        source: readgroup_fastq_pe_uuid_list
+      - id: readgroup_fastq_se_uuid_list
+        source: readgroup_fastq_se_uuid_list
       - id: slurm_resource_cores
         source: slurm_resource_cores
       - id: slurm_resource_disk_gigabytes
@@ -382,6 +363,46 @@ steps:
         source: status_table
       - id: job_uuid
         source: job_uuid
+      - id: known_snp_gdc_id
+        source: known_snp_gdc_id
+      - id: known_snp_file_size
+        source: known_snp_file_size
+      - id: known_snp_index_gdc_id
+        source: known_snp_index_gdc_id
+      - id: known_snp_index_file_size
+        source: known_snp_index_file_size
+      - id: reference_amb_gdc_id
+        source: reference_amb_gdc_id
+      - id: reference_amb_file_size
+        source: reference_amb_file_size
+      - id: reference_ann_gdc_id
+        source: reference_ann_gdc_id
+      - id: reference_ann_file_size
+        source: reference_ann_file_size
+      - id: reference_bwt_gdc_id
+        source: reference_bwt_gdc_id
+      - id: reference_bwt_file_size
+        source: reference_bwt_file_size
+      - id: reference_dict_gdc_id
+        source: reference_dict_gdc_id
+      - id: reference_dict_file_size
+        source: reference_dict_file_size
+      - id: reference_fa_gdc_id
+        source: reference_fa_gdc_id
+      - id: reference_fa_file_size
+        source: reference_fa_file_size
+      - id: reference_fai_gdc_id
+        source: reference_fai_gdc_id
+      - id: reference_fai_file_size
+        source: reference_fai_file_size
+      - id: reference_pac_gdc_id
+        source: reference_pac_gdc_id
+      - id: reference_pac_file_size
+        source: reference_pac_file_size
+      - id: reference_sa_gdc_id
+        source: reference_sa_gdc_id
+      - id: reference_sa_file_size
+        source: reference_sa_file_size
       - id: thread_count
         source: thread_count
     out:

@@ -35,32 +35,24 @@ types:
     fields:
       - name: readgroup_meta
         type: readgroup_meta
-      - name: forward_fastq_uuid
-        type: string
-      - name: forward_fastq_file_size
-        type: long
-      - name: reverse_fastq_uuid
-        type: string
-      - name: reverse_fastq_file_size
-        type: long
+      - name: forward_fastq
+        type: File
+      - name: reverse_fastq
+        type: File
 
   - name: readgroup_fastq_se
     type: record
     fields:
       - name: readgroup_meta
         type: readgroup_meta
-      - name: forward_fastq_uuid
-        type: string
-      - name: forward_fastq_file_size
-        type: long
+      - name: forward_fastq
+        type: File
 
   - name: readgroups_bam
     type: record
     fields:
-      - name: bam_uuid
-        type: string
-      - name: bam_file_size
-        type: long
+      - name: bam
+        type: File
       - name: readgroup_meta_list
         type:
           type: array
