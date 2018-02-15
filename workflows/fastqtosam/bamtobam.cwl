@@ -44,16 +44,17 @@ steps:
     out:
       - id: OUTPUT
 
-  # - id: validate_readgroup_meta
-  #   run: ../../tools/validate_readgroup_meta.cwl
-  #   in:
-  #     - id: readgroup_meta
-  #       source: readgroup_record_uuid
-  #       valueFrom: $(self.readgroup_meta)
-  #     - id: bam_json
-  #       source: bam_readgroup_to_json
-  #   out:
-  #     - id: result
+  - id: validate_readgroup_meta
+    run: ../../tools/validate_readgroup_meta.cwl
+    scatter: [bam_readgroup_json]
+    in:
+      - id: readgroup_meta_list
+        source: readgroups_bam
+        valueFrom: $(self.readgroup_meta_list)
+      - id: bam_readgroup_json
+        source: bam_readgroup_to_json/OUTPUT
+    out:
+      - id: result
 
   # - id: picard_validatesamfile_original
   #   run: ../../tools/picard_validatesamfile.cwl
