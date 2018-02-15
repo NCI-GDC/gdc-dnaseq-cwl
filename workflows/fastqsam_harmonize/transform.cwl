@@ -43,93 +43,23 @@ outputs:
     outputSource: merge_all_sqlite/destination_sqlite
 
 steps:
-  - id: unaligned_to_bam
-    run: unaligned_to_bam.cwl
-  - id: fastqtosam_pe
-    run: fastqtosam_pe.cwl
-    scatter: [readgroup_fastq_pe]
+  - id: unaligned_to_ubam
+    run: unaligned_to_ubam.cwl
     in:
-      - id: bioclient_config
-        source: bioclient_config
-      - id: readgroup_fastq_pe
+      - id: readgroup_fastq_pe_list
         source: readgroup_fastq_pe_list
-    out:
-      - id: output_bam
-
-  - id: fastqtosam_se
-    run: fastqtosam_se.cwl
-    scatter: [readgroup_fastq_se]
-    in:
-      - id: bioclient_config
-        source: bioclient_config
-      - id: readgroup_fastq_se
+      - id: readgroup_fastq_se_list
         source: readgroup_fastq_se_list
-    out:
-      - id: output_bam
-
-  - id: bamtobam
-    run: bamtobam.cwl
-    scatter: [readgroups_bam]
-    in:
-      - id: bioclient_config
-        source: bioclient_config
-      - id: readgroups_bam
+      - id: readgroups_bam_list
         source: readgroups_bam_list
     out:
       - id: output_bam
-
-  - id: picard_mergesamfiles_unaligned_pe
-    run: ../../tools/picard_mergesamfiles.cwl
-    in:
-      - id: INPUT
-        source: fastqtosam_pe/output_bam
-      - id: OUTPUT
-        source: bam_name
-        valueFrom: $(self.slice(0,-4)).pe.bam
-    out:
-      - id: MERGED_OUTPUT
-
-  - id: picard_mergesamfiles_unaligned_se
-    run: ../../tools/picard_mergesamfiles.cwl
-    in:
-      - id: INPUT
-        source: fastqtosam_se/output_bam
-      - id: OUTPUT
-        source: bam_name
-        valueFrom: $(self.slice(0,-4)).se.bam
-    out:
-      - id: MERGED_OUTPUT
-
-  - id: picard_mergesamfiles_unaligned_bam
-    run: ../../tools/picard_mergesamfiles.cwl
-    in:
-      - id: INPUT
-        source: bamtobam/output_bam
-      - id: OUTPUT
-        source: bam_name
-        valueFrom: $(self).bam
-    out:
-      - id: MERGED_OUTPUT
-
-  - id: picard_mergesamfiles_unaligned
-    run: ../../tools/picard_mergesamfiles.cwl
-    in:
-      - id: INPUT
-        source: [
-        picard_mergesamfiles_unaligned_bam/MERGED_OUTPUT,
-        picard_mergesamfiles_unaligned_pe/MERGED_OUTPUT,
-        picard_mergesamfiles_unaligned_se/MERGED_OUTPUT
-        ]
-      - id: OUTPUT
-        source: bam_name
-    out:
-      - id: MERGED_OUTPUT
 
   - id: picard_validatesamfile_original
     run: ../../tools/picard_validatesamfile.cwl
     in:
       - id: INPUT
-        source: picard_mergesamfiles_unaligned/MERGED_OUTPUT
+        source: unalgined_to_ubam/output_bam
       - id: VALIDATION_STRINGENCY
         valueFrom: "LENIENT"
     out:
@@ -140,7 +70,7 @@ steps:
     run: ../../tools/picard_validatesamfile_to_sqlite.cwl
     in:
       - id: bam
-        source: input_bam
+        source: unaligned_to_ubam/output_bam
         valueFrom: $(self.basename)
       - id: input_state
         valueFrom: "original"
@@ -155,7 +85,7 @@ steps:
     run: ../../tools/biobambam2_bamtofastq.cwl
     in:
       - id: filename
-        source: samtools_bamtobam/OUTPUT
+        source: unaligned_to_ubam/output_bam
     out:
       - id: output_fastq1
       - id: output_fastq2
