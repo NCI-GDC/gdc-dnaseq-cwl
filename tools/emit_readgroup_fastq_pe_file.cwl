@@ -25,8 +25,8 @@ outputs:
 expression: |
   ${
     const output = { "forward_fastq": inputs.forward_fastq,
-                   "reverse_fastq": inputs.reverse_fastq,
-                   "readgroup_meta": inputs.readgroup_meta};
+                     "reverse_fastq": inputs.reverse_fastq,
+                     "readgroup_meta": inputs.readgroup_meta};
 
     return {'output': output}
   }
