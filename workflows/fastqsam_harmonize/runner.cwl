@@ -5,7 +5,7 @@ cwlVersion: v1.0
 class: Workflow
 
 requirements:
-  - $import: ../../tools/readgroup_uuid.yml
+  - $import: ../../tools/readgroup.yml
   - class: InlineJavascriptRequirement
   - class: StepInputExpressionRequirement
   - class: SubworkflowFeatureRequirement
@@ -35,18 +35,18 @@ inputs:
     type: string
   - id: job_uuid
     type: string
-  - id: readgroup_fastq_pe_list
+  - id: readgroup_fastq_pe_uuid_list
     type:
       type: array
-      items:  ../../tools/readgroup_uuid.yml#readgroup_fastq_pe
-  - id: readgroup_fastq_se_list
+      items:  ../../tools/readgroup.yml#readgroup_fastq_pe_uuid
+  - id: readgroup_fastq_se_uuid_list
     type:
       type: array
-      items:  ../../tools/readgroup_uuid.yml#readgroup_fastq_se
-  - id: readgroups_bam_list
+      items:  ../../tools/readgroup.yml#readgroup_fastq_se_uuid
+  - id: readgroups_bam_uuid_list
     type: 
       type: array
-      items: ../../tools/readgroup_uuid.yml#readgroups_bam
+      items: ../../tools/readgroup.yml#readgroups_bam_uuid
   - id: slurm_resource_cores
     type: long
   - id: slurm_resource_disk_gigabytes

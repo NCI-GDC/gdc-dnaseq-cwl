@@ -27,7 +27,7 @@ types:
         type: ["null", string]
       - name: capture_kit_bait_uuid
         type: ["null", string]
-      - name: caputre_kit_target_uuid
+      - name: capture_kit_target_uuid
         type: ["null", string]
 
   - name: readgroup_fastq_pe

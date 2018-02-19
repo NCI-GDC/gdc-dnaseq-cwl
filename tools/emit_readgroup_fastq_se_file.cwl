@@ -9,7 +9,7 @@ requirements:
 class: ExpressionTool
 
 inputs:
-  - id: forward_fastq
+  - id: fastq
     type: File
 
   - id: readgroup_meta
@@ -17,11 +17,11 @@ inputs:
 
 outputs:
   - id: output
-    type: readgroup.yml#readgroup_fastq_pe_file
+    type: readgroup.yml#readgroup_fastq_se_file
 
 expression: |
   ${
-    const output = { "forward_fastq": inputs.forward_fastq,
+    const output = { "fastq": inputs.fastq,
                      "readgroup_meta": inputs.readgroup_meta};
 
     return {'output': output}

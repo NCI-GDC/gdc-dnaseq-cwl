@@ -5,7 +5,7 @@ cwlVersion: v1.0
 class: Workflow
 
 requirements:
-  - $import: ../../tools/readgroup_uuid.yaml
+  - $import: ../../tools/readgroup.yml
   - class: InlineJavascriptRequirement
   - class: StepInputExpressionRequirement
   - class: SubworkflowFeatureRequirement
@@ -22,15 +22,15 @@ inputs:
   - id: readgroup_fastq_pe_uuid_list
     type:
       type: array
-      items:  ../../tools/readgroup_uuid.yml#readgroup_fastq_pe
+      items:  ../../tools/readgroup.yml#readgroup_fastq_pe_uuid
   - id: readgroup_fastq_se_uuid_list
     type:
       type: array
-      items:  ../../tools/readgroup_uuid.yml#readgroup_fastq_se
+      items:  ../../tools/readgroup.yml#readgroup_fastq_se_uuid
   - id: readgroups_bam_uuid_list
     type: 
       type: array
-      items: ../../tools/readgroup_uuid.yml#readgroups_bam
+      items: ../../tools/readgroup.yml#readgroups_bam_uuid
   - id: start_token
     type: File
 
@@ -65,40 +65,40 @@ steps:
     out:
       - id: output_path
 
-  - id: extract_readgroup_bam
-    run: extract_readgroup_bam.cwl
+  - id: extract_readgroups_bam
+    run: extract_readgroups_bam.cwl
     scatter: [readgroup_bam_uuid]
     in:
-      - id: readgroup_bam_uuid
-        source: readgroup_bam_uuid_list
+      - id: readgroups_bam_uuid
+        source: readgroups_bam_uuid_list
       - id: config-file
         source: bioclient_config
     out:
       - id: output_path
 
-  - id: merge_readgroup_fastq_pe_paths
-    run: merge_readgroup_fastq_pe_paths.cwl
-    in:
-      - id: readgroup_fastq_pe_path
-        source: extract_readgroup_fastq_pe/output_path
-    out:
-      - id: path_list
+  # - id: merge_readgroup_fastq_pe_paths
+  #   run: merge_readgroup_fastq_pe_paths.cwl
+  #   in:
+  #     - id: readgroup_fastq_pe_path
+  #       source: extract_readgroup_fastq_pe/output_path
+  #   out:
+  #     - id: path_list
 
-  - id: merge_readgroup_fastq_se_paths
-    run: merge_readgroup_fastq_se_paths.cwl
-    in:
-      - id: readgroup_fastq_se_path
-        source: extract_readgroup_fastq_se/output_path
-    out:
-      - id: path_list
+  # - id: merge_readgroup_fastq_se_paths
+  #   run: merge_readgroup_fastq_se_paths.cwl
+  #   in:
+  #     - id: readgroup_fastq_se_path
+  #       source: extract_readgroup_fastq_se/output_path
+  #   out:
+  #     - id: path_list
 
-  - id: merge_readgroup_bam_paths
-    run: merge_readgroup_bam_paths.cwl
-    in:
-      - id: readgroup_bam_path
-        source: extract_readgroup_bam/output_path
-    out:
-      - id: path_list
+  # - id: merge_readgroup_bam_paths
+  #   run: merge_readgroup_bam_paths.cwl
+  #   in:
+  #     - id: readgroup_bam_path
+  #       source: extract_readgroup_bam/output_path
+  #   out:
+  #     - id: path_list
 
   - id: extract_known_snp
     run: ../../tools/bio_client_download.cwl
@@ -252,86 +252,86 @@ steps:
     out:
       - id: output
  
-  - id: transform
-    run: transform.cwl
-    in:
-      - id: bam_name
-        source: bam_name
-      - id: bioclient_config
-        source: bioclient_config
-      - id: readgroup_fastq_pe_path_list
-        source: merge_readgroup_fastq_pe_paths/path_list
-      - id: readgroup_fastq_se_path_list
-        source: merge_readgroup_fastq_se_paths/path_list
-      - id: readgroups_bam_path_list
-        source: merge_readgroup_bam_paths/path_list
-      - id: known_snp
-        source: root_known_snp_files/output
-      - id: reference_sequence
-        source: root_fasta_files/output
-      - id: thread_count
-        source: thread_count
-    out:
-      - id: output_bam
-      - id: sqlite
+  # - id: transform
+  #   run: transform.cwl
+  #   in:
+  #     - id: bam_name
+  #       source: bam_name
+  #     - id: bioclient_config
+  #       source: bioclient_config
+  #     - id: readgroup_fastq_pe_path_list
+  #       source: merge_readgroup_fastq_pe_paths/path_list
+  #     - id: readgroup_fastq_se_path_list
+  #       source: merge_readgroup_fastq_se_paths/path_list
+  #     - id: readgroups_bam_path_list
+  #       source: merge_readgroup_bam_paths/path_list
+  #     - id: known_snp
+  #       source: root_known_snp_files/output
+  #     - id: reference_sequence
+  #       source: root_fasta_files/output
+  #     - id: thread_count
+  #       source: thread_count
+  #   out:
+  #     - id: output_bam
+  #     - id: sqlite
 
-  - id: load_bam
-    run: ../../tools/bio_client_upload_pull_uuid.cwl
-    in:
-      - id: config-file
-        source: bioclient_config
-      - id: input
-        source: transform/output_bam
-      - id: upload-bucket
-        source: bioclient_load_bucket
-      - id: upload-key
-        valueFrom: job_uuid/bam_name
-    out:
-      - id: output
+  # - id: load_bam
+  #   run: ../../tools/bio_client_upload_pull_uuid.cwl
+  #   in:
+  #     - id: config-file
+  #       source: bioclient_config
+  #     - id: input
+  #       source: transform/output_bam
+  #     - id: upload-bucket
+  #       source: bioclient_load_bucket
+  #     - id: upload-key
+  #       valueFrom: job_uuid/bam_name
+  #   out:
+  #     - id: output
 
-  - id: load_bai
-    run: ../../tools/bio_client_upload_pull_uuid.cwl
-    in:
-      - id: config-file
-        source: bioclient_config
-      - id: input
-        source: transform/output_bam
-        valueFrom: $(self.secondaryFiles[0])
-      - id: upload-bucket
-        source: bioclient_load_bucket
-      - id: upload-key
-        valueFrom: $(inputs.job_uuid)/$(inputs.input.nameroot).bai
-      - id: job_uuid
-        source: job_uuid
-        valueFrom: $(null)
-    out:
-      - id: output
+  # - id: load_bai
+  #   run: ../../tools/bio_client_upload_pull_uuid.cwl
+  #   in:
+  #     - id: config-file
+  #       source: bioclient_config
+  #     - id: input
+  #       source: transform/output_bam
+  #       valueFrom: $(self.secondaryFiles[0])
+  #     - id: upload-bucket
+  #       source: bioclient_load_bucket
+  #     - id: upload-key
+  #       valueFrom: $(inputs.job_uuid)/$(inputs.input.nameroot).bai
+  #     - id: job_uuid
+  #       source: job_uuid
+  #       valueFrom: $(null)
+  #   out:
+  #     - id: output
 
-  - id: load_sqlite
-    run: ../../tools/bio_client_upload_pull_uuid.cwl
-    in:
-      - id: config-file
-        source: bioclient_config
-      - id: input
-        source: transform/sqlite
-      - id: upload-bucket
-        source: bioclient_load_bucket
-      - id: upload-key
-        valueFrom: $(inputs.job_uuid)/$(inputs.input.basename)
-      - id: job_uuid
-        source: job_uuid
-        valueFrom: $(null)
-    out:
-      - id: output
+  # - id: load_sqlite
+  #   run: ../../tools/bio_client_upload_pull_uuid.cwl
+  #   in:
+  #     - id: config-file
+  #       source: bioclient_config
+  #     - id: input
+  #       source: transform/sqlite
+  #     - id: upload-bucket
+  #       source: bioclient_load_bucket
+  #     - id: upload-key
+  #       valueFrom: $(inputs.job_uuid)/$(inputs.input.basename)
+  #     - id: job_uuid
+  #       source: job_uuid
+  #       valueFrom: $(null)
+  #   out:
+  #     - id: output
 
-  - id: generate_token
-    run: ../../tools/generate_load_token.cwl
-    in:
-      - id: load1
-        source: load_bam/output
-      - id: load2
-        source: load_bai/output
-      - id: load3
-        source: load_sqlite/output
-    out:
-      - id: token
+  # - id: generate_token
+  #   run: ../../tools/generate_load_token.cwl
+  #   in:
+  #     - id: load1
+  #       source: load_bam/output
+  #     - id: load2
+  #       source: load_bai/output
+  #     - id: load3
+  #       source: load_sqlite/output
+  #   out:
+  #     - id: token

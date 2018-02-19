@@ -5,7 +5,7 @@ cwlVersion: v1.0
 class: Workflow
 
 requirements:
-  - $import: ../../tools/readgroup_no_pu.yaml
+  - $import: ../../tools/readgroup.yml
   - class: InlineJavascriptRequirement
   - class: StepInputExpressionRequirement
   - class: SubworkflowFeatureRequirement
@@ -19,10 +19,10 @@ inputs:
     type: string
   - id: job_uuid
     type: string
-  - id: readgroup_fastq_pe_list
+  - id: readgroup_fastq_pe_uuid_list
     type:
       type: array
-      items:  ../../tools/readgroup_no_pu.yaml#readgroup_fastq_pe
+      items:  ../../tools/readgroup.yml#readgroup_fastq_pe_uuid
   - id: readgroup_fastq_se_list
     type:
       type: array
