@@ -78,13 +78,12 @@ inputs:
     type: long
 
 outputs:
-  []
-  # - id: indexd_bam_json
-  #   type: File
-  #   outputSource: load_bam/output
-  # - id: token
-  #   type: File
-  #   outputSource: generate_token/token
+  - id: indexd_bam_json
+    type: File
+    outputSource: load_bam/output
+  - id: token
+    type: File
+    outputSource: generate_token/token
 
 steps:
   - id: extract_readgroup_fastq_pe
@@ -319,37 +318,37 @@ steps:
       - id: output_bam
   #     - id: sqlite
 
-  # - id: load_bam
-  #   run: ../../tools/bio_client_upload_pull_uuid.cwl
-  #   in:
-  #     - id: config-file
-  #       source: bioclient_config
-  #     - id: input
-  #       source: transform/output_bam
-  #     - id: upload-bucket
-  #       source: bioclient_load_bucket
-  #     - id: upload-key
-  #       valueFrom: job_uuid/bam_name
-  #   out:
-  #     - id: output
+  - id: load_bam
+    run: ../../tools/bio_client_upload_pull_uuid.cwl
+    in:
+      - id: config-file
+        source: bioclient_config
+      - id: input
+        source: transform/output_bam
+      - id: upload-bucket
+        source: bioclient_load_bucket
+      - id: upload-key
+        valueFrom: job_uuid/bam_name
+    out:
+      - id: output
 
-  # - id: load_bai
-  #   run: ../../tools/bio_client_upload_pull_uuid.cwl
-  #   in:
-  #     - id: config-file
-  #       source: bioclient_config
-  #     - id: input
-  #       source: transform/output_bam
-  #       valueFrom: $(self.secondaryFiles[0])
-  #     - id: upload-bucket
-  #       source: bioclient_load_bucket
-  #     - id: upload-key
-  #       valueFrom: $(inputs.job_uuid)/$(inputs.input.nameroot).bai
-  #     - id: job_uuid
-  #       source: job_uuid
-  #       valueFrom: $(null)
-  #   out:
-  #     - id: output
+  - id: load_bai
+    run: ../../tools/bio_client_upload_pull_uuid.cwl
+    in:
+      - id: config-file
+        source: bioclient_config
+      - id: input
+        source: transform/output_bam
+        valueFrom: $(self.secondaryFiles[0])
+      - id: upload-bucket
+        source: bioclient_load_bucket
+      - id: upload-key
+        valueFrom: $(inputs.job_uuid)/$(inputs.input.nameroot).bai
+      - id: job_uuid
+        source: job_uuid
+        valueFrom: $(null)
+    out:
+      - id: output
 
   # - id: load_sqlite
   #   run: ../../tools/bio_client_upload_pull_uuid.cwl
@@ -368,14 +367,14 @@ steps:
   #   out:
   #     - id: output
 
-  # - id: generate_token
-  #   run: ../../tools/generate_load_token.cwl
-  #   in:
-  #     - id: load1
-  #       source: load_bam/output
-  #     - id: load2
-  #       source: load_bai/output
-  #     - id: load3
-  #       source: load_sqlite/output
-  #   out:
-  #     - id: token
+  - id: generate_token
+    run: ../../tools/generate_load_token.cwl
+    in:
+      - id: load1
+        source: load_bam/output
+      - id: load2
+        source: load_bai/output
+      # - id: load3
+      #   source: load_sqlite/output
+    out:
+      - id: token
