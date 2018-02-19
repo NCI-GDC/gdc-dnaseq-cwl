@@ -81,6 +81,12 @@ outputs:
   - id: indexd_bam_json
     type: File
     outputSource: load_bam/output
+  - id: indexd_bai_json
+    type: File
+    outputSource: load_bai/output
+  # - id: indexd_sqlite_json
+  #   type: File
+  #   outputSource: load_sqlite/output
   - id: token
     type: File
     outputSource: generate_token/token

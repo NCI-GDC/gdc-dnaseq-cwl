@@ -99,12 +99,13 @@ inputs:
     type: long
 
 outputs:
-  - id: indexd_bam_uuid
-    type: string
-    outputSource: emit_bam_uuid/output
-  - id: indexd_bai_uuid
-    type: string
-    outputSource: emit_bai_uuid/output
+  []
+  # - id: indexd_bam_uuid
+  #   type: string
+  #   outputSource: emit_bam_uuid/output
+  # - id: indexd_bai_uuid
+  #   type: string
+  #   outputSource: emit_bai_uuid/output
   # - id: indexd_sqlite_uuid
   #   type: string
   #   outputSource: emit_sqlite_uuid/output
@@ -158,10 +159,16 @@ steps:
         source: get_host_macaddress/output
       - id: indexd_bam_uuid
         valueFrom: "NULL"
-      - id: readgroup_fastq_pe_uuid_list
-        source: readgroup_fastq_pe_uuid_list
-      - id: readgroup_fastq_se_uuid_list
-        source: readgroup_fastq_se_uuid_list
+      - id: indexd_bai_uuid
+        valueFrom: "NULL"
+      - id: indexd_sqlite_uuid
+        valueFrom: "NULL"
+      # - id: readgroup_fastq_pe_uuid_list
+      #   source: readgroup_fastq_pe_uuid_list
+      # - id: readgroup_fastq_se_uuid_list
+      #   source: readgroup_fastq_se_uuid_list
+      # - id: readgroups_bam_uuid_list
+      #   source: readgroups_bam_uuid_list
       - id: slurm_resource_cores
         source: slurm_resource_cores
       - id: slurm_resource_disk_gigabytes
@@ -236,8 +243,8 @@ steps:
         source: readgroup_fastq_pe_uuid_list
       - id: readgroup_fastq_se_uuid_list
         source: readgroup_fastq_se_uuid_list
-      - id: readgroups_bam_list
-        source: readgroups_bam_list
+      - id: readgroups_bam_uuid_list
+        source: readgroups_bam_uuid_list
       - id: start_token
         source: status_running/token
       - id: known_snp_gdc_id
@@ -345,10 +352,16 @@ steps:
         source: get_host_macaddress/output
       - id: indexd_bam_uuid
         source: emit_bam_uuid/output
-      - id: readgroup_fastq_pe_uuid_list
-        source: readgroup_fastq_pe_uuid_list
-      - id: readgroup_fastq_se_uuid_list
-        source: readgroup_fastq_se_uuid_list
+      - id: indexd_bai_uuid
+        source: emit_bai_uuid/output
+      - id: indexd_sqlite_uuid
+        valueFrom: "NULL"
+      # - id: readgroup_fastq_pe_uuid_list
+      #   source: readgroup_fastq_pe_uuid_list
+      # - id: readgroup_fastq_se_uuid_list
+      #   source: readgroup_fastq_se_uuid_list
+      # - id: readgroups_bam_uuid_list
+      #   source: readgroups_bam_uuid_list
       - id: slurm_resource_cores
         source: slurm_resource_cores
       - id: slurm_resource_disk_gigabytes
