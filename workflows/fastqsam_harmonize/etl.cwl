@@ -7,6 +7,7 @@ class: Workflow
 requirements:
   - $import: ../../tools/readgroup.yml
   - class: InlineJavascriptRequirement
+  - class: ScatterFeatureRequirement
   - class: StepInputExpressionRequirement
   - class: SubworkflowFeatureRequirement
 
@@ -33,14 +34,57 @@ inputs:
       items: ../../tools/readgroup.yml#readgroups_bam_uuid
   - id: start_token
     type: File
+  - id: known_snp_gdc_id
+    type: string
+  - id: known_snp_file_size
+    type: long
+  - id: known_snp_index_gdc_id
+    type: string
+  - id: known_snp_index_file_size
+    type: long
+  - id: reference_amb_gdc_id
+    type: string
+  - id: reference_amb_file_size
+    type: long
+  - id: reference_ann_gdc_id
+    type: string
+  - id: reference_ann_file_size
+    type: long
+  - id: reference_bwt_gdc_id
+    type: string
+  - id: reference_bwt_file_size
+    type: long
+  - id: reference_dict_gdc_id
+    type: string
+  - id: reference_dict_file_size
+    type: long
+  - id: reference_fa_gdc_id
+    type: string
+  - id: reference_fa_file_size
+    type: long
+  - id: reference_fai_gdc_id
+    type: string
+  - id: reference_fai_file_size
+    type: long
+  - id: reference_pac_gdc_id
+    type: string
+  - id: reference_pac_file_size
+    type: long
+  - id: reference_sa_gdc_id
+    type: string
+  - id: reference_sa_file_size
+    type: long
+  - id: thread_count
+    type: long
 
 outputs:
-  - id: indexd_bam_json
-    type: File
-    outputSource: load_bam/output
-  - id: token
-    type: File
-    outputSource: generate_token/token
+  []
+  # - id: indexd_bam_json
+  #   type: File
+  #   outputSource: load_bam/output
+  # - id: token
+  #   type: File
+  #   outputSource: generate_token/token
 
 steps:
   - id: extract_readgroup_fastq_pe
@@ -49,10 +93,10 @@ steps:
     in:
       - id: readgroup_fastq_pe_uuid
         source: readgroup_fastq_pe_uuid_list
-      - id: config-file
+      - id: bioclient_config
         source: bioclient_config
     out:
-      - id: output_path
+      - id: output
 
   - id: extract_readgroup_fastq_se
     run: extract_readgroup_fastq_se.cwl
@@ -60,21 +104,21 @@ steps:
     in:
       - id: readgroup_fastq_se_uuid
         source: readgroup_fastq_se_uuid_list
-      - id: config-file
+      - id: bioclient_config
         source: bioclient_config
     out:
-      - id: output_path
+      - id: output
 
   - id: extract_readgroups_bam
     run: extract_readgroups_bam.cwl
-    scatter: [readgroup_bam_uuid]
+    scatter: [readgroups_bam_uuid]
     in:
       - id: readgroups_bam_uuid
         source: readgroups_bam_uuid_list
-      - id: config-file
+      - id: bioclient_config
         source: bioclient_config
     out:
-      - id: output_path
+      - id: output
 
   # - id: merge_readgroup_fastq_pe_paths
   #   run: merge_readgroup_fastq_pe_paths.cwl
@@ -252,27 +296,27 @@ steps:
     out:
       - id: output
  
-  # - id: transform
-  #   run: transform.cwl
-  #   in:
-  #     - id: bam_name
-  #       source: bam_name
-  #     - id: bioclient_config
-  #       source: bioclient_config
-  #     - id: readgroup_fastq_pe_path_list
-  #       source: merge_readgroup_fastq_pe_paths/path_list
-  #     - id: readgroup_fastq_se_path_list
-  #       source: merge_readgroup_fastq_se_paths/path_list
-  #     - id: readgroups_bam_path_list
-  #       source: merge_readgroup_bam_paths/path_list
-  #     - id: known_snp
-  #       source: root_known_snp_files/output
-  #     - id: reference_sequence
-  #       source: root_fasta_files/output
-  #     - id: thread_count
-  #       source: thread_count
-  #   out:
-  #     - id: output_bam
+  - id: transform
+    run: transform.cwl
+    in:
+      - id: bam_name
+        source: bam_name
+      - id: job_uuid
+        source: job_uuid
+      - id: readgroup_fastq_pe_path_list
+        source: extract_readgroup_fastq_pe/output
+      - id: readgroup_fastq_se_path_list
+        source: extract_readgroup_fastq_se/output
+      - id: readgroups_bam_path_list
+        source: extract_readgroups_bam/output
+      - id: known_snp
+        source: root_known_snp_files/output
+      - id: reference_sequence
+        source: root_fasta_files/output
+      - id: thread_count
+        source: thread_count
+    out:
+      - id: output_bam
   #     - id: sqlite
 
   # - id: load_bam

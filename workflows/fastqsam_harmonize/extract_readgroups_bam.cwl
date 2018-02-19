@@ -16,7 +16,7 @@ inputs:
     type: File
 
 outputs:
-  - id: readgroups_bam_file
+  - id: output
     type: ../../tools/readgroup.yml#readgroups_bam_file
     outputSource: emit_readgroups_bam_file/output
 

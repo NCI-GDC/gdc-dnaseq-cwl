@@ -13,6 +13,10 @@ requirements:
   - class: SubworkflowFeatureRequirement
 
 inputs:
+  - id: bam_name
+    type: string
+  - id: job_uuid
+    type: string
   - id: readgroup_fastq_pe_path_list
     type:
       type: array
@@ -31,14 +35,11 @@ inputs:
     type: File
   - id: thread_count
     type: long
-  - id: job_uuid
-    type: string
 
 outputs:
-  []
-  # - id: output_bam
-  #   type: File
-  #   outputSource: gatk_applybqsr/output_bam
+  - id: output_bam
+    type: File
+    outputSource: gatk_applybqsr/output_bam
   # - id: sqlite
   #   type: File
   #   outputSource: merge_all_sqlite/destination_sqlite
@@ -94,7 +95,7 @@ steps:
     out:
       - id: output
 
-  - id: merge_bam_o1_fastq_records
+  - id: merge_o1_fastq_records
     run: ../../tools/merge_se_fastq_records.cwl
     in:
       - id: input
@@ -102,7 +103,7 @@ steps:
     out:
       - id: output
 
-  - id: merge_bam_o2_fastq_records
+  - id: merge_o2_fastq_records
     run: ../../tools/merge_se_fastq_records.cwl
     in:
       - id: input
@@ -110,359 +111,69 @@ steps:
     out:
       - id: output
 
-  # - id: merge_se_fastq_records
-  #   run: ../../tools/merge_pe_fastq_records.cwl
-  #   in:
-  #     - id: input
-  #       source: [
-  #       readgroup_fastq_se_path_list,
-  #       readgroups_bam_to_readgroups_fastq_lists/se_file_list
-  #       ]
-  #   out:
-  #     - id: output
-      
-  # - id: readgroup_json_db
-  #   run: ../../tools/readgroup_json_db.cwl
-  #   scatter: json_path
-  #   in:
-  #     - id: json_path
-  #       source: bam_readgroup_to_json/OUTPUT
-  #     - id: job_uuid
-  #       source: job_uuid
-  #   out:
-  #     - id: log
-  #     - id: output_sqlite
+  - id: bwa_pe
+    run: bwa_pe.cwl
+    scatter: readgroup_fastq_pe
+    in:
+      - id: job_uuid
+        source: job_uuid
+      - id: reference_sequence
+        source: reference_sequence
+      - id: readgroup_fastq_pe
+        source: merge_pe_fastq_records/output
+      - id: thread_count
+        source: thread_count
+    out:
+      - id: bam
+      - id: sqlite
 
-  # - id: merge_readgroup_json_db
-  #   run: ../../tools/merge_sqlite.cwl
-  #   in:
-  #     - id: source_sqlite
-  #       source: readgroup_json_db/output_sqlite
-  #     - id: job_uuid
-  #       source: job_uuid
-  #   out:
-  #     - id: destination_sqlite
-  #     - id: log
+  - id: bwa_se
+    run: bwa_se.cwl
+    scatter: readgroup_fastq_se
+    in:
+      - id: job_uuid
+        source: job_uuid
+      - id: reference_sequence
+        source: reference_sequence
+      - id: readgroup_fastq_se
+        source: merge_se_fastq_records/output
+      - id: thread_count
+        source: thread_count
+    out:
+      - id: bam
+      - id: sqlite
 
-  # - id: fastqc1
-  #   run: ../../tools/fastqc.cwl
-  #   scatter: INPUT
-  #   in:
-  #     - id: INPUT
-  #       source: sort_scattered_fastq1/OUTPUT
-  #     - id: threads
-  #       source: thread_count
-  #   out:
-  #     - id: OUTPUT
+  - id: bwa_o1
+    run: bwa_se.cwl
+    scatter: readgroup_fastq_se
+    in:
+      - id: job_uuid
+        source: job_uuid
+      - id: reference_sequence
+        source: reference_sequence
+      - id: readgroup_fastq_se
+        source: merge_o1_fastq_records/output
+      - id: thread_count
+        source: thread_count
+    out:
+      - id: bam
+      - id: sqlite
 
-  # - id: fastqc2
-  #   run: ../../tools/fastqc.cwl
-  #   scatter: INPUT
-  #   in:
-  #     - id: INPUT
-  #       source: sort_scattered_fastq2/OUTPUT
-  #     - id: threads
-  #       source: thread_count
-  #   out:
-  #     - id: OUTPUT
-
-  # - id: fastqc_s
-  #   run: ../../tools/fastqc.cwl
-  #   scatter: INPUT
-  #   in:
-  #     - id: INPUT
-  #       source: sort_scattered_fastq_s/OUTPUT
-  #     - id: threads
-  #       source: thread_count
-  #   out:
-  #     - id: OUTPUT
-
-  # - id: fastqc_o1
-  #   run: ../../tools/fastqc.cwl
-  #   scatter: INPUT
-  #   in:
-  #     - id: INPUT
-  #       source: sort_scattered_fastq_o1/OUTPUT
-  #     - id: threads
-  #       source: thread_count
-  #   out:
-  #     - id: OUTPUT
-
-  # - id: fastqc_o2
-  #   run: ../../tools/fastqc.cwl
-  #   scatter: INPUT
-  #   in:
-  #     - id: INPUT
-  #       source: sort_scattered_fastq_o2/OUTPUT
-  #     - id: threads
-  #       source: thread_count
-  #   out:
-  #     - id: OUTPUT
-
-  # - id: fastqc_db1
-  #   run: ../../tools/fastqc_db.cwl
-  #   scatter: INPUT
-  #   in:
-  #     - id: INPUT
-  #       source: fastqc1/OUTPUT
-  #     - id: job_uuid
-  #       source: job_uuid
-  #   out:
-  #     - id: LOG
-  #     - id: OUTPUT
-
-  # - id: fastqc_db2
-  #   run: ../../tools/fastqc_db.cwl
-  #   scatter: INPUT
-  #   in:
-  #     - id: INPUT
-  #       source: fastqc2/OUTPUT
-  #     - id: job_uuid
-  #       source: job_uuid
-  #   out:
-  #     - id: LOG
-  #     - id: OUTPUT
-
-  # - id: fastqc_db_s
-  #   run: ../../tools/fastqc_db.cwl
-  #   scatter: INPUT
-  #   in:
-  #     - id: INPUT
-  #       source: fastqc_s/OUTPUT
-  #     - id: job_uuid
-  #       source: job_uuid
-  #   out:
-  #     - id: LOG
-  #     - id: OUTPUT
-
-  # - id: fastqc_db_o1
-  #   run: ../../tools/fastqc_db.cwl
-  #   scatter: INPUT
-  #   in:
-  #     - id: INPUT
-  #       source: fastqc_o1/OUTPUT
-  #     - id: job_uuid
-  #       source: job_uuid
-  #   out:
-  #     - id: LOG
-  #     - id: OUTPUT
-
-  # - id: fastqc_db_o2
-  #   run: ../../tools/fastqc_db.cwl
-  #   scatter: INPUT
-  #   in:
-  #     - id: INPUT
-  #       source: fastqc_o2/OUTPUT
-  #     - id: job_uuid
-  #       source: job_uuid
-  #   out:
-  #     - id: LOG
-  #     - id: OUTPUT
-
-  # - id: merge_fastqc_db1_sqlite
-  #   run: ../../tools/merge_sqlite.cwl
-  #   in:
-  #     - id: source_sqlite
-  #       source: fastqc_db1/OUTPUT
-  #     - id: job_uuid
-  #       source: job_uuid
-  #   out:
-  #     - id: destination_sqlite
-  #     - id: log
-
-  # - id: merge_fastqc_db2_sqlite
-  #   run: ../../tools/merge_sqlite.cwl
-  #   in:
-  #     - id: source_sqlite
-  #       source: fastqc_db2/OUTPUT
-  #     - id: job_uuid
-  #       source: job_uuid
-  #   out:
-  #     - id: destination_sqlite
-  #     - id: log
-
-  # - id: merge_fastqc_db_s_sqlite
-  #   run: ../../tools/merge_sqlite.cwl
-  #   in:
-  #     - id: source_sqlite
-  #       source: fastqc_db_s/OUTPUT
-  #     - id: job_uuid
-  #       source: job_uuid
-  #   out:
-  #     - id: destination_sqlite
-  #     - id: log
-
-  # - id: merge_fastqc_db_o1_sqlite
-  #   run: ../../tools/merge_sqlite.cwl
-  #   in:
-  #     - id: source_sqlite
-  #       source: fastqc_db_o1/OUTPUT
-  #     - id: job_uuid
-  #       source: job_uuid
-  #   out:
-  #     - id: destination_sqlite
-  #     - id: log
-
-  # - id: merge_fastqc_db_o2_sqlite
-  #   run: ../../tools/merge_sqlite.cwl
-  #   in:
-  #     - id: source_sqlite
-  #       source: fastqc_db_o2/OUTPUT
-  #     - id: job_uuid
-  #       source: job_uuid
-  #   out:
-  #     - id: destination_sqlite
-  #     - id: log
-
-  # - id: fastqc_pe_basicstats_json
-  #   run: ../../tools/fastqc_basicstatistics_json.cwl
-  #   in:
-  #     - id: sqlite_path
-  #       source: merge_fastqc_db1_sqlite/destination_sqlite
-  #   out:
-  #     - id: OUTPUT
-
-  # - id: fastqc_se_basicstats_json
-  #   run: ../../tools/fastqc_basicstatistics_json.cwl
-  #   in:
-  #     - id: sqlite_path
-  #       source: merge_fastqc_db_s_sqlite/destination_sqlite
-  #   out:
-  #     - id: OUTPUT
-
-  # - id: fastqc_o1_basicstats_json
-  #   run: ../../tools/fastqc_basicstatistics_json.cwl
-  #   in:
-  #     - id: sqlite_path
-  #       source: merge_fastqc_db_o1_sqlite/destination_sqlite
-  #   out:
-  #     - id: OUTPUT
-
-  # - id: fastqc_o2_basicstats_json
-  #   run: ../../tools/fastqc_basicstatistics_json.cwl
-  #   in:
-  #     - id: sqlite_path
-  #       source: merge_fastqc_db_o2_sqlite/destination_sqlite
-  #   out:
-  #     - id: OUTPUT
-
-  # - id: bwa_pe
-  #   run: ../../tools/bwa_record_pe.cwl
-  #   scatter: [fastq1, fastq2, readgroup_json_path]
-  #   scatterMethod: "dotproduct"
-  #   in:
-  #     - id: fasta
-  #       source: reference_sequence
-  #     - id: fastq1
-  #       source: sort_scattered_fastq1/OUTPUT
-  #     - id: fastq2
-  #       source: sort_scattered_fastq2/OUTPUT
-  #     - id: readgroup_json_path
-  #       source: decider_bwa_pe/output_readgroup_paths
-  #     - id: fastqc_json_path
-  #       source: fastqc_pe_basicstats_json/OUTPUT
-  #     - id: thread_count
-  #       source: thread_count
-  #   out:
-  #     - id: OUTPUT
-
-  # - id: bwa_se
-  #   run: ../../tools/bwa_record_se.cwl
-  #   scatter: [fastq, readgroup_json_path]
-  #   scatterMethod: "dotproduct"
-  #   in:
-  #     - id: fasta
-  #       source: reference_sequence
-  #     - id: fastq
-  #       source: sort_scattered_fastq_s/OUTPUT
-  #     - id: readgroup_json_path
-  #       source: decider_bwa_se/output_readgroup_paths
-  #     - id: fastqc_json_path
-  #       source: fastqc_se_basicstats_json/OUTPUT
-  #     - id: thread_count
-  #       source: thread_count
-  #   out:
-  #     - id: OUTPUT
-
-  # - id: bwa_o1
-  #   run: ../../tools/bwa_record_se.cwl
-  #   scatter: [fastq, readgroup_json_path]
-  #   scatterMethod: "dotproduct"
-  #   in:
-  #     - id: fasta
-  #       source: reference_sequence
-  #     - id: fastq
-  #       source: sort_scattered_fastq_o1/OUTPUT
-  #     - id: readgroup_json_path
-  #       source: decider_bwa_o1/output_readgroup_paths
-  #     - id: fastqc_json_path
-  #       source: fastqc_o1_basicstats_json/OUTPUT
-  #     - id: thread_count
-  #       source: thread_count
-  #   out:
-  #     - id: OUTPUT
-
-  # - id: bwa_o2
-  #   run: ../../tools/bwa_record_se.cwl
-  #   scatter: [fastq, readgroup_json_path]
-  #   scatterMethod: "dotproduct"
-  #   in:
-  #     - id: fasta
-  #       source: reference_sequence
-  #     - id: fastq
-  #       source: sort_scattered_fastq_o2/OUTPUT
-  #     - id: readgroup_json_path
-  #       source: decider_bwa_o2/output_readgroup_paths
-  #     - id: fastqc_json_path
-  #       source: fastqc_o2_basicstats_json/OUTPUT
-  #     - id: thread_count
-  #       source: thread_count
-  #   out:
-  #     - id: OUTPUT
-
-  # - id: picard_sortsam_pe
-  #   run: ../../tools/picard_sortsam.cwl
-  #   scatter: INPUT
-  #   in:
-  #     - id: INPUT
-  #       source: bwa_pe/OUTPUT
-  #     - id: OUTPUT
-  #       valueFrom: $(inputs.INPUT.basename)
-  #   out:
-  #     - id: SORTED_OUTPUT
-
-  # - id: picard_sortsam_se
-  #   run: ../../tools/picard_sortsam.cwl
-  #   scatter: INPUT
-  #   in:
-  #     - id: INPUT
-  #       source: bwa_se/OUTPUT
-  #     - id: OUTPUT
-  #       valueFrom: $(inputs.INPUT.basename)
-  #   out:
-  #     - id: SORTED_OUTPUT
-
-  # - id: picard_sortsam_o1
-  #   run: ../../tools/picard_sortsam.cwl
-  #   scatter: INPUT
-  #   in:
-  #     - id: INPUT
-  #       source: bwa_o1/OUTPUT
-  #     - id: OUTPUT
-  #       valueFrom: $(inputs.INPUT.basename)
-  #   out:
-  #     - id: SORTED_OUTPUT
-
-  # - id: picard_sortsam_o2
-  #   run: ../../tools/picard_sortsam.cwl
-  #   scatter: INPUT
-  #   in:
-  #     - id: INPUT
-  #       source: bwa_o2/OUTPUT
-  #     - id: OUTPUT
-  #       valueFrom: $(inputs.INPUT.basename)
-  #   out:
-  #     - id: SORTED_OUTPUT
+  - id: bwa_o2
+    run: bwa_se.cwl
+    scatter: readgroup_fastq_se
+    in:
+      - id: job_uuid
+        source: job_uuid
+      - id: reference_sequence
+        source: reference_sequence
+      - id: readgroup_fastq_se
+        source: merge_o2_fastq_records/output
+      - id: thread_count
+        source: thread_count
+    out:
+      - id: bam
+      - id: sqlite
 
   # - id: metrics_pe
   #   run: metrics.cwl
@@ -574,38 +285,37 @@ steps:
   #   out:
   #     - id: MERGED_OUTPUT
 
-  # - id: picard_mergesamfiles_aligned
-  #   run: ../../tools/picard_mergesamfiles.cwl
-  #   in:
-  #     - id: INPUT
-  #       source: [
-  #       picard_mergesamfiles_pe/MERGED_OUTPUT,
-  #       picard_mergesamfiles_se/MERGED_OUTPUT,
-  #       picard_mergesamfiles_o1/MERGED_OUTPUT,
-  #       picard_mergesamfiles_o2/MERGED_OUTPUT
-  #       ]
-  #     - id: OUTPUT
-  #       source: input_bam
-  #       valueFrom: $(self.basename.slice(0,-4) + "_gdc_realn.bam")
-  #   out:
-  #     - id: MERGED_OUTPUT
+  - id: picard_mergesamfiles
+    run: ../../tools/picard_mergesamfiles_aoa.cwl
+    in:
+      - id: INPUT
+        source: [
+        bwa_pe/bam,
+        bwa_se/bam,
+        bwa_o1/bam,
+        bwa_o2/bam
+        ]
+      - id: OUTPUT
+        source: bam_name
+    out:
+      - id: MERGED_OUTPUT
 
-  # - id: bam_reheader
-  #   run: ../../tools/bam_reheader.cwl
-  #   in:
-  #     - id: input
-  #       source: picard_mergesamfiles/MERGED_OUTPUT
-  #   out:
-  #     - id: output
+  - id: bam_reheader
+    run: ../../tools/bam_reheader.cwl
+    in:
+      - id: input
+        source: picard_mergesamfiles/MERGED_OUTPUT
+    out:
+      - id: output
 
-  # - id: picard_markduplicates
-  #   run: ../../tools/picard_markduplicates.cwl
-  #   in:
-  #     - id: INPUT
-  #       source: bam_reheader/output
-  #   out:
-  #     - id: OUTPUT
-  #     - id: METRICS
+  - id: picard_markduplicates
+    run: ../../tools/picard_markduplicates.cwl
+    in:
+      - id: INPUT
+        source: bam_reheader/output
+    out:
+      - id: OUTPUT
+      - id: METRICS
 
   # - id: picard_markduplicates_to_sqlite
   #   run: ../../tools/picard_markduplicates_to_sqlite.cwl
@@ -622,27 +332,27 @@ steps:
   #   out:
   #     - id: sqlite
 
-  # - id: gatk_baserecalibrator
-  #   run: ../../tools/gatk4_baserecalibrator.cwl
-  #   in:
-  #     - id: input
-  #       source: picard_markduplicates/OUTPUT
-  #     - id: known-sites
-  #       source: known_snp
-  #     - id: reference
-  #       source: reference_sequence
-  #   out:
-  #     - id: output_grp
+  - id: gatk_baserecalibrator
+    run: ../../tools/gatk4_baserecalibrator.cwl
+    in:
+      - id: input
+        source: picard_markduplicates/OUTPUT
+      - id: known-sites
+        source: known_snp
+      - id: reference
+        source: reference_sequence
+    out:
+      - id: output_grp
 
-  # - id: gatk_applybqsr
-  #   run: ../../tools/gatk4_applybqsr.cwl
-  #   in:
-  #     - id: input
-  #       source: picard_markduplicates/OUTPUT
-  #     - id: bqsr-recal-file
-  #       source: gatk_baserecalibrator/output_grp
-  #   out:
-  #     - id: output_bam
+  - id: gatk_applybqsr
+    run: ../../tools/gatk4_applybqsr.cwl
+    in:
+      - id: input
+        source: picard_markduplicates/OUTPUT
+      - id: bqsr-recal-file
+        source: gatk_baserecalibrator/output_grp
+    out:
+      - id: output_bam
 
   # - id: integrity
   #   run: integrity.cwl

@@ -16,7 +16,7 @@ inputs:
     type: File
 
 outputs:
-  - id: readgroup_fastq_pe_file
+  - id: output
     type: ../../tools/readgroup.yml#readgroup_fastq_pe_file
     outputSource: emit_readgroup_fastq_pe_file/output
 

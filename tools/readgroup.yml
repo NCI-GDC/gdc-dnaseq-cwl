@@ -85,9 +85,9 @@ types:
     fields:
       - name: readgroup_meta
         type: readgroup_meta
-      - name: forward_fastq_uuid
+      - name: fastq_uuid
         type: string
-      - name: forward_fastq_file_size
+      - name: fastq_file_size
         type: long
 
   - name: readgroups_bam_uuid
