@@ -6,8 +6,6 @@ class: Workflow
 
 requirements:
   - $import: ../../tools/readgroup.yml
-  # - class: InlineJavascriptRequirement
-  # - class: MultipleInputFeatureRequirement
   - class: ScatterFeatureRequirement
   - class: StepInputExpressionRequirement
   - class: SubworkflowFeatureRequirement
