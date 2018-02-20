@@ -99,16 +99,15 @@ inputs:
     type: long
 
 outputs:
-  []
-  # - id: indexd_bam_uuid
-  #   type: string
-  #   outputSource: emit_bam_uuid/output
-  # - id: indexd_bai_uuid
-  #   type: string
-  #   outputSource: emit_bai_uuid/output
-  # - id: indexd_sqlite_uuid
-  #   type: string
-  #   outputSource: emit_sqlite_uuid/output
+  - id: indexd_bam_uuid
+    type: string
+    outputSource: emit_bam_uuid/output
+  - id: indexd_bai_uuid
+    type: string
+    outputSource: emit_bai_uuid/output
+  - id: indexd_sqlite_uuid
+    type: string
+    outputSource: emit_sqlite_uuid/output
 
 steps:
   - id: get_hostname
@@ -292,7 +291,7 @@ steps:
     out:
       - id: indexd_bam_json
       - id: indexd_bai_json
-      # - id: indexd_sqlite_json
+      - id: indexd_sqlite_json
       - id: token
 
   - id: emit_bam_uuid
@@ -315,15 +314,15 @@ steps:
     out:
       - id: output
 
-  # - id: emit_sqlite_uuid
-  #   run: ../../tools/emit_json_value.cwl
-  #   in:
-  #     - id: input
-  #       source: etl/indexd_sqlite_json
-  #     - id: key
-  #       valueFrom: did
-  #   out:
-  #     - id: output
+  - id: emit_sqlite_uuid
+    run: ../../tools/emit_json_value.cwl
+    in:
+      - id: input
+        source: etl/indexd_sqlite_json
+      - id: key
+        valueFrom: did
+    out:
+      - id: output
 
   - id: status_complete
     run: status_postgres.cwl
@@ -355,7 +354,7 @@ steps:
       - id: indexd_bai_uuid
         source: emit_bai_uuid/output
       - id: indexd_sqlite_uuid
-        valueFrom: "NULL"
+        valueFrom: emit_sqlite_uuid/output
       # - id: readgroup_fastq_pe_uuid_list
       #   source: readgroup_fastq_pe_uuid_list
       # - id: readgroup_fastq_se_uuid_list
