@@ -24,7 +24,9 @@ expression: |
     const readgroup = JSON.parse(inputs.input.contents);
     var output = new Object();
     for (var i in readgroup) {
-      output[i] = readgroup[i];
+      if (i.length == 2) {
+        output[i] = readgroup[i];
+      }
     }
 
     return {'output': output};
