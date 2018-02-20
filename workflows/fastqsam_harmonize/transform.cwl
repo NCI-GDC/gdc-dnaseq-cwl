@@ -40,9 +40,9 @@ outputs:
   - id: output_bam
     type: File
     outputSource: gatk_applybqsr/output_bam
-  # - id: sqlite
-  #   type: File
-  #   outputSource: merge_all_sqlite/destination_sqlite
+  - id: sqlite
+    type: File
+    outputSource: merge_all_sqlite/destination_sqlite
 
 steps:
   - id: readgroups_bam_to_readgroups_fastq_lists
@@ -174,6 +174,28 @@ steps:
     out:
       - id: bam
       - id: sqlite
+
+  - id: merge_sqlite_bwa_pe
+    run: ../../tools/merge_sqlite.cwl
+    in:
+      - id: source_sqlite
+        source: bwa_pe/sqlite
+      - id: job_uuid
+        source: job_uuid
+    out:
+      - id: destination_sqlite
+      - id: log
+
+  - id: merge_sqlite_bwa_se
+    run: ../../tools/merge_sqlite.cwl
+    in:
+      - id: source_sqlite
+        source: bwa_se/sqlite
+      - id: job_uuid
+        source: job_uuid
+    out:
+      - id: destination_sqlite
+      - id: log
 
   # - id: metrics_pe
   #   run: metrics.cwl
@@ -429,27 +451,30 @@ steps:
   # #   out:
   # #     - id: merge_sqlite_destination_sqlite
 
-  # - id: merge_all_sqlite
-  #   run: ../../tools/merge_sqlite.cwl
-  #   in:
-  #     - id: source_sqlite
-  #       source: [
-  #         picard_validatesamfile_original_to_sqlite/sqlite,
-  #         picard_validatesamfile_bqsr_to_sqlite/sqlite,
-  #         merge_readgroup_json_db/destination_sqlite,
-  #         merge_fastqc_db1_sqlite/destination_sqlite,
-  #         merge_fastqc_db2_sqlite/destination_sqlite,
-  #         merge_fastqc_db_s_sqlite/destination_sqlite,
-  #         merge_fastqc_db_o1_sqlite/destination_sqlite,
-  #         merge_fastqc_db_o2_sqlite/destination_sqlite,
-  #         merge_metrics_pe/destination_sqlite,
-  #         merge_metrics_se/destination_sqlite,
-  #         metrics_bqsr/merge_sqlite_destination_sqlite,
-  #         picard_markduplicates_to_sqlite/sqlite,
-  #         integrity/merge_sqlite_destination_sqlite
-  #       ]
-  #     - id: job_uuid
-  #       source: job_uuid
-  #   out:
-  #     - id: destination_sqlite
-  #     - id: log
+  - id: merge_all_sqlite
+    run: ../../tools/merge_sqlite.cwl
+    in:
+      - id: source_sqlite
+        source: [
+          merge_sqlite_bwa_pe/destination_sqlite,
+          merge_sqlite_bwa_se/destination_sqlite
+          ]
+        #   picard_validatesamfile_original_to_sqlite/sqlite,
+        #   picard_validatesamfile_bqsr_to_sqlite/sqlite,
+        #   merge_readgroup_json_db/destination_sqlite,
+        #   merge_fastqc_db1_sqlite/destination_sqlite,
+        #   merge_fastqc_db2_sqlite/destination_sqlite,
+        #   merge_fastqc_db_s_sqlite/destination_sqlite,
+        #   merge_fastqc_db_o1_sqlite/destination_sqlite,
+        #   merge_fastqc_db_o2_sqlite/destination_sqlite,
+        #   merge_metrics_pe/destination_sqlite,
+        #   merge_metrics_se/destination_sqlite,
+        #   metrics_bqsr/merge_sqlite_destination_sqlite,
+        #   picard_markduplicates_to_sqlite/sqlite,
+        #   integrity/merge_sqlite_destination_sqlite
+        # ]
+      - id: job_uuid
+        source: job_uuid
+    out:
+      - id: destination_sqlite
+      - id: log
