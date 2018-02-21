@@ -65,7 +65,7 @@ types:
     fields:
       - name: bam
         type: File
-      - name: readgroup_meta_file_list
+      - name: readgroup_meta_list
         type:
           type: array
           items: readgroup_meta
@@ -101,7 +101,7 @@ types:
         type: string
       - name: bam_file_size
         type: long
-      - name: readgroup_meta_uuid_list
+      - name: readgroup_meta_list
         type:
           type: array
           items: readgroup_meta
