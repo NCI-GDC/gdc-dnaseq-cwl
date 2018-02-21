@@ -25,7 +25,11 @@ expression: |
     var output = new Object();
     for (var i in readgroup) {
       if (i.length == 2) {
-        output[i] = readgroup[i];
+        if (i == 'PL') {
+          output[i] = readgroup[i].toUpperCase();
+        } else {
+          output[i] = readgroup[i];
+        }
       }
     }
 
