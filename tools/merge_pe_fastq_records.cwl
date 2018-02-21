@@ -24,7 +24,7 @@ outputs:
 expression: |
   ${
     var output = [];
-    for (var readgroup_array in input) {
+    for (var readgroup_array in inputs.input) {
       for (var readgroup in readgroup_array) {
         output.push(readgroup);
       }
