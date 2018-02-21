@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 
 requirements:
-  - $import: readgroup_no_pu.yaml
+  - $import: readgroup.yaml
   - class: InlineJavascriptRequirement
 
 class: ExpressionTool
@@ -12,7 +12,7 @@ inputs:
   - id: readgroup_fastq_pe_list
     type:
       type: array
-      items: readgroup_no_pu.yaml#readgroup_fastq_pe
+      items: readgroup.yaml#readgroup_fastq_pe_uuid
 
   - id: key
     type: string

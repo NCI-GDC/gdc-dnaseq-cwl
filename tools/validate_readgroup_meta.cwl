@@ -3,7 +3,7 @@
 cwlVersion: v1.0
 
 requirements:
-  - $import: readgroup_no_pu.yaml
+  - $import: readgroup.yaml
   - class: InlineJavascriptRequirement
 
 class: ExpressionTool
@@ -12,7 +12,7 @@ inputs:
   - id: readgroup_meta_list
     type:
       type: array
-      items: readgroup_no_pu.yaml#readgroup_meta
+      items: readgroup.yaml#readgroup_meta
 
   - id: bam_readgroup_json
     type: File
