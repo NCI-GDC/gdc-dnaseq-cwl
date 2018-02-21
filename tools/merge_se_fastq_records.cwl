@@ -30,5 +30,5 @@ expression: |
       }
     }
 
-    return: {'output': output}
+    return {'output': output}
   }
