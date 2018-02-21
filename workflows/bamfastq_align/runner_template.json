@@ -37,14 +37,14 @@
     "reference_pac_file_size": 0,
     "reference_sa_gdc_id": "${reference_sa_gdc_id}",
     "reference_sa_file_size": 0,
-    "readgroups_bam_list": [
-        "${readgroups_bam_list}"
+    "readgroups_bam_uuid_list": [
+        "${readgroups_bam_uuid_list}"
     ],
-    "readgroup_fastq_pe_list": [
-        "${readgroup_fastq_pe_list}"
+    "readgroup_fastq_pe_uuid_list": [
+        "${readgroup_fastq_pe_uuid_list}"
     ],
-    "readgroup_fastq_se_list": [
-        "${readgroup_fastq_se_list}"
+    "readgroup_fastq_se_uuid_list": [
+        "${readgroup_fastq_se_uuid_list}"
     ],
     "slurm_resource_cores": 0,
     "slurm_resource_disk_gigabytes": 0,
