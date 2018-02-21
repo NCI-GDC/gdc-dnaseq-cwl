@@ -34,13 +34,21 @@ types:
       - name: multiplex_barcode
         type: ["null", string]
       - name: capture_kit_bait_uuid
-        type: ["null", string]
+        type:
+          type: array
+          items: string
       - name: capture_kit_target_uuid
-        type: ["null", string]
+        type:
+          type: array
+          items: string
       - name: capture_kit_bait_file
-        type: ["null", File]
+        type:
+          type: array
+          items: File
       - name: capture_kit_target_file
-        type: ["null", File]
+        type:
+          type: array
+          items: File
 
   - name: readgroup_fastq_pe_file
     type: record
