@@ -57,7 +57,7 @@ outputs:
     type: File
     format: "edam:format_2572"
     outputBinding:
-      glob: $(inputs.readgroup_json_path.basename.slice(0,-4) + "bam")
+      glob: $(inputs.readgroup_meta['ID'] + ".bam")
 
 arguments:
   - valueFrom: |
@@ -67,7 +67,7 @@ arguments:
           var keys = Object.keys(inputs.readgroup_meta).sort();
           for (var i = 0; i < keys.length; i++) {
             var key = keys[i];
-            var value = readgroup_json[key];
+            var value = inputs.readgroup_meta[key];
             if (key.length == 2) {
               readgroup_str = readgroup_str + "\\t" + key + ":" + value;
             }
@@ -110,8 +110,8 @@ arguments:
         var encoding = fastqc_json[inputs.fastq1.basename]["Encoding"];
         var rg_str = to_rg();
 
-        var outbam = inputs.readgroup_json_path.basename.slice(0,-4) + "bam";
-        
+        var outbam = inputs.readgroup_meta['ID'] + "bam";
+
         if (encoding == "Illumina 1.3" || encoding == "Illumina 1.5") {
           return bwa_aln_64(rg_str, outbam)
         } else if (encoding == "Sanger / Illumina 1.9") {
