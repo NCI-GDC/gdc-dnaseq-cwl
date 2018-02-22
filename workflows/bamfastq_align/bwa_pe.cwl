@@ -95,7 +95,7 @@ steps:
         source: fastqc_basicstats_json/OUTPUT
       - id: readgroup_meta
         source: readgroup_fastq_pe
-        valueFrom: $(self.fastq_meta)
+        valueFrom: $(self.readgroup_meta)
       - id: thread_count
         source: thread_count
     out:
