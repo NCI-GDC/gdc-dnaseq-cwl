@@ -22,9 +22,6 @@ outputs:
       type: array
       items: readgroup.yml#readgroup_fastq_se_file
 
-  - id: readgroup_array_str
-    type: string
-
 expression: |
   ${
     var output = [];
