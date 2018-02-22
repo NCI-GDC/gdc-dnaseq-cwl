@@ -4,6 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - $import: readgroup.yml
+  - class: InlineJavascriptRequirement
 
 class: ExpressionTool
 
@@ -24,8 +25,12 @@ outputs:
 expression: |
   ${
     var output = [];
-    for (var readgroup_array in inputs.input) {
-      for (var readgroup in readgroup_array) {
+    var readgroup_array_str = "";
+    for (var i = 0; i < inputs.input.length; i++) {
+      var readgroup_array = inputs.input[i];
+      readgroup_array_str += " " + readgroup_array;
+      for (var j = 0; j < readgroup_array.length; j++) {
+        var readgroup = readgroup_array[j];
         output.push(readgroup);
       }
     }
