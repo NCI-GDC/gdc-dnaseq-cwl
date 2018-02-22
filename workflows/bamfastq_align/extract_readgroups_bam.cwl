@@ -10,10 +10,10 @@ requirements:
   - class: StepInputExpressionRequirement
 
 inputs:
-  - id: readgroups_bam_uuid
-    type: ../../tools/readgroup.yml#readgroups_bam_uuid
   - id: bioclient_config
     type: File
+  - id: readgroups_bam_uuid
+    type: ../../tools/readgroup.yml#readgroups_bam_uuid
 
 outputs:
   - id: output
@@ -35,13 +35,23 @@ steps:
     out:
       - id: output
 
+  - id: extract_capture_kits
+    run: extract_capture_kits.cwl
+    scatter: readgroup_meta
+    in:
+      - id: bioclient_config
+        source: bioclient_config
+      - id: readgroup_meta
+        source: readgroups_bam_uuid.readgroup_meta_list
+    out:
+      - id: output
+        
   - id: emit_readgroups_bam_file
     run: ../../tools/emit_readgroups_bam_file.cwl
     in:
       - id: bam
         source: extract_bam/output
       - id: readgroup_meta_list
-        source: readgroups_bam_uuid
-        valueFrom: $(self.readgroup_meta_list)
+        source: extract_capture_kits/output
     out:
       - id: output

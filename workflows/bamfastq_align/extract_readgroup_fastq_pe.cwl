@@ -7,6 +7,7 @@ class: Workflow
 requirements:
   - $import: ../../tools/readgroup.yml
   - class: InlineJavascriptRequirement
+  - class: ScatterFeatureRequirement
   - class: StepInputExpressionRequirement
 
 inputs:
@@ -49,9 +50,42 @@ steps:
     out:
       - id: output
 
+  - id: extract_capture_kit
+    run: extract_capture_kit.cwl
+    in:
+      - id: config-file
+        source: bioclient_config
+      - id: download_handle
+        source: readgroup_fastq_pe_uuid
+        valueFrom: $(self.readgroup_meta.capture_kit_bait_uuid)
+      - id: file_size
+        source: readgroup_fastq_pe_uuid
+        valueFrom: $(self.reverse_fastq_file_size)
+    out:
+      - id: output
+
+  - id: extract_capture_kit_target
+    run: ../../tools/bio_client_download.cwl
+    scatter: download_handle
+    in:
+      - id: config-file
+        source: bioclient_config
+      - id: download_handle
+        source: readgroup_fastq_pe_uuid
+        valueFrom: $(self.readgroup_meta.capture_kit_target_uuid)
+      - id: file_size
+        source: readgroup_fastq_pe_uuid
+        valueFrom: $(self.reverse_fastq_file_size)
+    out:
+      - id: output
+      
   - id: emit_readgroup_fastq_pe_file
     run: ../../tools/emit_readgroup_fastq_pe_file.cwl
     in:
+      - id: capture_kit_bait_file
+        source: extract_capture_kit_bait/output
+      - id: capture_kit_target_file
+        source: extract_capture_kit_target/output
       - id: forward_fastq
         source: extract_forward_fastq/output
       - id: reverse_fastq

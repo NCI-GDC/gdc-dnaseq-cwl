@@ -19,8 +19,8 @@ outputs:
     outputSource: emit_readgroup_fastq_se/output
 
 steps:
-  - id: emit_readgroup_meta
-    run: ../../tools/emit_readgroup_meta.cwl
+  - id: emit_json_readgroup_meta
+    run: ../../tools/emit_json_readgroup_meta.cwl
     in:
       - id: input
         source: readgroup_json
@@ -33,6 +33,6 @@ steps:
       - id: fastq
         source: fastq
       - id: readgroup_meta
-        source: emit_readgroup_meta/output
+        source: emit_json_readgroup_meta/output
     out:
       - id: output
