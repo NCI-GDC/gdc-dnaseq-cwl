@@ -7,7 +7,9 @@ class: Workflow
 requirements:
   - $import: ../../tools/readgroup.yml
   - class: InlineJavascriptRequirement
+  - class: ScatterFeatureRequirement
   - class: StepInputExpressionRequirement
+  - class: SubworkflowFeatureRequirement
 
 inputs:
   - id: bioclient_config
@@ -16,9 +18,10 @@ inputs:
     type: ../../tools/readgroup.yml#readgroups_bam_uuid
 
 outputs:
-  - id: output
-    type: ../../tools/readgroup.yml#readgroups_bam_file
-    outputSource: emit_readgroups_bam_file/output
+  []
+  # - id: output
+  #   type: ../../tools/readgroup.yml#readgroups_bam_file
+  #   outputSource: emit_readgroups_bam_file/output
 
 steps:
   - id: extract_bam
@@ -35,23 +38,24 @@ steps:
     out:
       - id: output
 
-  - id: extract_capture_kits
-    run: extract_capture_kits.cwl
+  - id: extract_capture_kit
+    run: extract_capture_kit.cwl
     scatter: readgroup_meta
     in:
       - id: bioclient_config
         source: bioclient_config
       - id: readgroup_meta
-        source: readgroups_bam_uuid.readgroup_meta_list
+        source: readgroups_bam_uuid
+        valueFrom: $(self.readgroup_meta_list)
     out:
       - id: output
         
-  - id: emit_readgroups_bam_file
-    run: ../../tools/emit_readgroups_bam_file.cwl
-    in:
-      - id: bam
-        source: extract_bam/output
-      - id: readgroup_meta_list
-        source: extract_capture_kits/output
-    out:
-      - id: output
+  # - id: emit_readgroups_bam_file
+  #   run: ../../tools/emit_readgroups_bam_file.cwl
+  #   in:
+  #     - id: bam
+  #       source: extract_bam/output
+  #     - id: readgroup_meta_list
+  #       source: extract_capture_kit/output
+  #   out:
+  #     - id: output

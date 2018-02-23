@@ -7,7 +7,7 @@ class: Workflow
 requirements:
   - $import: ../../tools/readgroup.yml
   - class: InlineJavascriptRequirement
-  - class: Scatter
+  - class: ScatterFeatureRequirement
   - class: StepInputExpressionRequirement
 
 inputs:
@@ -32,7 +32,7 @@ steps:
         source: readgroup_meta
         valueFrom: $(self.capture_kit_bait_uuid)
       - id: file_size
-        valueFrom: 1
+        valueFrom: $(1)
     out:
       - id: output
 
@@ -46,7 +46,7 @@ steps:
         source: readgroup_meta
         valueFrom: $(self.capture_kit_target_uuid)
       - id: file_size
-        valueFrom: 1
+        valueFrom: $(1)
     out:
       - id: output
 
