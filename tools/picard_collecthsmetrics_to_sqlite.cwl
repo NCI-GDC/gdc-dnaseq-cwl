@@ -15,25 +15,6 @@ inputs:
     inputBinding:
       prefix: --bam
 
-  - id: bam_library
-    type: File
-    inputBinding:
-      loadContents: true
-      prefix: --bam_library
-      valueFrom: $(self.contents.slice(0,-1))
-
-  - id: exome_kit
-    type: File
-    inputBinding:
-      loadContents: true
-      prefix: --exome_kit
-      valueFrom: $(self.contents.slice(0,-1))
-
-  - id: fasta
-    type: string
-    inputBinding:
-      prefix: --fasta
-
   - id: input_state
     type: string
     inputBinding:
@@ -44,10 +25,10 @@ inputs:
     inputBinding:
       prefix: --metric_path
 
-  - id: uuid
+  - id: job_uuid
     type: string
     inputBinding:
-      prefix: --uuid
+      prefix: --job_uuid
 
 outputs:
   - id: log
