@@ -18,10 +18,9 @@ inputs:
     type: ../../tools/readgroup.yml#readgroups_bam_uuid
 
 outputs:
-  []
-  # - id: output
-  #   type: ../../tools/readgroup.yml#readgroups_bam_file
-  #   outputSource: emit_readgroups_bam_file/output
+  - id: output
+    type: ../../tools/readgroup.yml#readgroups_bam_file
+    outputSource: emit_readgroups_bam_file/output
 
 steps:
   - id: extract_bam
@@ -50,12 +49,12 @@ steps:
     out:
       - id: output
         
-  # - id: emit_readgroups_bam_file
-  #   run: ../../tools/emit_readgroups_bam_file.cwl
-  #   in:
-  #     - id: bam
-  #       source: extract_bam/output
-  #     - id: readgroup_meta_list
-  #       source: extract_capture_kit/output
-  #   out:
-  #     - id: output
+  - id: emit_readgroups_bam_file
+    run: ../../tools/emit_readgroups_bam_file.cwl
+    in:
+      - id: bam
+        source: extract_bam/output
+      - id: readgroup_meta_list
+        source: extract_capture_kit/output
+    out:
+      - id: output

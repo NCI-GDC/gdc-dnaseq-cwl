@@ -9,6 +9,7 @@ requirements:
   - class: InlineJavascriptRequirement
   - class: ScatterFeatureRequirement
   - class: StepInputExpressionRequirement
+  - class: SubworkflowFeatureRequirement
 
 inputs:
   - id: readgroup_fastq_se_uuid
@@ -36,43 +37,20 @@ steps:
     out:
       - id: output
 
-  - id: extract_capture_kit_bait
-    run: ../../tools/bio_client_download.cwl
-    scatter: download_handle
+  - id: extract_capture_kit
+    run: extract_capture_kit.cwl
     in:
-      - id: config-file
+      - id: bioclient_config
         source: bioclient_config
-      - id: download_handle
+      - id: readgroup_meta
         source: readgroup_fastq_se_uuid
-        valueFrom: $(self.readgroup_meta.capture_kit_bait_uuid)
-      - id: file_size
-        source: readgroup_fastq_se_uuid
-        valueFrom: $(self.reverse_fastq_file_size)
-    out:
-      - id: output
-
-  - id: extract_capture_kit_target
-    run: ../../tools/bio_client_download.cwl
-    scatter: download_handle
-    in:
-      - id: config-file
-        source: bioclient_config
-      - id: download_handle
-        source: readgroup_fastq_se_uuid
-        valueFrom: $(self.readgroup_meta.capture_kit_target_uuid)
-      - id: file_size
-        source: readgroup_fastq_se_uuid
-        valueFrom: $(self.reverse_fastq_file_size)
+        valueFrom: $(self.readgroup_meta)
     out:
       - id: output
       
   - id: emit_readgroup_fastq_se_file
     run: ../../tools/emit_readgroup_fastq_se_file.cwl
     in:
-      - id: capture_kit_bait_file
-        source: extract_capture_kit_bait/output
-      - id: capture_kit_target_file
-        source: extract_capture_kit_target/output
       - id: fastq
         source: extract_fastq/output
       - id: readgroup_meta
