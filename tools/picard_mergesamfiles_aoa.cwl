@@ -15,7 +15,7 @@ requirements:
       ${
       var req_space = 0;
       for (var i = 0; i < inputs.INPUT.length; i++) {
-        for (var j = 0; j < input.INPUT[i].length; j++) {
+        for (var j = 0; j < inputs.INPUT[i].length; j++) {
           req_space += inputs.INPUT[i][j].size;
         }
       }
@@ -25,7 +25,7 @@ requirements:
       ${
       var req_space = 0;
       for (var i = 0; i < inputs.INPUT.length; i++) {
-        for (var j = 0; j < input.INPUT[i].length; j++) {
+        for (var j = 0; j < inputs.INPUT[i].length; j++) {
           req_space += inputs.INPUT[i][j].size;
         }
       }
@@ -35,7 +35,7 @@ requirements:
       ${
       var req_space = 0;
       for (var i = 0; i < inputs.INPUT.length; i++) {
-        for (var j = 0; j < input.INPUT[i].length; j++) {
+        for (var j = 0; j < inputs.INPUT[i].length; j++) {
           req_space += inputs.INPUT[i][j].size;
         }
       }
@@ -45,7 +45,7 @@ requirements:
       ${
       var req_space = 0;
       for (var i = 0; i < inputs.INPUT.length; i++) {
-        for (var j = 0; j < input.INPUT[i].length; j++) {
+        for (var j = 0; j < inputs.INPUT[i].length; j++) {
           req_space += inputs.INPUT[i][j].size;
         }
       }
@@ -136,20 +136,21 @@ arguments:
         var cmd = ["java", "-jar", "/usr/local/bin/picard.jar", "MergeSamFiles"];
         var input_array = [];
         for (var i = 0; i < inputs.INPUT.length; i++) {
-          for (var j = 0; j < input.INPUT[i].length; i++) {
-            var filesize = inputs.INPUT[i].size;
+          for (var j = 0; j < inputs.INPUT[i].length; j++) {
+            var filesize = inputs.INPUT[i][j].size;
             if (filesize > 0) {
-              input_array.push("INPUT=" + inputs_array.INPUT[i][j].path);
+              input_array.push("INPUT=" + inputs.INPUT[i][j].path);
             }
           }
         }
 
         if (input_array.length == 0) {
           const cmd = ['/usr/bin/touch', inputs.OUTPUT];
+          return cmd;
         }
         else {
           var run_cmd = cmd.concat(input_array);
-          return run_cmd
+          return run_cmd;
         }
       }
 

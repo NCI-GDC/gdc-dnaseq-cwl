@@ -67,7 +67,7 @@ arguments:
           for (var i = 0; i < keys.length; i++) {
             var key = keys[i];
             var value = inputs.readgroup_meta[key];
-            if (key.length) == 2) {
+            if (key.length == 2 && value != null) {
               readgroup_str = readgroup_str + "\\t" + key + ":" + value;
             }
           }
