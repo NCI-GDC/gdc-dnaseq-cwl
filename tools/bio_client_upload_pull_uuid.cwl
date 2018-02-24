@@ -5,7 +5,7 @@ cwlVersion: v1.0
 class: CommandLineTool
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/bio-client:ecfb12c2f41276f29862c1603f806b5478f9845405c5e2af5c7c0538f93425d9
+    dockerPull: quay.io/ncigdc/bio-client:95b0fff4bc26d48420093b4fff22bf2d2d83d8f152af429b316802b930fabcda
   - class: ResourceRequirement
     coresMin: 1
     coresMax: 1
