@@ -37,6 +37,15 @@ steps:
     out:
       - id: output
 
+  - id: list_readgroup_meta_list
+    run: ../../tools/readgroup_meta_array_to_readgroup_meta_array.cwl
+    in:
+      - id: input
+        source: readgroup_meta
+        valueFrom: $(self.readgroup_meta_list)
+    out:
+      - id: output
+
   - id: extract_capture_kit
     run: extract_capture_kit.cwl
     scatter: readgroup_meta
@@ -44,8 +53,7 @@ steps:
       - id: bioclient_config
         source: bioclient_config
       - id: readgroup_meta
-        source: readgroups_bam_uuid
-        valueFrom: $(self.readgroup_meta_list)
+        source: list_readgroup_meta_list/output
     out:
       - id: output
 
