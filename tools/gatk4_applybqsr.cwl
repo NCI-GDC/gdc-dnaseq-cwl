@@ -34,6 +34,8 @@ outputs:
     type: File
     outputBinding:
       glob: $(inputs.input.basename)
+    secondaryFiles:
+      - ^.bai
 
 arguments:
   - valueFrom: $(inputs.input.basename)
