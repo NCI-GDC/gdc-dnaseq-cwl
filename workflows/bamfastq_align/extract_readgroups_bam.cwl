@@ -48,7 +48,7 @@ steps:
         valueFrom: $(self.readgroup_meta_list)
     out:
       - id: output
-        
+
   - id: emit_readgroups_bam_file
     run: ../../tools/emit_readgroups_bam_file.cwl
     in:
