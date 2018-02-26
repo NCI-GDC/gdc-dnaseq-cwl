@@ -22,6 +22,24 @@ outputs:
     outputSource: emit_readgroup_meta/output
 
 steps:
+  - id: list_capture_kit_bait
+    run: ../../tools/string_array_to_string_array.cwl
+    in:
+      - id: input
+        source: readgroup_meta
+        valueFrom: $(self.capture_kit_bait_uuid)
+    out:
+      - id: output
+
+  - id: list_capture_kit_target
+    run: ../../tools/string_array_to_string_array.cwl
+    in:
+      - id: input
+        source: readgroup_meta
+        valueFrom: $(self.capture_kit_target_uuid)
+    out:
+      - id: output
+
   - id: extract_capture_kit_bait
     run: ../../tools/bio_client_download.cwl
     scatter: download_handle
@@ -29,8 +47,7 @@ steps:
       - id: config-file
         source: bioclient_config
       - id: download_handle
-        source: readgroup_meta
-        valueFrom: $(self.capture_kit_bait_uuid)
+        source: list_capture_kit_bait/output
     out:
       - id: output
 
@@ -41,8 +58,7 @@ steps:
       - id: config-file
         source: bioclient_config
       - id: download_handle
-        source: readgroup_meta
-        valueFrom: $(self.capture_kit_target_uuid)
+        source: list_capture_kit_target/output
     out:
       - id: output
 
