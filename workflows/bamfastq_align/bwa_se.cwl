@@ -112,7 +112,7 @@ steps:
     run: ../../tools/file_array_to_file_array.cwl
     in:
       - id: input
-        source: readgroup_fastq_pe
+        source: readgroup_fastq_se
         valueFrom: $(self.readgroup_meta.capture_kit_bait_file)
     out:
       - id: output
@@ -121,7 +121,7 @@ steps:
     run: ../../tools/file_array_to_file_array.cwl
     in:
       - id: input
-        source: readgroup_fastq_pe
+        source: readgroup_fastq_se
         valueFrom: $(self.readgroup_meta.capture_kit_target_file)
     out:
       - id: output
