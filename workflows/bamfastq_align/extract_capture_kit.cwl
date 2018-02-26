@@ -31,8 +31,6 @@ steps:
       - id: download_handle
         source: readgroup_meta
         valueFrom: $(self.capture_kit_bait_uuid)
-      - id: file_size
-        valueFrom: $(1)
     out:
       - id: output
 
@@ -45,8 +43,6 @@ steps:
       - id: download_handle
         source: readgroup_meta
         valueFrom: $(self.capture_kit_target_uuid)
-      - id: file_size
-        valueFrom: $(1)
     out:
       - id: output
 
