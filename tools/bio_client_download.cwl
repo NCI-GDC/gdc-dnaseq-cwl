@@ -44,6 +44,7 @@ inputs:
 
   - id: file_size
     type: long
+    default: 1
 
 outputs:
   - id: output
