@@ -76,5 +76,6 @@ outputs:
       - .fai
       - .pac
       - .sa
+      - ^.dict
 
 baseCommand: ['true']
