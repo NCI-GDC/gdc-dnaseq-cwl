@@ -133,14 +133,31 @@ steps:
     out:
       - id: destination_sqlite
 
+  - id: list_capture_kit_bait
+    run: ../../tools/file_array_to_file_array.cwl
+    in:
+      - id: input
+        source: readgroup_fastq_pe
+        valueFrom: $(self.readgroup_meta.capture_kit_bait_file)
+    out:
+      - id: output
+
+  - id: list_capture_kit_target
+    run: ../../tools/file_array_to_file_array.cwl
+    in:
+      - id: input
+        source: readgroup_fastq_pe
+        valueFrom: $(self.readgroup_meta.capture_kit_target_file)
+    out:
+      - id: output
+
   - id: picard_collecthsmetrics
     run: ../../tools/picard_collecthsmetrics.cwl
     scatter: [BAIT_INTERVALS, TARGET_INTERVALS]
     scatterMethod: "dotproduct"
     in:
       - id: BAIT_INTERVALS
-        source: readgroup_fastq_pe
-        valueFrom: $(self.readgroup_meta.capture_kit_bait_file)
+        source: list_capture_kit_bait/output
       - id: INPUT
         source: bwa_pe/OUTPUT
       - id: OUTPUT
@@ -149,8 +166,7 @@ steps:
       - id: REFERENCE_SEQUENCE
         source: reference_sequence
       - id: TARGET_INTERVALS
-        source: readgroup_fastq_pe
-        valueFrom: $(self.readgroup_meta.capture_kit_target_file)
+        source: list_capture_kit_target/output
     out:
       - id: METRIC_OUTPUT
 
