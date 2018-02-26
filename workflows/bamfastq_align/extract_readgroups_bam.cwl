@@ -41,7 +41,7 @@ steps:
     run: ../../tools/readgroup_meta_array_to_readgroup_meta_array.cwl
     in:
       - id: input
-        source: readgroup_meta
+        source: readgroups_bam_uuid
         valueFrom: $(self.readgroup_meta_list)
     out:
       - id: output
