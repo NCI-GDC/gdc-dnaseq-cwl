@@ -14,6 +14,10 @@ inputs:
     type: File
   - id: readgroup_json
     type: File
+  - id: readgroup_meta_list
+    type:
+      type: array
+      items: ../../tools/readgroup.yml#readgroup_meta
 
 outputs:
   - id: output
@@ -29,6 +33,16 @@ steps:
     out:
       - id: output
 
+  - id: emit_capture_kit
+    run: ../../tools/emit_readgroup_meta_with_capture_kit.cwl
+    in:
+      - id: readgroup_meta
+        source: emit_json_readgroup_meta/output
+      - id: readgroup_meta_list
+        source: readgroup_meta_list
+    out:
+      - id: output
+
   - id: emit_readgroup_fastq_pe
     run: ../../tools/emit_readgroup_fastq_pe_file.cwl
     in:
@@ -37,6 +51,6 @@ steps:
       - id: reverse_fastq
         source: reverse_fastq
       - id: readgroup_meta
-        source: emit_json_readgroup_meta/output
+        source: emit_capture_kit/output
     out:
       - id: output
