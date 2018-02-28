@@ -5,8 +5,10 @@ cwlVersion: v1.0
 class: Workflow
 
 requirements:
-  - $import: ../../tools/readgroup.yml
   - class: ScatterFeatureRequirement
+  - class: SchemaDefRequirement
+    types:
+      - $import: ../../tools/readgroup.yml
   - class: StepInputExpressionRequirement
   - class: SubworkflowFeatureRequirement
 

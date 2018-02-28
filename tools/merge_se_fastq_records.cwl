@@ -3,8 +3,10 @@
 cwlVersion: v1.0
 
 requirements:
-  - $import: readgroup.yml
   - class: InlineJavascriptRequirement
+  - class: SchemaDefRequirement
+    types:
+      - $import: readgroup.yml
 
 class: ExpressionTool
 

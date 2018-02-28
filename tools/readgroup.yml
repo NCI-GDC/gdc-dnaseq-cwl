@@ -1,5 +1,3 @@
-class: SchemaDefRequirement
-types:
   - name: readgroup_meta
     type: record
     fields:

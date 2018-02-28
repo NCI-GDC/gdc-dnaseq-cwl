@@ -3,10 +3,12 @@
 cwlVersion: v1.0
 
 requirements:
-  - $import: readgroup.yml
   - class: DockerRequirement
     dockerPull: quay.io/ncigdc/bwa:fac166f93639cbbd4f19db5d07eaf9fa0e1e31f667dd6375d3fc1c995992cd49
   - class: InlineJavascriptRequirement
+  - class: SchemaDefRequirement
+    types:
+      - $import: readgroup.yml
   - class: ShellCommandRequirement
   - class: ResourceRequirement
     coresMin: $(inputs.thread_count)

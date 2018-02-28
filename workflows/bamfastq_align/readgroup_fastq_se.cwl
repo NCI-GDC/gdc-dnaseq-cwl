@@ -5,7 +5,9 @@ cwlVersion: v1.0
 class: Workflow
 
 requirements:
-  - $import: ../../tools/readgroup.yml
+  - class: SchemaDefRequirement
+    types:
+      - $import: ../../tools/readgroup.yml
 
 inputs:
   - id: fastq

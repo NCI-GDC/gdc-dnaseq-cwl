@@ -5,10 +5,13 @@ cwlVersion: v1.0
 class: Workflow
 
 requirements:
-  - $import: ../../tools/readgroup.yml
   - class: InlineJavascriptRequirement
   - class: MultipleInputFeatureRequirement
   - class: ScatterFeatureRequirement
+  - class: SchemaDefRequirement
+    types:
+      - $import: ../../tools/readgroup.yml
+      - $import: ../../tools/capture_kit.yml
   - class: StepInputExpressionRequirement
   - class: SubworkflowFeatureRequirement
 

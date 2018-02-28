@@ -5,8 +5,10 @@ cwlVersion: v1.0
 class: Workflow
 
 requirements:
-  - $import: ../../tools/readgroup.yml
   - class: ScatterFeatureRequirement
+  - class: SchemaDefRequirement
+    types:
+      - $import: ../../tools/readgroup.yml
   - class: StepInputExpressionRequirement
 
 inputs:
@@ -150,25 +152,6 @@ steps:
         valueFrom: $(self.readgroup_meta.capture_kit_target_file)
     out:
       - id: output
-
-  - id: picard_collecthsmetrics
-    run: ../../tools/picard_collecthsmetrics.cwl
-    scatter: [BAIT_INTERVALS, TARGET_INTERVALS]
-    scatterMethod: "dotproduct"
-    in:
-      - id: BAIT_INTERVALS
-        source: list_capture_kit_bait/output
-      - id: INPUT
-        source: bwa_pe/OUTPUT
-      - id: OUTPUT
-        source: readgroup_fastq_pe
-        valueFrom: $(self.readgroup_meta.ID).metrics
-      - id: REFERENCE_SEQUENCE
-        source: reference_sequence
-      - id: TARGET_INTERVALS
-        source: list_capture_kit_target/output
-    out:
-      - id: METRIC_OUTPUT
 
   - id: merge_sqlite
     run: ../../tools/merge_sqlite.cwl

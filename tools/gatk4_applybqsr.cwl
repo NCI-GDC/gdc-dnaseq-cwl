@@ -23,6 +23,14 @@ inputs:
     inputBinding:
       prefix: --bqsr-recal-file
 
+  - id: emit-original-quals
+    type:
+      - type: enum
+        symbols: ["true", "false"]
+    default: "true"
+    inputBinding:
+      prefix: --emit-original-quals
+
   - id: TMP_DIR
     type: string
     default: "."
