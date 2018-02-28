@@ -5,9 +5,11 @@ cwlVersion: v1.0
 class: Workflow
 
 requirements:
-  - $import: ../../tools/readgroup.yml
   - class: InlineJavascriptRequirement
   - class: ScatterFeatureRequirement
+  - class: SchemaDefRequirement
+    types:
+      - $import: ../../tools/readgroup.yml
   - class: StepInputExpressionRequirement
   - class: SubworkflowFeatureRequirement
 
@@ -37,32 +39,13 @@ steps:
     out:
       - id: output
 
-  - id: list_readgroup_meta_list
-    run: ../../tools/readgroup_meta_array_to_readgroup_meta_array.cwl
-    in:
-      - id: input
-        source: readgroups_bam_uuid
-        valueFrom: $(self.readgroup_meta_list)
-    out:
-      - id: output
-
-  - id: extract_capture_kit
-    run: extract_capture_kit.cwl
-    scatter: readgroup_meta
-    in:
-      - id: bioclient_config
-        source: bioclient_config
-      - id: readgroup_meta
-        source: list_readgroup_meta_list/output
-    out:
-      - id: output
-
   - id: emit_readgroups_bam_file
     run: ../../tools/emit_readgroups_bam_file.cwl
     in:
       - id: bam
         source: extract_bam/output
       - id: readgroup_meta_list
-        source: extract_capture_kit/output
+        source: readgroups_bam_uuid
+        valueFrom: $(self.readgroup_meta_list)
     out:
       - id: output

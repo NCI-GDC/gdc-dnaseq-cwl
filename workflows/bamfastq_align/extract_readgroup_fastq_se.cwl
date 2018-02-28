@@ -5,9 +5,11 @@ cwlVersion: v1.0
 class: Workflow
 
 requirements:
-  - $import: ../../tools/readgroup.yml
   - class: InlineJavascriptRequirement
   - class: ScatterFeatureRequirement
+  - class: SchemaDefRequirement
+    types:
+      - $import: ../../tools/readgroup.yml
   - class: StepInputExpressionRequirement
   - class: SubworkflowFeatureRequirement
 
@@ -36,17 +38,6 @@ steps:
         valueFrom: $(self.fastq_file_size)
     out:
       - id: output
-
-  - id: extract_capture_kit
-    run: extract_capture_kit.cwl
-    in:
-      - id: bioclient_config
-        source: bioclient_config
-      - id: readgroup_meta
-        source: readgroup_fastq_se_uuid
-        valueFrom: $(self.readgroup_meta)
-    out:
-      - id: output
       
   - id: emit_readgroup_fastq_se_file
     run: ../../tools/emit_readgroup_fastq_se_file.cwl
@@ -58,4 +49,3 @@ steps:
         valueFrom: $(self.readgroup_meta)
     out:
       - id: output
-

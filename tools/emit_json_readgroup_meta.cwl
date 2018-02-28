@@ -34,10 +34,6 @@ expression: |
         }
       }
     }
-    output['capture_kit_bait_uuid'] = [];
-    output['capture_kit_bait_file'] = [];
-    output['capture_kit_target_uuid'] = [];
-    output['capture_kit_target_file'] = [];
 
     return {'output': output};
   }

@@ -1,0 +1,11 @@
+- name: capture_kit_set
+  type: record
+  fields:
+    - name: capture_kit_bait_uuid
+      type: string
+    - name: capture_kit_target_uuid
+      type: string
+    - name: capture_kit_bait_file
+      type: File
+    - name: capture_kit_target_file
+      type: File

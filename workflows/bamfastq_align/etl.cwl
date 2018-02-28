@@ -5,9 +5,12 @@ cwlVersion: v1.0
 class: Workflow
 
 requirements:
-  - $import: ../../tools/readgroup.yml
   - class: InlineJavascriptRequirement
   - class: ScatterFeatureRequirement
+  - class: SchemaDefRequirement
+    types:
+      - $import: ../../tools/readgroup.yml
+      - $import: ../../tools/capture_kit.yml
   - class: StepInputExpressionRequirement
   - class: SubworkflowFeatureRequirement
 
@@ -18,6 +21,10 @@ inputs:
     type: File
   - id: bioclient_load_bucket
     type: string
+  - id: capture_kit_set_list
+    type:
+      type: array
+      items: ../../tools/capture_kit.yml#capture_kit_set
   - id: job_uuid
     type: string
   - id: readgroup_fastq_pe_uuid_list
@@ -125,6 +132,14 @@ steps:
     out:
       - id: output
 
+  - id: extract_capture_kits
+    run: extract_capture_kit.cwl
+    scatter: capture_kit_set
+    in:
+      - id: bioclient_config
+        source: bioclient_config
+      - id: capture_kit_set
+        source: 
   - id: extract_known_snp
     run: ../../tools/bio_client_download.cwl
     in:

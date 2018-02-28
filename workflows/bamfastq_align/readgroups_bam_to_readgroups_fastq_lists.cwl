@@ -114,9 +114,9 @@ steps:
         source: biobambam_bamtofastq/output_fastq2
       - id: readgroup_json
         source: decider_readgroup_pe/output
-      - id: readgroup_meta_list
-        source: readgroups_bam_file
-        valueFrom: $(self.readgroup_meta_list)
+      # - id: readgroup_meta_list
+      #   source: readgroups_bam_file
+      #   valueFrom: $(self.readgroup_meta_list)
     out:
       - id: output
 
@@ -129,9 +129,9 @@ steps:
         source: biobambam_bamtofastq/output_fastq_s
       - id: readgroup_json
         source: decider_readgroup_se/output
-      - id: readgroup_meta_list
-        source: readgroups_bam_file
-        valueFrom: $(self.readgroup_meta_list)
+      # - id: readgroup_meta_list
+      #   source: readgroups_bam_file
+      #   valueFrom: $(self.readgroup_meta_list)
     out:
       - id: output
 
@@ -144,9 +144,9 @@ steps:
         source: biobambam_bamtofastq/output_fastq_o1
       - id: readgroup_json
         source: decider_readgroup_o1/output
-      - id: readgroup_meta_list
-        source: readgroups_bam_file
-        valueFrom: $(self.readgroup_meta_list)
+      # - id: readgroup_meta_list
+      #   source: readgroups_bam_file
+      #   valueFrom: $(self.readgroup_meta_list)
     out:
       - id: output
 
@@ -159,9 +159,8 @@ steps:
         source: biobambam_bamtofastq/output_fastq_o2
       - id: readgroup_json
         source: decider_readgroup_o2/output
-      - id: readgroup_meta_list
-        source: readgroups_bam_file
-        valueFrom: $(self.readgroup_meta_list)
+      # - id: readgroup_meta_list
+      #   source: readgroups_bam_file
+      #   valueFrom: $(self.readgroup_meta_list)
     out:
       - id: output
-
