@@ -28,7 +28,8 @@ steps:
       - id: config-file
         source: bioclient_config
       - id: download_handle
-        source: capture_kit_set/capture_kit_bait_uuid
+        source: capture_kit_set
+        valueFrom: $(self.capture_kit_bait_uuid)
     out:
       - id: output
 
@@ -38,7 +39,8 @@ steps:
       - id: config-file
         source: bioclient_config
       - id: download_handle
-        source: list_capture_kit_target/output
+        source: capture_kit_set
+        valueFrom: $(self.capture_kit_target_uuid)
     out:
       - id: output
 
