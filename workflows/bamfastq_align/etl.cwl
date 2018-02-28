@@ -139,7 +139,10 @@ steps:
       - id: bioclient_config
         source: bioclient_config
       - id: capture_kit_set
-        source: 
+        source: capture_kit_set_list
+    out:
+      - id: output
+
   - id: extract_known_snp
     run: ../../tools/bio_client_download.cwl
     in:
