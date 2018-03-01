@@ -37,6 +37,10 @@
     "reference_pac_file_size": 0,
     "reference_sa_gdc_id": "${reference_sa_gdc_id}",
     "reference_sa_file_size": 0,
+    "capture_kit_set_list": [
+        "${capture_kit_bait_uuid}",
+        "${capture_kit_target_uuid}"
+    ],
     "readgroups_bam_uuid_list": [
         "${readgroups_bam_uuid_list}"
     ],
