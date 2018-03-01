@@ -135,24 +135,6 @@ steps:
     out:
       - id: destination_sqlite
 
-  - id: list_capture_kit_bait
-    run: ../../tools/file_array_to_file_array.cwl
-    in:
-      - id: input
-        source: readgroup_fastq_pe
-        valueFrom: $(self.readgroup_meta.capture_kit_bait_file)
-    out:
-      - id: output
-
-  - id: list_capture_kit_target
-    run: ../../tools/file_array_to_file_array.cwl
-    in:
-      - id: input
-        source: readgroup_fastq_pe
-        valueFrom: $(self.readgroup_meta.capture_kit_target_file)
-    out:
-      - id: output
-
   - id: merge_sqlite
     run: ../../tools/merge_sqlite.cwl
     in:
