@@ -9,6 +9,7 @@ requirements:
   - class: SchemaDefRequirement
     types:
       - $import: ../../tools/capture_kit.yml
+  - class: SubworkflowFeatureRequirement
 
 inputs:
   - id: bam
