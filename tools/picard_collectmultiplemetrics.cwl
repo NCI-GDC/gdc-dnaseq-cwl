@@ -36,13 +36,15 @@ inputs:
   - id: METRIC_ACCUMULATION_LEVEL
     type:
       type: array
-      items:
-        - type: enum
-          symbols: ["ALL_READS", "LIBRARY", "SAMPLE", "READ_GROUP"]
-          inputBinding:
-            prefix: METRIC_ACCUMULATION_LEVEL=
-            separate: false
-    default: ["ALL_READS", "LIBRARY", "SAMPLE", "READ_GROUP"]
+      items: string
+      inputBinding:
+        prefix: METRIC_ACCUMULATION_LEVEL=
+        separate: false
+    default:
+      - "ALL_READS"
+      - "LIBRARY"
+      - "SAMPLE"
+      - "READ_GROUP"
 
   - id: REFERENCE_SEQUENCE
     type: File
@@ -153,13 +155,13 @@ outputs:
 
 arguments:
   - valueFrom: "PROGRAM=CollectAlignmentSummaryMetrics"
-  - valueFrom: "PROGRAM=CollectBaseDistributionByCycle"
+  - valueFrom: "PROGRAM=CollectBaseDistributionByCycle" # ALL_READS only
   - valueFrom: "PROGRAM=CollectGcBiasMetrics"
   - valueFrom: "PROGRAM=CollectInsertSizeMetrics"
-  - valueFrom: "PROGRAM=CollectQualityYieldMetrics"
-  - valueFrom: "PROGRAM=CollectSequencingArtifactMetrics"
-  - valueFrom: "PROGRAM=MeanQualityByCycle"
-  - valueFrom: "PROGRAM=QualityScoreDistribution"
+  - valueFrom: "PROGRAM=CollectQualityYieldMetrics" # ALL_READS only
+  - valueFrom: "PROGRAM=CollectSequencingArtifactMetrics" # ALL_READS only
+  - valueFrom: "PROGRAM=MeanQualityByCycle" # ALL_READS only
+  - valueFrom: "PROGRAM=QualityScoreDistribution" # ALL_READS only
 
   - valueFrom: $(inputs.INPUT.nameroot)
     prefix: OUTPUT=
