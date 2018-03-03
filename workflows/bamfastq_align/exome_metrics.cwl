@@ -37,7 +37,7 @@ steps:
       - id: INPUT
         source: bam
       - id: OUTPUT
-        valueFrom: $(bam.basename).metrics
+        valueFrom: $(bam.basename).hsmetrics
       - id: REFERENCE_SEQUENCE
         source: fasta
       - id: TARGET_INTERVALS
