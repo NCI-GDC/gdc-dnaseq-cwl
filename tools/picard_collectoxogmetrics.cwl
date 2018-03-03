@@ -33,17 +33,6 @@ inputs:
       prefix: INPUT=
       separate: false
 
-  - id: METRIC_ACCUMULATION_LEVEL
-    type:
-      type: array
-      items:
-        - type: enum
-          symbols: ["ALL_READS", "LIBRARY", "SAMPLE", "READ_GROUP"]
-          inputBinding:
-            prefix: METRIC_ACCUMULATION_LEVEL=
-            separate: false
-    default: ["ALL_READS", "LIBRARY", "SAMPLE", "READ_GROUP"]
-
   - id: REFERENCE_SEQUENCE
     type: File
     format: "edam:format_1929"
@@ -76,10 +65,10 @@ outputs:
   - id: OUTPUT
     type: File
     outputBinding:
-      glob: $(inputs.INPUT.basename + ".metrics")
+      glob: $(inputs.INPUT.basename + ".oxometrics")
 
 arguments:
-  - valueFrom: $(inputs.INPUT.basename + ".metrics")
+  - valueFrom: $(inputs.INPUT.basename + ".oxometrics")
     prefix: OUTPUT=
     separate: false
 
