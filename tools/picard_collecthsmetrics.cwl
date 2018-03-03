@@ -46,13 +46,15 @@ inputs:
   - id: METRIC_ACCUMULATION_LEVEL
     type:
       type: array
-      items:
-        - type: enum
-          symbols: ["ALL_READS", "LIBRARY", "SAMPLE", "READ_GROUP"]
-          inputBinding:
-            prefix: METRIC_ACCUMULATION_LEVEL=
-            separate: false
-    default: ["ALL_READS", "LIBRARY", "SAMPLE", "READ_GROUP"]
+      items: string
+      inputBinding:
+        prefix: METRIC_ACCUMULATION_LEVEL=
+        separate: false
+    default:
+      - "ALL_READS"
+      - "LIBRARY"
+      - "SAMPLE"
+      - "READ_GROUP"
 
   - id: MINIMUM_BASE_QUALITY
     type: int
