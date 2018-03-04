@@ -303,7 +303,7 @@ steps:
       - id: job_uuid
         source: job_uuid
       - id: capture_kit_set_list
-        source: capture_kit_set_list
+        source: extract_capture_kits/output
       - id: readgroup_fastq_pe_path_list
         source: extract_readgroup_fastq_pe/output
       - id: readgroup_fastq_se_path_list
