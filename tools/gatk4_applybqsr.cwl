@@ -49,4 +49,4 @@ arguments:
   - valueFrom: $(inputs.input.basename)
     prefix: --output
 
-baseCommand: [java, -jar, /usr/local/bin/gatk-package-4.0.2.0-local.jar, ApplyBQSR]
+baseCommand: [java, -jar, /usr/local/bin/gatk-package-4.0.2.1-local.jar, ApplyBQSR]
