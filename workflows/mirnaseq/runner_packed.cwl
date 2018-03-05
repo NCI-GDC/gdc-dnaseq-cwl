@@ -2322,7 +2322,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:cd079dc1e5a8c65604283aab1587e4a783fd857c60e336f29bbcd1904d4f71d8
+                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:a79eda28a26693ebefc7e7d99e0c5ae5435418a5352e436db4d55c824aa0beed
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -2571,7 +2571,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:cd079dc1e5a8c65604283aab1587e4a783fd857c60e336f29bbcd1904d4f71d8
+                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:a79eda28a26693ebefc7e7d99e0c5ae5435418a5352e436db4d55c824aa0beed
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -2713,7 +2713,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:cd079dc1e5a8c65604283aab1587e4a783fd857c60e336f29bbcd1904d4f71d8
+                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:a79eda28a26693ebefc7e7d99e0c5ae5435418a5352e436db4d55c824aa0beed
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -2873,7 +2873,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:cd079dc1e5a8c65604283aab1587e4a783fd857c60e336f29bbcd1904d4f71d8
+                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:a79eda28a26693ebefc7e7d99e0c5ae5435418a5352e436db4d55c824aa0beed
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -3258,7 +3258,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:cd079dc1e5a8c65604283aab1587e4a783fd857c60e336f29bbcd1904d4f71d8
+                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:a79eda28a26693ebefc7e7d99e0c5ae5435418a5352e436db4d55c824aa0beed
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
