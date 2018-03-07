@@ -34,11 +34,11 @@ outputs:
   - id: log
     type: File
     outputBinding:
-      glob: $(inputs.uuid+"_picard_CollectHsMetrics.log")
+      glob: $(inputs.job_uuid+"_picard_CollectHsMetrics.log")
 
   - id: sqlite
     type: File
     outputBinding:
-      glob: $(inputs.uuid + ".db")
+      glob: $(inputs.job_uuid + ".db")
 
 baseCommand: [/usr/local/bin/picard_metrics_sqlite, --metric_name, CollectHsMetrics]
