@@ -40,7 +40,7 @@ inputs:
       type: array
       items: ../../tools/readgroup.yml#readgroups_bam_uuid
   - id: start_token
-    type: File
+    type: ["null", File]
   - id: known_snp_gdc_id
     type: string
   - id: known_snp_file_size
