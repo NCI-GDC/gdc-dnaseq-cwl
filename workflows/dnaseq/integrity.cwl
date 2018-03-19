@@ -15,7 +15,7 @@ inputs:
     type: File
   - id: input_state
     type: string
-  - id: task_uuid
+  - id: job_uuid
     type: string
 
 outputs:
@@ -83,8 +83,8 @@ steps:
         source: bai_md5sum/OUTPUT
       - id: sha256sum_path
         source: bai_sha256/OUTPUT
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: OUTPUT
 
@@ -99,8 +99,8 @@ steps:
         source: bam_md5sum/OUTPUT
       - id: sha256sum_path
         source: bam_sha256/OUTPUT
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: OUTPUT
 
@@ -112,8 +112,8 @@ steps:
         bai_integrity_to_db/OUTPUT,
         bam_integrity_to_db/OUTPUT
         ]
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: destination_sqlite
       - id: log

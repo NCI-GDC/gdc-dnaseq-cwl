@@ -18,22 +18,10 @@ inputs:
     secondaryFiles:
       - ^.bai
 
-  - id: known-sites
-    format: "edam:format_3016"
+  - id: bqsr-recal-file
     type: File
     inputBinding:
-      prefix: --known-sites
-    secondaryFiles:
-      - .tbi
-
-  - id: reference
-    format: "edam:format_1929"
-    type: File
-    inputBinding:
-      prefix: --reference
-    secondaryFiles:
-      - .fai
-      - ^.dict
+      prefix: --bqsr-recal-file
 
   - id: TMP_DIR
     type: string
@@ -42,14 +30,13 @@ inputs:
       prefix: --TMP_DIR
 
 outputs:
-  - id: output_grp
+  - id: output_bam
     type: File
     outputBinding:
-      glob: $(inputs.input.nameroot + "_bqsr.grp")
+      glob: $(inputs.input.basename)
 
 arguments:
-  - valueFrom: $(inputs.input.nameroot + "_bqsr.grp")
+  - valueFrom: $(inputs.input.basename)
     prefix: --output
-    separate: true
 
-baseCommand: [java, -jar, /usr/local/bin/gatk-package-4.0.0.0-local.jar, BaseRecalibrator]
+baseCommand: [java, -jar, /usr/local/bin/gatk-package-4.0.0.0-local.jar, ApplyBQSR]

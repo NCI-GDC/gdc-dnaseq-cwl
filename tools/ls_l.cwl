@@ -6,8 +6,18 @@ requirements:
   - class: DockerRequirement
     dockerPull: ubuntu:artful-20171019
   - class: InlineJavascriptRequirement
+  - class: ResourceRequirement
+    coresMin: 1
+    coresMax: 1
+    ramMin: 500
+    ramMax: 500
+    tmpdirMin: 1
+    tmpdirMax: 1
+    outdirMin: 1
+    outdirMax: 1
 
 class: CommandLineTool
+
 
 inputs:
   - id: INPUT

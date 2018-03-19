@@ -4,8 +4,17 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/picard:43e6e7d6cc07dba36889023f23c3d34f4923ee0d76489d3ba0d5e3868d8b3e85
+    dockerPull: quay.io/ncigdc/picard:6a031f4df1907fd13a58c9351855008b9dd8c5793560cb0d81ba4196d31dc88b
   - class: InlineJavascriptRequirement
+  - class: ResourceRequirement
+    coresMin: 1
+    coresMax: 1
+    ramMin: 10000
+    ramMax: 10000
+    tmpdirMin: $(Math.ceil(1.2 * inputs.INPUT.sizee / 1048576))
+    tmpdirMax: $(Math.ceil(1.2 * inputs.INPUT.sizee / 1048576))
+    outdirMin: $(Math.ceil(1.2 * inputs.INPUT.sizee / 1048576))
+    outdirMax: $(Math.ceil(1.2 * inputs.INPUT.sizee / 1048576))
 
 class: CommandLineTool
 

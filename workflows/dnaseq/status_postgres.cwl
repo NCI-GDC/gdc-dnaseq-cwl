@@ -10,19 +10,17 @@ requirements:
   - class: StepInputExpressionRequirement
 
 inputs:
-  - id: cwl_runner_repo
+  - id: cwl_workflow_git_hash
     type: string
-  - id: cwl_runner_repo_hash
+  - id: cwl_workflow_git_repo
     type: string
-  - id: cwl_runner_url
+  - id: cwl_workflow_rel_path
     type: string
-  - id: cwl_runner_task_branch
+  - id: cwl_job_git_hash
     type: string
-  - id: cwl_runner_task_url
+  - id: cwl_job_git_repo
     type: string
-  - id: cwl_runner_task_repo
-    type: string
-  - id: cwl_runner_task_repo_hash
+  - id: cwl_job_rel_path
     type: string
   - id: db_cred
     type: File
@@ -33,6 +31,12 @@ inputs:
   - id: host_ipaddress
     type: string
   - id: host_macaddress
+    type: string
+  - id: indexd_bam_uuid
+    type: string
+  - id: indexd_bai_uuid
+    type: string
+  - id: indexd_sqlite_uuid
     type: string
   - id: input_bam_gdc_id
     type: string
@@ -60,7 +64,7 @@ inputs:
     type: string
   - id: reference_sa_gdc_id
     type: string
-  - id: task_uuid
+  - id: job_uuid
     type: string
   - id: slurm_resource_cores
     type: long
@@ -88,13 +92,12 @@ steps:
     in:
       - id: string_keys
         default: [
-          "cwl_runner_repo",
-          "cwl_runner_repo_hash",
-          "cwl_runner_url",
-          "cwl_runner_task_branch",
-          "cwl_runner_task_repo",
-          "cwl_runner_task_repo_hash",
-          "cwl_runner_task_url",
+          "cwl_workflow_git_hash",
+          "cwl_workflow_git_repo",
+          "cwl_workflow_rel_path",
+          "cwl_job_git_hash",
+          "cwl_job_git_repo",
+          "cwl_job_rel_path",
           "hostname",
           "host_ipaddress",
           "host_macaddress",
@@ -110,18 +113,20 @@ steps:
           "reference_fai_gdc_id",
           "reference_pac_gdc_id",
           "reference_sa_gdc_id",
+          "indexd_bam_uuid",
+          "indexd_bai_uuid",
+          "indexd_sqlite_uuid",
           "status",
-          "task_uuid"
+          "job_uuid"
         ]
       - id: string_values
         source: [
-          cwl_runner_repo,
-          cwl_runner_repo_hash,
-          cwl_runner_url,
-          cwl_runner_task_branch,
-          cwl_runner_task_repo,
-          cwl_runner_task_repo_hash,
-          cwl_runner_task_url,
+          cwl_workflow_git_hash,
+          cwl_workflow_git_repo,
+          cwl_workflow_rel_path,
+          cwl_job_git_hash,
+          cwl_job_git_repo,
+          cwl_job_rel_path,
           hostname,
           host_ipaddress,
           host_macaddress,
@@ -137,8 +142,11 @@ steps:
           reference_fai_gdc_id,
           reference_pac_gdc_id,
           reference_sa_gdc_id,
+          indexd_bam_uuid,
+          indexd_bai_uuid,
+          indexd_sqlite_uuid,
           status,
-          task_uuid
+          job_uuid
         ]
       - id: long_keys
         default: [
@@ -156,14 +164,20 @@ steps:
           slurm_resource_mem_megabytes,
           thread_count
         ]
+      - id: float_keys
+        default: []
+      - id: float_values
+        default: []
+    out:
+      - id: output
 
   - id: json_to_sqlite
     run: ../../tools/json_to_sqlite.cwl
     in:
       - id: input_json
-        soiurce: emit_json/output
-      - id: task_uuid
-        source: task_uuid
+        source: emit_json/output
+      - id: job_uuid
+        source: job_uuid
       - id: table_name
         source: status_table
     out:
@@ -179,7 +193,7 @@ steps:
         source: db_cred_section
       - id: source_sqlite_path
         source: json_to_sqlite/sqlite
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: log

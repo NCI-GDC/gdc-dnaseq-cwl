@@ -38,11 +38,23 @@ function git_fetch_commit()
     local repo_dir=${clone_dir}/${repo}
     local prev_dir=$(pwd)
 
+    echo clone_dir=${clone_dir}
+    echo git_commit=${git_commit}
+    echo git_repo=${git_repo}
+    echo proj_repo=${proj_repo}
+    echo repo=${repo}
+    echo repo_dir=${repo_dir}
+    echo prev_dir=${prev_dir}
+
     mkdir -p ${repo_dir}
     cd ${repo_dir}
+    echo git init
     git init
+    echo git remote add origin ${git_repo}
     git remote add origin ${git_repo}
+    echo eval "$(ssh-agent -s)" && ssh-add ${HOME}/.ssh/slurm_id_rsa && git fetch --depth 1 origin ${git_commit}
     eval "$(ssh-agent -s)" && ssh-add ${HOME}/.ssh/slurm_id_rsa && git fetch --depth 1 origin ${git_commit}
+    echo git checkout FETCH_HEAD
     git checkout FETCH_HEAD
     cd ${prev_dir}
 }
@@ -56,9 +68,12 @@ function runner()
     local cache_dir=${work_dir}/cache
     local tmp_dir=${work_dir}/tmp
 
+    echo mkdir ${cache_dir}
     mkdir ${cache_dir}
+    echo mkdir ${tmp_dir}
     mkdir ${tmp_dir}
- 
+
+    echo cwltool --debug --rm-tmpdir --rm-container --no-read-only --no-match-user --tmp-outdir-prefix ${cache_dir}/ --tmpdir-prefix ${tmp_dir}/ --custom-net bridge --outdir ${work_dir} ${workflow_path} ${task_path}
     cwltool --debug --rm-tmpdir --rm-container --no-read-only --no-match-user --tmp-outdir-prefix ${cache_dir}/ --tmpdir-prefix ${tmp_dir}/ --custom-net bridge --outdir ${work_dir} ${workflow_path} ${task_path}
 }
 
@@ -85,16 +100,18 @@ function main()
 
     git_fetch_commit ${workflow_dir} ${cwl_workflow_git_hash} ${cwl_workflow_git_repo}
     git_fetch_commit ${task_dir} ${cwl_task_git_hash} ${cwl_task_git_repo}
-    sed -i "s/\${xx_cwl_task_git_hash_xx}/${cwl_task_git_hash}/" ${task_path}
+    sed -i "s/cwl_task_git_hash_value/${xx_cwl_task_git_hash_xx}/" ${task_path}
     activate_virtualenv ${virtualenv_name}
     runner ${task_path} ${workflow_path} ${work_dir}
     if [ $? -ne 0 ]
     then
         echo FAIL_RUNNER
-        sudo rm -rf ${work_dir}
+        kill $SSH_AGENT_PID
+        #sudo rm -rf ${work_dir}
         exit 1
     fi
-    sudo rm -rf ${work_dir}
+    kill $SSH_AGENT_PID
+    #sudo rm -rf ${work_dir}
 }
 
 main "$@"

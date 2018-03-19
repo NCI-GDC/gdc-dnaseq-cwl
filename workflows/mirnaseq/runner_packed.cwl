@@ -53,85 +53,6 @@
             "id": "#awk.cwl"
         }, 
         {
-            "class": "CommandLineTool", 
-            "requirements": [
-                {
-                    "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/awscli:ef005e74478e9a2fb3ce638cbfa6199e88b322abd0934ba0586980a9f45fc052"
-                }, 
-                {
-                    "class": "EnvVarRequirement", 
-                    "envDef": [
-                        {
-                            "envName": "AWS_CONFIG_FILE", 
-                            "envValue": "$(inputs.aws_config.path)"
-                        }, 
-                        {
-                            "envName": "AWS_SHARED_CREDENTIALS_FILE", 
-                            "envValue": "$(inputs.aws_shared_credentials.path)"
-                        }
-                    ]
-                }, 
-                {
-                    "class": "InlineJavascriptRequirement"
-                }, 
-                {
-                    "class": "ShellCommandRequirement"
-                }
-            ], 
-            "inputs": [
-                {
-                    "id": "#aws_s3_put.cwl/aws_config", 
-                    "type": "File"
-                }, 
-                {
-                    "id": "#aws_s3_put.cwl/aws_shared_credentials", 
-                    "type": "File"
-                }, 
-                {
-                    "id": "#aws_s3_put.cwl/endpoint_json", 
-                    "type": "File", 
-                    "inputBinding": {
-                        "loadContents": true, 
-                        "valueFrom": "$(null)"
-                    }
-                }, 
-                {
-                    "id": "#aws_s3_put.cwl/input", 
-                    "type": "File"
-                }, 
-                {
-                    "id": "#aws_s3_put.cwl/s3cfg_section", 
-                    "type": "string"
-                }, 
-                {
-                    "id": "#aws_s3_put.cwl/s3uri", 
-                    "type": "string"
-                }
-            ], 
-            "outputs": [
-                {
-                    "id": "#aws_s3_put.cwl/output", 
-                    "type": "File", 
-                    "outputBinding": {
-                        "glob": "output"
-                    }
-                }
-            ], 
-            "arguments": [
-                {
-                    "valueFrom": "${\nvar endpoint_json = JSON.parse(inputs.endpoint_json.contents);\nvar endpoint_url = String(endpoint_json[inputs.s3cfg_section]);\nvar endpoint = endpoint_url.replace(\"http://\",\"\");\nvar dig_cmd = [\"dig\", \"+short\", endpoint, \"|\", \"grep\", \"-E\", \"'[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}'\", \"|\", \"shuf\", \"-n1\"];\nvar shell_dig = \"http://\" + \"`\" + dig_cmd.join(' ') + \"`\";\nvar cmd = [\"aws\", \"s3\", \"cp\", \"--profile\", inputs.s3cfg_section, \"--endpoint-url\", shell_dig, inputs.input.path, inputs.s3uri];\nvar shell_cmd = cmd.join(' ');\nreturn shell_cmd\n}\n", 
-                    "position": 0
-                }
-            ], 
-            "stdout": "output", 
-            "baseCommand": [
-                "bash", 
-                "-c"
-            ], 
-            "id": "#aws_s3_put.cwl"
-        }, 
-        {
             "requirements": [
                 {
                     "class": "DockerRequirement", 
@@ -228,6 +149,125 @@
                 "/usr/local/bin/bam_reheader"
             ], 
             "id": "#bam_reheader.cwl"
+        }, 
+        {
+            "class": "CommandLineTool", 
+            "requirements": [
+                {
+                    "class": "DockerRequirement", 
+                    "dockerPull": "quay.io/ncigdc/bio-client:bb6975c12cf8df54733a302f381090f56c4aa8a4ff920172a2881e62617857b1
+                }
+            ], 
+            "inputs": [
+                {
+                    "id": "#bio_client_download.cwl/config-file", 
+                    "type": "File", 
+                    "inputBinding": {
+                        "prefix": "-c", 
+                        "position": 0
+                    }
+                }, 
+                {
+                    "id": "#bio_client_download.cwl/dir_path", 
+                    "type": "string", 
+                    "default": ".", 
+                    "inputBinding": {
+                        "prefix": "--dir_path", 
+                        "position": 99
+                    }
+                }, 
+                {
+                    "id": "#bio_client_download.cwl/download", 
+                    "type": "string", 
+                    "default": "download", 
+                    "inputBinding": {
+                        "position": 1
+                    }
+                }, 
+                {
+                    "id": "#bio_client_download.cwl/download_handle", 
+                    "type": "string", 
+                    "inputBinding": {
+                        "position": 98
+                    }
+                }
+            ], 
+            "outputs": [
+                {
+                    "id": "#bio_client_download.cwl/output", 
+                    "type": "File", 
+                    "outputBinding": {
+                        "glob": "*"
+                    }
+                }
+            ], 
+            "baseCommand": [
+                "/usr/local/bin/bio_client.py"
+            ], 
+            "id": "#bio_client_download.cwl"
+        }, 
+        {
+            "class": "CommandLineTool", 
+            "requirements": [
+                {
+                    "class": "DockerRequirement", 
+                    "dockerPull": "quay.io/ncigdc/bio-client:bb6975c12cf8df54733a302f381090f56c4aa8a4ff920172a2881e62617857b1
+                }
+            ], 
+            "inputs": [
+                {
+                    "id": "#bio_client_upload_pull_uuid.cwl/config-file", 
+                    "type": "File", 
+                    "inputBinding": {
+                        "prefix": "--config-file", 
+                        "position": 0
+                    }
+                }, 
+                {
+                    "id": "#bio_client_upload_pull_uuid.cwl/upload", 
+                    "type": "string", 
+                    "default": "upload", 
+                    "inputBinding": {
+                        "position": 1
+                    }
+                }, 
+                {
+                    "id": "#bio_client_upload_pull_uuid.cwl/upload-bucket", 
+                    "type": "string", 
+                    "inputBinding": {
+                        "prefix": "--upload-bucket", 
+                        "position": 2
+                    }
+                }, 
+                {
+                    "id": "#bio_client_upload_pull_uuid.cwl/upload-key", 
+                    "type": "string", 
+                    "inputBinding": {
+                        "prefix": "--upload_key", 
+                        "position": 3
+                    }
+                }, 
+                {
+                    "id": "#bio_client_upload_pull_uuid.cwl/input", 
+                    "type": "File", 
+                    "inputBinding": {
+                        "position": 99
+                    }
+                }
+            ], 
+            "outputs": [
+                {
+                    "id": "#bio_client_upload_pull_uuid.cwl/output", 
+                    "type": "File", 
+                    "outputBinding": {
+                        "glob": "*_upload.json"
+                    }
+                }
+            ], 
+            "baseCommand": [
+                "/usr/local/bin/bio_client.py"
+            ], 
+            "id": "#bio_client_upload_pull_uuid.cwl"
         }, 
         {
             "requirements": [
@@ -644,71 +684,6 @@
         }, 
         {
             "class": "CommandLineTool", 
-            "requirements": [
-                {
-                    "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/git-client:cd11e0475ba67cba39c5590533208bc38e82f5904b51ee487943f2b04f6c9469"
-                }, 
-                {
-                    "class": "EnvVarRequirement", 
-                    "envDef": [
-                        {
-                            "envName": "http_proxy", 
-                            "envValue": "http://cloud-proxy:3128"
-                        }, 
-                        {
-                            "envName": "https_proxy", 
-                            "envValue": "http://cloud-proxy:3128"
-                        }
-                    ]
-                }, 
-                {
-                    "class": "ShellCommandRequirement"
-                }
-            ], 
-            "inputs": [
-                {
-                    "id": "#emit_git_hash.cwl/repo", 
-                    "type": "string", 
-                    "inputBinding": {
-                        "position": 0
-                    }
-                }, 
-                {
-                    "id": "#emit_git_hash.cwl/branch", 
-                    "type": "string", 
-                    "inputBinding": {
-                        "position": 1
-                    }
-                }
-            ], 
-            "outputs": [
-                {
-                    "id": "#emit_git_hash.cwl/output", 
-                    "type": "string", 
-                    "outputBinding": {
-                        "glob": "output", 
-                        "loadContents": true, 
-                        "outputEval": "$(self[0].contents)"
-                    }
-                }
-            ], 
-            "stdout": "output", 
-            "arguments": [
-                {
-                    "valueFrom": " | awk '{printf $1}'", 
-                    "position": 2, 
-                    "shellQuote": false
-                }
-            ], 
-            "baseCommand": [
-                "git", 
-                "ls-remote"
-            ], 
-            "id": "#emit_git_hash.cwl"
-        }, 
-        {
-            "class": "CommandLineTool", 
             "inputs": [], 
             "outputs": [
                 {
@@ -832,6 +807,36 @@
             ], 
             "expression": "${\n\n  var OutputObject = {};\n  for (var i = 0; i < inputs.string_keys.length; i++) {\n    var key = inputs.string_keys[i];\n    var value = inputs.string_values[i];\n    OutputObject[key] = value;\n  }\n\n  for (var i = 0; i < inputs.long_keys.length; i++) {\n    var key = inputs.long_keys[i];\n    var value = parseInt(inputs.long_values[i]);\n    OutputObject[key] = value;\n  }\n\n  for (var i = 0; i < inputs.float_keys.length; i++) {\n    var key = inputs.float_keys[i];\n    var value = parseFloat(inputs.float_values[i]);\n    OutputObject[key] = value;\n  }\n\n  return {'output': JSON.stringify(OutputObject)}\n  //return {'output': OutputObject}\n}\n", 
             "id": "#emit_json.cwl"
+        }, 
+        {
+            "requirements": [
+                {
+                    "class": "InlineJavascriptRequirement"
+                }
+            ], 
+            "class": "ExpressionTool", 
+            "inputs": [
+                {
+                    "id": "#emit_json_value.cwl/input", 
+                    "type": "File", 
+                    "inputBinding": {
+                        "loadContents": true, 
+                        "valueFrom": "$(null)"
+                    }
+                }, 
+                {
+                    "id": "#emit_json_value.cwl/key", 
+                    "type": "string"
+                }
+            ], 
+            "outputs": [
+                {
+                    "id": "#emit_json_value.cwl/output", 
+                    "type": "string"
+                }
+            ], 
+            "expression": "${\n  var output_value = JSON.parse(inputs.input.contents)[inputs.key];\n  return {'output': output_value};\n}\n", 
+            "id": "#emit_json_value.cwl"
         }, 
         {
             "requirements": [
@@ -1083,7 +1088,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/fastqc_db:b9c09ea65f40e154d239ebf494f4cd14ed2526cb6b70f65f9d822d3ebd4f1594"
+                    "dockerPull": "quay.io/ncigdc/fastqc_db:04e29e72e0fcf2f19538ed323b4f99049f7ace55b60f18ec000696dcf93a2f3d
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -1126,55 +1131,6 @@
                 "/usr/local/bin/fastqc_db"
             ], 
             "id": "#fastqc_db.cwl"
-        }, 
-        {
-            "class": "CommandLineTool", 
-            "requirements": [
-                {
-                    "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/curl:d27480e7ac07e583146362d59f48254c2f59dfaa023212d12e091e136a52bcdf"
-                }
-            ], 
-            "inputs": [
-                {
-                    "id": "#gdc_get_object.cwl/gdc_token", 
-                    "type": "File", 
-                    "inputBinding": {
-                        "loadContents": true, 
-                        "valueFrom": "$(null)"
-                    }
-                }, 
-                {
-                    "id": "#gdc_get_object.cwl/gdc_uuid", 
-                    "type": "string"
-                }
-            ], 
-            "outputs": [
-                {
-                    "id": "#gdc_get_object.cwl/output", 
-                    "type": "File", 
-                    "outputBinding": {
-                        "glob": "*"
-                    }
-                }
-            ], 
-            "arguments": [
-                {
-                    "valueFrom": "X-Auth-Token: $(inputs.gdc_token.contents)", 
-                    "position": 0
-                }, 
-                {
-                    "valueFrom": "https://gdc-api.nci.nih.gov/data/$(inputs.gdc_uuid)", 
-                    "position": 1
-                }
-            ], 
-            "baseCommand": [
-                "curl", 
-                "--remote-name", 
-                "--remote-header-name", 
-                "--header"
-            ], 
-            "id": "#gdc_get_object.cwl"
         }, 
         {
             "class": "CommandLineTool", 
@@ -1253,38 +1209,8 @@
         {
             "requirements": [
                 {
-                    "class": "InlineJavascriptRequirement"
-                }
-            ], 
-            "class": "ExpressionTool", 
-            "inputs": [
-                {
-                    "id": "#generate_s3load_path.cwl/load_bucket", 
-                    "type": "string"
-                }, 
-                {
-                    "id": "#generate_s3load_path.cwl/filename", 
-                    "type": "string"
-                }, 
-                {
-                    "id": "#generate_s3load_path.cwl/task_uuid", 
-                    "type": "string"
-                }
-            ], 
-            "outputs": [
-                {
-                    "id": "#generate_s3load_path.cwl/output", 
-                    "type": "string"
-                }
-            ], 
-            "expression": "${\n  var output = inputs.load_bucket + \"/\" + inputs.task_uuid + \"/\" + inputs.filename;\n  return {'output': output}\n}\n", 
-            "id": "#generate_s3load_path.cwl"
-        }, 
-        {
-            "requirements": [
-                {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/integrity_to_sqlite:40edb00dd1679ad7019ee4b8c634aadc1e8aa66e6baac8d0a72b7389dbac76bf"
+                    "dockerPull": "quay.io/ncigdc/integrity_to_sqlite:a04168d6b256dbc4f7776b2eeb1475544a9dbda16f402be5874f7ac5787a8161
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -1353,7 +1279,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/json-to-sqlite:43564cbca5b19e99d5d4ebf28987cde30facd6082854086967617fbe6be641eb"
+                    "dockerPull": "quay.io/ncigdc/json-to-sqlite:31ff9a121cb13085eff7b7fb85db8b461f05b18bee1eb1b7586030dcbde8dc85
                 }
             ], 
             "class": "CommandLineTool", 
@@ -1476,7 +1402,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/merge_sqlite:32bf383b197503e795278332d3c8bd5944f736f25ebaedb25a3a104252c3b76f"
+                    "dockerPull": "quay.io/ncigdc/merge_sqlite:cf56e47dabbe46b6bc8377006a63b7d4dc98e557fb78237bbaaf4e4068caf6bc
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -2163,7 +2089,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard:43e6e7d6cc07dba36889023f23c3d34f4923ee0d76489d3ba0d5e3868d8b3e85"
+                    "dockerPull": "quay.io/ncigdc/picard:6a031f4df1907fd13a58c9351855008b9dd8c5793560cb0d81ba4196d31dc88b"
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -2396,7 +2322,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:bbb809fe71a61233801e376068c734539ee58e080d704c6ddc759e24ec59eaaf"
+                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:3cf06d97543ff4ad3dc404453ca34dd79cdd16bb2082be98a74a47a82cc638dd
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -2554,7 +2480,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard:43e6e7d6cc07dba36889023f23c3d34f4923ee0d76489d3ba0d5e3868d8b3e85"
+                    "dockerPull": "quay.io/ncigdc/picard:6a031f4df1907fd13a58c9351855008b9dd8c5793560cb0d81ba4196d31dc88b"
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -2645,7 +2571,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:bbb809fe71a61233801e376068c734539ee58e080d704c6ddc759e24ec59eaaf"
+                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:3cf06d97543ff4ad3dc404453ca34dd79cdd16bb2082be98a74a47a82cc638dd
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -2723,7 +2649,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard:43e6e7d6cc07dba36889023f23c3d34f4923ee0d76489d3ba0d5e3868d8b3e85"
+                    "dockerPull": "quay.io/ncigdc/picard:6a031f4df1907fd13a58c9351855008b9dd8c5793560cb0d81ba4196d31dc88b"
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -2787,7 +2713,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:bbb809fe71a61233801e376068c734539ee58e080d704c6ddc759e24ec59eaaf"
+                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:3cf06d97543ff4ad3dc404453ca34dd79cdd16bb2082be98a74a47a82cc638dd
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -2858,7 +2784,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard:43e6e7d6cc07dba36889023f23c3d34f4923ee0d76489d3ba0d5e3868d8b3e85"
+                    "dockerPull": "quay.io/ncigdc/picard:6a031f4df1907fd13a58c9351855008b9dd8c5793560cb0d81ba4196d31dc88b"
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -2947,7 +2873,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:bbb809fe71a61233801e376068c734539ee58e080d704c6ddc759e24ec59eaaf"
+                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:3cf06d97543ff4ad3dc404453ca34dd79cdd16bb2082be98a74a47a82cc638dd
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -3011,7 +2937,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard:43e6e7d6cc07dba36889023f23c3d34f4923ee0d76489d3ba0d5e3868d8b3e85"
+                    "dockerPull": "quay.io/ncigdc/picard:6a031f4df1907fd13a58c9351855008b9dd8c5793560cb0d81ba4196d31dc88b"
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -3131,7 +3057,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard:43e6e7d6cc07dba36889023f23c3d34f4923ee0d76489d3ba0d5e3868d8b3e85"
+                    "dockerPull": "quay.io/ncigdc/picard:6a031f4df1907fd13a58c9351855008b9dd8c5793560cb0d81ba4196d31dc88b"
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -3218,7 +3144,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard:43e6e7d6cc07dba36889023f23c3d34f4923ee0d76489d3ba0d5e3868d8b3e85"
+                    "dockerPull": "quay.io/ncigdc/picard:6a031f4df1907fd13a58c9351855008b9dd8c5793560cb0d81ba4196d31dc88b"
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -3332,7 +3258,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:bbb809fe71a61233801e376068c734539ee58e080d704c6ddc759e24ec59eaaf"
+                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:3cf06d97543ff4ad3dc404453ca34dd79cdd16bb2082be98a74a47a82cc638dd
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -3397,7 +3323,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/readgroup_json_db:0b69833722a66236e9519ce1d3955368a645c4bcf26d1f7416bbacbdc5deef9b"
+                    "dockerPull": "quay.io/ncigdc/readgroup_json_db:5f22fc3c135943fb6851f93c487eb04a362609f19e729f920972a6798e33c45f
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -3724,7 +3650,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/samtools_metrics_sqlite:45b161680b60ab2fcd2fab718632769b9a3329af376f11dac6f673e702f1df7e"
+                    "dockerPull": "quay.io/ncigdc/samtools_metrics_sqlite:6daf917ea4e9f1df29c4af1bf1bd9f1278945781b55e53170bc9bb0fe9881f5c
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -3828,7 +3754,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/samtools_metrics_sqlite:45b161680b60ab2fcd2fab718632769b9a3329af376f11dac6f673e702f1df7e"
+                    "dockerPull": "quay.io/ncigdc/samtools_metrics_sqlite:6daf917ea4e9f1df29c4af1bf1bd9f1278945781b55e53170bc9bb0fe9881f5c
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -3929,7 +3855,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/samtools_metrics_sqlite:45b161680b60ab2fcd2fab718632769b9a3329af376f11dac6f673e702f1df7e"
+                    "dockerPull": "quay.io/ncigdc/samtools_metrics_sqlite:6daf917ea4e9f1df29c4af1bf1bd9f1278945781b55e53170bc9bb0fe9881f5c
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -4184,7 +4110,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/sqlite_to_postgres:407f904dd4303ffa496089dc68c456af391724fc697a32372b00f8a6aaa6c82f"
+                    "dockerPull": "quay.io/ncigdc/sqlite_to_postgres:6ac493aa9b27dbb3fd4cbb4912e6e62a535f5692e510f0212fbddc53c2d1cc56
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -4376,8 +4302,12 @@
             ], 
             "inputs": [
                 {
-                    "id": "#etl.cwl/gdc_token", 
+                    "id": "#etl.cwl/bioclient_config", 
                     "type": "File"
+                }, 
+                {
+                    "id": "#etl.cwl/bioclient_load_bucket", 
+                    "type": "string"
                 }, 
                 {
                     "id": "#etl.cwl/input_bam_gdc_id", 
@@ -4434,58 +4364,38 @@
                 {
                     "id": "#etl.cwl/task_uuid", 
                     "type": "string"
-                }, 
-                {
-                    "id": "#etl.cwl/aws_config", 
-                    "type": "File"
-                }, 
-                {
-                    "id": "#etl.cwl/aws_shared_credentials", 
-                    "type": "File"
-                }, 
-                {
-                    "id": "#etl.cwl/endpoint_json", 
-                    "type": "File"
-                }, 
-                {
-                    "id": "#etl.cwl/load_bucket", 
-                    "type": "string"
-                }, 
-                {
-                    "id": "#etl.cwl/s3cfg_section", 
-                    "type": "string"
                 }
             ], 
             "outputs": [
                 {
-                    "id": "#etl.cwl/s3_bam_url", 
-                    "type": "string", 
-                    "outputSource": "#etl.cwl/generate_s3_bam_url/output"
+                    "id": "#etl.cwl/indexd_bam_json", 
+                    "type": "File", 
+                    "outputSource": "#etl.cwl/load_bam/output"
                 }, 
                 {
-                    "id": "#etl.cwl/s3_bai_url", 
-                    "type": "string", 
-                    "outputSource": "#etl.cwl/generate_s3_bai_url/output"
+                    "id": "#etl.cwl/indexd_bai_json", 
+                    "type": "File", 
+                    "outputSource": "#etl.cwl/load_bai/output"
                 }, 
                 {
-                    "id": "#etl.cwl/s3_mirna_profiling_tar_url", 
-                    "type": "string", 
-                    "outputSource": "#etl.cwl/generate_s3_mirna_profiling_tar_url/output"
+                    "id": "#etl.cwl/indexd_mirna_profiling_tar_json", 
+                    "type": "File", 
+                    "outputSource": "#etl.cwl/load_tar_mirna_profiling/output"
                 }, 
                 {
-                    "id": "#etl.cwl/s3_mirna_profiling_isoforms_quant_url", 
-                    "type": "string", 
-                    "outputSource": "#etl.cwl/generate_s3_mirna_profiling_isoforms_quant_url/output"
+                    "id": "#etl.cwl/indexd_mirna_profiling_isoforms_quant_json", 
+                    "type": "File", 
+                    "outputSource": "#etl.cwl/load_mirna_profiling_isoforms_quant/output"
                 }, 
                 {
-                    "id": "#etl.cwl/s3_mirna_profiling_mirnas_quant_url", 
-                    "type": "string", 
-                    "outputSource": "#etl.cwl/generate_s3_mirna_profiling_mirnas_quant_url/output"
+                    "id": "#etl.cwl/indexd_mirna_profiling_mirnas_quant_json", 
+                    "type": "File", 
+                    "outputSource": "#etl.cwl/load_mirna_profiling_mirnas_quant/output"
                 }, 
                 {
-                    "id": "#etl.cwl/s3_sqlite_url", 
-                    "type": "string", 
-                    "outputSource": "#etl.cwl/generate_s3_sqlite_url/output"
+                    "id": "#etl.cwl/indexd_sqlite_json", 
+                    "type": "File", 
+                    "outputSource": "#etl.cwl/load_sqlite/output"
                 }, 
                 {
                     "id": "#etl.cwl/token", 
@@ -4496,14 +4406,14 @@
             "steps": [
                 {
                     "id": "#etl.cwl/extract_bam", 
-                    "run": "#gdc_get_object.cwl", 
+                    "run": "#bio_client_download.cwl", 
                     "in": [
                         {
-                            "id": "#etl.cwl/extract_bam/gdc_token", 
-                            "source": "#etl.cwl/gdc_token"
+                            "id": "#etl.cwl/extract_bam/config-file", 
+                            "source": "#etl.cwl/bioclient_config"
                         }, 
                         {
-                            "id": "#etl.cwl/extract_bam/gdc_uuid", 
+                            "id": "#etl.cwl/extract_bam/download_handle", 
                             "source": "#etl.cwl/input_bam_gdc_id"
                         }
                     ], 
@@ -4515,14 +4425,14 @@
                 }, 
                 {
                     "id": "#etl.cwl/extract_known_snp", 
-                    "run": "#gdc_get_object.cwl", 
+                    "run": "#bio_client_download.cwl", 
                     "in": [
                         {
-                            "id": "#etl.cwl/extract_known_snp/gdc_token", 
-                            "source": "#etl.cwl/gdc_token"
+                            "id": "#etl.cwl/extract_known_snp/config-file", 
+                            "source": "#etl.cwl/bioclient_config"
                         }, 
                         {
-                            "id": "#etl.cwl/extract_known_snp/gdc_uuid", 
+                            "id": "#etl.cwl/extract_known_snp/download_handle", 
                             "source": "#etl.cwl/known_snp_gdc_id"
                         }
                     ], 
@@ -4534,14 +4444,14 @@
                 }, 
                 {
                     "id": "#etl.cwl/extract_known_snp_index", 
-                    "run": "#gdc_get_object.cwl", 
+                    "run": "#bio_client_download.cwl", 
                     "in": [
                         {
-                            "id": "#etl.cwl/extract_known_snp_index/gdc_token", 
-                            "source": "#etl.cwl/gdc_token"
+                            "id": "#etl.cwl/extract_known_snp_index/config-file", 
+                            "source": "#etl.cwl/bioclient_config"
                         }, 
                         {
-                            "id": "#etl.cwl/extract_known_snp_index/gdc_uuid", 
+                            "id": "#etl.cwl/extract_known_snp_index/download_handle", 
                             "source": "#etl.cwl/known_snp_index_gdc_id"
                         }
                     ], 
@@ -4553,14 +4463,14 @@
                 }, 
                 {
                     "id": "#etl.cwl/extract_ref_fa", 
-                    "run": "#gdc_get_object.cwl", 
+                    "run": "#bio_client_download.cwl", 
                     "in": [
                         {
-                            "id": "#etl.cwl/extract_ref_fa/gdc_token", 
-                            "source": "#etl.cwl/gdc_token"
+                            "id": "#etl.cwl/extract_ref_fa/config-file", 
+                            "source": "#etl.cwl/bioclient_config"
                         }, 
                         {
-                            "id": "#etl.cwl/extract_ref_fa/gdc_uuid", 
+                            "id": "#etl.cwl/extract_ref_fa/download_handle", 
                             "source": "#etl.cwl/reference_fa_gdc_id"
                         }
                     ], 
@@ -4572,14 +4482,14 @@
                 }, 
                 {
                     "id": "#etl.cwl/extract_ref_fai", 
-                    "run": "#gdc_get_object.cwl", 
+                    "run": "#bio_client_download.cwl", 
                     "in": [
                         {
-                            "id": "#etl.cwl/extract_ref_fai/gdc_token", 
-                            "source": "#etl.cwl/gdc_token"
+                            "id": "#etl.cwl/extract_ref_fai/config-file", 
+                            "source": "#etl.cwl/bioclient_config"
                         }, 
                         {
-                            "id": "#etl.cwl/extract_ref_fai/gdc_uuid", 
+                            "id": "#etl.cwl/extract_ref_fai/download_handle", 
                             "source": "#etl.cwl/reference_fai_gdc_id"
                         }
                     ], 
@@ -4591,14 +4501,14 @@
                 }, 
                 {
                     "id": "#etl.cwl/extract_ref_dict", 
-                    "run": "#gdc_get_object.cwl", 
+                    "run": "#bio_client_download.cwl", 
                     "in": [
                         {
-                            "id": "#etl.cwl/extract_ref_dict/gdc_token", 
-                            "source": "#etl.cwl/gdc_token"
+                            "id": "#etl.cwl/extract_ref_dict/config-file", 
+                            "source": "#etl.cwl/bioclient_config"
                         }, 
                         {
-                            "id": "#etl.cwl/extract_ref_dict/gdc_uuid", 
+                            "id": "#etl.cwl/extract_ref_dict/download_handle", 
                             "source": "#etl.cwl/reference_dict_gdc_id"
                         }
                     ], 
@@ -4610,14 +4520,14 @@
                 }, 
                 {
                     "id": "#etl.cwl/extract_ref_amb", 
-                    "run": "#gdc_get_object.cwl", 
+                    "run": "#bio_client_download.cwl", 
                     "in": [
                         {
-                            "id": "#etl.cwl/extract_ref_amb/gdc_token", 
-                            "source": "#etl.cwl/gdc_token"
+                            "id": "#etl.cwl/extract_ref_amb/config-file", 
+                            "source": "#etl.cwl/bioclient_config"
                         }, 
                         {
-                            "id": "#etl.cwl/extract_ref_amb/gdc_uuid", 
+                            "id": "#etl.cwl/extract_ref_amb/download_handle", 
                             "source": "#etl.cwl/reference_amb_gdc_id"
                         }
                     ], 
@@ -4629,14 +4539,14 @@
                 }, 
                 {
                     "id": "#etl.cwl/extract_ref_ann", 
-                    "run": "#gdc_get_object.cwl", 
+                    "run": "#bio_client_download.cwl", 
                     "in": [
                         {
-                            "id": "#etl.cwl/extract_ref_ann/gdc_token", 
-                            "source": "#etl.cwl/gdc_token"
+                            "id": "#etl.cwl/extract_ref_ann/config-file", 
+                            "source": "#etl.cwl/bioclient_config"
                         }, 
                         {
-                            "id": "#etl.cwl/extract_ref_ann/gdc_uuid", 
+                            "id": "#etl.cwl/extract_ref_ann/download_handle", 
                             "source": "#etl.cwl/reference_ann_gdc_id"
                         }
                     ], 
@@ -4648,14 +4558,14 @@
                 }, 
                 {
                     "id": "#etl.cwl/extract_ref_bwt", 
-                    "run": "#gdc_get_object.cwl", 
+                    "run": "#bio_client_download.cwl", 
                     "in": [
                         {
-                            "id": "#etl.cwl/extract_ref_bwt/gdc_token", 
-                            "source": "#etl.cwl/gdc_token"
+                            "id": "#etl.cwl/extract_ref_bwt/config-file", 
+                            "source": "#etl.cwl/bioclient_config"
                         }, 
                         {
-                            "id": "#etl.cwl/extract_ref_bwt/gdc_uuid", 
+                            "id": "#etl.cwl/extract_ref_bwt/download_handle", 
                             "source": "#etl.cwl/reference_bwt_gdc_id"
                         }
                     ], 
@@ -4667,14 +4577,14 @@
                 }, 
                 {
                     "id": "#etl.cwl/extract_ref_pac", 
-                    "run": "#gdc_get_object.cwl", 
+                    "run": "#bio_client_download.cwl", 
                     "in": [
                         {
-                            "id": "#etl.cwl/extract_ref_pac/gdc_token", 
-                            "source": "#etl.cwl/gdc_token"
+                            "id": "#etl.cwl/extract_ref_pac/config-file", 
+                            "source": "#etl.cwl/bioclient_config"
                         }, 
                         {
-                            "id": "#etl.cwl/extract_ref_pac/gdc_uuid", 
+                            "id": "#etl.cwl/extract_ref_pac/download_handle", 
                             "source": "#etl.cwl/reference_pac_gdc_id"
                         }
                     ], 
@@ -4686,14 +4596,14 @@
                 }, 
                 {
                     "id": "#etl.cwl/extract_ref_sa", 
-                    "run": "#gdc_get_object.cwl", 
+                    "run": "#bio_client_download.cwl", 
                     "in": [
                         {
-                            "id": "#etl.cwl/extract_ref_sa/gdc_token", 
-                            "source": "#etl.cwl/gdc_token"
+                            "id": "#etl.cwl/extract_ref_sa/config-file", 
+                            "source": "#etl.cwl/bioclient_config"
                         }, 
                         {
-                            "id": "#etl.cwl/extract_ref_sa/gdc_uuid", 
+                            "id": "#etl.cwl/extract_ref_sa/download_handle", 
                             "source": "#etl.cwl/reference_sa_gdc_id"
                         }
                     ], 
@@ -4944,32 +4854,23 @@
                 }, 
                 {
                     "id": "#etl.cwl/load_bam", 
-                    "run": "#aws_s3_put.cwl", 
+                    "run": "#bio_client_upload_pull_uuid.cwl", 
                     "in": [
                         {
-                            "id": "#etl.cwl/load_bam/aws_config", 
-                            "source": "#etl.cwl/aws_config"
-                        }, 
-                        {
-                            "id": "#etl.cwl/load_bam/aws_shared_credentials", 
-                            "source": "#etl.cwl/aws_shared_credentials"
-                        }, 
-                        {
-                            "id": "#etl.cwl/load_bam/endpoint_json", 
-                            "source": "#etl.cwl/endpoint_json"
+                            "id": "#etl.cwl/load_bam/config-file", 
+                            "source": "#etl.cwl/bioclient_config"
                         }, 
                         {
                             "id": "#etl.cwl/load_bam/input", 
                             "source": "#etl.cwl/transform/picard_markduplicates_output"
                         }, 
                         {
-                            "id": "#etl.cwl/load_bam/s3cfg_section", 
-                            "source": "#etl.cwl/s3cfg_section"
+                            "id": "#etl.cwl/load_bam/upload-bucket", 
+                            "source": "#etl.cwl/bioclient_load_bucket"
                         }, 
                         {
-                            "id": "#etl.cwl/load_bam/s3uri", 
-                            "source": "#etl.cwl/load_bucket", 
-                            "valueFrom": "$(self + \"/\" + inputs.task_uuid + \"/\")"
+                            "id": "#etl.cwl/load_bam/upload-key", 
+                            "valueFrom": "$(inputs.task_uuid)/$(inputs.input.basename)"
                         }, 
                         {
                             "id": "#etl.cwl/load_bam/task_uuid", 
@@ -4985,19 +4886,11 @@
                 }, 
                 {
                     "id": "#etl.cwl/load_bai", 
-                    "run": "#aws_s3_put.cwl", 
+                    "run": "#bio_client_upload_pull_uuid.cwl", 
                     "in": [
                         {
-                            "id": "#etl.cwl/load_bai/aws_config", 
-                            "source": "#etl.cwl/aws_config"
-                        }, 
-                        {
-                            "id": "#etl.cwl/load_bai/aws_shared_credentials", 
-                            "source": "#etl.cwl/aws_shared_credentials"
-                        }, 
-                        {
-                            "id": "#etl.cwl/load_bai/endpoint_json", 
-                            "source": "#etl.cwl/endpoint_json"
+                            "id": "#etl.cwl/load_bai/config-file", 
+                            "source": "#etl.cwl/bioclient_config"
                         }, 
                         {
                             "id": "#etl.cwl/load_bai/input", 
@@ -5005,13 +4898,12 @@
                             "valueFrom": "$(self.secondaryFiles[0])"
                         }, 
                         {
-                            "id": "#etl.cwl/load_bai/s3cfg_section", 
-                            "source": "#etl.cwl/s3cfg_section"
+                            "id": "#etl.cwl/load_bai/upload-bucket", 
+                            "source": "#etl.cwl/bioclient_load_bucket"
                         }, 
                         {
-                            "id": "#etl.cwl/load_bai/s3uri", 
-                            "source": "#etl.cwl/load_bucket", 
-                            "valueFrom": "$(self + \"/\" + inputs.task_uuid + \"/\")"
+                            "id": "#etl.cwl/load_bai/upload-key", 
+                            "valueFrom": "$(inputs.task_uuid)/$(inputs.input.basename)"
                         }, 
                         {
                             "id": "#etl.cwl/load_bai/task_uuid", 
@@ -5027,32 +4919,23 @@
                 }, 
                 {
                     "id": "#etl.cwl/load_sqlite", 
-                    "run": "#aws_s3_put.cwl", 
+                    "run": "#bio_client_upload_pull_uuid.cwl", 
                     "in": [
                         {
-                            "id": "#etl.cwl/load_sqlite/aws_config", 
-                            "source": "#etl.cwl/aws_config"
-                        }, 
-                        {
-                            "id": "#etl.cwl/load_sqlite/aws_shared_credentials", 
-                            "source": "#etl.cwl/aws_shared_credentials"
-                        }, 
-                        {
-                            "id": "#etl.cwl/load_sqlite/endpoint_json", 
-                            "source": "#etl.cwl/endpoint_json"
+                            "id": "#etl.cwl/load_sqlite/config-file", 
+                            "source": "#etl.cwl/bioclient_config"
                         }, 
                         {
                             "id": "#etl.cwl/load_sqlite/input", 
                             "source": "#etl.cwl/transform/merge_all_sqlite_destination_sqlite"
                         }, 
                         {
-                            "id": "#etl.cwl/load_sqlite/s3cfg_section", 
-                            "source": "#etl.cwl/s3cfg_section"
+                            "id": "#etl.cwl/load_sqlite/upload-bucket", 
+                            "source": "#etl.cwl/bioclient_load_bucket"
                         }, 
                         {
-                            "id": "#etl.cwl/load_sqlite/s3uri", 
-                            "source": "#etl.cwl/load_bucket", 
-                            "valueFrom": "$(self + \"/\" + inputs.task_uuid + \"/\")"
+                            "id": "#etl.cwl/load_sqlite/upload-key", 
+                            "valueFrom": "$(inputs.task_uuid)/$(inputs.input.basename)"
                         }, 
                         {
                             "id": "#etl.cwl/load_sqlite/task_uuid", 
@@ -5068,32 +4951,23 @@
                 }, 
                 {
                     "id": "#etl.cwl/load_tar_mirna_profiling", 
-                    "run": "#aws_s3_put.cwl", 
+                    "run": "#bio_client_upload_pull_uuid.cwl", 
                     "in": [
                         {
-                            "id": "#etl.cwl/load_tar_mirna_profiling/aws_config", 
-                            "source": "#etl.cwl/aws_config"
-                        }, 
-                        {
-                            "id": "#etl.cwl/load_tar_mirna_profiling/aws_shared_credentials", 
-                            "source": "#etl.cwl/aws_shared_credentials"
-                        }, 
-                        {
-                            "id": "#etl.cwl/load_tar_mirna_profiling/endpoint_json", 
-                            "source": "#etl.cwl/endpoint_json"
+                            "id": "#etl.cwl/load_tar_mirna_profiling/config-file", 
+                            "source": "#etl.cwl/bioclient_config"
                         }, 
                         {
                             "id": "#etl.cwl/load_tar_mirna_profiling/input", 
                             "source": "#etl.cwl/tar_mirna_profiling/OUTPUT"
                         }, 
                         {
-                            "id": "#etl.cwl/load_tar_mirna_profiling/s3cfg_section", 
-                            "source": "#etl.cwl/s3cfg_section"
+                            "id": "#etl.cwl/load_tar_mirna_profiling/upload-bucket", 
+                            "source": "#etl.cwl/bioclient_load_bucket"
                         }, 
                         {
-                            "id": "#etl.cwl/load_tar_mirna_profiling/s3uri", 
-                            "source": "#etl.cwl/load_bucket", 
-                            "valueFrom": "$(self + \"/\" + inputs.task_uuid + \"/\")"
+                            "id": "#etl.cwl/load_tar_mirna_profiling/upload-key", 
+                            "valueFrom": "$(inputs.task_uuid)/$(inputs.input.basename)"
                         }, 
                         {
                             "id": "#etl.cwl/load_tar_mirna_profiling/task_uuid", 
@@ -5109,32 +4983,23 @@
                 }, 
                 {
                     "id": "#etl.cwl/load_mirna_profiling_isoforms_quant", 
-                    "run": "#aws_s3_put.cwl", 
+                    "run": "#bio_client_upload_pull_uuid.cwl", 
                     "in": [
                         {
-                            "id": "#etl.cwl/load_mirna_profiling_isoforms_quant/aws_config", 
-                            "source": "#etl.cwl/aws_config"
-                        }, 
-                        {
-                            "id": "#etl.cwl/load_mirna_profiling_isoforms_quant/aws_shared_credentials", 
-                            "source": "#etl.cwl/aws_shared_credentials"
-                        }, 
-                        {
-                            "id": "#etl.cwl/load_mirna_profiling_isoforms_quant/endpoint_json", 
-                            "source": "#etl.cwl/endpoint_json"
+                            "id": "#etl.cwl/load_mirna_profiling_isoforms_quant/config-file", 
+                            "source": "#etl.cwl/bioclient_config"
                         }, 
                         {
                             "id": "#etl.cwl/load_mirna_profiling_isoforms_quant/input", 
                             "source": "#etl.cwl/rename_isoforms_quant/OUTPUT"
                         }, 
                         {
-                            "id": "#etl.cwl/load_mirna_profiling_isoforms_quant/s3cfg_section", 
-                            "source": "#etl.cwl/s3cfg_section"
+                            "id": "#etl.cwl/load_mirna_profiling_isoforms_quant/upload-bucket", 
+                            "source": "#etl.cwl/bioclient_load_bucket"
                         }, 
                         {
-                            "id": "#etl.cwl/load_mirna_profiling_isoforms_quant/s3uri", 
-                            "source": "#etl.cwl/load_bucket", 
-                            "valueFrom": "$(self + \"/\" + inputs.task_uuid + \"/\")"
+                            "id": "#etl.cwl/load_mirna_profiling_isoforms_quant/upload-key", 
+                            "valueFrom": "$(inputs.task_uuid)/$(inputs.input.basename)"
                         }, 
                         {
                             "id": "#etl.cwl/load_mirna_profiling_isoforms_quant/task_uuid", 
@@ -5150,32 +5015,23 @@
                 }, 
                 {
                     "id": "#etl.cwl/load_mirna_profiling_mirnas_quant", 
-                    "run": "#aws_s3_put.cwl", 
+                    "run": "#bio_client_upload_pull_uuid.cwl", 
                     "in": [
                         {
-                            "id": "#etl.cwl/load_mirna_profiling_mirnas_quant/aws_config", 
-                            "source": "#etl.cwl/aws_config"
-                        }, 
-                        {
-                            "id": "#etl.cwl/load_mirna_profiling_mirnas_quant/aws_shared_credentials", 
-                            "source": "#etl.cwl/aws_shared_credentials"
-                        }, 
-                        {
-                            "id": "#etl.cwl/load_mirna_profiling_mirnas_quant/endpoint_json", 
-                            "source": "#etl.cwl/endpoint_json"
+                            "id": "#etl.cwl/load_mirna_profiling_mirnas_quant/config-file", 
+                            "source": "#etl.cwl/bioclient_config"
                         }, 
                         {
                             "id": "#etl.cwl/load_mirna_profiling_mirnas_quant/input", 
                             "source": "#etl.cwl/rename_mirnas_quant/OUTPUT"
                         }, 
                         {
-                            "id": "#etl.cwl/load_mirna_profiling_mirnas_quant/s3cfg_section", 
-                            "source": "#etl.cwl/s3cfg_section"
+                            "id": "#etl.cwl/load_mirna_profiling_mirnas_quant/upload-bucket", 
+                            "source": "#etl.cwl/bioclient_load_bucket"
                         }, 
                         {
-                            "id": "#etl.cwl/load_mirna_profiling_mirnas_quant/s3uri", 
-                            "source": "#etl.cwl/load_bucket", 
-                            "valueFrom": "$(self + \"/\" + inputs.task_uuid + \"/\")"
+                            "id": "#etl.cwl/load_mirna_profiling_mirnas_quant/upload-key", 
+                            "valueFrom": "$(inputs.task_uuid)/$(inputs.input.basename)"
                         }, 
                         {
                             "id": "#etl.cwl/load_mirna_profiling_mirnas_quant/task_uuid", 
@@ -5186,150 +5042,6 @@
                     "out": [
                         {
                             "id": "#etl.cwl/load_mirna_profiling_mirnas_quant/output"
-                        }
-                    ]
-                }, 
-                {
-                    "id": "#etl.cwl/generate_s3_bam_url", 
-                    "run": "#generate_s3load_path.cwl", 
-                    "in": [
-                        {
-                            "id": "#etl.cwl/generate_s3_bam_url/load_bucket", 
-                            "source": "#etl.cwl/load_bucket"
-                        }, 
-                        {
-                            "id": "#etl.cwl/generate_s3_bam_url/filename", 
-                            "source": "#etl.cwl/transform/picard_markduplicates_output", 
-                            "valueFrom": "$(self.basename)"
-                        }, 
-                        {
-                            "id": "#etl.cwl/generate_s3_bam_url/task_uuid", 
-                            "source": "#etl.cwl/task_uuid"
-                        }
-                    ], 
-                    "out": [
-                        {
-                            "id": "#etl.cwl/generate_s3_bam_url/output"
-                        }
-                    ]
-                }, 
-                {
-                    "id": "#etl.cwl/generate_s3_bai_url", 
-                    "run": "#generate_s3load_path.cwl", 
-                    "in": [
-                        {
-                            "id": "#etl.cwl/generate_s3_bai_url/load_bucket", 
-                            "source": "#etl.cwl/load_bucket"
-                        }, 
-                        {
-                            "id": "#etl.cwl/generate_s3_bai_url/filename", 
-                            "source": "#etl.cwl/transform/picard_markduplicates_output", 
-                            "valueFrom": "$(self.secondaryFiles[0].basename)"
-                        }, 
-                        {
-                            "id": "#etl.cwl/generate_s3_bai_url/task_uuid", 
-                            "source": "#etl.cwl/task_uuid"
-                        }
-                    ], 
-                    "out": [
-                        {
-                            "id": "#etl.cwl/generate_s3_bai_url/output"
-                        }
-                    ]
-                }, 
-                {
-                    "id": "#etl.cwl/generate_s3_mirna_profiling_tar_url", 
-                    "run": "#generate_s3load_path.cwl", 
-                    "in": [
-                        {
-                            "id": "#etl.cwl/generate_s3_mirna_profiling_tar_url/load_bucket", 
-                            "source": "#etl.cwl/load_bucket"
-                        }, 
-                        {
-                            "id": "#etl.cwl/generate_s3_mirna_profiling_tar_url/filename", 
-                            "source": "#etl.cwl/task_uuid", 
-                            "valueFrom": "$(self)_mirna_profiling.tar.xz"
-                        }, 
-                        {
-                            "id": "#etl.cwl/generate_s3_mirna_profiling_tar_url/task_uuid", 
-                            "source": "#etl.cwl/task_uuid"
-                        }
-                    ], 
-                    "out": [
-                        {
-                            "id": "#etl.cwl/generate_s3_mirna_profiling_tar_url/output"
-                        }
-                    ]
-                }, 
-                {
-                    "id": "#etl.cwl/generate_s3_mirna_profiling_isoforms_quant_url", 
-                    "run": "#generate_s3load_path.cwl", 
-                    "in": [
-                        {
-                            "id": "#etl.cwl/generate_s3_mirna_profiling_isoforms_quant_url/load_bucket", 
-                            "source": "#etl.cwl/load_bucket"
-                        }, 
-                        {
-                            "id": "#etl.cwl/generate_s3_mirna_profiling_isoforms_quant_url/filename", 
-                            "source": "#etl.cwl/input_bam_gdc_id", 
-                            "valueFrom": "$(self).mirbase21.isoforms.quantification.txt"
-                        }, 
-                        {
-                            "id": "#etl.cwl/generate_s3_mirna_profiling_isoforms_quant_url/task_uuid", 
-                            "source": "#etl.cwl/task_uuid"
-                        }
-                    ], 
-                    "out": [
-                        {
-                            "id": "#etl.cwl/generate_s3_mirna_profiling_isoforms_quant_url/output"
-                        }
-                    ]
-                }, 
-                {
-                    "id": "#etl.cwl/generate_s3_mirna_profiling_mirnas_quant_url", 
-                    "run": "#generate_s3load_path.cwl", 
-                    "in": [
-                        {
-                            "id": "#etl.cwl/generate_s3_mirna_profiling_mirnas_quant_url/load_bucket", 
-                            "source": "#etl.cwl/load_bucket"
-                        }, 
-                        {
-                            "id": "#etl.cwl/generate_s3_mirna_profiling_mirnas_quant_url/filename", 
-                            "source": "#etl.cwl/input_bam_gdc_id", 
-                            "valueFrom": "$(self).mirbase21.mirnas.quantification.txt"
-                        }, 
-                        {
-                            "id": "#etl.cwl/generate_s3_mirna_profiling_mirnas_quant_url/task_uuid", 
-                            "source": "#etl.cwl/task_uuid"
-                        }
-                    ], 
-                    "out": [
-                        {
-                            "id": "#etl.cwl/generate_s3_mirna_profiling_mirnas_quant_url/output"
-                        }
-                    ]
-                }, 
-                {
-                    "id": "#etl.cwl/generate_s3_sqlite_url", 
-                    "run": "#generate_s3load_path.cwl", 
-                    "in": [
-                        {
-                            "id": "#etl.cwl/generate_s3_sqlite_url/load_bucket", 
-                            "source": "#etl.cwl/load_bucket"
-                        }, 
-                        {
-                            "id": "#etl.cwl/generate_s3_sqlite_url/filename", 
-                            "source": "#etl.cwl/transform/merge_all_sqlite_destination_sqlite", 
-                            "valueFrom": "$(self.basename)"
-                        }, 
-                        {
-                            "id": "#etl.cwl/generate_s3_sqlite_url/task_uuid", 
-                            "source": "#etl.cwl/task_uuid"
-                        }
-                    ], 
-                    "out": [
-                        {
-                            "id": "#etl.cwl/generate_s3_sqlite_url/output"
                         }
                     ]
                 }, 
@@ -6344,7 +6056,7 @@
                             "source": "#mirna_profiling.cwl/mirbase_db"
                         }, 
                         {
-                            "id": "#mirna_profiling.cwl/mirna_expression_matrix/project_db", 
+                            "id": "#mirna_profiling.cwl/mirna_expression_matrix/project_directory", 
                             "source": "#mirna_profiling.cwl/project_directory"
                         }, 
                         {
@@ -6920,6 +6632,14 @@
             ], 
             "inputs": [
                 {
+                    "id": "#main/bioclient_config", 
+                    "type": "File"
+                }, 
+                {
+                    "id": "#main/bioclient_load_bucket", 
+                    "type": "string"
+                }, 
+                {
                     "id": "#main/cwl_workflow_git_hash", 
                     "type": "string"
                 }, 
@@ -6932,7 +6652,7 @@
                     "type": "string"
                 }, 
                 {
-                    "id": "#main/cwl_task_git_branch", 
+                    "id": "#main/cwl_task_git_hash", 
                     "type": "string"
                 }, 
                 {
@@ -6950,10 +6670,6 @@
                 {
                     "id": "#main/db_cred_section", 
                     "type": "string"
-                }, 
-                {
-                    "id": "#main/gdc_token", 
-                    "type": "File"
                 }, 
                 {
                     "id": "#main/input_bam_gdc_id", 
@@ -7030,29 +6746,40 @@
                 {
                     "id": "#main/thread_count", 
                     "type": "long"
-                }, 
-                {
-                    "id": "#main/aws_config", 
-                    "type": "File"
-                }, 
-                {
-                    "id": "#main/aws_shared_credentials", 
-                    "type": "File"
-                }, 
-                {
-                    "id": "#main/endpoint_json", 
-                    "type": "File"
-                }, 
-                {
-                    "id": "#main/load_bucket", 
-                    "type": "string"
-                }, 
-                {
-                    "id": "#main/s3cfg_section", 
-                    "type": "string"
                 }
             ], 
-            "outputs": [], 
+            "outputs": [
+                {
+                    "id": "#main/indexd_bam_uuid", 
+                    "type": "string", 
+                    "outputSource": "#main/emit_bam_uuid/output"
+                }, 
+                {
+                    "id": "#main/indexd_bai_uuid", 
+                    "type": "string", 
+                    "outputSource": "#main/emit_bai_uuid/output"
+                }, 
+                {
+                    "id": "#main/indexd_mirna_profiling_tar_uuid", 
+                    "type": "string", 
+                    "outputSource": "#main/emit_mirna_profiling_tar_uuid/output"
+                }, 
+                {
+                    "id": "#main/indexd_mirna_profiling_isoforms_quant_uuid", 
+                    "type": "string", 
+                    "outputSource": "#main/emit_mirna_profiling_isoforms_quant_uuid/output"
+                }, 
+                {
+                    "id": "#main/indexd_mirna_profiling_mirnas_quant_uuid", 
+                    "type": "string", 
+                    "outputSource": "#main/emit_mirna_profiling_mirnas_quant_uuid/output"
+                }, 
+                {
+                    "id": "#main/indexd_sqlite_uuid", 
+                    "type": "string", 
+                    "outputSource": "#main/emit_sqlite_uuid/output"
+                }
+            ], 
             "steps": [
                 {
                     "id": "#main/get_hostname", 
@@ -7085,25 +6812,6 @@
                     ]
                 }, 
                 {
-                    "id": "#main/get_cwl_task_repo_hash", 
-                    "run": "#emit_git_hash.cwl", 
-                    "in": [
-                        {
-                            "id": "#main/get_cwl_task_repo_hash/repo", 
-                            "source": "#main/cwl_task_git_repo"
-                        }, 
-                        {
-                            "id": "#main/get_cwl_task_repo_hash/branch", 
-                            "source": "#main/cwl_task_git_branch"
-                        }
-                    ], 
-                    "out": [
-                        {
-                            "id": "#main/get_cwl_task_repo_hash/output"
-                        }
-                    ]
-                }, 
-                {
                     "id": "#main/status_running", 
                     "run": "#status_postgres.cwl", 
                     "in": [
@@ -7120,12 +6828,8 @@
                             "source": "#main/cwl_workflow_rel_path"
                         }, 
                         {
-                            "id": "#main/status_running/cwl_task_git_branch", 
-                            "source": "#main/cwl_task_git_branch"
-                        }, 
-                        {
                             "id": "#main/status_running/cwl_task_git_hash", 
-                            "source": "#main/get_cwl_task_repo_hash/output"
+                            "source": "#main/cwl_task_git_hash"
                         }, 
                         {
                             "id": "#main/status_running/cwl_task_git_repo", 
@@ -7208,27 +6912,27 @@
                             "source": "#main/reference_sa_gdc_id"
                         }, 
                         {
-                            "id": "#main/status_running/s3_bam_url", 
+                            "id": "#main/status_running/indexd_bam_uuid", 
                             "valueFrom": "NULL"
                         }, 
                         {
-                            "id": "#main/status_running/s3_bai_url", 
+                            "id": "#main/status_running/indexd_bai_uuid", 
                             "valueFrom": "NULL"
                         }, 
                         {
-                            "id": "#main/status_running/s3_mirna_profiling_tar_url", 
+                            "id": "#main/status_running/indexd_mirna_profiling_tar_uuid", 
                             "valueFrom": "NULL"
                         }, 
                         {
-                            "id": "#main/status_running/s3_mirna_profiling_isoforms_quant_url", 
+                            "id": "#main/status_running/indexd_mirna_profiling_isoforms_quant_uuid", 
                             "valueFrom": "NULL"
                         }, 
                         {
-                            "id": "#main/status_running/s3_mirna_profiling_mirnas_quant_url", 
+                            "id": "#main/status_running/indexd_mirna_profiling_mirnas_quant_uuid", 
                             "valueFrom": "NULL"
                         }, 
                         {
-                            "id": "#main/status_running/s3_sqlite_url", 
+                            "id": "#main/status_running/indexd_sqlite_uuid", 
                             "valueFrom": "NULL"
                         }, 
                         {
@@ -7249,7 +6953,7 @@
                         }, 
                         {
                             "id": "#main/status_running/step_token", 
-                            "source": "#main/gdc_token"
+                            "source": "#main/bioclient_config"
                         }, 
                         {
                             "id": "#main/status_running/table_name", 
@@ -7275,8 +6979,12 @@
                     "run": "#etl.cwl", 
                     "in": [
                         {
-                            "id": "#main/etl/gdc_token", 
-                            "source": "#main/gdc_token"
+                            "id": "#main/etl/bioclient_config", 
+                            "source": "#main/bioclient_config"
+                        }, 
+                        {
+                            "id": "#main/etl/bioclient_load_bucket", 
+                            "source": "#main/bioclient_load_bucket"
                         }, 
                         {
                             "id": "#main/etl/input_bam_gdc_id", 
@@ -7333,49 +7041,143 @@
                         {
                             "id": "#main/etl/task_uuid", 
                             "source": "#main/task_uuid"
-                        }, 
-                        {
-                            "id": "#main/etl/aws_config", 
-                            "source": "#main/aws_config"
-                        }, 
-                        {
-                            "id": "#main/etl/aws_shared_credentials", 
-                            "source": "#main/aws_shared_credentials"
-                        }, 
-                        {
-                            "id": "#main/etl/endpoint_json", 
-                            "source": "#main/endpoint_json"
-                        }, 
-                        {
-                            "id": "#main/etl/load_bucket", 
-                            "source": "#main/load_bucket"
-                        }, 
-                        {
-                            "id": "#main/etl/s3cfg_section", 
-                            "source": "#main/s3cfg_section"
                         }
                     ], 
                     "out": [
                         {
-                            "id": "#main/etl/s3_bam_url"
+                            "id": "#main/etl/indexd_bam_json"
                         }, 
                         {
-                            "id": "#main/etl/s3_bai_url"
+                            "id": "#main/etl/indexd_bai_json"
                         }, 
                         {
-                            "id": "#main/etl/s3_mirna_profiling_tar_url"
+                            "id": "#main/etl/indexd_mirna_profiling_tar_json"
                         }, 
                         {
-                            "id": "#main/etl/s3_mirna_profiling_isoforms_quant_url"
+                            "id": "#main/etl/indexd_mirna_profiling_isoforms_quant_json"
                         }, 
                         {
-                            "id": "#main/etl/s3_mirna_profiling_mirnas_quant_url"
+                            "id": "#main/etl/indexd_mirna_profiling_mirnas_quant_json"
                         }, 
                         {
-                            "id": "#main/etl/s3_sqlite_url"
+                            "id": "#main/etl/indexd_sqlite_json"
                         }, 
                         {
                             "id": "#main/etl/token"
+                        }
+                    ]
+                }, 
+                {
+                    "id": "#main/emit_bam_uuid", 
+                    "run": "#emit_json_value.cwl", 
+                    "in": [
+                        {
+                            "id": "#main/emit_bam_uuid/input", 
+                            "source": "#main/etl/indexd_bam_json"
+                        }, 
+                        {
+                            "id": "#main/emit_bam_uuid/key", 
+                            "valueFrom": "did"
+                        }
+                    ], 
+                    "out": [
+                        {
+                            "id": "#main/emit_bam_uuid/output"
+                        }
+                    ]
+                }, 
+                {
+                    "id": "#main/emit_bai_uuid", 
+                    "run": "#emit_json_value.cwl", 
+                    "in": [
+                        {
+                            "id": "#main/emit_bai_uuid/input", 
+                            "source": "#main/etl/indexd_bai_json"
+                        }, 
+                        {
+                            "id": "#main/emit_bai_uuid/key", 
+                            "valueFrom": "did"
+                        }
+                    ], 
+                    "out": [
+                        {
+                            "id": "#main/emit_bai_uuid/output"
+                        }
+                    ]
+                }, 
+                {
+                    "id": "#main/emit_sqlite_uuid", 
+                    "run": "#emit_json_value.cwl", 
+                    "in": [
+                        {
+                            "id": "#main/emit_sqlite_uuid/input", 
+                            "source": "#main/etl/indexd_sqlite_json"
+                        }, 
+                        {
+                            "id": "#main/emit_sqlite_uuid/key", 
+                            "valueFrom": "did"
+                        }
+                    ], 
+                    "out": [
+                        {
+                            "id": "#main/emit_sqlite_uuid/output"
+                        }
+                    ]
+                }, 
+                {
+                    "id": "#main/emit_mirna_profiling_tar_uuid", 
+                    "run": "#emit_json_value.cwl", 
+                    "in": [
+                        {
+                            "id": "#main/emit_mirna_profiling_tar_uuid/input", 
+                            "source": "#main/etl/indexd_mirna_profiling_tar_json"
+                        }, 
+                        {
+                            "id": "#main/emit_mirna_profiling_tar_uuid/key", 
+                            "valueFrom": "did"
+                        }
+                    ], 
+                    "out": [
+                        {
+                            "id": "#main/emit_mirna_profiling_tar_uuid/output"
+                        }
+                    ]
+                }, 
+                {
+                    "id": "#main/emit_mirna_profiling_isoforms_quant_uuid", 
+                    "run": "#emit_json_value.cwl", 
+                    "in": [
+                        {
+                            "id": "#main/emit_mirna_profiling_isoforms_quant_uuid/input", 
+                            "source": "#main/etl/indexd_mirna_profiling_isoforms_quant_json"
+                        }, 
+                        {
+                            "id": "#main/emit_mirna_profiling_isoforms_quant_uuid/key", 
+                            "valueFrom": "did"
+                        }
+                    ], 
+                    "out": [
+                        {
+                            "id": "#main/emit_mirna_profiling_isoforms_quant_uuid/output"
+                        }
+                    ]
+                }, 
+                {
+                    "id": "#main/emit_mirna_profiling_mirnas_quant_uuid", 
+                    "run": "#emit_json_value.cwl", 
+                    "in": [
+                        {
+                            "id": "#main/emit_mirna_profiling_mirnas_quant_uuid/input", 
+                            "source": "#main/etl/indexd_mirna_profiling_mirnas_quant_json"
+                        }, 
+                        {
+                            "id": "#main/emit_mirna_profiling_mirnas_quant_uuid/key", 
+                            "valueFrom": "did"
+                        }
+                    ], 
+                    "out": [
+                        {
+                            "id": "#main/emit_mirna_profiling_mirnas_quant_uuid/output"
                         }
                     ]
                 }, 
@@ -7396,12 +7198,8 @@
                             "source": "#main/cwl_workflow_rel_path"
                         }, 
                         {
-                            "id": "#main/status_complete/cwl_task_git_branch", 
-                            "source": "#main/cwl_task_git_branch"
-                        }, 
-                        {
                             "id": "#main/status_complete/cwl_task_git_hash", 
-                            "source": "#main/get_cwl_task_repo_hash/output"
+                            "source": "#main/cwl_task_git_hash"
                         }, 
                         {
                             "id": "#main/status_complete/cwl_task_git_repo", 
@@ -7484,28 +7282,28 @@
                             "source": "#main/reference_sa_gdc_id"
                         }, 
                         {
-                            "id": "#main/status_complete/s3_bam_url", 
-                            "source": "#main/etl/s3_bam_url"
+                            "id": "#main/status_complete/indexd_bam_uuid", 
+                            "source": "#main/emit_bam_uuid/output"
                         }, 
                         {
-                            "id": "#main/status_complete/s3_bai_url", 
-                            "source": "#main/etl/s3_bai_url"
+                            "id": "#main/status_complete/indexd_bai_uuid", 
+                            "source": "#main/emit_bai_uuid/output"
                         }, 
                         {
-                            "id": "#main/status_complete/s3_mirna_profiling_tar_url", 
-                            "source": "#main/etl/s3_mirna_profiling_tar_url"
+                            "id": "#main/status_complete/indexd_mirna_profiling_tar_uuid", 
+                            "source": "#main/emit_mirna_profiling_tar_uuid/output"
                         }, 
                         {
-                            "id": "#main/status_complete/s3_mirna_profiling_isoforms_quant_url", 
-                            "source": "#main/etl/s3_mirna_profiling_isoforms_quant_url"
+                            "id": "#main/status_complete/indexd_mirna_profiling_isoforms_quant_uuid", 
+                            "source": "#main/emit_mirna_profiling_isoforms_quant_uuid/output"
                         }, 
                         {
-                            "id": "#main/status_complete/s3_mirna_profiling_mirnas_quant_url", 
-                            "source": "#main/etl/s3_mirna_profiling_mirnas_quant_url"
+                            "id": "#main/status_complete/indexd_mirna_profiling_mirnas_quant_uuid", 
+                            "source": "#main/emit_mirna_profiling_mirnas_quant_uuid/output"
                         }, 
                         {
-                            "id": "#main/status_complete/s3_sqlite_url", 
-                            "source": "#main/etl/s3_sqlite_url"
+                            "id": "#main/status_complete/indexd_sqlite_uuid", 
+                            "source": "#main/emit_sqlite_uuid/output"
                         }, 
                         {
                             "id": "#main/status_complete/slurm_resource_cores", 
@@ -7573,10 +7371,6 @@
                 }, 
                 {
                     "id": "#status_postgres.cwl/cwl_workflow_rel_path", 
-                    "type": "string"
-                }, 
-                {
-                    "id": "#status_postgres.cwl/cwl_task_git_branch", 
                     "type": "string"
                 }, 
                 {
@@ -7664,27 +7458,27 @@
                     "type": "string"
                 }, 
                 {
-                    "id": "#status_postgres.cwl/s3_bam_url", 
+                    "id": "#status_postgres.cwl/indexd_bam_uuid", 
                     "type": "string"
                 }, 
                 {
-                    "id": "#status_postgres.cwl/s3_bai_url", 
+                    "id": "#status_postgres.cwl/indexd_bai_uuid", 
                     "type": "string"
                 }, 
                 {
-                    "id": "#status_postgres.cwl/s3_mirna_profiling_tar_url", 
+                    "id": "#status_postgres.cwl/indexd_mirna_profiling_tar_uuid", 
                     "type": "string"
                 }, 
                 {
-                    "id": "#status_postgres.cwl/s3_mirna_profiling_isoforms_quant_url", 
+                    "id": "#status_postgres.cwl/indexd_mirna_profiling_isoforms_quant_uuid", 
                     "type": "string"
                 }, 
                 {
-                    "id": "#status_postgres.cwl/s3_mirna_profiling_mirnas_quant_url", 
+                    "id": "#status_postgres.cwl/indexd_mirna_profiling_mirnas_quant_uuid", 
                     "type": "string"
                 }, 
                 {
-                    "id": "#status_postgres.cwl/s3_sqlite_url", 
+                    "id": "#status_postgres.cwl/indexd_sqlite_uuid", 
                     "type": "string"
                 }, 
                 {
@@ -7738,7 +7532,6 @@
                                 "cwl_workflow_git_hash", 
                                 "cwl_workflow_git_repo", 
                                 "cwl_workflow_rel_path", 
-                                "cwl_task_git_branch", 
                                 "cwl_task_git_hash", 
                                 "cwl_task_git_repo", 
                                 "cwl_task_rel_path", 
@@ -7757,12 +7550,12 @@
                                 "reference_fai_gdc_id", 
                                 "reference_pac_gdc_id", 
                                 "reference_sa_gdc_id", 
-                                "s3_bam_url", 
-                                "s3_bai_url", 
-                                "s3_mirna_profiling_tar_url", 
-                                "s3_mirna_profiling_isoforms_quant_url", 
-                                "s3_mirna_profiling_mirnas_quant_url", 
-                                "s3_sqlite_url", 
+                                "indexd_bam_uuid", 
+                                "indexd_bai_uuid", 
+                                "indexd_mirna_profiling_tar_uuid", 
+                                "indexd_mirna_profiling_isoforms_quant_uuid", 
+                                "indexd_mirna_profiling_mirnas_quant_uuid", 
+                                "indexd_sqlite_uuid", 
                                 "status", 
                                 "task_uuid"
                             ]
@@ -7773,7 +7566,6 @@
                                 "#status_postgres.cwl/cwl_workflow_git_hash", 
                                 "#status_postgres.cwl/cwl_workflow_git_repo", 
                                 "#status_postgres.cwl/cwl_workflow_rel_path", 
-                                "#status_postgres.cwl/cwl_task_git_branch", 
                                 "#status_postgres.cwl/cwl_task_git_hash", 
                                 "#status_postgres.cwl/cwl_task_git_repo", 
                                 "#status_postgres.cwl/cwl_task_rel_path", 
@@ -7792,12 +7584,12 @@
                                 "#status_postgres.cwl/reference_fai_gdc_id", 
                                 "#status_postgres.cwl/reference_pac_gdc_id", 
                                 "#status_postgres.cwl/reference_sa_gdc_id", 
-                                "#status_postgres.cwl/s3_bam_url", 
-                                "#status_postgres.cwl/s3_bai_url", 
-                                "#status_postgres.cwl/s3_mirna_profiling_tar_url", 
-                                "#status_postgres.cwl/s3_mirna_profiling_isoforms_quant_url", 
-                                "#status_postgres.cwl/s3_mirna_profiling_mirnas_quant_url", 
-                                "#status_postgres.cwl/s3_sqlite_url", 
+                                "#status_postgres.cwl/indexd_bam_uuid", 
+                                "#status_postgres.cwl/indexd_bai_uuid", 
+                                "#status_postgres.cwl/indexd_mirna_profiling_tar_uuid", 
+                                "#status_postgres.cwl/indexd_mirna_profiling_isoforms_quant_uuid", 
+                                "#status_postgres.cwl/indexd_mirna_profiling_mirnas_quant_uuid", 
+                                "#status_postgres.cwl/indexd_sqlite_uuid", 
                                 "#status_postgres.cwl/status", 
                                 "#status_postgres.cwl/task_uuid"
                             ]

@@ -4,8 +4,17 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/integrity_to_sqlite:40edb00dd1679ad7019ee4b8c634aadc1e8aa66e6baac8d0a72b7389dbac76bf
+    dockerPull: quay.io/ncigdc/integrity_to_sqlite:a04168d6b256dbc4f7776b2eeb1475544a9dbda16f402be5874f7ac5787a8161
   - class: InlineJavascriptRequirement
+  - class: ResourceRequirement
+    coresMin: 1
+    coresMax: 1
+    ramMin: 1000
+    ramMax: 1000
+    tmpdirMin: 5
+    tmpdirMax: 5
+    outdirMin: 5
+    outdirMax: 5
 
 class: CommandLineTool
 
@@ -30,20 +39,20 @@ inputs:
     inputBinding:
       prefix: "--sha256sum_path"
 
-  - id: task_uuid
+  - id: job_uuid
     type: string
     inputBinding:
-      prefix: "--task_uuid"
+      prefix: "--job_uuid"
 
 outputs:
   - id: LOG
     type: File
     outputBinding:
-      glob: $(inputs.task_uuid + ".log")
+      glob: $(inputs.job_uuid + ".log")
 
   - id: OUTPUT
     type: File
     outputBinding:
-      glob: $(inputs.task_uuid + ".db")
+      glob: $(inputs.job_uuid + ".db")
 
 baseCommand: [/usr/local/bin/integrity_to_sqlite]

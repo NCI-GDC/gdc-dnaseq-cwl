@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/cocleaning-tool:63a7464045a47625ba04b52a02523144dfde5afdc9cc237e570597fa7d53a192
+    dockerPull: quay.io/ncigdc/gatk:latest
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
@@ -15,13 +15,28 @@ inputs:
     inputBinding:
       prefix: --BQSR
 
-  - id: input_file
+  - id: input
     format: "edam:format_2572"
     type: File
     inputBinding:
-      prefix: --input_file
+      prefix: --input
     secondaryFiles:
       - ^.bai
+
+  - id: reference
+    format: "edam:format_1929"
+    type: File
+    inputBinding:
+      prefix: --reference
+    secondaryFiles:
+      - .fai
+      - ^.dict
+
+  - id: TMP_DIR
+    type: string
+    default: "."
+    inputBinding:
+      prefix: --TMP_DIR
 
   - id: log_to_file
     type: string

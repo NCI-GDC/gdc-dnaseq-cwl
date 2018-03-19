@@ -5,7 +5,16 @@ cwlVersion: v1.0
 class: CommandLineTool
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/bio-client:latest
+    dockerPull: quay.io/ncigdc/bio-client:bb6975c12cf8df54733a302f381090f56c4aa8a4ff920172a2881e62617857b1
+  - class: ResourceRequirement
+    coresMin: 1
+    coresMax: 1
+    ramMin: 1000
+    ramMax: 1000
+    tmpdirMin: 1
+    tmpdirMax: 1
+    outdirMin: 1
+    outdirMax: 1
 
 inputs:
   - id: config-file
@@ -26,22 +35,21 @@ inputs:
       prefix: --upload-bucket
       position: 2
 
+  - id: upload-key
+    type: string
+    inputBinding:
+      prefix: --upload_key
+      position: 3
+
   - id: input
     type: File
     inputBinding:
       position: 99
 
 outputs:
-  []
-  # - id: output
-  #   type: File
-  #   outputBinding:
-  #     glob: "upload.json"
+  - id: output
+    type: File
+    outputBinding:
+      glob: "*_upload.json"      
 
-arguments:
-  - valueFrom: $(inputs.input.basename)
-    prefix: --upload_key
-    position: 3
-      
-      
 baseCommand: [/usr/local/bin/bio_client.py]

@@ -22,8 +22,8 @@ do
         then
             echo ${file_name} needs fixin ${docker_repo}
             sed -i "s|${docker_repo}:.*|${docker_repo}:${did}|" ${file_name}
+            docker tag ${docker_repo}:latest ${docker_repo}:${did}
+            docker push ${docker_repo}:${did}       
         fi
-        docker tag ${docker_repo}:latest ${docker_repo}:${did}
-        docker push ${docker_repo}:${did}       
     done
 done
