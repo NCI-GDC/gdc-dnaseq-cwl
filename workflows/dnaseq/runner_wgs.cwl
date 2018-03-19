@@ -290,7 +290,7 @@ steps:
         valueFrom: did
     out:
       - id: output
-        
+
   - id: emit_bai_uuid
     run: ../../tools/emit_json_value.cwl
     in:
@@ -300,7 +300,7 @@ steps:
         valueFrom: did
     out:
       - id: output
-        
+
   - id: emit_sqlite_uuid
     run: ../../tools/emit_json_value.cwl
     in:

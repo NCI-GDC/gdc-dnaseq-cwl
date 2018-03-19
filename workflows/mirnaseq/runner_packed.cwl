@@ -155,7 +155,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/bio-client:bb6975c12cf8df54733a302f381090f56c4aa8a4ff920172a2881e62617857b1
+                    "dockerPull": "quay.io/ncigdc/bio-client:95b0fff4bc26d48420093b4fff22bf2d2d83d8f152af429b316802b930fabcda
                 }
             ], 
             "inputs": [
@@ -211,7 +211,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/bio-client:bb6975c12cf8df54733a302f381090f56c4aa8a4ff920172a2881e62617857b1
+                    "dockerPull": "quay.io/ncigdc/bio-client:95b0fff4bc26d48420093b4fff22bf2d2d83d8f152af429b316802b930fabcda
                 }
             ], 
             "inputs": [
@@ -891,7 +891,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/fastqc:9c853425fffb39da6084fb131f1bbe561648b1eb792204e68b50e94f05a6976f"
+                    "dockerPull": "quay.io/ncigdc/fastqc:a285d4ab748fa11e6029ad1019ea645ed2b1657e5d49c850a322fdf4b402c1b9
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -1455,7 +1455,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/mirna-profiler:bd6f4799a457e0e0fde6dca548801c789656173fe529fd1706dc79adce0085f8"
+                    "dockerPull": "quay.io/ncigdc/mirna-profiler:39a8d6c2250993c9af74a62eb05b42956b086900fbc91a9cb84ed415a643fea5
                 }, 
                 {
                     "class": "InitialWorkDirRequirement", 
@@ -1568,7 +1568,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/mirna-profiler:bd6f4799a457e0e0fde6dca548801c789656173fe529fd1706dc79adce0085f8"
+                    "dockerPull": "quay.io/ncigdc/mirna-profiler:39a8d6c2250993c9af74a62eb05b42956b086900fbc91a9cb84ed415a643fea5
                 }, 
                 {
                     "class": "InitialWorkDirRequirement", 
@@ -1666,7 +1666,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/mirna-profiler:bd6f4799a457e0e0fde6dca548801c789656173fe529fd1706dc79adce0085f8"
+                    "dockerPull": "quay.io/ncigdc/mirna-profiler:39a8d6c2250993c9af74a62eb05b42956b086900fbc91a9cb84ed415a643fea5
                 }, 
                 {
                     "class": "InitialWorkDirRequirement", 
@@ -1765,7 +1765,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/mirna-profiler:bd6f4799a457e0e0fde6dca548801c789656173fe529fd1706dc79adce0085f8"
+                    "dockerPull": "quay.io/ncigdc/mirna-profiler:39a8d6c2250993c9af74a62eb05b42956b086900fbc91a9cb84ed415a643fea5
                 }, 
                 {
                     "class": "InitialWorkDirRequirement", 
@@ -1872,7 +1872,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/mirna-profiler:bd6f4799a457e0e0fde6dca548801c789656173fe529fd1706dc79adce0085f8"
+                    "dockerPull": "quay.io/ncigdc/mirna-profiler:39a8d6c2250993c9af74a62eb05b42956b086900fbc91a9cb84ed415a643fea5
                 }, 
                 {
                     "class": "InitialWorkDirRequirement", 
@@ -1962,7 +1962,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/mirna-profiler:bd6f4799a457e0e0fde6dca548801c789656173fe529fd1706dc79adce0085f8"
+                    "dockerPull": "quay.io/ncigdc/mirna-profiler:39a8d6c2250993c9af74a62eb05b42956b086900fbc91a9cb84ed415a643fea5
                 }, 
                 {
                     "class": "InitialWorkDirRequirement", 
@@ -2089,7 +2089,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard:6a031f4df1907fd13a58c9351855008b9dd8c5793560cb0d81ba4196d31dc88b"
+                    "dockerPull": "quay.io/ncigdc/picard:6656e113191eeb56679abb378c2ef82362b2514fabd6eaec97a545c6343104a8
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -2322,7 +2322,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:3cf06d97543ff4ad3dc404453ca34dd79cdd16bb2082be98a74a47a82cc638dd
+                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:c463a42805d75e1aadff14ca2291fc9a401db93d63f719a6c2aff8ed27c89e67
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -2480,7 +2480,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard:6a031f4df1907fd13a58c9351855008b9dd8c5793560cb0d81ba4196d31dc88b"
+                    "dockerPull": "quay.io/ncigdc/picard:6656e113191eeb56679abb378c2ef82362b2514fabd6eaec97a545c6343104a8
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -2571,7 +2571,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:3cf06d97543ff4ad3dc404453ca34dd79cdd16bb2082be98a74a47a82cc638dd
+                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:c463a42805d75e1aadff14ca2291fc9a401db93d63f719a6c2aff8ed27c89e67
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -2649,7 +2649,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard:6a031f4df1907fd13a58c9351855008b9dd8c5793560cb0d81ba4196d31dc88b"
+                    "dockerPull": "quay.io/ncigdc/picard:6656e113191eeb56679abb378c2ef82362b2514fabd6eaec97a545c6343104a8
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -2713,7 +2713,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:3cf06d97543ff4ad3dc404453ca34dd79cdd16bb2082be98a74a47a82cc638dd
+                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:c463a42805d75e1aadff14ca2291fc9a401db93d63f719a6c2aff8ed27c89e67
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -2784,7 +2784,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard:6a031f4df1907fd13a58c9351855008b9dd8c5793560cb0d81ba4196d31dc88b"
+                    "dockerPull": "quay.io/ncigdc/picard:6656e113191eeb56679abb378c2ef82362b2514fabd6eaec97a545c6343104a8
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -2873,7 +2873,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:3cf06d97543ff4ad3dc404453ca34dd79cdd16bb2082be98a74a47a82cc638dd
+                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:c463a42805d75e1aadff14ca2291fc9a401db93d63f719a6c2aff8ed27c89e67
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -2937,7 +2937,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard:6a031f4df1907fd13a58c9351855008b9dd8c5793560cb0d81ba4196d31dc88b"
+                    "dockerPull": "quay.io/ncigdc/picard:6656e113191eeb56679abb378c2ef82362b2514fabd6eaec97a545c6343104a8
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -3057,7 +3057,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard:6a031f4df1907fd13a58c9351855008b9dd8c5793560cb0d81ba4196d31dc88b"
+                    "dockerPull": "quay.io/ncigdc/picard:6656e113191eeb56679abb378c2ef82362b2514fabd6eaec97a545c6343104a8
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -3144,7 +3144,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard:6a031f4df1907fd13a58c9351855008b9dd8c5793560cb0d81ba4196d31dc88b"
+                    "dockerPull": "quay.io/ncigdc/picard:6656e113191eeb56679abb378c2ef82362b2514fabd6eaec97a545c6343104a8
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -3258,7 +3258,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:3cf06d97543ff4ad3dc404453ca34dd79cdd16bb2082be98a74a47a82cc638dd
+                    "dockerPull": "quay.io/ncigdc/picard_metrics_sqlite:c463a42805d75e1aadff14ca2291fc9a401db93d63f719a6c2aff8ed27c89e67
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -3574,7 +3574,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/samtools:6161be62579a6f4fa21e1c200a6bf42585ac602829999d582ecd35825ca3695a"
+                    "dockerPull": "quay.io/ncigdc/samtools:76b0e231097a648b3fb2ace48e264a1e6aca02847bb62ba30f225144eda14f71
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -3613,7 +3613,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/samtools:6161be62579a6f4fa21e1c200a6bf42585ac602829999d582ecd35825ca3695a"
+                    "dockerPull": "quay.io/ncigdc/samtools:76b0e231097a648b3fb2ace48e264a1e6aca02847bb62ba30f225144eda14f71
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -3714,7 +3714,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/samtools:6161be62579a6f4fa21e1c200a6bf42585ac602829999d582ecd35825ca3695a"
+                    "dockerPull": "quay.io/ncigdc/samtools:76b0e231097a648b3fb2ace48e264a1e6aca02847bb62ba30f225144eda14f71
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -3818,7 +3818,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/samtools:6161be62579a6f4fa21e1c200a6bf42585ac602829999d582ecd35825ca3695a"
+                    "dockerPull": "quay.io/ncigdc/samtools:76b0e231097a648b3fb2ace48e264a1e6aca02847bb62ba30f225144eda14f71
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -3919,7 +3919,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/samtools:6161be62579a6f4fa21e1c200a6bf42585ac602829999d582ecd35825ca3695a"
+                    "dockerPull": "quay.io/ncigdc/samtools:76b0e231097a648b3fb2ace48e264a1e6aca02847bb62ba30f225144eda14f71
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"

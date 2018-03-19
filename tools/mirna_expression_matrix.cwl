@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/mirna-profiler:bd6f4799a457e0e0fde6dca548801c789656173fe529fd1706dc79adce0085f8
+    dockerPull: quay.io/ncigdc/mirna-profiler:39a8d6c2250993c9af74a62eb05b42956b086900fbc91a9cb84ed415a643fea5
   - class: InitialWorkDirRequirement
     listing:
       - entryname: $(inputs.stats_mirna_species_txt.basename)
@@ -58,15 +58,15 @@ outputs:
       glob: expn_matrix_norm_log.txt
 
 arguments:
-  - valueFrom: "chmod 1777 /tmp"
+  - valueFrom: "sudo chmod 1777 /tmp"
     position: 0
     shellQuote: false
 
-  - valueFrom: "&& /usr/sbin/mysqld --defaults-file=/etc/mysql/my.cnf --user=mysql --daemonize"
+  - valueFrom: "&& sudo /usr/sbin/mysqld --defaults-file=/etc/mysql/my.cnf --user=mysql --daemonize"
     position: 1
     shellQuote: false
 
-  - valueFrom: "&& /root/mirna/v0.2.7/code/library_stats/expression_matrix.pl"
+  - valueFrom: "&& /usr/mirna/v0.2.7/code/library_stats/expression_matrix.pl"
     position: 3
     shellQuote: false
 

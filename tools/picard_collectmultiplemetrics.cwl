@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/picard:6a031f4df1907fd13a58c9351855008b9dd8c5793560cb0d81ba4196d31dc88b
+    dockerPull: quay.io/ncigdc/picard:6656e113191eeb56679abb378c2ef82362b2514fabd6eaec97a545c6343104a8
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
     coresMin: 1
@@ -33,12 +33,18 @@ inputs:
       prefix: INPUT=
       separate: false
 
-  - id: METRIC_ACCUMULATION_LEVEL=
-    type: string
-    default: ALL_READS
-    inputBinding:
-      prefix: METRIC_ACCUMULATION_LEVEL=
-      separate: false
+  - id: METRIC_ACCUMULATION_LEVEL
+    type:
+      type: array
+      items: string
+      inputBinding:
+        prefix: METRIC_ACCUMULATION_LEVEL=
+        separate: false
+    default:
+      - "ALL_READS"
+      - "LIBRARY"
+      - "SAMPLE"
+      - "READ_GROUP"
 
   - id: REFERENCE_SEQUENCE
     type: File
@@ -149,13 +155,13 @@ outputs:
 
 arguments:
   - valueFrom: "PROGRAM=CollectAlignmentSummaryMetrics"
-  - valueFrom: "PROGRAM=CollectBaseDistributionByCycle"
+  - valueFrom: "PROGRAM=CollectBaseDistributionByCycle" # ALL_READS only
   - valueFrom: "PROGRAM=CollectGcBiasMetrics"
   - valueFrom: "PROGRAM=CollectInsertSizeMetrics"
-  - valueFrom: "PROGRAM=CollectQualityYieldMetrics"
-  - valueFrom: "PROGRAM=CollectSequencingArtifactMetrics"
-  - valueFrom: "PROGRAM=MeanQualityByCycle"
-  - valueFrom: "PROGRAM=QualityScoreDistribution"
+  - valueFrom: "PROGRAM=CollectQualityYieldMetrics" # ALL_READS only
+  - valueFrom: "PROGRAM=CollectSequencingArtifactMetrics" # ALL_READS only
+  - valueFrom: "PROGRAM=MeanQualityByCycle" # ALL_READS only
+  - valueFrom: "PROGRAM=QualityScoreDistribution" # ALL_READS only
 
   - valueFrom: $(inputs.INPUT.nameroot)
     prefix: OUTPUT=

@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/picard_metrics_sqlite:3cf06d97543ff4ad3dc404453ca34dd79cdd16bb2082be98a74a47a82cc638dd
+    dockerPull: quay.io/ncigdc/picard_metrics_sqlite:c463a42805d75e1aadff14ca2291fc9a401db93d63f719a6c2aff8ed27c89e67
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
@@ -14,25 +14,6 @@ inputs:
     type: string
     inputBinding:
       prefix: --bam
-
-  - id: bam_library
-    type: File
-    inputBinding:
-      loadContents: true
-      prefix: --bam_library
-      valueFrom: $(self.contents.slice(0,-1))
-
-  - id: exome_kit
-    type: File
-    inputBinding:
-      loadContents: true
-      prefix: --exome_kit
-      valueFrom: $(self.contents.slice(0,-1))
-
-  - id: fasta
-    type: string
-    inputBinding:
-      prefix: --fasta
 
   - id: input_state
     type: string
@@ -44,20 +25,20 @@ inputs:
     inputBinding:
       prefix: --metric_path
 
-  - id: uuid
+  - id: job_uuid
     type: string
     inputBinding:
-      prefix: --uuid
+      prefix: --job_uuid
 
 outputs:
   - id: log
     type: File
     outputBinding:
-      glob: $(inputs.uuid+"_picard_CollectHsMetrics.log")
+      glob: $(inputs.job_uuid+"_picard_CollectHsMetrics.log")
 
   - id: sqlite
     type: File
     outputBinding:
-      glob: $(inputs.uuid + ".db")
+      glob: $(inputs.job_uuid + ".db")
 
 baseCommand: [/usr/local/bin/picard_metrics_sqlite, --metric_name, CollectHsMetrics]

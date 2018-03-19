@@ -16,11 +16,11 @@ inputs:
     type: string
   - id: cwl_workflow_rel_path
     type: string
-  - id: cwl_task_git_hash
+  - id: cwl_job_git_hash
     type: string
-  - id: cwl_task_git_repo
+  - id: cwl_job_git_repo
     type: string
-  - id: cwl_task_rel_path
+  - id: cwl_job_rel_path
     type: string
   - id: db_cred
     type: File
@@ -40,24 +40,44 @@ inputs:
     type: string
   - id: known_snp_gdc_id
     type: string
+  - id: known_snp_file_size
+    type: long
   - id: known_snp_index_gdc_id
     type: string
+  - id: known_snp_index_file_size
+    type: long
   - id: reference_amb_gdc_id
     type: string
+  - id: reference_amb_file_size
+    type: long
   - id: reference_ann_gdc_id
     type: string
+  - id: reference_ann_file_size
+    type: long
   - id: reference_bwt_gdc_id
     type: string
+  - id: reference_bwt_file_size
+    type: long
   - id: reference_dict_gdc_id
     type: string
+  - id: reference_dict_file_size
+    type: long
   - id: reference_fa_gdc_id
     type: string
+  - id: reference_fa_file_size
+    type: long
   - id: reference_fai_gdc_id
     type: string
+  - id: reference_fai_file_size
+    type: long
   - id: reference_pac_gdc_id
     type: string
+  - id: reference_pac_file_size
+    type: long
   - id: reference_sa_gdc_id
     type: string
+  - id: reference_sa_file_size
+    type: long
   - id: indexd_bam_uuid
     type: string
   - id: indexd_bai_uuid
@@ -82,7 +102,7 @@ inputs:
     type: File
   - id: table_name 
     type: string
-  - id: task_uuid
+  - id: job_uuid
     type: string
   - id: thread_count
     type: long
@@ -101,9 +121,9 @@ steps:
           "cwl_workflow_git_hash",
           "cwl_workflow_git_repo",
           "cwl_workflow_rel_path",
-          "cwl_task_git_hash",
-          "cwl_task_git_repo",
-          "cwl_task_rel_path",
+          "cwl_job_git_hash",
+          "cwl_job_git_repo",
+          "cwl_job_rel_path",
           "hostname",
           "host_ipaddress",
           "host_macaddress",
@@ -126,16 +146,16 @@ steps:
           "indexd_mirna_profiling_mirnas_quant_uuid",
           "indexd_sqlite_uuid",
           "status",
-          "task_uuid"
+          "job_uuid"
         ]
       - id: string_values
         source: [
           cwl_workflow_git_hash,
           cwl_workflow_git_repo,
           cwl_workflow_rel_path,
-          cwl_task_git_hash,
-          cwl_task_git_repo,
-          cwl_task_rel_path,
+          cwl_job_git_hash,
+          cwl_job_git_repo,
+          cwl_job_rel_path,
           hostname,
           host_ipaddress,
           host_macaddress,
@@ -158,11 +178,21 @@ steps:
           indexd_mirna_profiling_mirnas_quant_uuid,
           indexd_sqlite_uuid,
           status,
-          task_uuid
+          job_uuid
         ]
       - id: long_keys
         default: [
           "input_bam_file_size",
+          "known_snp_file_size",
+          "known_snp_index_file_size",
+          "reference_amb_file_size",
+          "reference_ann_file_size",
+          "reference_bwt_file_size",
+          "reference_dict_file_size",
+          "reference_fa_file_size",
+          "reference_fai_file_size",
+          "reference_pac_file_size",
+          "reference_sa_file_size",
           "slurm_resource_cores",
           "slurm_resource_disk_gigabytes",
           "slurm_resource_mem_megabytes",
@@ -171,6 +201,16 @@ steps:
       - id: long_values
         source: [
           input_bam_file_size,
+          known_snp_file_size,
+          known_snp_index_file_size,
+          reference_amb_file_size,
+          reference_ann_file_size,
+          reference_bwt_file_size,
+          reference_dict_file_size,
+          reference_fa_file_size,
+          reference_fai_file_size,
+          reference_pac_file_size,
+          reference_sa_file_size,
           slurm_resource_cores,
           slurm_resource_disk_gigabytes,
           slurm_resource_mem_megabytes,
@@ -188,8 +228,8 @@ steps:
     in:
       - id: input_json
         source: emit_json/output
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
       - id: table_name
         source: table_name 
     out:
@@ -205,7 +245,7 @@ steps:
         source: db_cred_section
       - id: source_sqlite_path
         source: json_to_sqlite/sqlite
-      - id: task_uuid
-        source: task_uuid
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: log

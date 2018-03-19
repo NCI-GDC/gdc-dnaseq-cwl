@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/mirna-profiler:bd6f4799a457e0e0fde6dca548801c789656173fe529fd1706dc79adce0085f8
+    dockerPull: quay.io/ncigdc/mirna-profiler:39a8d6c2250993c9af74a62eb05b42956b086900fbc91a9cb84ed415a643fea5
   - class: InitialWorkDirRequirement
     listing:
       - entryname: $(inputs.sam.basename)
@@ -82,4 +82,4 @@ outputs:
     outputBinding:
       glob: $(inputs.sam.nameroot)_features/softclip_taglengths.csv
 
-baseCommand: [/root/mirna/v0.2.7/code/library_stats/alignment_stats.pl]
+baseCommand: [/usr/mirna/v0.2.7/code/library_stats/alignment_stats.pl]
