@@ -34,14 +34,14 @@ inputs:
     format: "edam:format_3464"
     inputBinding:
       loadContents: true
-      valueFrom: null
+      valueFrom: $(null)
 
   - id: fastqc_json_path
     type: File
     format: "edam:format_3464"
     inputBinding:
       loadContents: true
-      valueFrom: null
+      valueFrom: $(null)
 
   - id: thread_count
     type: int
