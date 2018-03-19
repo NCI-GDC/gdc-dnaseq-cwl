@@ -63,6 +63,16 @@ expression: |
           exit()
         }
       }
+
+      // Work around corner case where `RG` entry is not present.
+      // BCM for example, has generated WGS file
+      // TCGA-75-5125-01A-01D-A46I-10_wgs_Illumina.bam
+      // which has @RG lines, but no RG pointers in any reads.
+      // In this case, biobambam generates just
+      // default_1.fq and default_2.fq
+      // Anyline which is made to deal with this is marked with //RG,
+      // and may be removed when workflow transitions to active
+      // submission where this case will be returned to submitter.
       
       // get predicted readgroup basenames from fastq
       var readgroup_basename_array = [];
