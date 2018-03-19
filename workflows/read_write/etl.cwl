@@ -60,6 +60,6 @@ steps:
         valueFrom: $(self + inputs.uuid + '/')
       - id: uuid
         source: uuid
-        valueFrom: null
+        valueFrom: $(null)
     out:
       - id: output

@@ -1,0 +1,42 @@
+{
+    "cwl_runner_repo_hash": "",
+    "cwl_runner_repo": "",
+    "cwl_runner_url": "",
+    "cwl_runner_job_branch": "",
+    "cwl_runner_job_repo": "",
+    "cwl_runner_job_url": "",
+    "db_cred": {
+        "class": "File",
+        "path": ""
+    },
+    "db_cred_section": "",
+    "gdc_token": {
+        "class": "File",
+        "path": ""
+    },
+    "input_bam_gdc_id": "",
+    "input_bam_file_size": 0,
+    "input_bam_md5sum": "",
+    "job_uuid": "",
+    "slurm_resource_cores": 0,
+    "slurm_resource_disk_gigabytes": 0,
+    "slurm_resource_mem_megabytes": 0,
+    "slurm_runner_job_url": "",
+    "status_table": "",
+    "task_creation_uuid": "",
+    "thread_count": 1,
+    "aws_config": {
+        "class": "File",
+        "path": ""
+    },
+    "aws_shared_credentials": {
+        "class": "File",
+        "path": ""
+    },
+    "endpoint_json": {
+        "class": "File",
+        "path": ""
+    },
+    "s3cfg_section": "",
+    "load_bucket": ""
+}

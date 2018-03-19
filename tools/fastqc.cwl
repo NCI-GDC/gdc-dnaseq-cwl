@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/fastqc:1
+    dockerPull: quay.io/ncigdc/fastqc:9c853425fffb39da6084fb131f1bbe561648b1eb792204e68b50e94f05a6976f
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
@@ -97,7 +97,7 @@ inputs:
       prefix: --quiet
 
   - id: threads
-    type: int
+    type: long
     default: 1
     inputBinding:
       prefix: --threads

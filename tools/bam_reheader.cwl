@@ -4,28 +4,28 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/bam_reheader:1
+    dockerPull: quay.io/ncigdc/bam_reheader:2a404a0eabc344da137e6573a7e6cdb0cacb646e386261bfbcdf0990422a5096
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
 
 inputs:
-  - id: bam_path
+  - id: input
     type: File
     format: "edam:format_2572"
     inputBinding:
       prefix: --bam_path
 
 outputs:
-  - id: output_bam
+  - id: output
     type: File
     format: "edam:format_2572"
     outputBinding:
-      glob: $(inputs.bam_path.basename)
+      glob: $(inputs.input.basename)
 
   - id: log
     type: File
     outputBinding:
-      glob: $(inputs.bam_path.basename + ".log")
+      glob: $(inputs.input.basename + ".log")
 
 baseCommand: [/usr/local/bin/bam_reheader]

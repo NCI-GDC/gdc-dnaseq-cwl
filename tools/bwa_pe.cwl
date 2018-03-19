@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/bwa:1
+    dockerPull: quay.io/ncigdc/bwa:fac166f93639cbbd4f19db5d07eaf9fa0e1e31f667dd6375d3fc1c995992cd49
   - class: InlineJavascriptRequirement
   - class: ShellCommandRequirement
 
@@ -44,7 +44,7 @@ inputs:
       valueFrom: $(null)
 
   - id: thread_count
-    type: int
+    type: long
 
 outputs:
   - id: OUTPUT

@@ -152,7 +152,7 @@ steps:
           }
       - id: uuid
         source: uuid
-        valueFrom: null
+        valueFrom: $(null)
     out:
       - id: output
 
@@ -189,7 +189,7 @@ steps:
           }
       - id: uuid
         source: uuid
-        valueFrom: null
+        valueFrom: $(null)
     out:
       - id: output
 
@@ -225,6 +225,6 @@ steps:
           }
       - id: uuid
         source: uuid
-        valueFrom: null
+        valueFrom: $(null)
     out:
       - id: output

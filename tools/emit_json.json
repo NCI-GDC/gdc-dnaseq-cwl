@@ -1,0 +1,22 @@
+{
+    "string_keys": [
+        "a",
+        "b"
+    ],
+    "string_values": [
+        "asdf",
+        "qwer"
+    ],
+    "long_keys": [
+        "c"
+    ],
+    "long_values": [
+        1
+    ],
+    "float_keys": [
+        "d"
+    ],
+    "float_values": [
+        1.1
+    ]
+}

@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/fastqc_db:1
+    dockerPull: quay.io/ncigdc/fastqc_db:b9c09ea65f40e154d239ebf494f4cd14ed2526cb6b70f65f9d822d3ebd4f1594
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
@@ -15,16 +15,16 @@ inputs:
     inputBinding:
       prefix: --INPUT
 
-  - id: uuid
+  - id: task_uuid
     type: string
     inputBinding:
-      prefix: --uuid
+      prefix: --task_uuid
 
 outputs:
   - id: LOG
     type: File
     outputBinding:
-      glob: $(inputs.uuid + ".log")
+      glob: $(inputs.task_uuid + ".log")
 
   - id: OUTPUT
     type: File

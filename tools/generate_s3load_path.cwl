@@ -14,7 +14,7 @@ inputs:
   - id: filename
     type: string
 
-  - id: uuid
+  - id: task_uuid
     type: string
 
 outputs:
@@ -23,6 +23,6 @@ outputs:
 
 expression: |
   ${
-    var output = inputs.load_bucket + "/" + inputs.uuid + "/" + inputs.filename;
+    var output = inputs.load_bucket + "/" + inputs.task_uuid + "/" + inputs.filename;
     return {'output': output}
   }

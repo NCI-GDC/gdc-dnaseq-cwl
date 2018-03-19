@@ -1,0 +1,11 @@
+{
+    "awk_expression": "{arr[length($10)]+=1} END {for (i in arr) {print i\" \"arr[i]}}",
+    "bam" : {
+        "class": "File",
+        "path": "/mnt/scratch/mirna/113075.bam"
+    },
+    "mirbase_db": "mirbase",
+    "species_code": "hsa",
+    "project_directory": ".",
+    "ucsc_database": "hg38"
+}

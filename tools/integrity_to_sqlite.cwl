@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/integrity_to_sqlite:1
+    dockerPull: quay.io/ncigdc/integrity_to_sqlite:40edb00dd1679ad7019ee4b8c634aadc1e8aa66e6baac8d0a72b7389dbac76bf
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
@@ -30,20 +30,20 @@ inputs:
     inputBinding:
       prefix: "--sha256sum_path"
 
-  - id: uuid
+  - id: task_uuid
     type: string
     inputBinding:
-      prefix: "--uuid"
+      prefix: "--task_uuid"
 
 outputs:
   - id: LOG
     type: File
     outputBinding:
-      glob: $(inputs.uuid + ".log")
+      glob: $(inputs.task_uuid + ".log")
 
   - id: OUTPUT
     type: File
     outputBinding:
-      glob: $(inputs.uuid + ".db")
+      glob: $(inputs.task_uuid + ".db")
 
 baseCommand: [/usr/local/bin/integrity_to_sqlite]

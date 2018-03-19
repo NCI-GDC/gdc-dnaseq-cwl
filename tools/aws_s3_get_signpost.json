@@ -1,0 +1,18 @@
+{
+    "aws_config" : {
+        "class": "File",
+        "path" : "/home/ubuntu/.aws/config"
+    },
+    "aws_shared_credentials": {
+        "class": "File",
+        "path": "/home/ubuntu/aws_jhsavage_credentials"
+    },
+    "endpoint_json": {
+        "class": "File",
+        "path": "/home/ubuntu/endpoint.json"
+    },
+    "signpost_json": {
+        "class": "File",
+        "path": "output.json"
+    }
+}

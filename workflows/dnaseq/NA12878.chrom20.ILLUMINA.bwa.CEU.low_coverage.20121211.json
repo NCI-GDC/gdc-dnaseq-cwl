@@ -1,16 +1,17 @@
 {
-    "bam_path": {
+    "input_bam": {
         "class": "File",
-        "path": "/mnt/SCRATCH/NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211.bam"
+        "path": "/mnt/scratch/NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211.bam"
     },
-    "reference_fasta_path": {
+    "reference_sequence": {
         "class": "File",
-        "path": "/mnt/SCRATCH/hg38_reference/GRCh38.d1.vd1.fa"
+        "path": "/mnt/scratch/hg38_reference/GRCh38.d1.vd1.fa"
     },
-    "db_snp_path": {
+    "known_snp": {
         "class": "File",
-        "path": "/mnt/SCRATCH/hg38_reference/dbsnp_144.hg38.vcf.gz"
+        "path": "/mnt/scratch/hg38_reference/dbsnp_144.hg38.vcf.gz"
     },
-    "thread_count": 8,
-    "uuid": "demo"
+    "task_uuid": "fake-task-id",
+    "thread_count": 16,
+    "run_uuid": "demo"
 }

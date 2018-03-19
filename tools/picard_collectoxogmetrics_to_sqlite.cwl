@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/picard_metrics_sqlite:1
+    dockerPull: quay.io/ncigdc/picard_metrics_sqlite:bbb809fe71a61233801e376068c734539ee58e080d704c6ddc759e24ec59eaaf
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
@@ -30,10 +30,10 @@ inputs:
     inputBinding:
       prefix: --metric_path
 
-  - id: uuid
+  - id: task_uuid
     type: string
     inputBinding:
-      prefix: --uuid
+      prefix: --task_uuid
 
   - id: vcf
     type: string
@@ -44,11 +44,11 @@ outputs:
   - id: log
     type: File
     outputBinding:
-      glob: $(inputs.uuid+"_picard_CollectOxoGMetrics.log")
+      glob: $(inputs.task_uuid+"_picard_CollectOxoGMetrics.log")
 
   - id: sqlite
     type: File
     outputBinding:
-      glob: $(inputs.uuid + ".db")
+      glob: $(inputs.task_uuid + ".db")
           
 baseCommand: [/usr/local/bin/picard_metrics_sqlite, --metric_name, CollectOxoGMetrics]

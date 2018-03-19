@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/cocleaning-tool:3.7
+    dockerPull: quay.io/ncigdc/cocleaning-tool:63a7464045a47625ba04b52a02523144dfde5afdc9cc237e570597fa7d53a192
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
@@ -39,7 +39,7 @@ inputs:
       prefix: --indels_context_size
 
   - id: input_file
-    #format: "edam:format_2572"
+    format: "edam:format_2572"
     type: File
     inputBinding:
       prefix: --input_file
@@ -53,7 +53,7 @@ inputs:
       prefix: --insertions_default_quality
 
   - id: knownSites
-    #format: "edam:format_3016"
+    format: "edam:format_3016"
     type: File
     inputBinding:
       prefix: --knownSites
@@ -114,7 +114,7 @@ inputs:
       prefix: --no_standard_covs
 
   - id: num_cpu_threads_per_data_thread
-    type: int
+    type: long
     default: 1
     inputBinding:
       prefix: --num_cpu_threads_per_data_thread
@@ -138,7 +138,7 @@ inputs:
       prefix: --sort_by_all_columns
 
   - id: reference_sequence
-    #format: "edam:format_1929"
+    format: "edam:format_1929"
     type: File
     inputBinding:
       prefix: --reference_sequence

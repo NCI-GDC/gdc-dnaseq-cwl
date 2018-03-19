@@ -5,7 +5,7 @@ cwlVersion: v1.0
 requirements:
   - class: InlineJavascriptRequirement
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/bwa:1
+    dockerPull: quay.io/ncigdc/bwa:fac166f93639cbbd4f19db5d07eaf9fa0e1e31f667dd6375d3fc1c995992cd49
   - class: ShellCommandRequirement
 
 class: CommandLineTool
@@ -37,8 +37,12 @@ inputs:
       loadContents: true
       valueFrom: $(null)
 
+  - id: samse_maxOcc
+    type: long
+    default: 3
+      
   - id: thread_count
-    type: int
+    type: long
 
 outputs:
   - id: OUTPUT
@@ -65,7 +69,7 @@ arguments:
         function bwa_aln_33(rg_str, outbam) {
           var cmd = [
           "bwa", "aln", "-t", inputs.thread_count, inputs.fasta.path, inputs.fastq.path, ">", "aln.sai", "&&",
-          "bwa", "samse", "-r", "\"" + rg_str + "\"", inputs.fasta.path, "aln.sai", inputs.fastq.path, "|",
+          "bwa", "samse", "-n", inputs.samse_maxOcc, "-r", "\"" + rg_str + "\"", inputs.fasta.path, "aln.sai", inputs.fastq.path, "|",
           "samtools", "view", "-Shb", "-o", outbam, "-"
           ];
           return cmd.join(' ')
@@ -74,7 +78,7 @@ arguments:
         function bwa_aln_64(rg_str, outbam) {
           var cmd = [
           "bwa", "aln", "-I","-t", inputs.thread_count, inputs.fasta.path, inputs.fastq.path, ">", "aln.sai", "&&",
-          "bwa", "samse", "-r", "\"" + rg_str + "\"", inputs.fasta.path, "aln.sai", inputs.fastq.path, "|",
+          "bwa", "samse", "-n", inputs.samse_maxOcc, "-r", "\"" + rg_str + "\"", inputs.fasta.path, "aln.sai", inputs.fastq.path, "|",
           "samtools", "view", "-Shb", "-o", outbam, "-"
           ];
           return cmd.join(' ')

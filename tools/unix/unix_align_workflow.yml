@@ -1,0 +1,9 @@
+fastq1_path:
+  class: File
+  path: file1_1.fq
+fastq2_path:
+  class: File
+  path: file1_2.fq
+readgroup_path:
+  class: File
+  path: file1.readgroup

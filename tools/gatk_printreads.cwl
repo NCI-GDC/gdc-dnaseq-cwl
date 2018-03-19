@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/cocleaning-tool:3.7
+    dockerPull: quay.io/ncigdc/cocleaning-tool:63a7464045a47625ba04b52a02523144dfde5afdc9cc237e570597fa7d53a192
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
@@ -16,7 +16,7 @@ inputs:
       prefix: --BQSR
 
   - id: input_file
-    #format: "edam:format_2572"
+    format: "edam:format_2572"
     type: File
     inputBinding:
       prefix: --input_file
@@ -35,7 +35,7 @@ inputs:
       prefix: --logging_level
 
   - id: num_cpu_threads_per_data_thread
-    type: int
+    type: long
     default: 1
     inputBinding:
       prefix: --num_cpu_threads_per_data_thread
@@ -57,7 +57,7 @@ inputs:
       prefix: --readGroup
 
   - id: reference_sequence
-    #format: "edam:format_1929"
+    format: "edam:format_1929"
     type: File
     inputBinding:
       prefix: --reference_sequence
@@ -83,7 +83,7 @@ inputs:
 
 outputs:
   - id: output_bam
-    #format: "edam:format_2572"
+    format: "edam:format_2572"
     type: File
     outputBinding:
       glob: $(inputs.input_file.basename)

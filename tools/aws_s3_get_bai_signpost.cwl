@@ -5,7 +5,7 @@ cwlVersion: v1.0
 class: CommandLineTool
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/awscli:1
+    dockerPull: quay.io/ncigdc/awscli:ef005e74478e9a2fb3ce638cbfa6199e88b322abd0934ba0586980a9f45fc052
   - class: EnvVarRequirement
     envDef:
       - envName: "AWS_CONFIG_FILE"
@@ -25,13 +25,13 @@ inputs:
     type: File
     inputBinding:
       loadContents: true
-      valueFrom: null
+      valueFrom: $(null)
 
   - id: signpost_json
     type: File
     inputBinding:
       loadContents: true
-      valueFrom: null
+      valueFrom: $(null)
 
 outputs:
   - id: output

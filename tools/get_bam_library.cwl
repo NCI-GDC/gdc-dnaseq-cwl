@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: ubuntu:xenial-20160809
+    dockerPull: ubuntu:artful-20171019
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
@@ -14,7 +14,7 @@ inputs:
     type: File
     inputBinding:
       loadContents: true
-      valueFrom: null
+      valueFrom: $(null)
 
 outputs:
   - id: library

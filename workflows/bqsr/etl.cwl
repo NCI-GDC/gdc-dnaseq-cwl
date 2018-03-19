@@ -296,7 +296,7 @@ steps:
         valueFrom: $(self + "/" + inputs.bam_uuid + "/")
       - id: bam_uuid
         source: emit_bam_uuid/output
-        valueFrom: null
+        valueFrom: $(null)
     out:
       - id: output
 
@@ -319,7 +319,7 @@ steps:
         valueFrom: $(self + "/" + inputs.bam_uuid + "/")
       - id: bam_uuid
         source: emit_bam_uuid/output
-        valueFrom: null
+        valueFrom: $(null)
     out:
       - id: output
 
@@ -341,7 +341,7 @@ steps:
         valueFrom: $(self + "/" + inputs.bam_uuid + "/")
       - id: bam_uuid
         source: emit_bam_uuid/output
-        valueFrom: null
+        valueFrom: $(null)
     out:
       - id: output
 

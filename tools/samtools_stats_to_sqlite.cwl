@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/samtools_metrics_sqlite:1
+    dockerPull: quay.io/ncigdc/samtools_metrics_sqlite:45b161680b60ab2fcd2fab718632769b9a3329af376f11dac6f673e702f1df7e
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
@@ -25,20 +25,20 @@ inputs:
     inputBinding:
       prefix: --metric_path
 
-  - id: uuid
+  - id: task_uuid
     type: string
     inputBinding:
-      prefix: --uuid
+      prefix: --task_uuid
 
 outputs:
   - id: log
     type: File
     outputBinding:
-      glob: $(inputs.uuid+"_samtools_stats.log")
+      glob: $(inputs.task_uuid+"_samtools_stats.log")
 
   - id: sqlite
     type: File
     outputBinding:
-      glob: $(inputs.uuid + ".db")
+      glob: $(inputs.task_uuid + ".db")
 
 baseCommand: [/usr/local/bin/samtools_metrics_sqlite, --metric_name, stats]

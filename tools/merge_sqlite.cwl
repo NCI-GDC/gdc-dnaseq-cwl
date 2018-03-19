@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/merge_sqlite:3
+    dockerPull: quay.io/ncigdc/merge_sqlite:32bf383b197503e795278332d3c8bd5944f736f25ebaedb25a3a104252c3b76f
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
@@ -18,21 +18,21 @@ inputs:
       inputBinding:
         prefix: "--source_sqlite"
 
-  - id: uuid
+  - id: task_uuid
     type: string
     inputBinding:
-      prefix: "--uuid"
+      prefix: "--task_uuid"
 
 outputs:
   - id: destination_sqlite
     format: "edam:format_3621"
     type: File
     outputBinding:
-      glob: $(inputs.uuid + ".db")
+      glob: $(inputs.task_uuid + ".db")
 
   - id: log
     type: File
     outputBinding:
-      glob: $(inputs.uuid + ".log")
+      glob: $(inputs.task_uuid + ".log")
 
 baseCommand: [/usr/local/bin/merge_sqlite]

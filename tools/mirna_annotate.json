@@ -1,0 +1,10 @@
+{
+    "mirbase": "hg38",
+    "project_directory": ".",
+    "sam": {
+        "class": "File",
+        "path": "/mnt/scratch/NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211.sam"
+    },
+    "species_code": "hsa",
+    "ucsc_database": "hg38"
+}

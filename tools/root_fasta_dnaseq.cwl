@@ -3,6 +3,8 @@
 cwlVersion: v1.0
 
 requirements:
+  - class: DockerRequirement
+    dockerPull: ubuntu:artful-20171019
   - class: InitialWorkDirRequirement
     listing:
       - entryname: $(inputs.fasta.basename)
@@ -13,6 +15,10 @@ requirements:
         entry: $(inputs.fasta_ann)
       - entryname: $(inputs.fasta_bwt.basename)
         entry: $(inputs.fasta_bwt)
+      - entryname: $(inputs.fasta_dict.basename)
+        entry: $(inputs.fasta_dict)
+      - entryname: $(inputs.fasta_fai.basename)
+        entry: $(inputs.fasta_fai)
       - entryname: $(inputs.fasta_pac.basename)
         entry: $(inputs.fasta_pac)
       - entryname: $(inputs.fasta_sa.basename)
@@ -35,6 +41,12 @@ inputs:
   - id: fasta_bwt
     type: File
 
+  - id: fasta_dict
+    type: File
+
+  - id: fasta_fai
+    type: File
+
   - id: fasta_pac
     type: File
 
@@ -51,7 +63,8 @@ outputs:
       - .amb
       - .ann
       - .bwt
+      - .fai
       - .pac
       - .sa
 
-baseCommand: "true"
+baseCommand: ['true']
