@@ -47,6 +47,6 @@ outputs:
       glob: $(inputs.pipeline.basename).stderr
 
 stdout: $(inputs.pipeline).stdout
-
 stderr: $(inputs.pipeline).stderr
-baseCommand: [/usr/local/bin/biowcs/]
+
+baseCommand: [/usr/local/bin/biowcs]
