@@ -13,14 +13,12 @@ inputs:
     type: File
     inputBinding:
       prefix: -c
-      position: 0
 
   - id: tdfs
     type: Directory
     default: "."
     inputBinding:
       prefix: --tdfs
-      position: 99
 
   - id: pipeline
     type: File
