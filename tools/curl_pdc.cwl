@@ -9,7 +9,6 @@ requirements:
     envDef:
       - envName: ftp_proxy
         envValue: $(inputs.env_ftp_proxy)
-  - class: InlineJavascriptRequirement
 
 class: CommandLineTool
 

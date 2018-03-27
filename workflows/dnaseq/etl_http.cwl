@@ -10,22 +10,14 @@ requirements:
  - class: SubworkflowFeatureRequirement
 
 inputs:
-  - id: bam_url
-    type: string
-  - id: bam_name
-    type: string
-  - id: dbsnp_url
-    type: string
-  - id: dbsnp_name
-    type: string
-  - id: fasta_url
-    type: string
-  - id: fasta_name
-    type: string
-  - id: fasta_bwa_url
-    type: string
-  - id: fasta_bwa_name
-    type: string
+  - id: bam
+    type: File
+  - id: dbsnp
+    type: File
+  - id: fasta
+    type: File
+  - id: fasta_bwa
+    type: File
   - id: thread_count
     type: int
   - id: uuid
@@ -40,51 +32,11 @@ outputs:
     outputSource: transform/merge_all_sqlite_destination_sqlite
 
 steps:
-  - id: extract_curl_bam
-    run: ../../tools/curl.cwl
-    in:
-      - id: url
-        source: bam_url
-      - id: output
-        source: bam_name
-    out:
-      - id: output_file
-
-  - id: extract_curl_dbsnp
-    run: ../../tools/curl.cwl
-    in:
-      - id: url
-        source: dbsnp_url
-      - id: output
-        source: dbsnp_name
-    out:
-      - id: output_file
-        
-  - id: extract_curl_fasta
-    run: ../../tools/curl.cwl
-    in:
-      - id: url
-        source: fasta_url
-      - id: output
-        source: fasta_name
-    out:
-      - id: output_file
-
-  - id: extract_curl_fastabwa
-    run: ../../tools/curl.cwl
-    in:
-      - id: url
-        source: fasta_bwa_url
-      - id: output
-        source: fasta_bwa_name
-    out:
-      - id: output_file
-
   - id: extract_untar_fastabwa
     run: ../../tools/untar_fastabwa.cwl
     in:
       - id: input
-        source: extract_curl_fastabwa/output_file
+        source: fasta_bwa
     out:
       - id: fasta_amb
       - id: fasta_ann
@@ -96,7 +48,7 @@ steps:
     run: ../../tools/untar_fasta.cwl
     in:
       - id: input
-        source: extract_curl_fasta/output_file
+        source: fasta
     out:
       - id: fasta
 
@@ -122,9 +74,9 @@ steps:
     run: transform.cwl
     in:
       - id: bam_path
-        source: extract_curl_bam/output_file
+        source: bam
       - id: db_snp_path
-        source: extract_curl_dbsnp/output_file
+        source: dbsnp
       - id: reference_fasta_path
         source: root_fasta_files/output
       - id: thread_count
