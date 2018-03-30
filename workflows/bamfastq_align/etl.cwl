@@ -327,7 +327,10 @@ steps:
       - id: upload-bucket
         source: bioclient_load_bucket
       - id: upload-key
-        valueFrom: job_uuid/bam_name
+        valueFrom: $(inputs.job_uuid)/$(inputs.input.basename)
+      - id: job_uuid
+        source: job_uuid
+        valueFrom: $(null)
     out:
       - id: output
 
