@@ -37,6 +37,7 @@ outputs:
 
   - id: OUTPUT
     type: File
+    format: "edam:format_3621"
     outputBinding:
       glob: $(inputs.INPUT.nameroot + ".db")
 
