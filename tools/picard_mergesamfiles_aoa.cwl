@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/picard:6656e113191eeb56679abb378c2ef82362b2514fabd6eaec97a545c6343104a8
+    dockerPull: quay.io/ncigdc/picard:3a00f3f0af49c3e5af1447bbc06b40afd16337f6519f9b811b80862926fe1233
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
     coresMin: 1
@@ -145,7 +145,7 @@ arguments:
         }
 
         if (input_array.length == 0) {
-          const cmd = ['/usr/bin/touch', inputs.OUTPUT];
+          var cmd = ['/usr/bin/touch', inputs.OUTPUT];
           return cmd;
         }
         else {

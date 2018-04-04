@@ -23,7 +23,7 @@ outputs:
 
 expression: |
   ${
-    const output = { "fastq": inputs.fastq,
+    var output = { "fastq": inputs.fastq,
                      "readgroup_meta": inputs.readgroup_meta};
 
     return {'output': output}

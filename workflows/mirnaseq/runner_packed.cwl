@@ -273,7 +273,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/biobambam:5f20c171e7f2b2a0a6e11d65dff5d8c2efafd2e09c26ab19695f6a47a438e823"
+                    "dockerPull": "quay.io/ncigdc/biobambam:d4b3d1218df6d120aa4e04068e58efbdd4c9b3551f550744805b52eaa145bfbf
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -2089,7 +2089,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard:6656e113191eeb56679abb378c2ef82362b2514fabd6eaec97a545c6343104a8
+                    "dockerPull": "quay.io/ncigdc/picard:3a00f3f0af49c3e5af1447bbc06b40afd16337f6519f9b811b80862926fe1233
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -2480,7 +2480,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard:6656e113191eeb56679abb378c2ef82362b2514fabd6eaec97a545c6343104a8
+                    "dockerPull": "quay.io/ncigdc/picard:3a00f3f0af49c3e5af1447bbc06b40afd16337f6519f9b811b80862926fe1233
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -2649,7 +2649,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard:6656e113191eeb56679abb378c2ef82362b2514fabd6eaec97a545c6343104a8
+                    "dockerPull": "quay.io/ncigdc/picard:3a00f3f0af49c3e5af1447bbc06b40afd16337f6519f9b811b80862926fe1233
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -2784,7 +2784,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard:6656e113191eeb56679abb378c2ef82362b2514fabd6eaec97a545c6343104a8
+                    "dockerPull": "quay.io/ncigdc/picard:3a00f3f0af49c3e5af1447bbc06b40afd16337f6519f9b811b80862926fe1233
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -2937,7 +2937,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard:6656e113191eeb56679abb378c2ef82362b2514fabd6eaec97a545c6343104a8
+                    "dockerPull": "quay.io/ncigdc/picard:3a00f3f0af49c3e5af1447bbc06b40afd16337f6519f9b811b80862926fe1233
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -3057,7 +3057,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard:6656e113191eeb56679abb378c2ef82362b2514fabd6eaec97a545c6343104a8
+                    "dockerPull": "quay.io/ncigdc/picard:3a00f3f0af49c3e5af1447bbc06b40afd16337f6519f9b811b80862926fe1233
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -3144,7 +3144,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/picard:6656e113191eeb56679abb378c2ef82362b2514fabd6eaec97a545c6343104a8
+                    "dockerPull": "quay.io/ncigdc/picard:3a00f3f0af49c3e5af1447bbc06b40afd16337f6519f9b811b80862926fe1233
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"

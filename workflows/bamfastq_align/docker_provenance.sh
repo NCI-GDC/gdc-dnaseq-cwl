@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 #set -e
-cwltool --pack workflows/bamfastq_align/runner.cwl > runner_pack.cwl
-docker_repos=($(grep dockerPull runner_pack.cwl | sort | uniq | awk '{print $2}' | sed -e 's/^"//' -e 's/"$//' | awk -F ":" '{print $1}' | grep ncigdc))
+cwltool --pack workflows/bamfastq_align/etl.cwl > etl_pack.cwl
+docker_repos=($(grep dockerPull etl_pack.cwl | sort | uniq | awk '{print $2}' | sed -e 's/^"//' -e 's/"$//' | awk -F ":" '{print $1}' | grep ncigdc))
 for docker_repo in "${docker_repos[@]}"
 do
     docker pull ${docker_repo}:latest
 done
 
-rm runner_pack.cwl
+rm etl_pack.cwl
 
 for docker_repo in "${docker_repos[@]}"
 do
