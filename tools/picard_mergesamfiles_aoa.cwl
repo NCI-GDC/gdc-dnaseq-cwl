@@ -145,7 +145,7 @@ arguments:
         }
 
         if (input_array.length == 0) {
-          const cmd = ['/usr/bin/touch', inputs.OUTPUT];
+          var cmd = ['/usr/bin/touch', inputs.OUTPUT];
           return cmd;
         }
         else {

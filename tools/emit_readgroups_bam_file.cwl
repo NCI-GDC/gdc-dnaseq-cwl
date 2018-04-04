@@ -25,7 +25,7 @@ outputs:
 
 expression: |
   ${
-    const output = { "bam": inputs.bam,
+    var output = { "bam": inputs.bam,
                      "readgroup_meta_list": inputs.readgroup_meta_list};
 
     return {'output': output}

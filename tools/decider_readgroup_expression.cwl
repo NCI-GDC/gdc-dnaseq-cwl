@@ -60,7 +60,7 @@ expression: |
           return -9
         }
         else {
-          exit()
+          throw "not recognized fastq suffix"
         }
       }
       
@@ -86,6 +86,6 @@ expression: |
         }
       }
 
-      const readgroup_sorted = readgroup_array.sort(function(a,b) { return a.location > b.location ? 1 : (a.location < b.location ? -1 : 0) });
+      var readgroup_sorted = readgroup_array.sort(function(a,b) { return a.location > b.location ? 1 : (a.location < b.location ? -1 : 0) });
       return {'output': readgroup_sorted}
     }
