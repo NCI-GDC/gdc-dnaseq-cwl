@@ -60,7 +60,7 @@ expression: |
           return -9
         }
         else {
-          exit()
+          throw "not recognized fastq extension"
         }
       }
 
