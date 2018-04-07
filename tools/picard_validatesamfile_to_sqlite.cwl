@@ -46,8 +46,8 @@ outputs:
       glob: $(inputs.job_uuid+"_picard_ValidateSamFile.log")
 
   - id: sqlite
-    type: File
     format: "edam:format_3621"
+    type: File
     outputBinding:
       glob: $(inputs.job_uuid + ".db")
 

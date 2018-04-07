@@ -68,5 +68,5 @@ outputs:
       glob: $(inputs.OUTPUT)
     secondaryFiles:
       - ^.bai
-          
+
 baseCommand: [java, -jar, /usr/local/bin/picard.jar, SortSam]

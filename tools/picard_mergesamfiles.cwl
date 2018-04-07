@@ -116,6 +116,7 @@ inputs:
 
 outputs:
   - id: MERGED_OUTPUT
+    format: "edam:format_2572"
     type: File
     outputBinding:
       glob: $(inputs.OUTPUT)

@@ -42,6 +42,7 @@ outputs:
       glob: $(inputs.uuid+"_picard_CollectAlignmentSummaryMetrics.log")
 
   - id: sqlite
+    format: "edam:format_3621"
     type: File
     outputBinding:
       glob: $(inputs.uuid + ".db")
