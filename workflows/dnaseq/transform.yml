@@ -1,0 +1,33 @@
+input_bam:
+  class: File
+  format: edam:format_2572
+  location: /home/ubuntu/syn9766994/data/NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211.bam
+reference_sequence:
+  class: File
+  location: /home/ubuntu/syn9766994/data/GRCh38.d1.vd1.fa
+  format: edam:format_1929
+  secondaryFiles:
+    - class: File
+      location: /home/ubuntu/syn9766994/data/GRCh38.d1.vd1.fa.amb
+    - class: File
+      location: /home/ubuntu/syn9766994/data/GRCh38.d1.vd1.fa.ann
+    - class: File
+      location: /home/ubuntu/syn9766994/data/GRCh38.d1.vd1.fa.bwt
+    - class: File
+      location: /home/ubuntu/syn9766994/data/GRCh38.d1.vd1.fa.fai
+    - class: File
+      location: /home/ubuntu/syn9766994/data/GRCh38.d1.vd1.fa.pac
+    - class: File
+      location: /home/ubuntu/syn9766994/data/GRCh38.d1.vd1.fa.sa
+    - class: File
+      location: /home/ubuntu/syn9766994/data/GRCh38.d1.vd1.dict
+
+known_snp:
+  class: File
+  format: edam:format_3016
+  location: /home/ubuntu/syn9766994/data/dbsnp_144.hg38.vcf.gz
+  secondaryFiles:
+    -  class: File
+       location: /home/ubuntu/syn9766994/data/dbsnp_144.hg38.vcf.gz.tbi
+thread_count: 4
+job_uuid: 123e4567-e89b-12d3-a456-426655440000
