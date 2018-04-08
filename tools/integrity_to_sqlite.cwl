@@ -51,6 +51,7 @@ outputs:
       glob: $(inputs.job_uuid + ".log")
 
   - id: OUTPUT
+    format: "edam:format_3621"
     type: File
     outputBinding:
       glob: $(inputs.job_uuid + ".db")

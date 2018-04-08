@@ -39,6 +39,7 @@ inputs:
 
 outputs:
   - id: output_bam
+    format: "edam:format_2572"
     type: File
     outputBinding:
       glob: $(inputs.input.basename)
@@ -49,4 +50,4 @@ arguments:
   - valueFrom: $(inputs.input.basename)
     prefix: --output
 
-baseCommand: [java, -jar, /usr/local/bin/gatk-package-4.0.2.1-local.jar, ApplyBQSR]
+baseCommand: [java, -jar, /usr/local/bin/gatk-package-4.0.3.0-local.jar, ApplyBQSR]
