@@ -326,7 +326,7 @@ steps:
       - id: bam
         source: gatk_applybqsr/output_bam
       - id: input_state
-        valueFrom: "gatk_applybqsr"
+        valueFrom: "gatk_applybqsr_readgroups"
       - id: job_uuid
         source: job_uuid
     out:
