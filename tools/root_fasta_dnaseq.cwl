@@ -40,7 +40,6 @@ class: CommandLineTool
 inputs:
   - id: fasta
     type: File
-    format: "edam:format_1929"
 
   - id: fasta_amb
     type: File
