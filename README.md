@@ -112,7 +112,7 @@ The following steps are tested on Ubuntu 14.04. Newer Ubuntu versions, and other
 
     (1) modified data generation:
 
-        $ wget ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/hg38bundle/dbsnp_144.hg38.vcf.gz
+        $ wget ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/dbsnp_144.hg38.vcf.gz
         $ gunzip dbsnp_144.hg38.vcf.gz
         $ sed -i 's/\(^[1-9,X,Y,M]\)/chr\1/g' dbsnp_144.hg38.vcf
         $ gzip dbsnp_144.hg38.vcf
