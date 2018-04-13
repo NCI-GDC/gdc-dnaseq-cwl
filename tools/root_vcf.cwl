@@ -27,7 +27,6 @@ class: CommandLineTool
 inputs:
   - id: vcf
     type: File
-    format: "edam:format_3016"
 
   - id: vcf_index
     type: File
