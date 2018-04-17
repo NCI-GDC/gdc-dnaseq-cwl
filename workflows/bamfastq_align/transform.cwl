@@ -20,19 +20,19 @@ inputs:
     type: string
   - id: job_uuid
     type: string
-  - id: capture_kit_set_list
+  - id: capture_kit_set_file_list
     type:
       type: array
-      items: ../../tools/capture_kit.yml#capture_kit_set
-  - id: readgroup_fastq_pe_path_list
+      items: ../../tools/capture_kit.yml#capture_kit_set_file
+  - id: readgroup_fastq_pe_file_list
     type:
       type: array
       items: ../../tools/readgroup.yml#readgroup_fastq_pe_file
-  - id: readgroup_fastq_se_path_list
+  - id: readgroup_fastq_se_file_list
     type:
       type: array
       items: ../../tools/readgroup.yml#readgroup_fastq_se_file
-  - id: readgroups_bam_path_list
+  - id: readgroups_bam_file_list
     type:
       type: array
       items: ../../tools/readgroup.yml#readgroups_bam_file
@@ -57,7 +57,7 @@ steps:
     scatter: readgroups_bam_file
     in:
       - id: readgroups_bam_file
-        source: readgroups_bam_path_list
+        source: readgroups_bam_file_list
     out:
       - id: pe_file_list
       - id: se_file_list
@@ -78,7 +78,7 @@ steps:
       - id: input
         source: [
         merge_bam_pe_fastq_records/output,
-        readgroup_fastq_pe_path_list
+        readgroup_fastq_pe_file_list
         ]
     out:
       - id: output
@@ -97,7 +97,7 @@ steps:
       - id: input
         source: [
         merge_bam_se_fastq_records/output,
-        readgroup_fastq_se_path_list
+        readgroup_fastq_se_file_list
         ]
     out:
       - id: output
@@ -304,8 +304,8 @@ steps:
     in:
       - id: bam
         source: gatk_applybqsr/output_bam
-      - id: capture_kit_set_list
-        source: capture_kit_set_list
+      - id: capture_kit_set_file_list
+        source: capture_kit_set_file_list
       - id: fasta
         source: reference_sequence
       - id: input_state
@@ -344,17 +344,6 @@ steps:
           metrics/sqlite,
           integrity/sqlite
           ]
-        #   picard_validatesamfile_original_to_sqlite/sqlite,
-        #   merge_readgroup_json_db/destination_sqlite,
-        #   merge_fastqc_db1_sqlite/destination_sqlite,
-        #   merge_fastqc_db2_sqlite/destination_sqlite,
-        #   merge_fastqc_db_s_sqlite/destination_sqlite,
-        #   merge_fastqc_db_o1_sqlite/destination_sqlite,
-        #   merge_fastqc_db_o2_sqlite/destination_sqlite,
-        #   merge_metrics_pe/destination_sqlite,
-        #   merge_metrics_se/destination_sqlite,
-        #   metrics_bqsr/merge_sqlite_destination_sqlite,
-        # ]
       - id: job_uuid
         source: job_uuid
     out:

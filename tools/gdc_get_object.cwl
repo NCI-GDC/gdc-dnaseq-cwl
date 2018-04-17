@@ -7,6 +7,16 @@ class: CommandLineTool
 requirements:
   - class: DockerRequirement
     dockerPull: quay.io/ncigdc/curl:d27480e7ac07e583146362d59f48254c2f59dfaa023212d12e091e136a52bcdf
+  - class: InlineJavascriptRequirement
+  - class: ResourceRequirement
+    coresMin: 1
+    coresMax: 1
+    ramMin: 2000
+    ramMax: 2000
+    tmpdirMin: $(Math.ceil (inputs.file_size / 1048576))
+    tmpdirMax: $(Math.ceil (inputs.file_size / 1048576))
+    outdirMin: $(Math.ceil (inputs.file_size / 1048576))
+    outdirMax: $(Math.ceil (inputs.file_size / 1048576))
 
 inputs:
   - id: gdc_token
@@ -17,6 +27,10 @@ inputs:
 
   - id: gdc_uuid
     type: string
+
+  - id: file_size
+    type: long
+    default: 1
 
 outputs:
   - id: output

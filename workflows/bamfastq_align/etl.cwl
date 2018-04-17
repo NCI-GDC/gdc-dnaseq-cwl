@@ -21,10 +21,10 @@ inputs:
     type: File
   - id: bioclient_load_bucket
     type: string
-  - id: capture_kit_set_list
+  - id: capture_kit_set_uuid_list
     type:
       type: array
-      items: ../../tools/capture_kit.yml#capture_kit_set
+      items: ../../tools/capture_kit.yml#capture_kit_set_uuid
   - id: job_uuid
     type: string
   - id: readgroup_fastq_pe_uuid_list
@@ -98,7 +98,7 @@ outputs:
 steps:
   - id: extract_readgroup_fastq_pe
     run: extract_readgroup_fastq_pe.cwl
-    scatter: [readgroup_fastq_pe_uuid]
+    scatter: readgroup_fastq_pe_uuid
     in:
       - id: readgroup_fastq_pe_uuid
         source: readgroup_fastq_pe_uuid_list
@@ -109,7 +109,7 @@ steps:
 
   - id: extract_readgroup_fastq_se
     run: extract_readgroup_fastq_se.cwl
-    scatter: [readgroup_fastq_se_uuid]
+    scatter: readgroup_fastq_se_uuid
     in:
       - id: readgroup_fastq_se_uuid
         source: readgroup_fastq_se_uuid_list
@@ -131,12 +131,12 @@ steps:
 
   - id: extract_capture_kits
     run: extract_capture_kit.cwl
-    scatter: capture_kit_set
+    scatter: capture_kit_set_uuid
     in:
       - id: bioclient_config
         source: bioclient_config
-      - id: capture_kit_set
-        source: capture_kit_set_list
+      - id: capture_kit_set_uuid
+        source: capture_kit_set_uuid_list
     out:
       - id: output
 
@@ -299,13 +299,13 @@ steps:
         source: bam_name
       - id: job_uuid
         source: job_uuid
-      - id: capture_kit_set_list
+      - id: capture_kit_set_file_list
         source: extract_capture_kits/output
-      - id: readgroup_fastq_pe_path_list
+      - id: readgroup_fastq_pe_file_list
         source: extract_readgroup_fastq_pe/output
-      - id: readgroup_fastq_se_path_list
+      - id: readgroup_fastq_se_file_list
         source: extract_readgroup_fastq_se/output
-      - id: readgroups_bam_path_list
+      - id: readgroups_bam_file_list
         source: extract_readgroups_bam/output
       - id: known_snp
         source: root_known_snp_files/output

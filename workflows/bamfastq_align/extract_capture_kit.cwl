@@ -13,12 +13,12 @@ requirements:
 inputs:
   - id: bioclient_config
     type: File
-  - id: capture_kit_set
-    type: ../../tools/capture_kit.yml#capture_kit_set
+  - id: capture_kit_set_uuid
+    type: ../../tools/capture_kit.yml#capture_kit_set_uuid
 
 outputs:
   - id: output
-    type: ../../tools/capture_kit.yml#capture_kit_set
+    type: ../../tools/capture_kit.yml#capture_kit_set_file
     outputSource: emit_capture_kit/output
 
 steps:
@@ -28,7 +28,7 @@ steps:
       - id: config-file
         source: bioclient_config
       - id: download_handle
-        source: capture_kit_set
+        source: capture_kit_set_uuid
         valueFrom: $(self.capture_kit_bait_uuid)
     out:
       - id: output
@@ -39,7 +39,7 @@ steps:
       - id: config-file
         source: bioclient_config
       - id: download_handle
-        source: capture_kit_set
+        source: capture_kit_set_uuid
         valueFrom: $(self.capture_kit_target_uuid)
     out:
       - id: output
@@ -51,7 +51,5 @@ steps:
         source: extract_capture_kit_bait/output
       - id: capture_kit_target_file
         source: extract_capture_kit_target/output
-      - id: capture_kit_set
-        source: capture_kit_set
     out:
       - id: output

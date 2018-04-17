@@ -58,26 +58,21 @@ inputs:
     type: string
   - id: reference_sa_file_size
     type: long
-  - id: start_token
-    type: File
   - id: thread_count
     type: long
   - id: job_uuid
     type: string
 
 outputs:
-  - id: indexd_bam_json
-    type: File
-    outputSource: load_bam/output
-  - id: indexd_bai_json
-    type: File
-    outputSource: load_bai/output
-  - id: indexd_sqlite_json
-    type: File
-    outputSource: load_sqlite/output
-  - id: token
-    type: File
-    outputSource: generate_token/token
+  - id: indexd_bam_uuid
+    type: string
+    outputSource: emit_bam_uuid/output
+  - id: indexd_bai_uuid
+    type: string
+    outputSource: emit_bai_uuid/output
+  - id: indexd_sqlite_uuid
+    type: string
+    outputSource: emit_sqlite_uuid/output
 
 steps:
   - id: extract_bam
@@ -313,14 +308,32 @@ steps:
     out:
       - id: output
 
-  - id: generate_token
-    run: ../../tools/generate_load_token.cwl
+  - id: emit_bam_uuid
+    run: ../../tools/emit_json_value.cwl
     in:
-      - id: load1
+      - id: input
         source: load_bam/output
-      - id: load2
-        source: load_bai/output
-      - id: load3
-        source: load_sqlite/output
+      - id: key
+        valueFrom: did
     out:
-      - id: token
+      - id: output
+
+  - id: emit_bai_uuid
+    run: ../../tools/emit_json_value.cwl
+    in:
+      - id: input
+        source: load_bai/output
+      - id: key
+        valueFrom: did
+    out:
+      - id: output
+
+  - id: emit_sqlite_uuid
+    run: ../../tools/emit_json_value.cwl
+    in:
+      - id: input
+        source: load_sqlite/output
+      - id: key
+        valueFrom: did
+    out:
+      - id: output

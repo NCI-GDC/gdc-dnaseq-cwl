@@ -1,11 +1,19 @@
-- name: capture_kit_set
+- name: capture_kit_set_file
+  type: record
+  fields:
+    - name: capture_kit_bait_file
+      type: File
+    - name: capture_kit_target_file
+      type: File
+
+- name: capture_kit_set_uuid
   type: record
   fields:
     - name: capture_kit_bait_uuid
       type: string
+    - name: capture_kit_bait_file_size
+      type: long
     - name: capture_kit_target_uuid
       type: string
-    - name: capture_kit_bait_file
-      type: ["null", File]
-    - name: capture_kit_target_file
-      type: ["null", File]
+    - name: capture_kit_target_file_size
+      type: long
