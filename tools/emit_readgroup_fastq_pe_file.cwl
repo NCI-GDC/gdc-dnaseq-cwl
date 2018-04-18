@@ -30,7 +30,7 @@ expression: |
                    "reverse_fastq": inputs.reverse_fastq,
                    "readgroup_meta": inputs.readgroup_meta
                    };
-    var output.forward_fastq.format = "edam:format_2182";
-    var output.reverse_fastq.format = "edam:format_2182";
+    output.forward_fastq.format = "edam:format_2182";
+    output.reverse_fastq.format = "edam:format_2182";
     return {'output': output}
   }
