@@ -24,7 +24,7 @@ outputs:
 expression: |
   ${
     var output = { "fastq": inputs.fastq,
-                     "readgroup_meta": inputs.readgroup_meta};
-
+                   "readgroup_meta": inputs.readgroup_meta};
+    var output.fastq.format = "edam:format_2182";
     return {'output': output}
   }
