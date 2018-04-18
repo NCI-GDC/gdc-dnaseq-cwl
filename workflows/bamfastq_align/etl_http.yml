@@ -1,4 +1,4 @@
-bam_name: NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211_gdc_realn.bam
+bam_name: C836.NCC-StC-K140.1_gdc_realn.bam
 gdc_token:
   class: File
   location: :/home/ubuntu/gdc-user-token.txt
@@ -7,19 +7,145 @@ capture_kit_set_uuid_list: []
 readgroup_fastq_pe_uuid_list: []
 readgroup_fastq_se_uuid_list: []
 readgroups_bam_uuid_list:
-  - bam_uuid: 11111111-1111-1111-1111-111111111111
+  - bam_uuid: 612fa1e5-19f7-4ed3-9fa5-a5090f7fb05d
     bam_file_size: 
     readgroup_meta_list:
-      - CN: UNKNOWN
-        DT: "1970-01-01T00:00:00Z"
-        ID: SRR622461
-        LB: Illumina NA12878
-        PI: "250"
+      - CN: BI
+        DT: "2012-03-05T00:00:00-0500"
+        ID: C0FPV.3
+        LB: Pond-140820
         PL: ILLUMINA
-        SM: NA12878
-known_snp_gdc_id: 165a256a-cbbb-4630-921c-f90c1908aebc
+        PU: C0FPVACXX120305.3.TTAATCAG
+        SM: NCC-StC-K140
+      - CN: BI
+        DT: "2012-03-05T00:00:00-0500"
+        ID: 2012-03-05T00:00:00-0500
+        LB: Pond-140820
+        PL: ILLUMINA
+        PU: C0FPVACXX120305.4.TTAATCAG
+        SM: NCC-StC-K140
+      - CN: BI
+        DT: "2012-03-05T00:00:00-0500"
+        ID: C0FPV.5
+        LB: Pond-140820
+        PL: ILLUMINA
+        PU: C0FPVACXX120305.5.TTAATCAG
+        SM: NCC-StC-K140
+      - CN: BI
+        DT: "2012-03-05T00:00:00-0500"
+        ID: C0FPV.6
+        LB: Pond-140820
+        PL: ILLUMINA
+        PU: C0FPVACXX120305.6.TTAATCAG
+        SM: NCC-StC-K140
+      - CN: BI
+        DT: "2012-03-05T00:00:00-0500"
+        ID: C0FPV.7
+        LB: Pond-140820
+        PL: ILLUMINA
+        PU: C0FPVACXX120305.7.TTAATCAG
+        SM: NCC-StC-K140
+      - CN: BI
+        DT: "2012-03-05T00:00:00-0500"
+        ID: C0FPV.8
+        LB: Pond-140820
+        PL: ILLUMINA
+        PU: C0FPVACXX120305.8.TTAATCAG
+        SM: NCC-StC-K140
+      - CN: BI
+        DT: "2012-03-01T00:00:00-0500"
+        ID: C0FPW.1
+        LB: Pond-140820
+        PL: ILLUMINA
+        PU: C0FPWACXX120301.1.TTAATCAG
+        SM: NCC-StC-K140
+      - CN: BI
+        DT: "2012-03-01T00:00:00-0500"
+        ID: C0FPW.2
+        LB: Pond-140820
+        PL: ILLUMINA
+        PU: C0FPWACXX120301.2.TTAATCAG
+        SM: NCC-StC-K140
+      - CN: BI
+        DT: "2012-03-01T00:00:00-0500"
+        ID: C0FPW.3
+        LB: Pond-140820
+        PL: ILLUMINA
+        PU: C0FPWACXX120301.3.TTAATCAG
+        SM: NCC-StC-K140
+      - CN: BI
+        DT: "2012-03-01T00:00:00-0500"
+        ID: C0FPW.5
+        LB: Pond-140820
+        PL: ILLUMINA
+        PU: C0FPWACXX120301.5.TTAATCAG
+        SM: NCC-StC-K140
+      - CN: BI
+        DT: "2012-03-01T00:00:00-0500"
+        ID: C0FPW.6
+        LB: Pond-140820
+        PL: ILLUMINA
+        PU: C0FPWACXX120301.6.TTAATCAG
+        SM: NCC-StC-K140
+      - CN: BI
+        DT: "2012-03-05T00:00:00-0500"
+        ID: D0N5Y.1
+        LB: Pond-140820
+        PL: ILLUMINA
+        PU: D0N5YACXX120305.1.TTAATCAG
+        SM: NCC-StC-K140
+      - CN: BI
+        DT: "2012-03-05T00:00:00-0500"
+        ID: D0N5Y.2
+        LB: Pond-140820
+        PL: ILLUMINA
+        PU: D0N5YACXX120305.2.TTAATCAG
+        SM: NCC-StC-K140
+      - CN: BI
+        DT: "2012-03-05T00:00:00-0500"
+        ID: D0N5Y.3
+        LB: Pond-140820
+        PL: ILLUMINA
+        PU: D0N5YACXX120305.3.TTAATCAG
+        SM: NCC-StC-K140
+      - CN: BI
+        DT: "2012-03-05T00:00:00-0500"
+        ID: D0N5Y.4
+        LB: Pond-140820
+        PL: ILLUMINA
+        PU: D0N5YACXX120305.4.TTAATCAG
+        SM: NCC-StC-K140
+      - CN: BI
+        DT: "2012-03-05T00:00:00-0500"
+        ID: D0N5Y.5
+        LB: Pond-140820
+        PL: ILLUMINA
+        PU: D0N5YACXX120305.5.TTAATCAG
+        SM: NCC-StC-K140
+      - CN: BI
+        DT: "2012-03-05T00:00:00-0500"
+        ID: D0N5Y.6
+        LB: Pond-140820
+        PL: ILLUMINA
+        PU: D0N5YACXX120305.6.TTAATCAG
+        SM: NCC-StC-K140
+      - CN: BI
+        DT: "2012-03-05T00:00:00-0500"
+        ID: D0N5Y.7
+        LB: Pond-140820
+        PL: ILLUMINA
+        PU: D0N5YACXX120305.7.TTAATCAG
+        SM: NCC-StC-K140
+      - CN: BI
+        DT: "2012-03-05T00:00:00-0500"
+        ID: D0N5Y.8
+        LB: Pond-140820
+        PL: ILLUMINA
+        PU: D0N5YACXX120305.8.TTAATCAG
+        SM: NCC-StC-K140
+known_snp_gdc_id: 8f502391-aa41-4294-87c5-7af8c028987d
 known_snp_file_size: 3229317435
-known_snp_index_gdc_id: 80d5e1c2-761b-499b-9341-5045e376e695
+known_snp_index_gdc_id: 51495a97-35dd-4774-a8ae-f6d0e90f1a65
 known_snp_index_file_size: 2371159
 reference_amb_gdc_id: 2fbc4427-5681-4d78-89d1-bc9e6b674a60
 reference_amb_file_size: 17539
