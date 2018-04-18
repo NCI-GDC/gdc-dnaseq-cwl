@@ -1,14 +1,14 @@
 bam_name: C836.NCC-StC-K140.1_gdc_realn.bam
 gdc_token:
   class: File
-  location: :/home/ubuntu/gdc-user-token.txt
+  location: /home/ubuntu/gdc-user-token.txt
 job_uuid: 00000000-0000-0000-0000-000000000000
 capture_kit_set_uuid_list: []
 readgroup_fastq_pe_uuid_list: []
 readgroup_fastq_se_uuid_list: []
 readgroups_bam_uuid_list:
   - bam_uuid: 612fa1e5-19f7-4ed3-9fa5-a5090f7fb05d
-    bam_file_size: 
+    bam_file_size: 7864608923
     readgroup_meta_list:
       - CN: BI
         DT: "2012-03-05T00:00:00-0500"
