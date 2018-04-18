@@ -25,8 +25,10 @@ outputs:
 
 expression: |
   ${
-    var output = { "bam": inputs.bam,
-                     "readgroup_meta_list": inputs.readgroup_meta_list};
+    var formatted_bam = inputs.bam;
+    formatted_bam.format = "edam:format_2572";
+    var output = { "bam": formatted_bam,
+                   "readgroup_meta_list": inputs.readgroup_meta_list};
 
     return {'output': output}
   }
