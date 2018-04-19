@@ -11,7 +11,7 @@ requirements:
       - $import: ../../tools/capture_kit.yml
 
 inputs:
-  - id: bioclient_config
+  - id: gdc_token
     type: File
   - id: capture_kit_set_uuid
     type: ../../tools/capture_kit.yml#capture_kit_set_uuid
@@ -23,24 +23,30 @@ outputs:
 
 steps:
   - id: extract_capture_kit_bait
-    run: ../../tools/bio_client_download.cwl
+    run: ../../tools/gdc_get_object.cwl
     in:
-      - id: config-file
-        source: bioclient_config
-      - id: download_handle
+      - id: gdc_token
+        source: gdc_token
+      - id: gdc_uuid
         source: capture_kit_set_uuid
         valueFrom: $(self.capture_kit_bait_uuid)
+      - id: file_size
+        source: capture_kit_set_uuid
+        valueFrom: $(self.capture_kit_bait_file_size)
     out:
       - id: output
 
   - id: extract_capture_kit_target
-    run: ../../tools/bio_client_download.cwl
+    run: ../../tools/gdc_get_object.cwl
     in:
-      - id: config-file
-        source: bioclient_config
-      - id: download_handle
+      - id: gdc_token
+        source: gdc_token
+      - id: gdc_uuid
         source: capture_kit_set_uuid
         valueFrom: $(self.capture_kit_target_uuid)
+      - id: file_size
+        source: capture_kit_set_uuid
+        valueFrom: $(self.capture_kit_target_file_size)
     out:
       - id: output
 

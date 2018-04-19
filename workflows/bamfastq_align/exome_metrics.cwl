@@ -13,8 +13,8 @@ requirements:
 inputs:
   - id: bam
     type: File
-  - id: capture_kit_set
-    type: ../../tools/capture_kit.yml#capture_kit_set
+  - id: capture_kit_set_file
+    type: ../../tools/capture_kit.yml#capture_kit_set_file
   - id: fasta
     type: File
   - id: input_state
@@ -32,7 +32,7 @@ steps:
     run: ../../tools/picard_collecthsmetrics.cwl
     in:
       - id: BAIT_INTERVALS
-        source: capture_kit_set
+        source: capture_kit_set_file
         valueFrom: $(self.capture_kit_bait_file)
       - id: INPUT
         source: bam
@@ -42,7 +42,7 @@ steps:
       - id: REFERENCE_SEQUENCE
         source: fasta
       - id: TARGET_INTERVALS
-        source: capture_kit_set
+        source: capture_kit_set_file
         valueFrom: $(self.capture_kit_target_file)
     out:
       - id: METRIC_OUTPUT

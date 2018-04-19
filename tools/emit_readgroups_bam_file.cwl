@@ -26,7 +26,7 @@ outputs:
 expression: |
   ${
     var output = { "bam": inputs.bam,
-                     "readgroup_meta_list": inputs.readgroup_meta_list};
-
+                   "readgroup_meta_list": inputs.readgroup_meta_list};
+    output.bam.format = "edam:format_2572";
     return {'output': output}
   }

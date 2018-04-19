@@ -14,10 +14,10 @@ requirements:
 inputs:
   - id: bam
     type: File
-  - id: capture_kit_set_list
+  - id: capture_kit_set_file_list
     type:
       type: array
-      items: ../../tools/capture_kit.yml#capture_kit_set
+      items: ../../tools/capture_kit.yml#capture_kit_set_file
   - id: fasta
     type: File
   - id: input_state
@@ -35,12 +35,12 @@ outputs:
 steps:
   - id: exome_metrics
     run: exome_metrics.cwl
-    scatter: capture_kit_set
+    scatter: capture_kit_set_file
     in:
       - id: bam
         source: bam
-      - id: capture_kit_set
-        source: capture_kit_set_list
+      - id: capture_kit_set_file
+        source: capture_kit_set_file_list
       - id: fasta
         source: fasta
       - id: input_state

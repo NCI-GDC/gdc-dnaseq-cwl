@@ -20,7 +20,6 @@ class: CommandLineTool
 
 inputs:
   - id: INPUT
-    format: "edam:format_2572"
     type: File
     inputBinding:
       position: 0

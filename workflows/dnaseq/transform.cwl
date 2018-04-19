@@ -556,72 +556,6 @@ steps:
     out:
       - id: SORTED_OUTPUT
 
-  # - id: metrics_pe
-  #   run: metrics.cwl
-  #   scatter: bam
-  #   in:
-  #     - id: bam
-  #       source: picard_sortsam_pe/SORTED_OUTPUT
-  #     - id: known_snp
-  #       source: known_snp
-  #     - id: fasta
-  #       source: reference_sequence
-  #     - id: input_state
-  #       valueFrom: "sorted_readgroup"
-  #     - id: parent_bam
-  #       source: input_bam
-  #       valueFrom: $(self.basename)
-  #     - id: thread_count
-  #       source: thread_count
-  #     - id: job_uuid
-  #       source: job_uuid
-  #   out:
-  #     - id: merge_sqlite_destination_sqlite
-
-  # - id: merge_metrics_pe
-  #   run: ../../tools/merge_sqlite.cwl
-  #   in:
-  #     - id: source_sqlite
-  #       source: metrics_pe/merge_sqlite_destination_sqlite
-  #     - id: job_uuid
-  #       source: job_uuid
-  #   out:
-  #     - id: destination_sqlite
-  #     - id: log
-
-  # - id: metrics_se
-  #   run: metrics.cwl
-  #   scatter: bam
-  #   in:
-  #     - id: bam
-  #       source: picard_sortsam_se/SORTED_OUTPUT
-  #     - id: known_snp
-  #       source: known_snp
-  #     - id: fasta
-  #       source: reference_sequence
-  #     - id: input_state
-  #       valueFrom: "sorted_readgroup"
-  #     - id: parent_bam
-  #       source: input_bam
-  #       valueFrom: $(self.basename)
-  #     - id: thread_count
-  #       source: thread_count
-  #     - id: job_uuid
-  #       source: job_uuid
-  #   out:
-  #     - id: merge_sqlite_destination_sqlite
-
-  # - id: merge_metrics_se
-  #   run: ../../tools/merge_sqlite.cwl
-  #   in:
-  #     - id: source_sqlite
-  #       source: metrics_se/merge_sqlite_destination_sqlite
-  #     - id: job_uuid
-  #       source: job_uuid
-  #   out:
-  #     - id: destination_sqlite
-  #     - id: log
-
   - id: picard_mergesamfiles_pe
     run: ../../tools/picard_mergesamfiles.cwl
     in:
@@ -745,7 +679,7 @@ steps:
       - id: bam
         source: gatk_applybqsr/output_bam
       - id: input_state
-        valueFrom: "gatk_applybqsr"
+        valueFrom: "gatk_applybqsr_readgroups"
       - id: job_uuid
         source: job_uuid
     out:

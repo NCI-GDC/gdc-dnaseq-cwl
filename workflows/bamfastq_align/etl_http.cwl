@@ -17,10 +17,8 @@ requirements:
 inputs:
   - id: bam_name
     type: string
-  - id: bioclient_config
+  - id: gdc_token
     type: File
-  - id: bioclient_load_bucket
-    type: string
   - id: capture_kit_set_uuid_list
     type:
       type: array
@@ -39,8 +37,6 @@ inputs:
     type: 
       type: array
       items: ../../tools/readgroup.yml#readgroups_bam_uuid
-  - id: start_token
-    type: ["null", File]
   - id: known_snp_gdc_id
     type: string
   - id: known_snp_file_size
@@ -85,67 +81,64 @@ inputs:
     type: long
 
 outputs:
-  - id: indexd_bam_uuid
-    type: string
-    outputSource: emit_bam_uuid/output
-  - id: indexd_bai_uuid
-    type: string
-    outputSource: emit_bai_uuid/output
-  - id: indexd_sqlite_uuid
-    type: string
-    outputSource: emit_sqlite_uuid/output
+  - id: bam
+    type: File
+    outputSource: transform/output_bam
+  - id: sqlite
+    type: File
+    outputSource: transform/sqlite
 
 steps:
   - id: extract_readgroup_fastq_pe
-    run: extract_readgroup_fastq_pe.cwl
+    run: extract_readgroup_fastq_pe_http.cwl
     scatter: readgroup_fastq_pe_uuid
     in:
       - id: readgroup_fastq_pe_uuid
         source: readgroup_fastq_pe_uuid_list
-      - id: bioclient_config
-        source: bioclient_config
+      - id: gdc_token
+        source: gdc_token
     out:
       - id: output
 
   - id: extract_readgroup_fastq_se
-    run: extract_readgroup_fastq_se.cwl
+    run: extract_readgroup_fastq_se_http.cwl
     scatter: readgroup_fastq_se_uuid
     in:
       - id: readgroup_fastq_se_uuid
         source: readgroup_fastq_se_uuid_list
-      - id: bioclient_config
-        source: bioclient_config
+      - id: gdc_token
+        source: gdc_token
     out:
       - id: output
 
   - id: extract_readgroups_bam
-    run: extract_readgroups_bam.cwl
-    scatter: [readgroups_bam_uuid]
+    run: extract_readgroups_bam_http.cwl
+    scatter: readgroups_bam_uuid
     in:
       - id: readgroups_bam_uuid
         source: readgroups_bam_uuid_list
-      - id: bioclient_config
-        source: bioclient_config
+      - id: gdc_token
+        source: gdc_token
     out:
       - id: output
 
   - id: extract_capture_kits
-    run: extract_capture_kit.cwl
+    run: extract_capture_kit_http.cwl
     scatter: capture_kit_set_uuid
     in:
-      - id: bioclient_config
-        source: bioclient_config
       - id: capture_kit_set_uuid
         source: capture_kit_set_uuid_list
+      - id: gdc_token
+        source: gdc_token
     out:
       - id: output
 
   - id: extract_known_snp
-    run: ../../tools/bio_client_download.cwl
+    run: ../../tools/gdc_get_object.cwl
     in:
-      - id: config-file
-        source: bioclient_config
-      - id: download_handle
+      - id: gdc_token
+        source: gdc_token
+      - id: gdc_uuid
         source: known_snp_gdc_id
       - id: file_size
         source: known_snp_file_size
@@ -153,11 +146,11 @@ steps:
       - id: output
 
   - id: extract_known_snp_index
-    run: ../../tools/bio_client_download.cwl
+    run: ../../tools/gdc_get_object.cwl
     in:
-      - id: config-file
-        source: bioclient_config
-      - id: download_handle
+      - id: gdc_token
+        source: gdc_token
+      - id: gdc_uuid
         source: known_snp_index_gdc_id
       - id: file_size
         source: known_snp_index_file_size
@@ -165,11 +158,11 @@ steps:
       - id: output
 
   - id: extract_reference_amb
-    run: ../../tools/bio_client_download.cwl
+    run: ../../tools/gdc_get_object.cwl
     in:
-      - id: config-file
-        source: bioclient_config
-      - id: download_handle
+      - id: gdc_token
+        source: gdc_token
+      - id: gdc_uuid
         source: reference_amb_gdc_id
       - id: file_size
         source: reference_amb_file_size
@@ -177,11 +170,11 @@ steps:
       - id: output
 
   - id: extract_reference_ann
-    run: ../../tools/bio_client_download.cwl
+    run: ../../tools/gdc_get_object.cwl
     in:
-      - id: config-file
-        source: bioclient_config
-      - id: download_handle
+      - id: gdc_token
+        source: gdc_token
+      - id: gdc_uuid
         source: reference_ann_gdc_id
       - id: file_size
         source: reference_ann_file_size
@@ -189,11 +182,11 @@ steps:
       - id: output
 
   - id: extract_reference_bwt
-    run: ../../tools/bio_client_download.cwl
+    run: ../../tools/gdc_get_object.cwl
     in:
-      - id: config-file
-        source: bioclient_config
-      - id: download_handle
+      - id: gdc_token
+        source: gdc_token
+      - id: gdc_uuid
         source: reference_bwt_gdc_id
       - id: file_size
         source: reference_bwt_file_size
@@ -201,11 +194,11 @@ steps:
       - id: output
 
   - id: extract_reference_dict
-    run: ../../tools/bio_client_download.cwl
+    run: ../../tools/gdc_get_object.cwl
     in:
-      - id: config-file
-        source: bioclient_config
-      - id: download_handle
+      - id: gdc_token
+        source: gdc_token
+      - id: gdc_uuid
         source: reference_dict_gdc_id
       - id: file_size
         source: reference_dict_file_size
@@ -213,11 +206,11 @@ steps:
       - id: output
 
   - id: extract_reference_fa
-    run: ../../tools/bio_client_download.cwl
+    run: ../../tools/gdc_get_object.cwl
     in:
-      - id: config-file
-        source: bioclient_config
-      - id: download_handle
+      - id: gdc_token
+        source: gdc_token
+      - id: gdc_uuid
         source: reference_fa_gdc_id
       - id: file_size
         source: reference_fa_file_size
@@ -225,11 +218,11 @@ steps:
       - id: output
 
   - id: extract_reference_fai
-    run: ../../tools/bio_client_download.cwl
+    run: ../../tools/gdc_get_object.cwl
     in:
-      - id: config-file
-        source: bioclient_config
-      - id: download_handle
+      - id: gdc_token
+        source: gdc_token
+      - id: gdc_uuid
         source: reference_fai_gdc_id
       - id: file_size
         source: reference_fai_file_size
@@ -237,11 +230,11 @@ steps:
       - id: output
 
   - id: extract_reference_pac
-    run: ../../tools/bio_client_download.cwl
+    run: ../../tools/gdc_get_object.cwl
     in:
-      - id: config-file
-        source: bioclient_config
-      - id: download_handle
+      - id: gdc_token
+        source: gdc_token
+      - id: gdc_uuid
         source: reference_pac_gdc_id
       - id: file_size
         source: reference_pac_file_size
@@ -249,11 +242,11 @@ steps:
       - id: output
 
   - id: extract_reference_sa
-    run: ../../tools/bio_client_download.cwl
+    run: ../../tools/gdc_get_object.cwl
     in:
-      - id: config-file
-        source: bioclient_config
-      - id: download_handle
+      - id: gdc_token
+        source: gdc_token
+      - id: gdc_uuid
         source: reference_sa_gdc_id
       - id: file_size
         source: reference_sa_file_size
@@ -316,85 +309,3 @@ steps:
     out:
       - id: output_bam
       - id: sqlite
-
-  - id: load_bam
-    run: ../../tools/bio_client_upload_pull_uuid.cwl
-    in:
-      - id: config-file
-        source: bioclient_config
-      - id: input
-        source: transform/output_bam
-      - id: upload-bucket
-        source: bioclient_load_bucket
-      - id: upload-key
-        valueFrom: $(inputs.job_uuid)/$(inputs.input.basename)
-      - id: job_uuid
-        source: job_uuid
-        valueFrom: $(null)
-    out:
-      - id: output
-
-  - id: load_bai
-    run: ../../tools/bio_client_upload_pull_uuid.cwl
-    in:
-      - id: config-file
-        source: bioclient_config
-      - id: input
-        source: transform/output_bam
-        valueFrom: $(self.secondaryFiles[0])
-      - id: upload-bucket
-        source: bioclient_load_bucket
-      - id: upload-key
-        valueFrom: $(inputs.job_uuid)/$(inputs.input.nameroot).bai
-      - id: job_uuid
-        source: job_uuid
-        valueFrom: $(null)
-    out:
-      - id: output
-
-  - id: load_sqlite
-    run: ../../tools/bio_client_upload_pull_uuid.cwl
-    in:
-      - id: config-file
-        source: bioclient_config
-      - id: input
-        source: transform/sqlite
-      - id: upload-bucket
-        source: bioclient_load_bucket
-      - id: upload-key
-        valueFrom: $(inputs.job_uuid)/$(inputs.input.basename)
-      - id: job_uuid
-        source: job_uuid
-        valueFrom: $(null)
-    out:
-      - id: output
-
-  - id: emit_bam_uuid
-    run: ../../tools/emit_json_value.cwl
-    in:
-      - id: input
-        source: load_bam/output
-      - id: key
-        valueFrom: did
-    out:
-      - id: output
-
-  - id: emit_bai_uuid
-    run: ../../tools/emit_json_value.cwl
-    in:
-      - id: input
-        source: load_bai/output
-      - id: key
-        valueFrom: did
-    out:
-      - id: output
-
-  - id: emit_sqlite_uuid
-    run: ../../tools/emit_json_value.cwl
-    in:
-      - id: input
-        source: load_sqlite/output
-      - id: key
-        valueFrom: did
-    out:
-      - id: output
