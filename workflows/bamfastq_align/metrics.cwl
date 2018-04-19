@@ -8,12 +8,17 @@ requirements:
   - class: InlineJavascriptRequirement
   - class: SchemaDefRequirement
     types:
+      - $import: ../../tools/amplicon_kit.yml
       - $import: ../../tools/capture_kit.yml
   - class: SubworkflowFeatureRequirement
 
 inputs:
   - id: bam
     type: File
+  - id: amplicon_kit_set_file_list
+    type:
+      type: array
+      items: ../../tools/amplicon_kit.yml#amplicon_kit_set_file
   - id: capture_kit_set_file_list
     type:
       type: array
@@ -33,6 +38,23 @@ outputs:
     outputSource: merge_sqlite/destination_sqlite
 
 steps:
+  - id: amplicon_metrics
+    run: amplicon_metrics.cwl
+    scatter: amplicon_kit_set_file
+    in:
+      - id: bam
+        source: bam
+      - id: amplicon_kit_set_file
+        source: amplicon_kit_set_file_list
+      - id: fasta
+        source: fasta
+      - id: input_state
+        source: input_state
+      - id: job_uuid
+        source: job_uuid
+    out:
+      - id: sqlite
+
   - id: exome_metrics
     run: exome_metrics.cwl
     scatter: capture_kit_set_file

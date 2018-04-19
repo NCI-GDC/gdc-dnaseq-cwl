@@ -21,6 +21,10 @@ inputs:
     type: File
   - id: bioclient_load_bucket
     type: string
+  - id: amplicon_kit_set_uuid_list
+    type:
+      type: array
+      items: ../../tools/amplicon_kit.yml#amplicon_kit_set_uuid
   - id: capture_kit_set_uuid_list
     type:
       type: array
@@ -126,6 +130,17 @@ steps:
         source: readgroups_bam_uuid_list
       - id: bioclient_config
         source: bioclient_config
+    out:
+      - id: output
+
+  - id: extract_amplicon_kits
+    run: extract_amplicon_kit.cwl
+    scatter: amplicon_kit_set_uuid
+    in:
+      - id: bioclient_config
+        source: bioclient_config
+      - id: amplicon_kit_set_uuid
+        source: amplicon_kit_set_uuid_list
     out:
       - id: output
 

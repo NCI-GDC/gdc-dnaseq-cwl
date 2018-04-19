@@ -1,0 +1,19 @@
+- name: ampicon_kit_set_file
+  type: record
+  fields:
+    - name: amplicon_kit_amplicon_file
+      type: File
+    - name: amplicon_kit_target_file
+      type: File
+
+- name: amplicon_kit_set_uuid
+  type: record
+  fields:
+    - name: amplicon_kit_amplicon_uuid
+      type: string
+    - name: amplicon_kit_amplicon_file_size
+      type: long
+    - name: amplicon_kit_target_uuid
+      type: string
+    - name: amplicon_kit_target_file_size
+      type: long
