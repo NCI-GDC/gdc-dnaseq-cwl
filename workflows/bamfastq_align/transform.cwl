@@ -24,7 +24,7 @@ inputs:
   - id: amplicon_kit_set_file_list
     type:
       type: array
-      items: ../../tools/amplion_kit.yml#amplicon_kit_set_file
+      items: ../../tools/amplicon_kit.yml#amplicon_kit_set_file
   - id: capture_kit_set_file_list
     type:
       type: array
