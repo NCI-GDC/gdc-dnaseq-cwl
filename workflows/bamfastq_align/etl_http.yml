@@ -3,6 +3,7 @@ gdc_token:
   class: File
   location: /home/ubuntu/gdc-user-token.txt
 job_uuid: 00000000-0000-0000-0000-000000000000
+amplicon_kit_set_uuid_list: []
 capture_kit_set_uuid_list: []
 readgroup_fastq_pe_uuid_list: []
 readgroup_fastq_se_uuid_list: []
@@ -163,4 +164,5 @@ reference_pac_gdc_id: 274875c3-922f-4a18-9333-29195189999b
 reference_pac_file_size: 776894132
 reference_sa_gdc_id: c9d4a9ec-751f-469a-b75c-0834f8685c19
 reference_sa_file_size: 1553788312
+run_markduplicates: [1]
 thread_count: 4
