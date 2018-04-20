@@ -22,6 +22,8 @@ inputs:
     type: File
   - id: bioclient_load_bucket
     type: string
+  - id: job_uuid
+    type: string
   - id: amplicon_kit_set_uuid_list
     type:
       type: array
@@ -30,8 +32,6 @@ inputs:
     type:
       type: array
       items: ../../tools/capture_kit.yml#capture_kit_set_uuid
-  - id: job_uuid
-    type: string
   - id: readgroup_fastq_pe_uuid_list
     type:
       type: array
