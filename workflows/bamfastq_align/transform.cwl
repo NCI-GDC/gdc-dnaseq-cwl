@@ -277,7 +277,7 @@ steps:
     run: ../../tools/gatk4_baserecalibrator.cwl
     in:
       - id: input
-        source: picard_markduplicates/OUTPUT
+        source: decide_markduplicates/output
       - id: known-sites
         source: known_snp
       - id: reference
@@ -289,7 +289,7 @@ steps:
     run: ../../tools/gatk4_applybqsr.cwl
     in:
       - id: input
-        source: picard_markduplicates/OUTPUT
+        source: decide_markduplicates/output
       - id: bqsr-recal-file
         source: gatk_baserecalibrator/output_grp
     out:
@@ -363,7 +363,7 @@ steps:
         source: [
           merge_sqlite_bwa_pe/destination_sqlite,
           merge_sqlite_bwa_se/destination_sqlite,
-          picard_markduplicates_to_sqlite/sqlite,
+          decide_markduplicates/sqlite,
           picard_validatesamfile_bqsr_to_sqlite/sqlite,
           metrics/sqlite,
           integrity/sqlite
