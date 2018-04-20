@@ -9,8 +9,9 @@ requirements:
   - class: ScatterFeatureRequirement
   - class: SchemaDefRequirement
     types:
-      - $import: ../../tools/readgroup.yml
+      - $import: ../../tools/amplicon_kit.yml
       - $import: ../../tools/capture_kit.yml
+      - $import: ../../tools/readgroup.yml
   - class: StepInputExpressionRequirement
   - class: SubworkflowFeatureRequirement
 
@@ -314,6 +315,8 @@ steps:
         source: bam_name
       - id: job_uuid
         source: job_uuid
+      - id: amplicon_kit_set_file_list
+        source: extract_amplicon_kits/output
       - id: capture_kit_set_file_list
         source: extract_capture_kits/output
       - id: readgroup_fastq_pe_file_list
