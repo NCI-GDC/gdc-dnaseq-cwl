@@ -28,7 +28,7 @@ steps:
     run: ../../tools/picard_markduplicates.cwl
     in:
       - id: INPUT
-        source: bam_reheader/output
+        source: bam
     out:
       - id: OUTPUT
       - id: METRICS
@@ -37,7 +37,7 @@ steps:
     run: ../../tools/picard_markduplicates_to_sqlite.cwl
     in:
       - id: bam
-        source: picard_markduplicates/OUTPUT
+        source: bam
         valueFrom: $(self.basename)
       - id: input_state
         valueFrom: "markduplicates_readgroups"
