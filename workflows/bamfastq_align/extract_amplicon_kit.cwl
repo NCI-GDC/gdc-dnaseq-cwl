@@ -8,7 +8,7 @@ requirements:
   - class: InlineJavascriptRequirement
   - class: SchemaDefRequirement
     types:
-      - $import: ../../tools/capture_kit.yml
+      - $import: ../../tools/amplicon_kit.yml
 
 inputs:
   - id: bioclient_config
@@ -44,7 +44,7 @@ steps:
     out:
       - id: output
 
-  - id: emit_capture_kit
+  - id: emit_amplicon_kit
     run: ../../tools/emit_amplicon_kit_file.cwl
     in:
       - id: amplicon_kit_bait_file
