@@ -39,14 +39,14 @@ outputs:
 
 expression: |
    ${
-      if inputs.conditional_bam.length > 1 {
+      if (inputs.conditional_bam.length > 1) {
         throw "conditional_bam length should only be 0 or 1"
       }
-      else if inputs.conditional_bam.length == 1 {
+      else if (inputs.conditional_bam.length == 1) {
         var output = inputs.conditional_bam[0];
         var sqlite = inputs.conditional_sqlite[0];
       }
-      else if inputs.conditional_bam.length == 0 {
+      else if (inputs.conditional_bam.length == 0) {
         var output = inputs.nonconditional_bam;
         var sqlite = inputs.nonconditional_sqlite;
       }
