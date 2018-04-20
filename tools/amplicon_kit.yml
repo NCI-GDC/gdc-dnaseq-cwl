@@ -1,4 +1,4 @@
-- name: ampicon_kit_set_file
+- name: amplicon_kit_set_file
   type: record
   fields:
     - name: amplicon_kit_amplicon_file
