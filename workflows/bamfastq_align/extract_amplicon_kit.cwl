@@ -47,7 +47,7 @@ steps:
   - id: emit_amplicon_kit
     run: ../../tools/emit_amplicon_kit_file.cwl
     in:
-      - id: amplicon_kit_bait_file
+      - id: amplicon_kit_amplicon_file
         source: extract_amplicon_kit_amplicon/output
       - id: amplicon_kit_target_file
         source: extract_amplicon_kit_target/output

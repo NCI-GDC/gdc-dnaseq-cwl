@@ -11,7 +11,7 @@ requirements:
 class: ExpressionTool
 
 inputs:
-  - id: amplicon_kit_bait_file
+  - id: amplicon_kit_amplicon_file
     type: File
 
   - id: amplicon_kit_target_file
