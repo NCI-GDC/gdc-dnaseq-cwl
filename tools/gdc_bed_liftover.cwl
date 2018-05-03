@@ -18,7 +18,7 @@ outputs:
       type: array
       items: File
     outputBinding:
-      glob: "*.baitIntervals.hg38.list.xz"
+      glob: "*.baitIntervals.hg38.list"
       outputEval: |
         ${ return self.sort(function(a,b) { return a.location > b.location ? 1 : (a.location < b.location ? -1 : 0) }) }
 
@@ -27,7 +27,7 @@ outputs:
       type: array
       items: File
     outputBinding:
-      glob: "*.targetIntervals.hg38.list.xz"
+      glob: "*.targetIntervals.hg38.list"
       outputEval: |
         ${ return self.sort(function(a,b) { return a.location > b.location ? 1 : (a.location < b.location ? -1 : 0) }) }
 
