@@ -258,6 +258,16 @@ steps:
     out:
       - id: output
 
+  - id: format_nonconditional_sqlite
+    run: ../../tools/emit_file_format.cwl
+    in:
+      - id: input
+        source: create_nonconditional_sqlite/output
+      - id: format
+        valueFrom: "edam:format_2572"
+    out:
+      - id: output
+        
   - id: decide_markduplicates
     run: ../../tools/decider_conditional_bam.cwl
     in:
@@ -268,7 +278,7 @@ steps:
       - id: nonconditional_bam
         source: bam_reheader/output
       - id: nonconditional_sqlite
-        source: create_nonconditional_sqlite/output
+        source: format_nonconditional_sqlite/output
     out:
       - id: output
       - id: sqlite
