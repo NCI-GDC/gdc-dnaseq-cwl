@@ -14,8 +14,6 @@ requirements:
 inputs:
   - id: input_bam
     type: File
-    secondaryFiles:
-      - ^.bai
   - id: known_snp
     type: File
     secondaryFiles:

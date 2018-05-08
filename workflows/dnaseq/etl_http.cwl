@@ -62,13 +62,12 @@ inputs:
     type: string
 
 outputs:
-  []
-  # - id: bam
-  #   type: File
-  #   outputSource: transform/picard_markduplicates_output
-  # - id: sqlite
-  #   type: File
-  #   outputSource: transform/merge_all_sqlite_destination_sqlite
+  - id: bam
+    type: File
+    outputSource: transform/bam
+  - id: sqlite
+    type: File
+    outputSource: transform/sqlite
 
 steps:
   - id: extract_bam
