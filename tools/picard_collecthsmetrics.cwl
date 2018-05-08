@@ -6,6 +6,14 @@ requirements:
   - class: DockerRequirement
     dockerPull: quay.io/ncigdc/picard:b4d47c60366e12f8cc3ffb264e510c1165801eae1d6329d94ef9e6c30e972991
   - class: InlineJavascriptRequirement
+    coresMin: 1
+    coresMax: 1
+    ramMin: 32768
+    ramMax: 32768
+    tmpdirMin: 1000
+    tmpdirMax: 1000
+    outdirMin: 1000
+    outdirMax: 1000
 
 class: CommandLineTool
 
