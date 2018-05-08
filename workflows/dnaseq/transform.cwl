@@ -14,17 +14,29 @@ requirements:
 inputs:
   - id: input_bam
     type: File
+    secondaryFiles:
+      - ^.bai
   - id: known_snp
     type: File
+    secondaryFiles:
+      - .tbi
   - id: reference_sequence
     type: File
+    secondaryFiles:
+      - .amb
+      - .ann
+      - .bwt
+      - .fai
+      - .pac
+      - .sa
+      - ^.dict
   - id: thread_count
     type: long
   - id: job_uuid
     type: string
 
 outputs:
-  - id: output_bam
+  - id: bam
     type: File
     outputSource: gatk_applybqsr/output_bam
   - id: sqlite

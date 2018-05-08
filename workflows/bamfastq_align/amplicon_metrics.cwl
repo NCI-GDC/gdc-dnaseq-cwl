@@ -17,6 +17,14 @@ inputs:
     type: ../../tools/amplicon_kit.yml#amplicon_kit_set_file
   - id: fasta
     type: File
+    secondaryFiles:
+      - .amb
+      - .ann
+      - .bwt
+      - .fai
+      - .pac
+      - .sa
+      - ^.dict
   - id: input_state
     type: string
   - id: job_uuid

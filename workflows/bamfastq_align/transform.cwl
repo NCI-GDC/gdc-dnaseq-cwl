@@ -43,12 +43,22 @@ inputs:
       items: ../../tools/readgroup.yml#readgroups_bam_file
   - id: known_snp
     type: File
+    secondaryFiles:
+      - .tbi
   - id: run_markduplicates
     type:
       type: array
       items: long
   - id: reference_sequence
     type: File
+    secondaryFiles:
+      - .amb
+      - .ann
+      - .bwt
+      - .fai
+      - .pac
+      - .sa
+      - ^.dict
   - id: thread_count
     type: long
 

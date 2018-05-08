@@ -16,6 +16,14 @@ inputs:
     type: string
   - id: reference_sequence
     type: File
+    secondaryFiles:
+      - .amb
+      - .ann
+      - .bwt
+      - .fai
+      - .pac
+      - .sa
+      - ^.dict
   - id: readgroup_fastq_se
     type: ../../tools/readgroup.yml#readgroup_fastq_se_file
   - id: thread_count

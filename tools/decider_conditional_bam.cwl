@@ -32,6 +32,8 @@ outputs:
   - id: output
     format: "edam:format_2572"
     type: File
+    secondaryFiles:
+      - ^.bai
 
   - id: sqlite
     format: "edam:format_3621"
