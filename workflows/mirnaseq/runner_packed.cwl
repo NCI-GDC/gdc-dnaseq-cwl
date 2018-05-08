@@ -1210,7 +1210,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/integrity_to_sqlite:a04168d6b256dbc4f7776b2eeb1475544a9dbda16f402be5874f7ac5787a8161
+                    "dockerPull": "quay.io/ncigdc/integrity_to_sqlite:9b900fd5dedfdcb4b4c9a2034070463aa87b5e28a6e7ec59a0c504aab83c16f3
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
