@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/fastqc:825d2967a220f9046181854ac8229cf2f84a571244c1cc89af86606d79f498dd
+    dockerPull: quay.io/ncigdc/fastqc:e57b0ebbdc59969f1d08b0404c7074cab517f3b5f9911e2e856e3003b277893b
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
     coresMin: $(inputs.threads)

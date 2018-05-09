@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: ubuntu:artful-20171019
+    dockerPull: ubuntu:bionic-20180426
   - class: InitialWorkDirRequirement
     listing:
       - entryname: $(inputs.vcf.basename)
