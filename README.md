@@ -119,16 +119,16 @@ The following steps are tested on Ubuntu 14.04. Newer Ubuntu versions, and other
 
      or (2) pull modified data from gdc:
 
-        $ wget https://gdc-api.nci.nih.gov/data/4ba1c087-ec80-47c4-a9d5-e9bb9933fef4 -O dbsnp_144.hg38.vcf.gz
+        $ wget https://api.gdc.cancer.gov/data/4ba1c087-ec80-47c4-a9d5-e9bb9933fef4 -O dbsnp_144.hg38.vcf.gz
 
     reference genome:
 
-        $ wget https://gdc-api.nci.nih.gov/data/62f23fad-0f24-43fb-8844-990d531947cf
+        $ wget https://api.gdc.cancer.gov/data/62f23fad-0f24-43fb-8844-990d531947cf
         tar xvf 62f23fad-0f24-43fb-8844-990d531947cf
 
     bwa indexed genome:
 
-        $ wget https://gdc-api.nci.nih.gov/data/964cbdac-1043-4fae-b068-c3a65d992f6b
+        $ wget https://api.gdc.cancer.gov/data/964cbdac-1043-4fae-b068-c3a65d992f6b
         tar xvf 964cbdac-1043-4fae-b068-c3a65d992f6b
 
 14. Get example data: 1 readgroup BAM which uses `bwa mem`
@@ -148,7 +148,7 @@ The following steps are tested on Ubuntu 14.04. Newer Ubuntu versions, and other
 
         22 readgroup BAM which uses `bwa mem` (all readgroup reads > 70bp; PE and SE reads)
         $ cd /mnt/SCRATCH/
-        $ wget https://gdc-api.nci.nih.gov/data/5a8a9f0b-9121-42c0-a38d-c6510e2065c1 -O C835.HCC1143.2.bam
+        $ wget https://api.gdc.cancer.gov/data/5a8a9f0b-9121-42c0-a38d-c6510e2065c1 -O C835.HCC1143.2.bam
         $ mkdir /mnt/SCRATCH/ccle
         $ cd /mnt/SCRATCH/ccle
         $ mkdir tmp cache

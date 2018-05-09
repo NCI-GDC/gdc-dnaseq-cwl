@@ -42,7 +42,7 @@ arguments:
   - valueFrom: "X-Auth-Token: $(inputs.gdc_token.contents)"
     position: 0
 
-  - valueFrom: https://gdc-api.nci.nih.gov/data/$(inputs.gdc_uuid)
+  - valueFrom: https://api.gdc.cancer.gov/data/$(inputs.gdc_uuid)
     position: 1
 
 baseCommand: [curl, --remote-name, --remote-header-name, --header]
