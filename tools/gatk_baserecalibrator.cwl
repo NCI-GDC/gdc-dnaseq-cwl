@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/gatk:edf58a14fc8d23fe98a97c372c74bbdd601696f894b4605586d0d4e2a4f30fe3
+    dockerPull: quay.io/ncigdc/gatk:99f8d4717a26b46ba1189f818823483645459df765f5fb8e62dee8540029252b
   - class: InlineJavascriptRequirement
 
 class: CommandLineTool
