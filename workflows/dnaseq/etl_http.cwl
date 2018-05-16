@@ -10,127 +10,243 @@ requirements:
  - class: SubworkflowFeatureRequirement
 
 inputs:
-  - id: bam_url
+  - id: gdc_token
+    type: File
+  - id: input_bam_gdc_id
     type: string
-  - id: bam_name
+  - id: input_bam_file_size
+    type: long
+  - id: known_snp_gdc_id
     type: string
-  - id: dbsnp_url
+  - id: known_snp_file_size
+    type: long
+  - id: known_snp_index_gdc_id
     type: string
-  - id: dbsnp_name
+  - id: known_snp_index_file_size
+    type: long
+  - id: reference_amb_gdc_id
     type: string
-  - id: fasta_url
+  - id: reference_amb_file_size
+    type: long
+  - id: reference_ann_gdc_id
     type: string
-  - id: fasta_name
+  - id: reference_ann_file_size
+    type: long
+  - id: reference_bwt_gdc_id
     type: string
-  - id: fasta_bwa_url
+  - id: reference_bwt_file_size
+    type: long
+  - id: reference_dict_gdc_id
     type: string
-  - id: fasta_bwa_name
+  - id: reference_dict_file_size
+    type: long
+  - id: reference_fa_gdc_id
     type: string
+  - id: reference_fa_file_size
+    type: long
+  - id: reference_fai_gdc_id
+    type: string
+  - id: reference_fai_file_size
+    type: long
+  - id: reference_pac_gdc_id
+    type: string
+  - id: reference_pac_file_size
+    type: long
+  - id: reference_sa_gdc_id
+    type: string
+  - id: reference_sa_file_size
+    type: long
   - id: thread_count
-    type: int
-  - id: uuid
+    type: long
+  - id: job_uuid
     type: string
 
 outputs:
-  - id: harmonized_bam
+  - id: bam
     type: File
-    outputSource: transform/picard_markduplicates_output
+    outputSource: transform/bam
   - id: sqlite
     type: File
-    outputSource: transform/merge_all_sqlite_destination_sqlite
+    outputSource: transform/sqlite
 
 steps:
-  - id: extract_curl_bam
-    run: ../../tools/curl.cwl
+  - id: extract_bam
+    run: ../../tools/gdc_get_object.cwl
     in:
-      - id: url
-        source: bam_url
+      - id: gdc_token
+        source: gdc_token
+      - id: gdc_uuid
+        source: input_bam_gdc_id
+      - id: file_size
+        source: input_bam_file_size
+    out:
       - id: output
-        source: bam_name
-    out:
-      - id: output_file
 
-  - id: extract_curl_dbsnp
-    run: ../../tools/curl.cwl
+  - id: extract_known_snp
+    run: ../../tools/gdc_get_object.cwl
     in:
-      - id: url
-        source: dbsnp_url
+      - id: gdc_token
+        source: gdc_token
+      - id: gdc_uuid
+        source: known_snp_gdc_id
+      - id: file_size
+        source: known_snp_file_size
+    out:
       - id: output
-        source: dbsnp_name
-    out:
-      - id: output_file
-        
-  - id: extract_curl_fasta
-    run: ../../tools/curl.cwl
+
+  - id: extract_known_snp_index
+    run: ../../tools/gdc_get_object.cwl
     in:
-      - id: url
-        source: fasta_url
+      - id: gdc_token
+        source: gdc_token
+      - id: gdc_uuid
+        source: known_snp_index_gdc_id
+      - id: file_size
+        source: known_snp_index_file_size
+    out:
       - id: output
-        source: fasta_name
-    out:
-      - id: output_file
 
-  - id: extract_curl_fastabwa
-    run: ../../tools/curl.cwl
+  - id: extract_reference_amb
+    run: ../../tools/gdc_get_object.cwl
     in:
-      - id: url
-        source: fasta_bwa_url
+      - id: gdc_token
+        source: gdc_token
+      - id: gdc_uuid
+        source: reference_amb_gdc_id
+      - id: file_size
+        source: reference_amb_file_size
+    out:
       - id: output
-        source: fasta_bwa_name
-    out:
-      - id: output_file
 
-  - id: extract_untar_fastabwa
-    run: ../../tools/untar_fastabwa.cwl
+  - id: extract_reference_ann
+    run: ../../tools/gdc_get_object.cwl
     in:
-      - id: input
-        source: extract_curl_fastabwa/output_file
+      - id: gdc_token
+        source: gdc_token
+      - id: gdc_uuid
+        source: reference_ann_gdc_id
+      - id: file_size
+        source: reference_ann_file_size
     out:
-      - id: fasta_amb
-      - id: fasta_ann
-      - id: fasta_bwt
-      - id: fasta_pac
-      - id: fasta_sa
+      - id: output
 
-  - id: extract_untar_fasta
-    run: ../../tools/untar_fasta.cwl
+  - id: extract_reference_bwt
+    run: ../../tools/gdc_get_object.cwl
     in:
-      - id: input
-        source: extract_curl_fasta/output_file
+      - id: gdc_token
+        source: gdc_token
+      - id: gdc_uuid
+        source: reference_bwt_gdc_id
+      - id: file_size
+        source: reference_bwt_file_size
     out:
-      - id: fasta
+      - id: output
+
+  - id: extract_reference_dict
+    run: ../../tools/gdc_get_object.cwl
+    in:
+      - id: gdc_token
+        source: gdc_token
+      - id: gdc_uuid
+        source: reference_dict_gdc_id
+      - id: file_size
+        source: reference_dict_file_size
+    out:
+      - id: output
+
+  - id: extract_reference_fa
+    run: ../../tools/gdc_get_object.cwl
+    in:
+      - id: gdc_token
+        source: gdc_token
+      - id: gdc_uuid
+        source: reference_fa_gdc_id
+      - id: file_size
+        source: reference_fa_file_size
+    out:
+      - id: output
+
+  - id: extract_reference_fai
+    run: ../../tools/gdc_get_object.cwl
+    in:
+      - id: gdc_token
+        source: gdc_token
+      - id: gdc_uuid
+        source: reference_fai_gdc_id
+      - id: file_size
+        source: reference_fai_file_size
+    out:
+      - id: output
+
+  - id: extract_reference_pac
+    run: ../../tools/gdc_get_object.cwl
+    in:
+      - id: gdc_token
+        source: gdc_token
+      - id: gdc_uuid
+        source: reference_pac_gdc_id
+      - id: file_size
+        source: reference_pac_file_size
+    out:
+      - id: output
+
+  - id: extract_reference_sa
+    run: ../../tools/gdc_get_object.cwl
+    in:
+      - id: gdc_token
+        source: gdc_token
+      - id: gdc_uuid
+        source: reference_sa_gdc_id
+      - id: file_size
+        source: reference_sa_file_size
+    out:
+      - id: output
 
   - id: root_fasta_files
     run: ../../tools/root_fasta_dnaseq.cwl
     in:
       - id: fasta
-        source: extract_untar_fasta/fasta
+        source: extract_reference_fa/output
       - id: fasta_amb
-        source: extract_untar_fastabwa/fasta_amb
+        source: extract_reference_amb/output
       - id: fasta_ann
-        source: extract_untar_fastabwa/fasta_ann
+        source: extract_reference_ann/output
       - id: fasta_bwt
-        source: extract_untar_fastabwa/fasta_bwt
+        source: extract_reference_bwt/output
+      - id: fasta_dict
+        source: extract_reference_dict/output
+      - id: fasta_fai
+        source: extract_reference_fai/output
       - id: fasta_pac
-        source: extract_untar_fastabwa/fasta_pac
+        source: extract_reference_pac/output
       - id: fasta_sa
-        source: extract_untar_fastabwa/fasta_sa
+        source: extract_reference_sa/output
     out:
       - id: output
 
+  - id: root_known_snp_files
+    run: ../../tools/root_vcf.cwl
+    in:
+      - id: vcf
+        source: extract_known_snp/output
+      - id: vcf_index
+        source: extract_known_snp_index/output
+    out:
+      - id: output
+ 
   - id: transform
     run: transform.cwl
     in:
-      - id: bam_path
-        source: extract_curl_bam/output_file
-      - id: db_snp_path
-        source: extract_curl_dbsnp/output_file
-      - id: reference_fasta_path
+      - id: input_bam
+        source: extract_bam/output
+      - id: known_snp
+        source: root_known_snp_files/output
+      - id: reference_sequence
         source: root_fasta_files/output
       - id: thread_count
         source: thread_count
-      - id: uuid
-        source: uuid
+      - id: job_uuid
+        source: job_uuid
     out:
-      - id: picard_markduplicates_output
-      - id: merge_all_sqlite_destination_sqlite
+      - id: bam
+      - id: sqlite

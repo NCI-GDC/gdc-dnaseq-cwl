@@ -9,8 +9,8 @@ requirements:
   - class: ResourceRequirement
     coresMin: 1
     coresMax: 1
-    ramMin: 500
-    ramMax: 500
+    ramMin: 250
+    ramMax: 250
     tmpdirMin: 1
     tmpdirMax: 1
     outdirMin: 1
@@ -18,19 +18,16 @@ requirements:
 
 class: CommandLineTool
 
-
 inputs:
-  - id: INPUT
-    type: File
+  - id: input
+    type: string
     inputBinding:
       position: 0
 
 outputs:
-  - id: OUTPUT
+  - id: output
     type: File
     outputBinding:
-      glob: $(inputs.INPUT.nameroot + ".ls")
-
-stdout: $(inputs.INPUT.nameroot + ".ls")
+      glob: $(inputs.input)
       
-baseCommand: [ls, -l]
+baseCommand: [touch]

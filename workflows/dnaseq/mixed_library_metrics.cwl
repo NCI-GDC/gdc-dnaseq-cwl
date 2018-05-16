@@ -10,10 +10,22 @@ requirements:
 inputs:
   - id: bam
     type: File
+    secondaryFiles:
+      - ^.bai
   - id: known_snp
     type: File
+    secondaryFiles:
+      - .tbi
   - id: fasta
     type: File
+    secondaryFiles:
+      - .amb
+      - .ann
+      - .bwt
+      - .fai
+      - .pac
+      - .sa
+      - ^.dict
   - id: input_state
     type: string
   - id: thread_count

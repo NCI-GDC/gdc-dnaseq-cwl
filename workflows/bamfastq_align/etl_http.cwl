@@ -9,8 +9,9 @@ requirements:
   - class: ScatterFeatureRequirement
   - class: SchemaDefRequirement
     types:
-      - $import: ../../tools/readgroup.yml
+      - $import: ../../tools/amplicon_kit.yml
       - $import: ../../tools/capture_kit.yml
+      - $import: ../../tools/readgroup.yml
   - class: StepInputExpressionRequirement
   - class: SubworkflowFeatureRequirement
 
@@ -19,12 +20,16 @@ inputs:
     type: string
   - id: gdc_token
     type: File
+  - id: job_uuid
+    type: string
+  - id: amplicon_kit_set_uuid_list
+    type:
+      type: array
+      items: ../../tools/amplicon_kit.yml#amplicon_kit_set_uuid
   - id: capture_kit_set_uuid_list
     type:
       type: array
       items: ../../tools/capture_kit.yml#capture_kit_set_uuid
-  - id: job_uuid
-    type: string
   - id: readgroup_fastq_pe_uuid_list
     type:
       type: array
@@ -77,6 +82,10 @@ inputs:
     type: string
   - id: reference_sa_file_size
     type: long
+  - id: run_markduplicates
+    type:
+      type: array
+      items: long
   - id: thread_count
     type: long
 
@@ -117,6 +126,17 @@ steps:
     in:
       - id: readgroups_bam_uuid
         source: readgroups_bam_uuid_list
+      - id: gdc_token
+        source: gdc_token
+    out:
+      - id: output
+
+  - id: extract_amplicon_kits
+    run: extract_amplicon_kit_http.cwl
+    scatter: amplicon_kit_set_uuid
+    in:
+      - id: amplicon_kit_set_uuid
+        source: amplicon_kit_set_uuid_list
       - id: gdc_token
         source: gdc_token
     out:
@@ -292,6 +312,8 @@ steps:
         source: bam_name
       - id: job_uuid
         source: job_uuid
+      - id: amplicon_kit_set_file_list
+        source: extract_amplicon_kits/output
       - id: capture_kit_set_file_list
         source: extract_capture_kits/output
       - id: readgroup_fastq_pe_file_list
@@ -304,6 +326,8 @@ steps:
         source: root_known_snp_files/output
       - id: reference_sequence
         source: root_fasta_files/output
+      - id: run_markduplicates
+        source: run_markduplicates
       - id: thread_count
         source: thread_count
     out:

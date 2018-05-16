@@ -11,10 +11,10 @@ requirements:
     coresMax: 1
     ramMin: 1000
     ramMax: 1000
-    tmpdirMin: 5
-    tmpdirMax: 5
-    outdirMin: 5
-    outdirMax: 5
+    tmpdirMin: 10
+    tmpdirMax: 10
+    outdirMin: 10
+    outdirMax: 10
 
 class: CommandLineTool
 
@@ -23,11 +23,6 @@ inputs:
     type: string
     inputBinding:
       prefix: --bam
-
-  - id: fasta
-    type: string
-    inputBinding:
-      prefix: --fasta
 
   - id: input_state
     type: string
@@ -44,21 +39,16 @@ inputs:
     inputBinding:
       prefix: --job_uuid
 
-  - id: vcf
-    type: string
-    inputBinding:
-      prefix: --vcf
-
 outputs:
   - id: log
     type: File
     outputBinding:
-      glob: $(inputs.job_uuid+"_picard_CollectOxoGMetrics.log")
+      glob: $(inputs.job_uuid+"_picard_CollectTargetedPcrMetrics.log")
 
   - id: sqlite
     format: "edam:format_3621"
     type: File
     outputBinding:
       glob: $(inputs.job_uuid + ".db")
-          
-baseCommand: [/usr/local/bin/picard_metrics_sqlite, --metric_name, CollectOxoGMetrics]
+
+baseCommand: [/usr/local/bin/picard_metrics_sqlite, --metric_name, CollectTargetedPcrMetrics]

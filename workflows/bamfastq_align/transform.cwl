@@ -10,8 +10,9 @@ requirements:
   - class: ScatterFeatureRequirement
   - class: SchemaDefRequirement
     types:
-      - $import: ../../tools/readgroup.yml
+      - $import: ../../tools/amplicon_kit.yml
       - $import: ../../tools/capture_kit.yml
+      - $import: ../../tools/readgroup.yml
   - class: StepInputExpressionRequirement
   - class: SubworkflowFeatureRequirement
 
@@ -20,6 +21,10 @@ inputs:
     type: string
   - id: job_uuid
     type: string
+  - id: amplicon_kit_set_file_list
+    type:
+      type: array
+      items: ../../tools/amplicon_kit.yml#amplicon_kit_set_file
   - id: capture_kit_set_file_list
     type:
       type: array
@@ -38,8 +43,22 @@ inputs:
       items: ../../tools/readgroup.yml#readgroups_bam_file
   - id: known_snp
     type: File
+    secondaryFiles:
+      - .tbi
+  - id: run_markduplicates
+    type:
+      type: array
+      items: long
   - id: reference_sequence
     type: File
+    secondaryFiles:
+      - .amb
+      - .ann
+      - .bwt
+      - .fai
+      - .pac
+      - .sa
+      - ^.dict
   - id: thread_count
     type: long
 
@@ -227,35 +246,58 @@ steps:
     out:
       - id: output
 
-  - id: picard_markduplicates
-    run: ../../tools/picard_markduplicates.cwl
-    in:
-      - id: INPUT
-        source: bam_reheader/output
-    out:
-      - id: OUTPUT
-      - id: METRICS
-
-  - id: picard_markduplicates_to_sqlite
-    run: ../../tools/picard_markduplicates_to_sqlite.cwl
+  - id: conditional_markduplicates
+    run: conditional_markduplicates.cwl
+    scatter: run_markduplicates
     in:
       - id: bam
-        source: picard_markduplicates/OUTPUT
-        valueFrom: $(self.basename)
-      - id: input_state
-        valueFrom: "markduplicates_readgroups"
-      - id: metric_path
-        source: picard_markduplicates/METRICS
+        source: bam_reheader/output
       - id: job_uuid
         source: job_uuid
+      - id: run_markduplicates
+        source: run_markduplicates
     out:
+      - id: output
+      - id: sqlite
+
+  - id: create_nonconditional_sqlite
+    run: ../../tools/touch.cwl
+    in:
+      - id: input
+        valueFrom: "empty.sqlite"
+    out:
+      - id: output
+
+  - id: format_nonconditional_sqlite
+    run: ../../tools/emit_file_format.cwl
+    in:
+      - id: input
+        source: create_nonconditional_sqlite/output
+      - id: format
+        valueFrom: "edam:format_2572"
+    out:
+      - id: output
+        
+  - id: decide_markduplicates
+    run: ../../tools/decider_conditional_bam.cwl
+    in:
+      - id: conditional_bam
+        source: conditional_markduplicates/output
+      - id: conditional_sqlite
+        source: conditional_markduplicates/sqlite
+      - id: nonconditional_bam
+        source: bam_reheader/output
+      - id: nonconditional_sqlite
+        source: format_nonconditional_sqlite/output
+    out:
+      - id: output
       - id: sqlite
 
   - id: gatk_baserecalibrator
     run: ../../tools/gatk4_baserecalibrator.cwl
     in:
       - id: input
-        source: picard_markduplicates/OUTPUT
+        source: decide_markduplicates/output
       - id: known-sites
         source: known_snp
       - id: reference
@@ -267,7 +309,7 @@ steps:
     run: ../../tools/gatk4_applybqsr.cwl
     in:
       - id: input
-        source: picard_markduplicates/OUTPUT
+        source: decide_markduplicates/output
       - id: bqsr-recal-file
         source: gatk_baserecalibrator/output_grp
     out:
@@ -304,6 +346,8 @@ steps:
     in:
       - id: bam
         source: gatk_applybqsr/output_bam
+      - id: amplicon_kit_set_file_list
+        source: amplicon_kit_set_file_list
       - id: capture_kit_set_file_list
         source: capture_kit_set_file_list
       - id: fasta
@@ -339,7 +383,7 @@ steps:
         source: [
           merge_sqlite_bwa_pe/destination_sqlite,
           merge_sqlite_bwa_se/destination_sqlite,
-          picard_markduplicates_to_sqlite/sqlite,
+          decide_markduplicates/sqlite,
           picard_validatesamfile_bqsr_to_sqlite/sqlite,
           metrics/sqlite,
           integrity/sqlite

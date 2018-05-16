@@ -19,17 +19,17 @@ requirements:
 class: CommandLineTool
 
 inputs:
-  - id: BAIT_INTERVALS
+  - id: AMPLICON_INTERVALS
     type: File
     inputBinding:
-      prefix: BAIT_INTERVALS=
+      prefix: AMPLICON_INTERVALS=
       position: 10
       separate: false
 
-  - id: BAIT_SET_NAME
+  - id: CUSTOM_AMPLICON_SET_NAME
     type: ["null", string]
     inputBinding:
-      prefix: BAIT_SET_NAME=
+      prefix: CUSTOM_AMPLICON_SET_NAME=
       position: 11
       separate: false
 
@@ -42,7 +42,7 @@ inputs:
       separate: false
 
   - id: COVERAGE_CAP
-    type: int
+    type: long
     default: 200
     inputBinding:
       prefix: COVERAGE_CAP=
@@ -51,7 +51,7 @@ inputs:
 
   - id: INPUT
     type: File
-    # format: "edam:format_2572"
+    format: "edam:format_2572"
     inputBinding:
       prefix: INPUT=
       position: 14
@@ -72,7 +72,7 @@ inputs:
       - "READ_GROUP"
 
   - id: MINIMUM_BASE_QUALITY
-    type: int
+    type: long
     default: 20
     inputBinding:
       prefix: MINIMUM_BASE_QUALITY=
@@ -80,7 +80,7 @@ inputs:
       separate: false
 
   - id: MINIMUM_MAPPING_QUALITY
-    type: int
+    type: long
     default: 20
     inputBinding:
       prefix: MINIMUM_MAPPING_QUALITY=
@@ -88,7 +88,7 @@ inputs:
       separate: false
 
   - id: NEAR_DISTANCE
-    type: int
+    type: long
     default: 250
     inputBinding:
       prefix: NEAR_DISTANCE=
@@ -118,7 +118,7 @@ inputs:
 
   - id: REFERENCE_SEQUENCE
     type: File
-    # format: "edam:format_1929"
+    format: "edam:format_1929"
     inputBinding:
       prefix: REFERENCE_SEQUENCE=
       position: 22
@@ -127,7 +127,7 @@ inputs:
       - .fai
 
   - id: SAMPLE_SIZE
-    type: int
+    type: long
     default: 10000
     inputBinding:
       prefix: SAMPLE_SIZE=
@@ -170,7 +170,7 @@ arguments:
   - valueFrom: "/usr/local/bin/picard.jar"
     position: -8
 
-  - valueFrom: "CollectHsMetrics"
+  - valueFrom: "CollectTargetedPcrMetrics"
     position: -7
 
 baseCommand: [java]

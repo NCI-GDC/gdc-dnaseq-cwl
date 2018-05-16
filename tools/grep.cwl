@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: fedora:26
+    dockerPull: fedora:28
 
 class: CommandLineTool
 

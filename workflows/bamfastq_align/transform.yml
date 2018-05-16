@@ -1,5 +1,6 @@
 bam_name: NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211_gdc_realn.bam
 job_uuid: 00000000-0000-0000-0000-000000000000
+amplicon_kit_set_list: []
 capture_kit_set_list: []
 readgroup_fastq_pe_path_list: []
 readgroup_fastq_se_path_list: []
@@ -42,4 +43,5 @@ known_snp:
   secondaryFiles:
     - class: File
       location: /mnt/scratch/hg38_reference/dbsnp_144.hg38.vcf.gz.tbi
+run_markduplicates: [1]
 thread_count: 4
