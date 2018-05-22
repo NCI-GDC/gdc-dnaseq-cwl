@@ -150,7 +150,7 @@ inputs:
       separate: false
 
   - id: java_xmx
-    default: 8G
+    default: 32G
     type: string
     inputBinding:
       position: -10
