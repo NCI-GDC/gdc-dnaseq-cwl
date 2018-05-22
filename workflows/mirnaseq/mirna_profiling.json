@@ -2,7 +2,8 @@
     "awk_expression": "{arr[length($10)]+=1} END {for (i in arr) {print i\" \"arr[i]}}",
     "bam" : {
         "class": "File",
-        "path": "/mnt/scratch/mirna/113075.bam"
+        "format": "edam:format_2572",
+        "path": "/mnt/scratch/run_na12878/NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211_gdc_realn.bam"
     },
     "mirbase_db": "mirbase",
     "species_code": "hsa",

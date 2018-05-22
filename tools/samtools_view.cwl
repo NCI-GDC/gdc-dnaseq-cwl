@@ -36,7 +36,7 @@ inputs:
 
 outputs:
   - id: OUTPUT
-    format: "edam:format_2572"
+    format: "edam:format_2573"
     type: File
     outputBinding:
       glob: |
