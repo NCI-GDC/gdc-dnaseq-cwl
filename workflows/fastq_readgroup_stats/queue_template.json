@@ -1,5 +1,5 @@
 {
-    "cwl_workflow_git_hash": "https://raw.githubusercontent.com/NCI-GDC/workflow-jobs",
+    "cwl_workflow_git_hash": "5210b1ad1b4feda7853f3be3f77f0ba38d28aa62",
     "cwl_workflow_git_repo": "https://raw.githubusercontent.com/NCI-GDC/gdc-dnaseq-cwl",
     "cwl_workflow_rel_path": "gdc-dnaseq-cwl/workflows/fastq_readgroup_stats/runner.cwl",
     "cwl_job_github_git_repo": "git@github.com:NCI-GDC/workflow-jobs",
