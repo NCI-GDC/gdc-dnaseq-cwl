@@ -1,11 +1,17 @@
 #!/usr/bin/env bash
 
+echo "0=${0}"
+echo "1=${1}"
 input_workflow_path=${1}
-input_workflow_name=$(basename "${input_workflow_path}")
+echo "input_workflow_path=${input_workflow_path}"
+input_workflow_name=$(dirname "${input_workflow_path}")
+echo "input_workflow_name=${input_workflow_name}"
 workflow_prefix="${input_workflow_name%.*}"
-fileext="${input_workflow_name##*.}"
+echo "workflow_prefix=${workflow_prefix}"
+fileext="${input_workflow_path##*.}"
+echo "fileext=${fileext}"
 
-output_name=${workflow_prefix}_pack.${fileext}
+output_name=${workflow_prefix}_pack.cwl
 
 echo "input_workflow_path: ${input_workflow_path}"
 echo "packed workflow: ${output_name}"
