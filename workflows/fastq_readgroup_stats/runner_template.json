@@ -1,10 +1,10 @@
 {
-    "cwl_runner_repo_hash": "",
-    "cwl_runner_repo": "",
-    "cwl_runner_url": "",
-    "cwl_runner_job_branch": "",
-    "cwl_runner_job_repo": "",
-    "cwl_runner_job_url": "",
+    "cwl_workflow_git_repo": "${cwl_workflow_git_repo}",
+    "cwl_workflow_git_hash": "${cwl_workflow_git_hash}",
+    "cwl_workflow_rel_path": "${cwl_workflow_rel_path}",
+    "cwl_job_git_repo": "${cwl_job_git_repo}",
+    "cwl_job_git_hash": "${cwl_job_git_hash}",
+    "cwl_job_rel_path": "${cwl_job_rel_path}",
     "db_cred": {
         "class": "File",
         "path": ""
