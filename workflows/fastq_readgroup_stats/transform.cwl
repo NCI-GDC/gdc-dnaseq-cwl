@@ -20,7 +20,7 @@ inputs:
     type: string
 
 outputs:
-  - id: output
+  - id: sqlite
     type: File
     outputSource: merge_all_sqlite/destination_sqlite
 

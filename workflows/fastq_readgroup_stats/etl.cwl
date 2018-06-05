@@ -10,10 +10,14 @@ requirements:
  - class: SubworkflowFeatureRequirement
 
 inputs:
-  - id: gdc_token
+  - id: bioclient_config
     type: File
+  - id: bioclient_load_bucket
+    type: string
   - id: input_bam_gdc_id
     type: string
+  - id: input_bam_file_size
+    type: long
   - id: start_token
     type: File
   - id: thread_count
@@ -21,33 +25,21 @@ inputs:
   - id: job_uuid
     type: string
 
-  - id: aws_config
-    type: File
-  - id: aws_shared_credentials
-    type: File
-  - id: endpoint_json
-    type: File
-  - id: load_bucket
-    type: string
-  - id: s3cfg_section
-    type: string
-
 outputs:
-  - id: s3_sqlite_url
+  - id: indexd_sqlite_uuid
     type: string
-    outputSource: generate_s3_sqlite_url/output
-  - id: token
-    type: File
-    outputSource: generate_token/token
+    outputSource: emit_sqlite_uuid/output
 
 steps:
   - id: extract_bam
-    run: ../../tools/gdc_get_object.cwl
+    run: ../../tools/bio_client_download.cwl
     in:
-      - id: gdc_token
-        source: gdc_token
-      - id: gdc_uuid
+      - id: config-file
+        source: bioclient_config
+      - id: download_handle
         source: input_bam_gdc_id
+      - id: file_size
+        source: input_bam_file_size
     out:
       - id: output
  
@@ -61,47 +53,31 @@ steps:
       - id: job_uuid
         source: job_uuid
     out:
-      - id: output
+      - id: sqlite
 
   - id: load_sqlite
-    run: ../../tools/aws_s3_put.cwl
+    run: ../../tools/bio_client_upload_pull_uuid.cwl
     in:
-      - id: aws_config
-        source: aws_config
-      - id: aws_shared_credentials
-        source: aws_shared_credentials
-      - id: endpoint_json
-        source: endpoint_json
+      - id: config-file
+        source: bioclient_config
       - id: input
-        source: transform/output
-      - id: s3cfg_section
-        source: s3cfg_section
-      - id: s3uri
-        source: load_bucket
-        valueFrom: $(self)/$(inputs.job_uuid)/
+        source: transform/sqlite
+      - id: upload-bucket
+        source: bioclient_load_bucket
+      - id: upload-key
+        valueFrom: $(inputs.job_uuid)/$(inputs.input.basename)
       - id: job_uuid
         source: job_uuid
         valueFrom: $(null)
     out:
       - id: output
 
-  - id: generate_s3_sqlite_url
-    run: ../../tools/generate_s3load_path.cwl
+  - id: emit_sqlite_uuid
+    run: ../../tools/emit_json_value.cwl
     in:
-      - id: load_bucket
-        source: load_bucket
-      - id: filename
-        source: transform/output
-        valueFrom: $(self.basename)
-      - id: job_uuid
-        source: job_uuid
+      - id: input
+        source: load_sqlite/output
+      - id: key
+        valueFrom: did
     out:
       - id: output
-
-  - id: generate_token
-    run: ../../tools/generate_load_token.cwl
-    in:
-      - id: load1
-        source: load_sqlite/output
-    out:
-      - id: token

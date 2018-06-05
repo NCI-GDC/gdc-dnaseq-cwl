@@ -10,24 +10,28 @@ requirements:
   - class: SubworkflowFeatureRequirement
 
 inputs:
-  - id: cwl_runner_repo
+  - id: bioclient_config
+    type: File
+  - id: bioclient_load_bucket
     type: string
-  - id: cwl_runner_repo_hash
+  - id: cwl_workflow_git_hash
     type: string
-  - id: cwl_runner_url
+  - id: cwl_workflow_git_repo
     type: string
-  - id: cwl_runner_task_branch
+  - id: cwl_workflow_rel_path
     type: string
-  - id: cwl_runner_task_url
+  - id: cwl_job_git_hash
     type: string
-  - id: cwl_runner_task_repo
+  - id: cwl_job_git_repo
+    type: string
+  - id: cwl_job_rel_path
     type: string
   - id: db_cred
     type: File
   - id: db_cred_section
     type: string
-  - id: gdc_token
-    type: File
+  - id: job_uuid
+    type: string
   - id: input_bam_gdc_id
     type: string
   - id: input_bam_file_size
@@ -49,21 +53,11 @@ inputs:
   - id: thread_count
     type: long
 
-  - id: aws_config
-    type: File
-  - id: aws_shared_credentials
-    type: File
-  - id: endpoint_json
-    type: File
-  - id: load_bucket
-    type: string
-  - id: s3cfg_section
-    type: string
-
 outputs:
-  - id: token
-    type: File
-    outputSource: status_complete/token
+  []
+  # - id: indexd_sqlite_uuid
+  #   type: string
+  #   outputSource: emit_sqlite_uuid/output
 
 steps:
   - id: get_hostname
@@ -87,33 +81,21 @@ steps:
     out:
       - id: output
 
-  - id: get_cwl_runner_job_repo_hash
-    run: ../../tools/emit_git_hash.cwl
-    in:
-      - id: repo
-        source: cwl_runner_task_repo
-      - id: branch
-        source: cwl_runner_task_branch
-    out:
-      - id: output
-
   - id: status_running
     run: status_postgres.cwl
     in:
-      - id: cwl_runner_repo
-        source: cwl_runner_repo
-      - id: cwl_runner_repo_hash
-        source: cwl_runner_repo_hash
-      - id: cwl_runner_url
-        source: cwl_runner_url
-      - id: cwl_runner_task_branch
-        source: cwl_runner_task_branch
-      - id: cwl_runner_task_url
-        source: cwl_runner_task_url
-      - id: cwl_runner_task_repo
-        source: cwl_runner_task_repo
-      - id: cwl_runner_task_repo_hash
-        source: get_cwl_runner_task_repo_hash/output
+      - id: cwl_workflow_git_hash
+        source: cwl_workflow_git_hash
+      - id: cwl_workflow_git_repo
+        source: cwl_workflow_git_repo
+      - id: cwl_workflow_rel_path
+        source: cwl_workflow_rel_path
+      - id: cwl_job_git_hash
+        source: cwl_job_git_hash
+      - id: cwl_job_git_repo
+        source: cwl_job_git_repo
+      - id: cwl_job_rel_path
+        source: cwl_job_rel_path
       - id: db_cred
         source: db_cred
       - id: db_cred_section
@@ -124,14 +106,16 @@ steps:
         source: get_host_ipaddress/output
       - id: host_macaddress
         source: get_host_macaddress/output
+      - id: indexd_sqlite_uuid
+        valueFrom: "NULL"
       - id: input_bam_gdc_id
         source: input_bam_gdc_id
       - id: input_bam_file_size
         source: input_bam_file_size
       - id: input_bam_md5sum
         source: input_bam_md5sum
-      - id: s3_sqlite_url
-        valueFrom: "NULL"
+      - id: job_uuid
+        source: job_uuid
       - id: slurm_resource_cores
         source: slurm_resource_cores
       - id: slurm_resource_disk_gigabytes
@@ -140,12 +124,10 @@ steps:
         source: slurm_resource_mem_megabytes
       - id: status
         valueFrom: "RUNNING"
-      - id: step_token
-        source: gdc_token
-      - id: table_name
+      - id: status_table
         source: status_table
-      - id: task_uuid
-        source: task_uuid
+      - id: step_token
+        source: bioclient_config
       - id: thread_count
         source: thread_count
     out:
@@ -154,47 +136,38 @@ steps:
   - id: etl
     run: etl.cwl
     in:
-      - id: gdc_token
-        source: gdc_token
+      - id: bioclient_config
+        source: bioclient_config
+      - id: bioclient_load_bucket
+        source: bioclient_load_bucket
       - id: input_bam_gdc_id
         source: input_bam_gdc_id
+      - id: input_bam_file_size
+        source: input_bam_file_size
       - id: start_token
         source: status_running/token
       - id: thread_count
         source: thread_count
       - id: job_uuid
         source: job_uuid
-      - id: aws_config
-        source: aws_config
-      - id: aws_shared_credentials
-        source: aws_shared_credentials
-      - id: endpoint_json
-        source: endpoint_json
-      - id: load_bucket
-        source: load_bucket
-      - id: s3cfg_section
-        source: s3cfg_section
     out:
-      - id: s3_sqlite_url
-      - id: token
+      - id: indexd_sqlite_uuid
 
   - id: status_complete
     run: status_postgres.cwl
     in:
-      - id: cwl_runner_url
-        source: cwl_runner_url
-      - id: cwl_runner_repo
-        source: cwl_runner_repo
-      - id: cwl_runner_repo_hash
-        source: cwl_runner_repo_hash
-      - id: cwl_runner_job_branch
-        source: cwl_runner_job_branch
-      - id: cwl_runner_job_url
-        source: cwl_runner_job_url
-      - id: cwl_runner_job_repo
-        source: cwl_runner_job_repo
-      - id: cwl_runner_job_repo_hash
-        source: get_cwl_runner_job_repo_hash/output
+      - id: cwl_workflow_git_hash
+        source: cwl_workflow_git_hash
+      - id: cwl_workflow_git_repo
+        source: cwl_workflow_git_repo
+      - id: cwl_workflow_rel_path
+        source: cwl_workflow_rel_path
+      - id: cwl_job_git_hash
+        source: cwl_job_git_hash
+      - id: cwl_job_git_repo
+        source: cwl_job_git_repo
+      - id: cwl_job_rel_path
+        source: cwl_job_rel_path
       - id: db_cred
         source: db_cred
       - id: db_cred_section
@@ -205,16 +178,14 @@ steps:
         source: get_host_ipaddress/output
       - id: host_macaddress
         source: get_host_macaddress/output
+      - id: indexd_sqlite_uuid
+        valueFrom: etl/indexd_sqlite_uuid
       - id: input_bam_gdc_id
         source: input_bam_gdc_id
       - id: input_bam_file_size
         source: input_bam_file_size
       - id: input_bam_md5sum
         source: input_bam_md5sum
-      - id: job_uuid
-        source: job_uuid
-      - id: s3_sqlite_url
-        source: etl/s3_sqlite_url
       - id: slurm_resource_cores
         source: slurm_resource_cores
       - id: slurm_resource_disk_gigabytes
@@ -224,9 +195,11 @@ steps:
       - id: status
         valueFrom: "COMPLETE"
       - id: step_token
-        source: etl/token
-      - id: table_name
+        source: status_running/token
+      - id: status_table
         source: status_table
+      - id: job_uuid
+        source: job_uuid
       - id: thread_count
         source: thread_count
     out:
