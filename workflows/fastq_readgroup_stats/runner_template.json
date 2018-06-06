@@ -22,7 +22,6 @@
     "slurm_resource_cores": 0,
     "slurm_resource_disk_gigabytes": 0,
     "slurm_resource_mem_megabytes": 0,
-    "slurm_runner_job_url": "",
     "status_table": "",
     "task_creation_uuid": "",
     "thread_count": 0
