@@ -1,4 +1,9 @@
 {
+    "bioclient_config": {
+        "class": "File",
+        "path": "${bioclient_config}"
+    },
+    "bioclient_load_bucket": "${bioclient_load_bucket}",
     "cwl_workflow_git_repo": "${cwl_workflow_git_repo}",
     "cwl_workflow_git_hash": "${cwl_workflow_git_hash}",
     "cwl_workflow_rel_path": "${cwl_workflow_rel_path}",
@@ -10,10 +15,6 @@
         "path": ""
     },
     "db_cred_section": "",
-    "gdc_token": {
-        "class": "File",
-        "path": ""
-    },
     "input_bam_gdc_id": "",
     "input_bam_file_size": 0,
     "input_bam_md5sum": "",
@@ -24,19 +25,5 @@
     "slurm_runner_job_url": "",
     "status_table": "",
     "task_creation_uuid": "",
-    "thread_count": 1,
-    "aws_config": {
-        "class": "File",
-        "path": ""
-    },
-    "aws_shared_credentials": {
-        "class": "File",
-        "path": ""
-    },
-    "endpoint_json": {
-        "class": "File",
-        "path": ""
-    },
-    "s3cfg_section": "",
-    "load_bucket": ""
+    "thread_count": 0
 }
