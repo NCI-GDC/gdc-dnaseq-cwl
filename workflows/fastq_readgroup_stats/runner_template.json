@@ -18,11 +18,11 @@
     "input_bam_gdc_id": "",
     "input_bam_file_size": 0,
     "input_bam_md5sum": "",
+    "job_creation_uuid": "",
     "job_uuid": "",
     "slurm_resource_cores": 0,
     "slurm_resource_disk_gigabytes": 0,
     "slurm_resource_mem_megabytes": 0,
     "status_table": "",
-    "task_creation_uuid": "",
     "thread_count": 0
 }
