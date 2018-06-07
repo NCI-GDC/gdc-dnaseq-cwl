@@ -176,7 +176,7 @@ steps:
       - id: host_macaddress
         source: get_host_macaddress/output
       - id: indexd_sqlite_uuid
-        valueFrom: etl/indexd_sqlite_uuid
+        source: etl/indexd_sqlite_uuid
       - id: input_bam_gdc_id
         source: input_bam_gdc_id
       - id: input_bam_file_size
