@@ -115,5 +115,6 @@ function main()
     fi
     kill $SSH_AGENT_PID
     #sudo rm -rf ${work_dir}
+}
 
 main "$@"
