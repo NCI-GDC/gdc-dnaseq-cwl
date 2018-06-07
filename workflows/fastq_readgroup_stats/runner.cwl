@@ -38,8 +38,6 @@ inputs:
     type: long
   - id: input_bam_md5sum
     type: string
-  - id: slurm_runner_job_url
-    type: string
   - id: slurm_resource_cores
     type: long
   - id: slurm_resource_disk_gigabytes
