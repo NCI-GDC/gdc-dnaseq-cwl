@@ -30,13 +30,15 @@ inputs:
     type: File
   - id: db_cred_section
     type: string
-  - id: job_uuid
-    type: string
   - id: input_bam_gdc_id
     type: string
   - id: input_bam_file_size
     type: long
   - id: input_bam_md5sum
+    type: string
+  - id: job_creation_uuid
+    type: string
+  - id: job_uuid
     type: string
   - id: slurm_resource_cores
     type: long
@@ -46,16 +48,13 @@ inputs:
     type: long
   - id: status_table
     type: string
-  - id: task_uuid
-    type: string
   - id: thread_count
     type: long
 
 outputs:
-  []
-  # - id: indexd_sqlite_uuid
-  #   type: string
-  #   outputSource: emit_sqlite_uuid/output
+  - id: indexd_sqlite_uuid
+    type: string
+    outputSource: etl/indexd_sqlite_uuid
 
 steps:
   - id: get_hostname
