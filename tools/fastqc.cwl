@@ -60,7 +60,8 @@ inputs:
       position: 99
 
   - id: kmers
-    type: ["null", File]
+    type: long
+    default: 7
     inputBinding:
       prefix: --kmers
 
