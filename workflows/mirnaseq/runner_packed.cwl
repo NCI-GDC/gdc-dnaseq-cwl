@@ -155,7 +155,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/bio-client:bf16b2611aa2a69fb243b668286fd1e6eda1cb9542d2d7967fb3f7e3fa2e36d8
+                    "dockerPull": "quay.io/ncigdc/bio-client:73ee91dd94b29824633e06d2bc7e0afa8d672c0ded6658402ae95822597e4acc
                 }
             ], 
             "inputs": [
@@ -211,7 +211,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/bio-client:bf16b2611aa2a69fb243b668286fd1e6eda1cb9542d2d7967fb3f7e3fa2e36d8
+                    "dockerPull": "quay.io/ncigdc/bio-client:73ee91dd94b29824633e06d2bc7e0afa8d672c0ded6658402ae95822597e4acc
                 }
             ], 
             "inputs": [
@@ -891,7 +891,7 @@
             "requirements": [
                 {
                     "class": "DockerRequirement", 
-                    "dockerPull": "quay.io/ncigdc/fastqc:e57b0ebbdc59969f1d08b0404c7074cab517f3b5f9911e2e856e3003b277893b
+                    "dockerPull": "quay.io/ncigdc/fastqc:27ec215ea82bd62a76ec86f9c8a692010cc0c99169e68d2fa0c0052450321f57
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
