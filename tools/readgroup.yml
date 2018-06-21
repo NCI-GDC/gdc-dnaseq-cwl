@@ -25,12 +25,6 @@
         type: ["null", string]
       - name: SM
         type: string
-      - name: flow_cell_barcode
-        type: ["null", string]
-      - name: lane_number
-        type: ["null", long]
-      - name: multiplex_barcode
-        type: ["null", string]
 
   - name: readgroup_fastq_pe_file
     type: record
