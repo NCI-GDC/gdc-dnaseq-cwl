@@ -116,26 +116,6 @@ outputs:
   - id: OUTPUT
     type: File
     outputBinding:
-      glob: |
-        ${
-          function endsWith(str, suffix) {
-            return str.indexOf(suffix, str.length - suffix.length) !== -1;
-          }
-
-          var filename = inputs.INPUT.nameroot;
-
-          if ( endsWith(filename, '.fq') ) {
-            var nameroot = filename.slice(0,-3);
-          }
-          else if ( endsWith(nameroot, '.fastq') ) {
-            var nameroot = filename.slice(0,-6);
-          }
-          else {
-            var nameroot = filename;
-          }
-
-          var output = nameroot +"_fastqc.zip";
-          return output
-        }
+      glob: "*_fastqc.zip"
           
 baseCommand: [/usr/local/FastQC/fastqc]
