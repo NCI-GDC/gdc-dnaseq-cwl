@@ -12,8 +12,6 @@ inputs:
     type: File
   - id: job_uuid
     type: string
-  - id: run_markduplicates
-    type: long
 
 outputs:
   - id: output

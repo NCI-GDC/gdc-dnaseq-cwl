@@ -86,6 +86,10 @@ inputs:
     type: string
   - id: reference_sa_file_size
     type: long
+  - id: run_bamindex
+    type:
+      type: array
+      items: long
   - id: run_markduplicates
     type:
       type: array
@@ -333,6 +337,8 @@ steps:
         source: root_known_snp_files/output
       - id: reference_sequence
         source: root_fasta_files/output
+      - id: run_bamindex
+        source: run_bamindex
       - id: run_markduplicates
         source: run_markduplicates
       - id: thread_count
