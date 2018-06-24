@@ -45,6 +45,10 @@ inputs:
     type: File
     secondaryFiles:
       - .tbi
+  - id: run_bamindex
+    type:
+      type: array
+      items: long
   - id: run_markduplicates
     type:
       type: array
@@ -259,36 +263,32 @@ steps:
     out:
       - id: output
       - id: sqlite
-
-  - id: create_nonconditional_sqlite
-    run: ../../tools/touch.cwl
-    in:
-      - id: input
-        valueFrom: "empty.sqlite"
-    out:
-      - id: output
-
-  - id: format_nonconditional_sqlite
-    run: ../../tools/emit_file_format.cwl
-    in:
-      - id: input
-        source: create_nonconditional_sqlite/output
-      - id: format
-        valueFrom: "edam:format_2572"
-    out:
-      - id: output
         
-  - id: decide_markduplicates
-    run: ../../tools/decider_conditional_bam.cwl
+  - id: conditional_index
+    run: conditional_bamindex.cwl
+    scatter: run_bamindex
     in:
-      - id: conditional_bam
-        source: conditional_markduplicates/output
-      - id: conditional_sqlite
-        source: conditional_markduplicates/sqlite
-      - id: nonconditional_bam
+      - id: bam
         source: bam_reheader/output
-      - id: nonconditional_sqlite
-        source: format_nonconditional_sqlite/output
+      - id: run_bamindex
+        source: run_bamindex
+      - id: thread_count
+        source: thread_count
+    out:
+      - id: output
+      - id: sqlite
+
+  - id: decide_markduplicates_index
+    run: ../../tools/decider_conditional_bams.cwl
+    in:
+      - id: conditional_bam1
+        source: conditional_markduplicates/output
+      - id: conditional_sqlite1
+        source: conditional_markduplicates/sqlite
+      - id: conditional_bam2
+        source: conditional_index/output
+      - id: conditional_sqlite2
+        source: conditional_index/sqlite
     out:
       - id: output
       - id: sqlite
@@ -297,7 +297,7 @@ steps:
     run: ../../tools/gatk4_baserecalibrator.cwl
     in:
       - id: input
-        source: decide_markduplicates/output
+        source: decide_markduplicates_index/output
       - id: known-sites
         source: known_snp
       - id: reference
@@ -309,7 +309,7 @@ steps:
     run: ../../tools/gatk4_applybqsr.cwl
     in:
       - id: input
-        source: decide_markduplicates/output
+        source: decide_markduplicates_index/output
       - id: bqsr-recal-file
         source: gatk_baserecalibrator/output_grp
     out:
@@ -383,7 +383,7 @@ steps:
         source: [
           merge_sqlite_bwa_pe/destination_sqlite,
           merge_sqlite_bwa_se/destination_sqlite,
-          decide_markduplicates/sqlite,
+          decide_markduplicates_index/sqlite,
           picard_validatesamfile_bqsr_to_sqlite/sqlite,
           metrics/sqlite,
           integrity/sqlite
