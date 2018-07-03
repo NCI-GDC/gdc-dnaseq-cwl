@@ -9,8 +9,8 @@ requirements:
   - class: ResourceRequirement
     coresMin: 1
     coresMax: 1
-    ramMin: 32768
-    ramMax: 32768
+    ramMin: 49152
+    ramMax: 49152
     tmpdirMin: 1000
     tmpdirMax: 1000
     outdirMin: 1000
@@ -150,7 +150,7 @@ inputs:
       separate: false
 
   - id: java_xmx
-    default: 32G
+    default: 48G
     type: string
     inputBinding:
       position: -10
