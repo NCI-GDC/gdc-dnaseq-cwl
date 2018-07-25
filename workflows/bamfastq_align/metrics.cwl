@@ -95,6 +95,17 @@ steps:
       - id: destination_sqlite
       - id: log
 
+  - id: merge_amplicon_sqlite
+    run: ../../tools/merge_sqlite.cwl
+    in:
+      - id: source_sqlite
+        source: amplicon_metrics/sqlite
+      - id: job_uuid
+        source: job_uuid
+    out:
+      - id: destination_sqlite
+      - id: log
+
   - id: picard_collectmultiplemetrics
     run: ../../tools/picard_collectmultiplemetrics.cwl
     in:
@@ -300,6 +311,7 @@ steps:
       - id: source_sqlite
         source: [
           merge_exome_sqlite/destination_sqlite,
+          merge_amplicon_sqlite/destination_sqlite,
           picard_collectmultiplemetrics_to_sqlite/sqlite,
           picard_collectoxogmetrics_to_sqlite/sqlite,
           picard_collectwgsmetrics_to_sqlite/sqlite,
