@@ -38,12 +38,20 @@ outputs:
     outputSource: merge_sqlite/destination_sqlite
 
 steps:
+  - id: fastq_cleaner
+    run: ../../tools/fastq_cleaner_se.cwl
+    in:
+      - id: fastq
+        source: readgroup_fastq_pe
+        valueFrom: $(self.fastq)
+    out:
+      - id: cleaned_fastq
+
   - id: fastqc
     run: ../../tools/fastqc.cwl
     in:
       - id: INPUT
-        source: readgroup_fastq_se
-        valueFrom: $(self.fastq)
+        source: fastq_cleaner/cleaned_fastq
       - id: threads
         source: thread_count
     out:
@@ -74,8 +82,7 @@ steps:
       - id: fasta
         source: reference_sequence
       - id: fastq
-        source: readgroup_fastq_se
-        valueFrom: $(self.fastq)
+        source: fastq_cleaner/cleaned_fastq
       - id: fastqc_json_path
         source: fastqc_basicstats_json/OUTPUT
       - id: readgroup_meta
