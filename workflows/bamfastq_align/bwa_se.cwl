@@ -42,7 +42,7 @@ steps:
     run: ../../tools/fastq_cleaner_se.cwl
     in:
       - id: fastq
-        source: readgroup_fastq_pe
+        source: readgroup_fastq_se
         valueFrom: $(self.fastq)
     out:
       - id: cleaned_fastq
