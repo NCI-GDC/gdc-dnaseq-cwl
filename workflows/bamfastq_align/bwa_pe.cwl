@@ -50,7 +50,7 @@ steps:
     out:
       - id: cleaned_fastq1
       - id: cleaned_fastq2
-        
+
   - id: fastqc1
     run: ../../tools/fastqc.cwl
     in:
