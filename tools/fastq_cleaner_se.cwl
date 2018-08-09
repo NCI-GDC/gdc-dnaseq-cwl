@@ -25,11 +25,23 @@ inputs:
     inputBinding:
       prefix: --fastq
 
+  - id: reads_in_memory
+    type: long
+    default: 500000
+    inputBinding:
+      prefix: --reads_in_memory
+
 outputs:
   - id: cleaned_fastq
     type: File
     format: "edam:format_2182"
     outputBinding:
       glob: $(inputs.fastq.basename)
+
+  - id: result_json
+    type: File
+    format: "edam:format_3464"
+    outputBinding:
+      glob: "result.json"
 
 baseCommand: [/usr/local/bin/fastq_cleaner]
