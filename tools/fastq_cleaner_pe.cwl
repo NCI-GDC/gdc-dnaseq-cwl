@@ -4,13 +4,13 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/fastq_cleaner:dba8a6e2cdba27cc1bfac6455c707e541dd4ca50198373b2c36cb5f6ac461e9d
+    dockerPull: quay.io/ncigdc/fastq_cleaner:64142d0aae2327d0bdf1872c8e17e158e966f84fc0c3fd9ff647794e234ccd6d
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
     coresMin: 2
     coresMax: 2
-    ramMin: 20000
-    ramMax: 20000
+    ramMin: 2000
+    ramMax: 2000
     tmpdirMin: $(Math.ceil(1.1 * (inputs.fastq1.size + inputs.fastq2.size) / 1048576))
     tmpdirMax: $(Math.ceil(1.1 * (inputs.fastq1.size + inputs.fastq2.size) / 1048576))
     outdirMin: $(Math.ceil(1.1 * (inputs.fastq1.size + inputs.fastq2.size) / 1048576))
