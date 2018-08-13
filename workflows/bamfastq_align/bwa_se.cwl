@@ -38,15 +38,6 @@ outputs:
     outputSource: merge_sqlite/destination_sqlite
 
 steps:
-  - id: fastq_cleaner
-    run: ../../tools/fastq_cleaner_se.cwl
-    in:
-      - id: fastq
-        source: readgroup_fastq_se
-        valueFrom: $(self.fastq)
-    out:
-      - id: cleaned_fastq
-
   - id: fastqc
     run: ../../tools/fastqc.cwl
     in:
