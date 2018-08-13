@@ -29,19 +29,24 @@ outputs:
 
 expression: |
    ${
+
+      // https://stackoverflow.com/a/9849276/810957
       function include(arr,obj) {
         return (arr.indexOf(obj) != -1)
       }
 
+      // https://stackoverflow.com/a/2548133/810957
       function endsWith(str, suffix) {
         return str.indexOf(suffix, str.length - suffix.length) !== -1;
       }
 
+      // https://stackoverflow.com/questions/3820381/need-a-basename-function-in-javascript#comment29942319_15270931
       function local_basename(path) {
         var basename = path.split(/[\\/]/).pop();
         return basename
       }
 
+      // https://planetozh.com/blog/2008/04/javascript-basename-and-dirname/
       function local_dirname(path) {
         return path.replace(/\\/g,'/').replace(/\/[^\/]*$/, '');
       }

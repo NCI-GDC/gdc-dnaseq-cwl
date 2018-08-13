@@ -75,6 +75,24 @@ outputs:
     outputSource: merge_all_sqlite/destination_sqlite
 
 steps:
+  - id: fastq_clean_pe
+    run: fastq_clean_pe.cwl
+    scatter: input
+    in:
+      - id: input
+        source: readgroup_fastq_pe_file_list
+    out:
+      - id: output
+
+  - id: fastq_clean_se
+    run: fastq_clean_se.cwl
+    scatter: input
+    in:
+      - id: input
+        source: readgroup_fastq_se_file_list
+    out:
+      - id: output
+
   - id: readgroups_bam_to_readgroups_fastq_lists
     run: readgroups_bam_to_readgroups_fastq_lists.cwl
     scatter: readgroups_bam_file
@@ -101,7 +119,7 @@ steps:
       - id: input
         source: [
         merge_bam_pe_fastq_records/output,
-        readgroup_fastq_pe_file_list
+        fastq_clean_pe/output
         ]
     out:
       - id: output
@@ -120,7 +138,7 @@ steps:
       - id: input
         source: [
         merge_bam_se_fastq_records/output,
-        readgroup_fastq_se_file_list
+        fastq_clean_se/output
         ]
     out:
       - id: output

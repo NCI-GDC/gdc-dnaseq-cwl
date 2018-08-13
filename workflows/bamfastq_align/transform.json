@@ -1,10 +1,11 @@
 {
     "bam_name": "NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211_gdc_realn.bam",
     "job_uuid": "00000000-0000-0000-0000-000000000000",
-    "capture_kit_set_list": [],
-    "readgroup_fastq_pe_path_list": [],
-    "readgroup_fastq_se_path_list": [],
-    "readgroups_bam_path_list": [
+    "amplicon_kit_set_file_list": [],
+    "capture_kit_set_file_list": [],
+    "readgroup_fastq_pe_file_list": [],
+    "readgroup_fastq_se_file_list": [],
+    "readgroups_bam_file_list": [
         {
             "bam": {
                 "class": "File",
@@ -55,5 +56,7 @@
              "location": "/mnt/scratch/hg38_reference/dbsnp_144.hg38.vcf.gz.tbi"}
         ]
     },
+    "run_bamindex": [],
+    "run_markduplicates": [1],
     "thread_count": 4
 }
