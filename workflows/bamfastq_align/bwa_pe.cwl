@@ -42,7 +42,8 @@ steps:
     run: ../../tools/fastqc.cwl
     in:
       - id: INPUT
-        source: fastq_cleaner/cleaned_fastq1
+        source: readgroup_fastq_pe
+        valueFrom: $(self.forward_fastq)
       - id: threads
         source: thread_count
     out:
@@ -52,7 +53,8 @@ steps:
     run: ../../tools/fastqc.cwl
     in:
       - id: INPUT
-        source: fastq_cleaner/cleaned_fastq2
+        source: readgroup_fastq_pe
+        valueFrom: $(self.reverse_fastq)
       - id: threads
         source: thread_count
     out:
@@ -94,9 +96,11 @@ steps:
       - id: fasta
         source: reference_sequence
       - id: fastq1
-        source: fastq_cleaner/cleaned_fastq1
+        source: readgroup_fastq_pe
+        valueFrom: $(self.forward_fastq)
       - id: fastq2
-        source: fastq_cleaner/cleaned_fastq2
+        source: readgroup_fastq_pe
+        valueFrom: $(self.reverse_fastq)
       - id: fastqc_json_path
         source: fastqc_basicstats_json/OUTPUT
       - id: readgroup_meta
