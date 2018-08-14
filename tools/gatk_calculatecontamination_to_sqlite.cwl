@@ -29,15 +29,15 @@ inputs:
     inputBinding:
       prefix: --input_state
 
-  - id: metric_path
-    type: File
-    inputBinding:
-      prefix: --metric_path
-
   - id: job_uuid
     type: string
     inputBinding:
       prefix: --job_uuid
+
+  - id: metric_path
+    type: File
+    inputBinding:
+      prefix: --metric_path
 
 outputs:
   - id: log
