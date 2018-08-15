@@ -27,7 +27,7 @@ inputs:
       items: ../../tools/capture_kit.yml#capture_kit_set_file
   - id: common_biallelic_vcf
     type: File
-    secondaryFile:
+    secondaryFiles:
       - .tbi
   - id: fasta
     type: File
