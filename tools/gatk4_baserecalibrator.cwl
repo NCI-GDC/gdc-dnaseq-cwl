@@ -52,4 +52,4 @@ arguments:
     prefix: --output
     separate: true
 
-baseCommand: [java, -jar, /usr/local/bin/gatk-package-4.0.4.0-local.jar, BaseRecalibrator]
+baseCommand: [java, -jar, /usr/local/bin/gatk-package-4.0.7.0-local.jar, BaseRecalibrator]
