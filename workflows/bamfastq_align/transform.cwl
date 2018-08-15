@@ -85,6 +85,8 @@ steps:
     in:
       - id: input
         source: readgroup_fastq_pe_file_list
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: output
       - id: sqlite
@@ -95,6 +97,8 @@ steps:
     in:
       - id: input
         source: readgroup_fastq_se_file_list
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: output
       - id: sqlite
