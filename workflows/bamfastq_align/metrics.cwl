@@ -25,6 +25,10 @@ inputs:
     type:
       type: array
       items: ../../tools/capture_kit.yml#capture_kit_set_file
+  - id: common_biallelic_vcf
+    type: File
+    secondaryFile:
+      - .tbi
   - id: fasta
     type: File
     secondaryFiles:
@@ -111,6 +115,8 @@ steps:
     in:
       - id: input
         source: bam
+      - id: variant
+        source: common_biallelic_vcf
     out:
       - id: output
 

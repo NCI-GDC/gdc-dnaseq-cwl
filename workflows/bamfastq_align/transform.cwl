@@ -41,6 +41,10 @@ inputs:
     type:
       type: array
       items: ../../tools/readgroup.yml#readgroups_bam_file
+  - id: common_biallelic_vcf
+    type: File
+    secondaryFiles:
+      - .tbi
   - id: known_snp
     type: File
     secondaryFiles:
@@ -368,6 +372,8 @@ steps:
         source: amplicon_kit_set_file_list
       - id: capture_kit_set_file_list
         source: capture_kit_set_file_list
+      - id: common_biallelic_vcf
+        source: common_biallelic_vcf
       - id: fasta
         source: reference_sequence
       - id: input_state

@@ -46,6 +46,14 @@ inputs:
       items: ../../tools/readgroup.yml#readgroups_bam_uuid
   - id: start_token
     type: ["null", File]
+  - id: common_biallelic_vcf_gdc_id
+    type: string
+  - id: common_biallelic_vcf_file_size
+    type: long    
+  - id: common_biallelic_vcf_index_gdc_id
+    type: string
+  - id: common_biallelic_vcf_index_file_size
+    type: long    
   - id: known_snp_gdc_id
     type: string
   - id: known_snp_file_size
@@ -161,6 +169,30 @@ steps:
         source: bioclient_config
       - id: capture_kit_set_uuid
         source: capture_kit_set_uuid_list
+    out:
+      - id: output
+
+  - id: extract_common_biallelic_vcf
+    run: ../../tools/bio_client_download.cwl
+    in:
+      - id: config-file
+        source: bioclient_config
+      - id: download_handle
+        source: common_biallelic_vcf_gdc_id
+      - id: file_size
+        source: common_biallelic_vcf_file_size
+    out:
+      - id: output
+
+  - id: extract_common_biallelic_vcf_index
+    run: ../../tools/bio_client_download.cwl
+    in:
+      - id: config-file
+        source: bioclient_config
+      - id: download_handle
+        source: common_biallelic_vcf_index_gdc_id
+      - id: file_size
+        source: common_biallelic_vcf_index_file_size
     out:
       - id: output
 
@@ -306,6 +338,16 @@ steps:
     out:
       - id: output
 
+  - id: root_common_biallelic_vcf_files
+    run: ../../tools/root_vcf.cwl
+    in:
+      - id: vcf
+        source: extract_common_biallelic_vcf/output
+      - id: vcf_index
+        source: extract_common_biallelic_vcf_index/output
+    out:
+      - id: output
+ 
   - id: root_known_snp_files
     run: ../../tools/root_vcf.cwl
     in:
@@ -333,6 +375,8 @@ steps:
         source: extract_readgroup_fastq_se/output
       - id: readgroups_bam_file_list
         source: extract_readgroups_bam/output
+      - id: common_biallelic_vcf
+        source: root_common_biallelic_vcf_files/output
       - id: known_snp
         source: root_known_snp_files/output
       - id: reference_sequence
