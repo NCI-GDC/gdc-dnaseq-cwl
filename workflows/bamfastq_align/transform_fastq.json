@@ -15,9 +15,7 @@
                 "format": "edam:format_2182",
                 "location": "/mnt/scratch/SRR622461_2.fq.gz"
             },
-            "readgroup_meta_list":
-            [
-                {
+            "readgroup_meta": {
                 "CN": "UNKNOWN",
                 "DT": "1970-01-01T00:00:00Z",
                 "ID": "SRR622461",
@@ -25,8 +23,7 @@
                 "PI": "250",
                 "PL": "ILLUMINA",
                 "SM": "NA12878"
-                }
-            ]
+            }
         }
     ],
     "readgroup_fastq_se_file_list": [],
