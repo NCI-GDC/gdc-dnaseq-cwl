@@ -47,6 +47,15 @@
              "location": "/mnt/scratch/hg38_reference/GRCh38.d1.vd1.dict"}
         ]
     },
+    "common_biallelic_vcf": {
+        "class": "File",
+        "format": "edam:format_3016",
+        "location": "/mnt/scratch/hg38_reference/af-only-gnomad-biallelic-autoallo.hg38.vcf.gz",
+        "secondaryFiles": [
+            {"class": "File",
+             "location": "/mnt/scratch/hg38_reference/af-only-gnomad-biallelic-autoallo.hg38.vcf.gz.tbi"}
+        ]
+    },
     "known_snp": {
         "class": "File",
         "format": "edam:format_3016",
