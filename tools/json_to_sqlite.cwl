@@ -19,7 +19,7 @@ class: CommandLineTool
 
 inputs:
   - id: input_json
-    type: string
+    type: File
     inputBinding:
       prefix: --input_json
 

@@ -87,6 +87,7 @@ steps:
         source: readgroup_fastq_pe_file_list
     out:
       - id: output
+      - id: sqlite
 
   - id: fastq_clean_se
     run: fastq_clean_se.cwl
@@ -96,6 +97,29 @@ steps:
         source: readgroup_fastq_se_file_list
     out:
       - id: output
+      - id: sqlite
+
+  - id: merge_sqlite_fastq_clean_pe
+    run: ../../tools/merge_sqlite.cwl
+    in:
+      - id: source_sqlite
+        source: fastq_clean_pe/sqlite
+      - id: job_uuid
+        source: job_uuid
+    out:
+      - id: destination_sqlite
+      - id: log
+
+  - id: merge_sqlite_fastq_clean_se
+    run: ../../tools/merge_sqlite.cwl
+    in:
+      - id: source_sqlite
+        source: fastq_clean_se/sqlite
+      - id: job_uuid
+        source: job_uuid
+    out:
+      - id: destination_sqlite
+      - id: log
 
   - id: readgroups_bam_to_readgroups_fastq_lists
     run: readgroups_bam_to_readgroups_fastq_lists.cwl
@@ -405,6 +429,8 @@ steps:
     in:
       - id: source_sqlite
         source: [
+          merge_sqlite_fastq_clean_pe/destination_sqlite,
+          merge_sqlite_fastq_clean_se/destination_sqlite,
           merge_sqlite_bwa_pe/destination_sqlite,
           merge_sqlite_bwa_se/destination_sqlite,
           decide_markduplicates_index/sqlite,
