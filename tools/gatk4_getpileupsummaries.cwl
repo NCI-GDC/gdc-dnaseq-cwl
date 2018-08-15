@@ -24,6 +24,11 @@ inputs:
     inputBinding:
       prefix: --TMP_DIR
 
+  - id: variant
+    type: File
+    inputBinding:
+      prefix: --variant
+
 outputs:
   - id: output
     type: File
