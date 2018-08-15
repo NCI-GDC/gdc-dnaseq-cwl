@@ -54,7 +54,7 @@ steps:
       - id: output
 
   - id: json_to_sqlite
-    run: ../../tools/json_to_sqlite
+    run: ../../tools/json_to_sqlite.cwl
     in:
       - id: input_json
         source: fastq_cleaner_pe/result_json
