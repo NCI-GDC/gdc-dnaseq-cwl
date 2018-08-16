@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/picard_metrics_sqlite:d60d360e5ef990963aadce8ae77de3e4e1476ec4ecb115eb3064e27c9516e5a3
+    dockerPull: quay.io/ncigdc/picard_metrics_sqlite:e71798322233d02d67db0158aeeef27990d2d400aadfc92c3687ba85555b0cf8
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
     coresMin: 1
