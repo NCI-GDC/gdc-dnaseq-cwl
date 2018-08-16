@@ -107,7 +107,7 @@ steps:
     run: ../../tools/merge_sqlite.cwl
     in:
       - id: source_sqlite
-        source: [fastq_clean_pe/sqlite]
+        source: fastq_clean_pe/sqlite
       - id: job_uuid
         source: job_uuid
     out:
@@ -118,7 +118,7 @@ steps:
     run: ../../tools/merge_sqlite.cwl
     in:
       - id: source_sqlite
-        source: [fastq_clean_se/sqlite]
+        source: fastq_clean_se/sqlite
       - id: job_uuid
         source: job_uuid
     out:
