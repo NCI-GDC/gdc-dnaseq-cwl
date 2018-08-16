@@ -18,36 +18,26 @@ inputs:
     secondaryFiles:
       - ^.bai
 
-  - id: bqsr-recal-file
-    type: File
-    inputBinding:
-      prefix: --bqsr-recal-file
-
-  - id: emit-original-quals
-    type:
-      - type: enum
-        symbols: ["true", "false"]
-    default: "true"
-    inputBinding:
-      prefix: --emit-original-quals
-
   - id: TMP_DIR
     type: string
     default: "."
     inputBinding:
       prefix: --TMP_DIR
 
+  - id: variant
+    type: File
+    inputBinding:
+      prefix: --variant
+
 outputs:
-  - id: output_bam
-    format: "edam:format_2572"
+  - id: output
     type: File
     outputBinding:
-      glob: $(inputs.input.basename)
-    secondaryFiles:
-      - ^.bai
+      glob: $(inputs.input.nameroot + "_pileupsummaries.table")
 
 arguments:
-  - valueFrom: $(inputs.input.basename)
+  - valueFrom: $(inputs.input.nameroot + "_pileupsummaries.table")
     prefix: --output
+    separate: true
 
-baseCommand: [java, -jar, /usr/local/bin/gatk-package-4.0.7.0-local.jar, ApplyBQSR]
+baseCommand: [java, -jar, /usr/local/bin/gatk-package-4.0.7.0-local.jar, GetPileupSummaries]

@@ -41,6 +41,10 @@ inputs:
     type:
       type: array
       items: ../../tools/readgroup.yml#readgroups_bam_file
+  - id: common_biallelic_vcf
+    type: File
+    secondaryFiles:
+      - .tbi
   - id: known_snp
     type: File
     secondaryFiles:
@@ -81,8 +85,11 @@ steps:
     in:
       - id: input
         source: readgroup_fastq_pe_file_list
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: output
+      - id: sqlite
 
   - id: fastq_clean_se
     run: fastq_clean_se.cwl
@@ -90,8 +97,33 @@ steps:
     in:
       - id: input
         source: readgroup_fastq_se_file_list
+      - id: job_uuid
+        source: job_uuid
     out:
       - id: output
+      - id: sqlite
+
+  - id: merge_sqlite_fastq_clean_pe
+    run: ../../tools/merge_sqlite.cwl
+    in:
+      - id: source_sqlite
+        source: fastq_clean_pe/sqlite
+      - id: job_uuid
+        source: job_uuid
+    out:
+      - id: destination_sqlite
+      - id: log
+
+  - id: merge_sqlite_fastq_clean_se
+    run: ../../tools/merge_sqlite.cwl
+    in:
+      - id: source_sqlite
+        source: fastq_clean_se/sqlite
+      - id: job_uuid
+        source: job_uuid
+    out:
+      - id: destination_sqlite
+      - id: log
 
   - id: readgroups_bam_to_readgroups_fastq_lists
     run: readgroups_bam_to_readgroups_fastq_lists.cwl
@@ -368,6 +400,8 @@ steps:
         source: amplicon_kit_set_file_list
       - id: capture_kit_set_file_list
         source: capture_kit_set_file_list
+      - id: common_biallelic_vcf
+        source: common_biallelic_vcf
       - id: fasta
         source: reference_sequence
       - id: input_state
@@ -399,6 +433,8 @@ steps:
     in:
       - id: source_sqlite
         source: [
+          merge_sqlite_fastq_clean_pe/destination_sqlite,
+          merge_sqlite_fastq_clean_se/destination_sqlite,
           merge_sqlite_bwa_pe/destination_sqlite,
           merge_sqlite_bwa_se/destination_sqlite,
           decide_markduplicates_index/sqlite,

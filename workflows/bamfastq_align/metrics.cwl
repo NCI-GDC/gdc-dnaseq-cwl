@@ -25,6 +25,10 @@ inputs:
     type:
       type: array
       items: ../../tools/capture_kit.yml#capture_kit_set_file
+  - id: common_biallelic_vcf
+    type: File
+    secondaryFiles:
+      - .tbi
   - id: fasta
     type: File
     secondaryFiles:
@@ -105,6 +109,42 @@ steps:
     out:
       - id: destination_sqlite
       - id: log
+
+  - id: gatk_getpileupsummaries
+    run: ../../tools/gatk4_getpileupsummaries.cwl
+    in:
+      - id: input
+        source: bam
+      - id: variant
+        source: common_biallelic_vcf
+    out:
+      - id: output
+
+  - id: gatk_calculatecontamination
+    run: ../../tools/gatk4_calculatecontamination.cwl
+    in:
+      - id: input
+        source: gatk_getpileupsummaries/output
+      - id: bam_nameroot
+        source: bam
+        valueFrom: $(self.nameroot)
+    out:
+      - id: output
+
+  - id: gatk_calculatecontamination_to_sqlite
+    run: ../../tools/gatk_calculatecontamination_to_sqlite.cwl
+    in:
+      - id: bam
+        source: bam
+        valueFrom: $(self.basename)
+      - id: input_state
+        source: input_state
+      - id: job_uuid
+        source: job_uuid
+      - id: metric_path
+        source: gatk_calculatecontamination/output
+    out:
+      - id: sqlite
 
   - id: picard_collectmultiplemetrics
     run: ../../tools/picard_collectmultiplemetrics.cwl
@@ -310,6 +350,7 @@ steps:
     in:
       - id: source_sqlite
         source: [
+          gatk_calculatecontamination_to_sqlite/sqlite,
           merge_exome_sqlite/destination_sqlite,
           merge_amplicon_sqlite/destination_sqlite,
           picard_collectmultiplemetrics_to_sqlite/sqlite,

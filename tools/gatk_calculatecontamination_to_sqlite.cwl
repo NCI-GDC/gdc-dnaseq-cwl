@@ -29,21 +29,21 @@ inputs:
     inputBinding:
       prefix: --input_state
 
-  - id: metric_path
-    type: File
-    inputBinding:
-      prefix: --metric_path
-
   - id: job_uuid
     type: string
     inputBinding:
       prefix: --job_uuid
 
+  - id: metric_path
+    type: File
+    inputBinding:
+      prefix: --metric_path
+
 outputs:
   - id: log
     type: File
     outputBinding:
-      glob: $(inputs.job_uuid+"_picard_CollectTargetedPcrMetrics.log")
+      glob: $(inputs.job_uuid+"_picard_gatk_CalculateContamination.log")
 
   - id: sqlite
     format: "edam:format_3621"
@@ -51,4 +51,4 @@ outputs:
     outputBinding:
       glob: $(inputs.job_uuid + ".db")
 
-baseCommand: [/usr/local/bin/picard_metrics_sqlite, --metric_name, CollectTargetedPcrMetrics]
+baseCommand: [/usr/local/bin/picard_metrics_sqlite, --metric_name, gatk_CalculateContamination]

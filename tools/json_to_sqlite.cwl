@@ -4,7 +4,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/json-to-sqlite:31ff9a121cb13085eff7b7fb85db8b461f05b18bee1eb1b7586030dcbde8dc85
+    dockerPull: quay.io/ncigdc/json-to-sqlite:439b1b7f41fedc927859177a8073ac8b9ab8179b9c474fc274ac415d95b6eb7c
   - class: ResourceRequirement
     coresMin: 1
     coresMax: 1
@@ -19,7 +19,7 @@ class: CommandLineTool
 
 inputs:
   - id: input_json
-    type: string
+    type: File
     inputBinding:
       prefix: --input_json
 
@@ -35,6 +35,7 @@ inputs:
 
 outputs:
   - id: sqlite
+    format: "edam:format_3621"
     type: File
     outputBinding:
       glob: $(inputs.job_uuid).db
