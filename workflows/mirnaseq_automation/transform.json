@@ -1,0 +1,62 @@
+{
+    "bam_name": "TCGA-C5-A1MQ-01A-11R-A14X-13_mirna.bam",
+    "job_uuid": "00000000-0000-0000-0000-000000000000",
+    "amplicon_kit_set_file_list": [],
+    "capture_kit_set_file_list": [],
+    "readgroup_fastq_pe_file_list": [],
+    "readgroup_fastq_se_file_list": [],
+    "readgroups_bam_file_list": [
+        {
+            "bam": {
+                "class": "File",
+                "format": "edam:format_2572",
+                "location": "/mnt/SCRATCH/Automation/TCGA-C5-A1MQ-01A-11R-A14X-13_mirna.bam"
+            },
+            "readgroup_meta_list":
+            [
+                {
+                "CN": "BCCAGSC",
+                "DT": "1970-01-01T00:00:00Z",
+                "ID": "124119",
+                "LB": "MX0528",
+                "PI": "250",
+                "PL": "illumina",
+                "SM": "TCGA-C5-A1MQ-01A-11R-A14X-13"
+                }
+            ]
+        }
+    ],
+    "reference_sequence": {
+        "class": "File",
+        "format": "edam:format_1929",
+        "location": "/mnt/SCRATCH/hg38_reference/GRCh38.d1.vd1.fa",
+        "secondaryFiles": [
+            {"class": "File",
+             "location": "/mnt/SCRATCH/hg38_reference/GRCh38.d1.vd1.fa.amb"},
+            {"class": "File",
+             "location": "/mnt/SCRATCH/hg38_reference/GRCh38.d1.vd1.fa.ann"},
+            {"class": "File",
+             "location": "/mnt/SCRATCH/hg38_reference/GRCh38.d1.vd1.fa.bwt"},
+            {"class": "File",
+             "location": "/mnt/SCRATCH/hg38_reference/GRCh38.d1.vd1.fa.fai"},
+            {"class": "File",
+             "location": "/mnt/SCRATCH/hg38_reference/GRCh38.d1.vd1.fa.pac"},
+            {"class": "File",
+             "location": "/mnt/SCRATCH/hg38_reference/GRCh38.d1.vd1.fa.sa"},
+            {"class": "File",
+             "location": "/mnt/SCRATCH/hg38_reference/GRCh38.d1.vd1.dict"}
+        ]
+    },
+    "known_snp": {
+        "class": "File",
+        "format": "edam:format_3016",
+        "location": "/mnt/SCRATCH/hg38_reference/dbsnp_144.hg38.vcf.gz",
+        "secondaryFiles": [
+            {"class": "File",
+             "location": "/mnt/SCRATCH/hg38_reference/dbsnp_144.hg38.vcf.gz.tbi"}
+        ]
+    },
+    "run_bamindex": [],
+    "run_markduplicates": [1],
+    "thread_count": 4
+}
