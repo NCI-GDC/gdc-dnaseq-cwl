@@ -45,11 +45,11 @@ expression: |
         return basename
       }
 
+      // https://planetozh.com/blog/2008/04/javascript-basename-and-dirname/
       function local_dirname(path) {
         return path.replace(/\\/g,'/').replace(/\/[^\/]*$/, '');
       }
 
-      // https://planetozh.com/blog/2008/04/javascript-basename-and-dirname/
       function get_slice_number(fastq_name) {
         if (endsWith(fastq_name, '_1.fq.gz')) {
           return -8
