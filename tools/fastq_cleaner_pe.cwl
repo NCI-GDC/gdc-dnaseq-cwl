@@ -48,7 +48,7 @@ outputs:
     type: File
     format: "edam:format_2182"
     outputBinding:
-      glob: $(inputs.fastq1.basename)
+      glob: $(inputs.fastq2.basename)
 
   - id: result_json
     type: File
