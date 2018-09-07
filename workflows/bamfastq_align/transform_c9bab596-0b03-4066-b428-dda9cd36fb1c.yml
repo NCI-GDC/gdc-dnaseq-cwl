@@ -18,6 +18,21 @@ readgroup_fastq_pe_file_list:
       PL: ILLUMINA
       PU: HKCKVBBXX:1:GCTACGCT+CTTGGTTA
       SM: TCGA-C8-A130-01A-11-A615-42-X010-S01_aliquot
+  - forward_fastq:
+      class: File
+      format: edam:format_2182
+      location: /mnt/scratch/auto/BRCA-2C46607F-72A2-4B40-A311-E1F29C59DCFA-X010-S01-L050-B1-T2-P019-CGAGGCTG-CTTGGTTA_S2_L004_R1_001.fastq.gz
+    reverse_fastq:
+      class: File
+      format: edam:format_2182
+      location: /mnt/scratch/auto/BRCA-2C46607F-72A2-4B40-A311-E1F29C59DCFA-X010-S01-L050-B1-T2-P019-CGAGGCTG-CTTGGTTA_S2_L004_R2_001.fastq.gz
+    readgroup_meta:
+      CN: SFGF
+      ID: HKCKVBBXX_4_BRCA-2C46607F-72A2-4B40-A311-E1F29C59DCFA-X010-S01-L050-B1-T2-P019_TCGA-C8-A130-01A-11-A615-42
+      LB: BRCA-2C46607F-72A2-4B40-A311-E1F29C59DCFA-X010-S01-L050-B1-T2-P019
+      PL: ILLUMINA
+      PU: HKCKVBBXX:4:CGAGGCTG+CTTGGTTA
+      SM: TCGA-C8-A130-01A-11-A615-42-X010-S01_aliquot
 readgroup_fastq_se_file_list: []
 readgroups_bam_file_list: []
 reference_sequence:
