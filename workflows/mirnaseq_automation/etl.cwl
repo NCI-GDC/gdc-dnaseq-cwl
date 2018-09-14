@@ -41,7 +41,7 @@ inputs:
       type: array
       items:  ../../tools/readgroup.yml#readgroup_fastq_se_uuid
   - id: readgroups_bam_uuid_list
-    type: 
+    type:
       type: array
       items: ../../tools/readgroup.yml#readgroups_bam_uuid
   - id: start_token
@@ -324,7 +324,7 @@ steps:
         source: extract_known_snp_index/output
     out:
       - id: output
- 
+
   - id: transform
     run: transform.cwl
     in:
@@ -365,7 +365,7 @@ steps:
       - id: mirna_profiling_mirna_expression_matrix_mimat_expn_matrix_mimat_norm_log_txt
       - id: mirna_profiling_mirna_graph_libs_jpgs
       - id: mirna_profiling_mirna_tcga_isoforms_quant
-      - id: mirna_profiling_mirna_tcga_mirnas_quant 
+      - id: mirna_profiling_mirna_tcga_mirnas_quant
 
   - id: tar_mirna_profiling_alignment_stats
     run: ../../tools/tar_dir.cwl
@@ -416,8 +416,8 @@ steps:
       - id: INPUT
         source: transform/mirna_profiling_mirna_tcga_isoforms_quant
       - id: OUTNAME
-        source: input_bam_gdc_id
-        valueFrom: $(self).mirbase21.isoforms.quantification.txt
+        source: job_uuid
+        valueFrom: $(self).mirnaseq.isoforms.quantification.txt
     out:
       - id: OUTPUT
 
@@ -427,8 +427,8 @@ steps:
       - id: INPUT
         source: transform/mirna_profiling_mirna_tcga_mirnas_quant
       - id: OUTNAME
-        source: input_bam_gdc_id
-        valueFrom: $(self).mirbase21.mirnas.quantification.txt
+        source: job_uuid
+        valueFrom: $(self).mirnaseq.mirnas.quantification.txt
     out:
       - id: OUTPUT
 
