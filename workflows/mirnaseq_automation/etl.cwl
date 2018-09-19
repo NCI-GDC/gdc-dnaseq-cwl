@@ -6,6 +6,7 @@ class: Workflow
 
 requirements:
   - class: InlineJavascriptRequirement
+  - class: MultipleInputFeatureRequirement
   - class: ScatterFeatureRequirement
   - class: SchemaDefRequirement
     types:
