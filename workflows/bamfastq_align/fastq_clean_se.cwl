@@ -31,7 +31,7 @@ steps:
     in:
       - id: fastq
         source: input
-        valueFrom: $(self.forward_fastq)
+        valueFrom: $(self.fastq)
     out:
       - id: cleaned_fastq
       - id: result_json
