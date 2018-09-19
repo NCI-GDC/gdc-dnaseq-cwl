@@ -1,5 +1,5 @@
 {
-  "bam_name": "CPT0018430002_gdc_realn.bam",
+  "bam_name": "TCGA-NF-A4X2-01A-11R-A28Z-13_gdc_realn.bam",
   "bioclient_config": {
     "class": "File",
     "location": "/home/ubuntu/bioclient.json"
@@ -8,22 +8,24 @@
   "amplicon_kit_set_uuid_list": [],
   "capture_kit_set_uuid_list": [],
   "readgroup_fastq_pe_uuid_list": [],
-  "readgroup_fastq_se_uuid_list": [
+  "readgroup_fastq_se_uuid_list": [],
+  "readgroups_bam_uuid_list": [
     {
-      "fastq_uuid": "f5eb53ff-6aec-403b-b3b4-1b8dd93e14ed",
-      "fastq_file_size": 357442169,
-      "readgroup_meta": {
-          "CN": "UNC",
+      "bam_uuid": "73149145-4adc-416c-b66b-bcc804af16d6",
+      "bam_file_size": 173986400,
+      "readgroup_meta_list": [
+        {
+          "CN": "BCGSC",
           "DT": "2018-07-24T00:00:00-0500",
-          "ID": "180724_UNC32-K00270_0106_BHWK3MBBXX_TCGGCA_S23_L007",
-          "LB": "45a7edea-8284-4739-af8d-fbac7e08b6b1",
+          "ID": "134403",
+          "LB": "MX0973",
           "PL": "ILLUMINA",
-          "PU": "BHWK3MBBXX.1.TCGGCA",
-          "SM": "CPT0018430002"
-      }
+          "PU": "HTLMLBGXX.4.CTCAGA",
+          "SM": "TCGA-NF-A4X2-01A-11R-A28Z-13"
+        }
+      ]
     }
   ],
-  "readgroups_bam_uuid_list": [],
   "known_snp_gdc_id": "8f502391-aa41-4294-87c5-7af8c028987d",
   "known_snp_file_size": 3229317435,
   "known_snp_index_gdc_id": "51495a97-35dd-4774-a8ae-f6d0e90f1a65",
@@ -45,7 +47,7 @@
   "reference_sa_gdc_id": "c9d4a9ec-751f-469a-b75c-0834f8685c19",
   "reference_sa_file_size": 1553788312,
   "run_markduplicates": [1],
-  "run_bamindex": [1],
+  "run_bamindex": [],
   "thread_count": 4,
-  "job_uuid": "486e9947-38f6-46ad-8435-d39782b36c7a"
+  "job_uuid": "bf76444a-6317-4252-a053-fee666c338ad"
 }
