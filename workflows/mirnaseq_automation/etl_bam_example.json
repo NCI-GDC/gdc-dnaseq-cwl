@@ -46,8 +46,8 @@
   "reference_pac_file_size": 776894132,
   "reference_sa_gdc_id": "c9d4a9ec-751f-469a-b75c-0834f8685c19",
   "reference_sa_file_size": 1553788312,
-  "run_markduplicates": [1],
-  "run_bamindex": [],
+  "run_markduplicates": [],
+  "run_bamindex": [1],
   "thread_count": 4,
-  "job_uuid": "bf76444a-6317-4252-a053-fee666c338ad"
+  "job_uuid": "9888be52-e68a-4dd1-8bb0-dd3844673361"
 }
