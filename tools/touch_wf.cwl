@@ -15,7 +15,7 @@ outputs:
 
 steps:
   - id: touch
-    run: touch.cwl
+    run: touch_add_fixed.cwl
     in:
       - id: input
         source: touchfile
