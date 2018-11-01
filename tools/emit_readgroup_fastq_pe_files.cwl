@@ -36,8 +36,14 @@ outputs:
 
 expression: |
   ${
+      // https://stackoverflow.com/a/9849276/810957
       function include(arr,obj) {
         return (arr.indexOf(obj) != -1)
+      }
+
+      // https://stackoverflow.com/a/2548133/810957
+      function endsWith(str, suffix) {
+        return str.indexOf(suffix, str.length - suffix.length) !== -1;
       }
 
       // https://stackoverflow.com/questions/3820381/need-a-basename-function-in-javascript#comment29942319_15270931
@@ -80,27 +86,27 @@ expression: |
       readgroup_name_array.push(readgroup_name);
     }
 
-    actual_readgroup_name_array = [];
+    var actual_readgroup_name_array = [];
     for (var i = 0; i < inputs.readgroup_meta_list.length; i++) {
-      actual_readgroup_name = inputs.readgroup_meta_list[i]["ID"];
+      var actual_readgroup_name = inputs.readgroup_meta_list[i]["ID"];
       actual_readgroup_name_array.push(actual_readgroup_name);
     }
     
     // ensure predicted readgroup names are in actual list
     for (var i = 0; i < readgroup_name_array.length; i++) {
-      pred_readgroup_name = readgroup_name_array[i];
-      if !(include(actual_readgroup_name_array, pred_readgroup_name)) {
+      var pred_readgroup_name = readgroup_name_array[i];
+      if (!(include(actual_readgroup_name_array, pred_readgroup_name))) {
         throw "not recognized pred_readgroup_name"
       }
     }
 
     // build output
-    output_array = [];
+    var output_array = [];
     for (var i = 0; i < inputs.forward_fastq_list.length; i++) {
       var forward_fastq = inputs.forward_fastq_list[i];
       var reverse_fastq = inputs.reverse_fastq_list[i];
       var readgroup_name = fastq_to_rg_id(forward_fastq);
-      for (var j = 0; j < inputs.readgroup_meta_list); j++) {
+      for (var j = 0; j < inputs.readgroup_meta_list; j++) {
         var readgroup_id = inputs.readgroup_meta_list[j]["ID"];
         if (readgroup_name === readgroup_id) {
           var readgroup_meta = inputs.readgroup_meta_list[j];
