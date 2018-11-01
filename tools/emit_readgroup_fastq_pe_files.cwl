@@ -81,7 +81,7 @@ expression: |
     // get predicted readgroup names from fastq
     var readgroup_name_array = [];
     for (var i = 0; i < inputs.forward_fastq_list.length; i++) {
-      var fq = inputs.forward_fastq[i];
+      var fq = inputs.forward_fastq_list[i];
       var readgroup_name = fastq_to_rg_id(fq);
       readgroup_name_array.push(readgroup_name);
     }
