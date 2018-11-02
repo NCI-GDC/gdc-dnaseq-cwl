@@ -106,13 +106,14 @@ expression: |
       var forward_fastq = inputs.forward_fastq_list[i];
       var reverse_fastq = inputs.reverse_fastq_list[i];
       var readgroup_name = fastq_to_rg_id(forward_fastq);
-      for (var j = 0; j < inputs.readgroup_meta_list; j++) {
+      for (var j = 0; j < inputs.readgroup_meta_list.length; j++) {
         var readgroup_id = inputs.readgroup_meta_list[j]["ID"];
         if (readgroup_name === readgroup_id) {
           var readgroup_meta = inputs.readgroup_meta_list[j];
           break;
         }
       }
+
       var output = {"forward_fastq": forward_fastq,
                     "reverse_fastq": reverse_fastq,
                     "readgroup_meta": readgroup_meta};

@@ -99,7 +99,7 @@ expression: |
     for (var i = 0; i < inputs.fastq_list.length; i++) {
       var fastq = inputs.fastq_list[i];
       var readgroup_name = fastq_to_rg_id(fastq);
-      for (var j = 0; j < inputs.readgroup_meta_list; j++) {
+      for (var j = 0; j < inputs.readgroup_meta_list.length; j++) {
         var readgroup_id = inputs.readgroup_meta_list[j]["ID"];
         if (readgroup_name === readgroup_id) {
           var readgroup_meta = inputs.readgroup_meta_list[j];
