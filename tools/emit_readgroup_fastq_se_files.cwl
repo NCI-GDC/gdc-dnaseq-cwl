@@ -11,13 +11,7 @@ requirements:
 class: ExpressionTool
 
 inputs:
-  - id: forward_fastq_list
-    format: "edam:format_2182"
-    type:
-      type: array
-      items: File
-
-  - id: reverse_fastq_list
+  - id: fastq_list
     format: "edam:format_2182"
     type:
       type: array
@@ -32,7 +26,7 @@ outputs:
   - id: output
     type:
       type: array
-      items: readgroup.yml#readgroup_fastq_pe_file
+      items: readgroup.yml#readgroup_fastq_se_file
 
 expression: |
   ${
@@ -80,8 +74,8 @@ expression: |
 
     // get predicted readgroup names from fastq
     var readgroup_name_array = [];
-    for (var i = 0; i < inputs.forward_fastq_list.length; i++) {
-      var fq = inputs.forward_fastq_list[i];
+    for (var i = 0; i < inputs.fastq_list.length; i++) {
+      var fq = inputs.fastq_list[i];
       var readgroup_name = fastq_to_rg_id(fq);
       readgroup_name_array.push(readgroup_name);
     }
@@ -102,10 +96,9 @@ expression: |
 
     // build output
     var output_array = [];
-    for (var i = 0; i < inputs.forward_fastq_list.length; i++) {
-      var forward_fastq = inputs.forward_fastq_list[i];
-      var reverse_fastq = inputs.reverse_fastq_list[i];
-      var readgroup_name = fastq_to_rg_id(forward_fastq);
+    for (var i = 0; i < inputs.fastq_list.length; i++) {
+      var fastq = inputs.fastq_list[i];
+      var readgroup_name = fastq_to_rg_id(fastq);
       for (var j = 0; j < inputs.readgroup_meta_list.length; j++) {
         var readgroup_id = inputs.readgroup_meta_list[j]["ID"];
         if (readgroup_name === readgroup_id) {
@@ -113,12 +106,9 @@ expression: |
           break;
         }
       }
-
-      var output = {"forward_fastq": forward_fastq,
-                    "reverse_fastq": reverse_fastq,
+      var output = {"fastq": fastq,
                     "readgroup_meta": readgroup_meta};
-      output.forward_fastq.format = "edam:format_2182";
-      output.reverse_fastq.format = "edam:format_2182";
+      output.fastq.format = "edam:format_2182";
       output_array.push(output);
     }
     

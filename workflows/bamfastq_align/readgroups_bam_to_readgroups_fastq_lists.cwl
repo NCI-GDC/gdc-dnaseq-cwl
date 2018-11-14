@@ -21,22 +21,22 @@ outputs:
     type:
       type: array
       items: ../../tools/readgroup.yml#readgroup_fastq_pe_file
-    outputSource: readgroup_fastq_pe/output
+    outputSource: emit_readgroup_pe_files/output
   - id: se_file_list
     type:
       type: array
       items: ../../tools/readgroup.yml#readgroup_fastq_se_file
-    outputSource: readgroup_fastq_se/output
+    outputSource: emit_readgroup_se_files/output
   - id: o1_file_list
     type:
       type: array
       items: ../../tools/readgroup.yml#readgroup_fastq_se_file
-    outputSource: readgroup_fastq_o1/output
+    outputSource: emit_readgroup_o1_files/output
   - id: o2_file_list
     type:
       type: array
       items: ../../tools/readgroup.yml#readgroup_fastq_se_file
-    outputSource: readgroup_fastq_o2/output
+    outputSource: emit_readgroup_o2_files/output
 
 steps:
   - id: biobambam_bamtofastq
@@ -52,115 +52,48 @@ steps:
       - id: output_fastq_o2
       - id: output_fastq_s
 
-  - id: bam_readgroup_to_json
-    run: ../../tools/bam_readgroup_to_json.cwl
+  - id: emit_readgroup_pe_files
+    run: ../../tools/emit_readgroup_fastq_pe_files.cwl
     in:
-      - id: INPUT
-        source: readgroups_bam_file
-        valueFrom: $(self.bam)
-      - id: MODE
-        valueFrom: "lenient"
-    out:
-      - id: OUTPUT
-
-  - id: decider_readgroup_pe
-    run: ../../tools/decider_readgroup_expression.cwl
-    in:
-      - id: fastq
+      - id: forward_fastq_list
         source: biobambam_bamtofastq/output_fastq1
-      - id: readgroup_json
-        source: bam_readgroup_to_json/OUTPUT
-    out:
-      - id: output
-
-  - id: decider_readgroup_se
-    run: ../../tools/decider_readgroup_expression.cwl
-    in:
-      - id: fastq
-        source: biobambam_bamtofastq/output_fastq_s
-      - id: readgroup_json
-        source: bam_readgroup_to_json/OUTPUT
-    out:
-      - id: output
-
-  - id: decider_readgroup_o1
-    run: ../../tools/decider_readgroup_expression.cwl
-    in:
-      - id: fastq
-        source: biobambam_bamtofastq/output_fastq_o1
-      - id: readgroup_json
-        source: bam_readgroup_to_json/OUTPUT
-    out:
-      - id: output
-
-  - id: decider_readgroup_o2
-    run: ../../tools/decider_readgroup_expression.cwl
-    in:
-      - id: fastq
-        source: biobambam_bamtofastq/output_fastq_o2
-      - id: readgroup_json
-        source: bam_readgroup_to_json/OUTPUT
-    out:
-      - id: output
-
-  - id: readgroup_fastq_pe
-    run: readgroup_fastq_pe.cwl
-    scatter: [forward_fastq, reverse_fastq, readgroup_json]
-    scatterMethod: "dotproduct"
-    in:
-      - id: forward_fastq
-        source: biobambam_bamtofastq/output_fastq1
-      - id: reverse_fastq
+      - id: reverse_fastq_list
         source: biobambam_bamtofastq/output_fastq2
-      - id: readgroup_json
-        source: decider_readgroup_pe/output
-      # - id: readgroup_meta_list
-      #   source: readgroups_bam_file
-      #   valueFrom: $(self.readgroup_meta_list)
+      - id: readgroup_meta_list
+        source: readgroups_bam_file
+        valueFrom: $(self.readgroup_meta_list)
     out:
       - id: output
 
-  - id: readgroup_fastq_se
-    run: readgroup_fastq_se.cwl
-    scatter: [fastq, readgroup_json]
-    scatterMethod: "dotproduct"
+  - id: emit_readgroup_se_files
+    run: ../../tools/emit_readgroup_fastq_se_files.cwl
     in:
-      - id: fastq
+      - id: fastq_list
         source: biobambam_bamtofastq/output_fastq_s
-      - id: readgroup_json
-        source: decider_readgroup_se/output
-      # - id: readgroup_meta_list
-      #   source: readgroups_bam_file
-      #   valueFrom: $(self.readgroup_meta_list)
+      - id: readgroup_meta_list
+        source: readgroups_bam_file
+        valueFrom: $(self.readgroup_meta_list)
     out:
       - id: output
 
-  - id: readgroup_fastq_o1
-    run: readgroup_fastq_se.cwl
-    scatter: [fastq, readgroup_json]
-    scatterMethod: "dotproduct"    
+  - id: emit_readgroup_o1_files
+    run: ../../tools/emit_readgroup_fastq_se_files.cwl
     in:
-      - id: fastq
+      - id: fastq_list
         source: biobambam_bamtofastq/output_fastq_o1
-      - id: readgroup_json
-        source: decider_readgroup_o1/output
-      # - id: readgroup_meta_list
-      #   source: readgroups_bam_file
-      #   valueFrom: $(self.readgroup_meta_list)
+      - id: readgroup_meta_list
+        source: readgroups_bam_file
+        valueFrom: $(self.readgroup_meta_list)
     out:
       - id: output
 
-  - id: readgroup_fastq_o2
-    run: readgroup_fastq_se.cwl
-    scatter: [fastq, readgroup_json]
-    scatterMethod: "dotproduct"    
+  - id: emit_readgroup_o2_files
+    run: ../../tools/emit_readgroup_fastq_se_files.cwl
     in:
-      - id: fastq
+      - id: fastq_list
         source: biobambam_bamtofastq/output_fastq_o2
-      - id: readgroup_json
-        source: decider_readgroup_o2/output
-      # - id: readgroup_meta_list
-      #   source: readgroups_bam_file
-      #   valueFrom: $(self.readgroup_meta_list)
+      - id: readgroup_meta_list
+        source: readgroups_bam_file
+        valueFrom: $(self.readgroup_meta_list)
     out:
       - id: output
