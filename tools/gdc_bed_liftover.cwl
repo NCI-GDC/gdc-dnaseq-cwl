@@ -13,21 +13,30 @@ inputs:
   []
 
 outputs:
-  - id: BAIT_INTERVAL_LIST
+  - id: INTERVAL_LIST
     type:
       type: array
       items: File
     outputBinding:
-      glob: "*.baitIntervals.hg38.list.gz"
+      glob: "*.list.gz"
       outputEval: |
         ${ return self.sort(function(a,b) { return a.location > b.location ? 1 : (a.location < b.location ? -1 : 0) }) }
 
-  - id: TARGET_INTERVAL_LIST
+  - id: BED
     type:
       type: array
       items: File
     outputBinding:
-      glob: "*.targetIntervals.hg38.list.gz"
+      glob: "*.bed.gz"
+      outputEval: |
+        ${ return self.sort(function(a,b) { return a.location > b.location ? 1 : (a.location < b.location ? -1 : 0) }) }
+
+  - id: BEDINDEX
+    type:
+      type: array
+      items: File
+    outputBinding:
+      glob: "*.bed.gz.tbi"
       outputEval: |
         ${ return self.sort(function(a,b) { return a.location > b.location ? 1 : (a.location < b.location ? -1 : 0) }) }
 
