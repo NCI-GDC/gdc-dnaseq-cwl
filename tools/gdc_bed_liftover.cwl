@@ -18,7 +18,7 @@ outputs:
       type: array
       items: File
     outputBinding:
-      glob: "*.list.gz"
+      glob: "outlist/*.list.gz"
       outputEval: |
         ${ return self.sort(function(a,b) { return a.location > b.location ? 1 : (a.location < b.location ? -1 : 0) }) }
 
@@ -27,7 +27,7 @@ outputs:
       type: array
       items: File
     outputBinding:
-      glob: "*.bed.gz"
+      glob: "outbed/*.bed.gz"
       outputEval: |
         ${ return self.sort(function(a,b) { return a.location > b.location ? 1 : (a.location < b.location ? -1 : 0) }) }
 
@@ -36,7 +36,7 @@ outputs:
       type: array
       items: File
     outputBinding:
-      glob: "*.bed.gz.tbi"
+      glob: "outbed/*.bed.gz.tbi"
       outputEval: |
         ${ return self.sort(function(a,b) { return a.location > b.location ? 1 : (a.location < b.location ? -1 : 0) }) }
 
