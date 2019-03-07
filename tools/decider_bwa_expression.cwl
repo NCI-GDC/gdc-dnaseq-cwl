@@ -29,26 +29,34 @@ outputs:
 
 expression: |
    ${
+      // /begin william malo / CC-BY-SA-4.0
       // https://stackoverflow.com/a/9849276/810957
       function include(arr,obj) {
         return (arr.indexOf(obj) != -1)
       }
+      // /end william malo / CC-BY-SA-4.0
 
+      // /begin chakrit / CC-BY-SA-4.0
       // https://stackoverflow.com/a/2548133/810957
       function endsWith(str, suffix) {
         return str.indexOf(suffix, str.length - suffix.length) !== -1;
       }
+      // /end chakrit / CC-BY-SA-4.0
 
+      // /begin 3DFace / CC-BY-SA-4.0
       // https://stackoverflow.com/questions/3820381/need-a-basename-function-in-javascript#comment29942319_15270931
       function local_basename(path) {
         var basename = path.split(/[\\/]/).pop();
         return basename
       }
+      // /end 3DFace / CC-BY-SA-4.0
 
+      // /begin Ozh Richard/ CC-BY-SA-4.0
       // https://planetozh.com/blog/2008/04/javascript-basename-and-dirname/
       function local_dirname(path) {
         return path.replace(/\\/g,'/').replace(/\/[^\/]*$/, '');
       }
+      // /end Ozh Richard/ CC-BY-SA-4.0
 
       function get_slice_number(fastq_name) {
         if (endsWith(fastq_name, '_1.fq.gz')) {
