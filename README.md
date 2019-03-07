@@ -1,5 +1,9 @@
 To run DNASeq harmonization workflow
 ------------------------------------
+#### License Note
+This repository is licensed under Apache License Version 2.0. Exceptions are code blocks licensed under CC-BY-SA-4.0. The CC-BY-SA-4.0 code blocks are denoted by `/begin <AUTHOR> CC-BY-SA-4.0` to `/end <AUTHOR> CC-BY-SA-4.0`.
+
+#### Description
 The current workflow will harmonize WGS and WXS BAMs, and generate picard and samtools metrics (stored in a sqlite file) on the harmonized BAM. WGS metrics (picard CollectWgsMetrics) is currently implemented, and WXS (picard CollectHsMetrics) is in development.
 
 After completing numbered installation steps below, these 3 steps will suffice to run workflows:
