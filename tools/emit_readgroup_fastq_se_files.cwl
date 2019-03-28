@@ -1,5 +1,6 @@
 #!/usr/bin/env cwl-runner
-
+$namespaces:
+  edam: "http://edamontology.org/"
 cwlVersion: v1.0
 
 requirements:
@@ -11,6 +12,14 @@ requirements:
 class: ExpressionTool
 
 inputs:
+  - id: bam_readgroup_json_paths
+    format: "edam:format_3464"
+    type:
+      type: array
+      items: File
+    inputBinding:
+      loadContents: true
+
   - id: fastq_list
     format: "edam:format_2182"
     type:

@@ -1,5 +1,6 @@
 #!/usr/bin/env cwl-runner
-
+$namespaces:
+  edam: "http://edamontology.org/"
 cwlVersion: v1.0
 
 requirements:
@@ -11,6 +12,14 @@ requirements:
 class: ExpressionTool
 
 inputs:
+  - id: bam_readgroup_json_paths
+    format: "edam:format_3464"
+    type:
+      type: array
+      items: File
+    inputBinding:
+      loadContents: true
+
   - id: forward_fastq_list
     format: "edam:format_2182"
     type:
@@ -84,49 +93,102 @@ expression: |
       return readgroup_name;
     }
 
-    // get predicted readgroup names from fastq
-    var readgroup_name_array = [];
+    // get PU from json files
+    function get_bam_pu(fastq_rgname) {
+      for (var i = 0; i < inputs.bam_readgroup_json_paths.length; i++) {
+        var bam_rgdata =  JSON.parse(inputs.bam_readgroup_json_paths[i].contents);
+        if (!('PU' in bam_rgdata)) {
+          throw "BAM RG does not contain PU.";
+        }
+        if (fastq_rgname == bam_rgdata['ID']) {
+          return bam_rgdata['PU'];
+        }
+      }
+      throw "BAM RG not found";
+    }
+
+    // get readgroup names from fastq
+    var fastq_rgname_array = [];
     for (var i = 0; i < inputs.forward_fastq_list.length; i++) {
       var fq = inputs.forward_fastq_list[i];
       var readgroup_name = fastq_to_rg_id(fq);
-      readgroup_name_array.push(readgroup_name);
+      fastq_rgname_array.push(readgroup_name);
     }
 
-    var actual_readgroup_name_array = [];
+    var graph_rgname_array = [];
     for (var i = 0; i < inputs.readgroup_meta_list.length; i++) {
-      var actual_readgroup_name = inputs.readgroup_meta_list[i]["ID"];
-      actual_readgroup_name_array.push(actual_readgroup_name);
+      var graph_readgroup_name = inputs.readgroup_meta_list[i]["ID"];
+      graph_rgname_array.push(graph_readgroup_name);
     }
-    
-    // ensure predicted readgroup names are in actual list
-    for (var i = 0; i < readgroup_name_array.length; i++) {
-      var pred_readgroup_name = readgroup_name_array[i];
-      if (!(include(actual_readgroup_name_array, pred_readgroup_name))) {
-        throw "not recognized pred_readgroup_name"
+
+    // test if fastq readgroup names are in graph readgroup names
+    // failing that, test of fastq readgroup names are in
+    // graph PU values
+    var use_fastq_name = false;
+    var use_bam_pu_value = false;
+    for (var i = 0; i < fastq_rgname_array.length; i++) {
+      var fastq_rgname = fastq_rgname_array[i];
+      if (!(include(graph_rgname_array, fastq_rgname))) {
+        var bam_rgpu = get_bam_pu(fastq_rgname);
+        if (include(graph_rgname_array, bam_rgpu)) {
+          use_bam_pu_value = true;
+        }
+        else {
+          throw "BAM RG PU not found in Graph read_group_names";
+        }
+      }
+      else {
+        use_fastq_name = true;
       }
     }
 
     // build output
     var output_array = [];
-    for (var i = 0; i < inputs.forward_fastq_list.length; i++) {
-      var forward_fastq = inputs.forward_fastq_list[i];
-      var reverse_fastq = inputs.reverse_fastq_list[i];
-      var readgroup_name = fastq_to_rg_id(forward_fastq);
-      for (var j = 0; j < inputs.readgroup_meta_list.length; j++) {
-        var readgroup_id = inputs.readgroup_meta_list[j]["ID"];
-        if (readgroup_name === readgroup_id) {
-          var readgroup_meta = inputs.readgroup_meta_list[j];
-          break;
+    if (use_fastq_name) {
+      for (var i = 0; i < inputs.forward_fastq_list.length; i++) {
+        var forward_fastq = inputs.forward_fastq_list[i];
+        var reverse_fastq = inputs.reverse_fastq_list[i];
+        var fq_readgroup_name = fastq_to_rg_id(forward_fastq);
+        for (var j = 0; j < inputs.readgroup_meta_list.length; j++) {
+          var readgroup_id = inputs.readgroup_meta_list[j]["ID"];
+          if (fq_readgroup_name === readgroup_id) {
+            var readgroup_meta = inputs.readgroup_meta_list[j];
+            break;
+          }
         }
-      }
 
-      var output = {"forward_fastq": forward_fastq,
-                    "reverse_fastq": reverse_fastq,
-                    "readgroup_meta": readgroup_meta};
-      output.forward_fastq.format = "edam:format_2182";
-      output.reverse_fastq.format = "edam:format_2182";
-      output_array.push(output);
+        var output = {"forward_fastq": forward_fastq,
+                      "reverse_fastq": reverse_fastq,
+                      "readgroup_meta": readgroup_meta};
+        output.forward_fastq.format = "edam:format_2182";
+        output.reverse_fastq.format = "edam:format_2182";
+        output_array.push(output);
+      }
     }
-    
+    else if (use_bam_pu_value) {
+      for (var i = 0; i < inputs.forward_fastq_list.length; i++) {
+        var forward_fastq = inputs.forward_fastq_list[i];
+        var reverse_fastq = inputs.reverse_fastq_list[i];
+        var fastq_rgname = fastq_to_rg_id(forward_fastq);
+        var bam_rgpu = get_bam_pu(fastq_rgname, inputs.bam_readgroup_json_paths);
+        for (var j = 0; j < inputs.readgroup_meta_list.length; j++) {
+          var readgroup_id = inputs.readgroup_meta_list[j]["ID"];
+          if (bam_rgpu === readgroup_id) {
+            var readgroup_meta = inputs.readgroup_meta_list[j];
+            break;
+          }
+        }
+        var output = {"forward_fastq": forward_fastq,
+                      "reverse_fastq": reverse_fastq,
+                      "readgroup_meta": readgroup_meta};
+        output.forward_fastq.format = "edam:format_2182";
+        output.reverse_fastq.format = "edam:format_2182";
+        output_array.push(output);
+      }
+    }
+    else {
+      throw "`use_fastq_name` or `use_bam_pu_value` should be set";
+    }
     return {'output': output_array}
+  }
   }

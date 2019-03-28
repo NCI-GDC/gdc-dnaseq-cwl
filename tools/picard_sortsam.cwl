@@ -1,5 +1,6 @@
  #!/usr/bin/env cwl-runner
-
+$namespaces:
+  edam: "http://edamontology.org/"
 cwlVersion: v1.0
 
 requirements:

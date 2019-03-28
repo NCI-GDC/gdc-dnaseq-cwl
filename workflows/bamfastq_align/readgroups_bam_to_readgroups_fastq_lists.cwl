@@ -52,9 +52,22 @@ steps:
       - id: output_fastq_o2
       - id: output_fastq_s
 
+  - id: bam_readgroup_to_json
+    run: ../../tools/bam_readgroup_to_json.cwl
+    in:
+      - id: INPUT
+        source: readgroups_bam_file
+        valueFrom: $(self.bam)
+      - id: MODE
+        valueFrom: "lenient"
+    out:
+      - id: OUTPUT
+
   - id: emit_readgroup_pe_files
     run: ../../tools/emit_readgroup_fastq_pe_files.cwl
     in:
+      - id: bam_readgroup_json_paths
+        source: bam_readgroup_to_json/OUTPUT
       - id: forward_fastq_list
         source: biobambam_bamtofastq/output_fastq1
       - id: reverse_fastq_list
@@ -68,6 +81,8 @@ steps:
   - id: emit_readgroup_se_files
     run: ../../tools/emit_readgroup_fastq_se_files.cwl
     in:
+      - id: bam_readgroup_json_paths
+        source: bam_readgroup_to_json/OUTPUT
       - id: fastq_list
         source: biobambam_bamtofastq/output_fastq_s
       - id: readgroup_meta_list
@@ -79,6 +94,8 @@ steps:
   - id: emit_readgroup_o1_files
     run: ../../tools/emit_readgroup_fastq_se_files.cwl
     in:
+      - id: bam_readgroup_json_paths
+        source: bam_readgroup_to_json/OUTPUT
       - id: fastq_list
         source: biobambam_bamtofastq/output_fastq_o1
       - id: readgroup_meta_list
@@ -90,6 +107,8 @@ steps:
   - id: emit_readgroup_o2_files
     run: ../../tools/emit_readgroup_fastq_se_files.cwl
     in:
+      - id: bam_readgroup_json_paths
+        source: bam_readgroup_to_json/OUTPUT
       - id: fastq_list
         source: biobambam_bamtofastq/output_fastq_o2
       - id: readgroup_meta_list
