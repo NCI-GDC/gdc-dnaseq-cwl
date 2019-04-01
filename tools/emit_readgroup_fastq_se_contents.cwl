@@ -12,21 +12,12 @@ requirements:
 class: ExpressionTool
 
 inputs:
-  - id: bam_readgroup_json_paths
-    format: "edam:format_3464"
+  - id: bam_readgroup_contents
     type:
       type: array
-      items: File
-      inputBinding:
-        loadContents: true
+      items: string
 
-  - id: forward_fastq_list
-    format: "edam:format_2182"
-    type:
-      type: array
-      items: File
-
-  - id: reverse_fastq_list
+  - id: fastq_list
     format: "edam:format_2182"
     type:
       type: array
@@ -41,7 +32,7 @@ outputs:
   - id: output
     type:
       type: array
-      items: readgroup.yml#readgroup_fastq_pe_file
+      items: readgroup.yml#readgroup_fastq_se_file
 
 expression: |
   ${
@@ -96,15 +87,9 @@ expression: |
       // get PU from json files
       function get_bam_pu(fastq_rgname) {
         console.log("\t\tget_bam_pu() fastq_rgname: " + fastq_rgname);
-        for (var i = 0; i < inputs.bam_readgroup_json_paths.length; i++) {
+        for (var i = 0; i < inputs.bam_readgroup_contents.length; i++) {
           console.log("\t\tget_bam_pu() i: " + i);
-          console.log("\t\tget_bam_pu() inputs.bam_readgroup_json_paths: " + inputs.bam_readgroup_json_paths);
-          console.log("\t\tget_bam_pu() inputs.bam_readgroup_json_paths[i]: " + inputs.bam_readgroup_json_paths[i]);
-          console.log("\t\tget_bam_pu() inputs.bam_readgroup_json_paths[i].contents: " + inputs.bam_readgroup_json_paths[i].contents);
-          console.log("\t\tget_bam_pu() inputs.bam_readgroup_json_paths[i].location: " + inputs.bam_readgroup_json_paths[i].location);
-          console.log("\t\tget_bam_pu() inputs.bam_readgroup_json_paths[i].size: " + inputs.bam_readgroup_json_paths[i].size);
-          console.log("\t\tget_bam_pu() inputs.bam_readgroup_json_paths[i].class: " + inputs.bam_readgroup_json_paths[i].class);
-          var bam_rgdata =  JSON.parse(inputs.bam_readgroup_json_paths[i].contents);
+          var bam_rgdata =  JSON.parse(inputs.bam_readgroup_contents[i]);
           console.log("\t\tget_bam_pu() bam_rgdata: " + bam_rgdata);
           if (!('PU' in bam_rgdata)) {
             throw "BAM RG does not contain PU.";
@@ -121,8 +106,8 @@ expression: |
 
       // get readgroup names from fastq
       var fastq_rgname_array = [];
-      for (var i = 0; i < inputs.forward_fastq_list.length; i++) {
-        var fq = inputs.forward_fastq_list[i];
+      for (var i = 0; i < inputs.fastq_list.length; i++) {
+        var fq = inputs.fastq_list[i];
         var readgroup_name = fastq_to_rg_id(fq);
         fastq_rgname_array.push(readgroup_name);
       }
@@ -162,10 +147,9 @@ expression: |
       console.log("\nbuilding:");
       var output_array = [];
       if (use_fastq_name) {
-        for (var i = 0; i < inputs.forward_fastq_list.length; i++) {
-          var forward_fastq = inputs.forward_fastq_list[i];
-          var reverse_fastq = inputs.reverse_fastq_list[i];
-          var fq_readgroup_name = fastq_to_rg_id(forward_fastq);
+        for (var i = 0; i < inputs.fastq_list.length; i++) {
+          var fastq = inputs.fastq_list[i];
+          var fq_readgroup_name = fastq_to_rg_id(fastq);
           for (var j = 0; j < inputs.readgroup_meta_list.length; j++) {
             var readgroup_id = inputs.readgroup_meta_list[j]["ID"];
             if (fq_readgroup_name === readgroup_id) {
@@ -174,20 +158,17 @@ expression: |
             }
           }
 
-          var output = {"forward_fastq": forward_fastq,
-                        "reverse_fastq": reverse_fastq,
+          var output = {"fastq": fastq,
                         "readgroup_meta": readgroup_meta};
-          output.forward_fastq.format = "edam:format_2182";
-          output.reverse_fastq.format = "edam:format_2182";
+          output.fastq.format = "edam:format_2182";
           output_array.push(output);
         }
       }
       else if (use_bam_pu_value) {
-        for (var i = 0; i < inputs.forward_fastq_list.length; i++) {
-          var forward_fastq = inputs.forward_fastq_list[i];
-          var reverse_fastq = inputs.reverse_fastq_list[i];
-          var fastq_rgname = fastq_to_rg_id(forward_fastq);
-          var bam_rgpu = get_bam_pu(fastq_rgname, inputs.bam_readgroup_json_paths);
+        for (var i = 0; i < inputs.fastq_list.length; i++) {
+          var fastq = inputs.fastq_list[i];
+          var fastq_rgname = fastq_to_rg_id(fastq);
+          var bam_rgpu = get_bam_pu(fastq_rgname, inputs.bam_readgroup_contents);
           for (var j = 0; j < inputs.readgroup_meta_list.length; j++) {
             var readgroup_id = inputs.readgroup_meta_list[j]["ID"];
             if (bam_rgpu === readgroup_id) {
@@ -195,17 +176,24 @@ expression: |
               break;
             }
           }
-          var output = {"forward_fastq": forward_fastq,
-                        "reverse_fastq": reverse_fastq,
+          var output = {"fastq": fastq,
                         "readgroup_meta": readgroup_meta};
-          output.forward_fastq.format = "edam:format_2182";
-          output.reverse_fastq.format = "edam:format_2182";
+          output.fastq.format = "edam:format_2182";
           output_array.push(output);
         }
       }
-      else if (inputs.forward_fastq_list.length > 0) {
+      else if (inputs.fastq_list.length > 0) {
         throw "`use_fastq_name` or `use_bam_pu_value` should be set";
       }
-      return {'output': output_array}
+      console.log("output_array: " + output_array);
+      console.log("typeof(output_array): " + typeof(output_array));
+      console.log("output_array.length: " + output_array.length);
+      for (var i = 0; i < output_array.length; i++) {
+        console.log('i: ' + i);
+        console.log(output_array[i]["fastq"]);
+        console.log(output_array[i]["readgroup_meta"]);
+      }
+      return {'output': output_array};
     }
   }
+  

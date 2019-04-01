@@ -1,0 +1,38 @@
+bam_readgroup_json_paths:
+  - class: File
+    format: http://edamontology.org/format_3464
+    location: /mnt/scratch/bam_readgroups/199942.json
+  - class: File
+    format: http://edamontology.org/format_3464
+    location: /mnt/scratch/bam_readgroups/199943.json
+forward_fastq_list:
+  - class: File
+    format: http://edamontology.org/format_2182
+    location: /mnt/scratch/bam_readgroups/199942_1.fq.gz
+  - class: File
+    format: http://edamontology.org/format_2182
+    location: /mnt/scratch/bam_readgroups/199943_1.fq.gz
+reverse_fastq_list:
+  - class: File
+    format: http://edamontology.org/format_2182
+    location: /mnt/scratch/bam_readgroups/199942_2.fq.gz
+  - class: File
+    format: http://edamontology.org/format_2182
+    location: /mnt/scratch/bam_readgroups/199943_2.fq.gz
+readgroup_meta_list:
+  - LB: A68634
+    CN: BCGSC
+    PU: HG5JYALXX.6.AAATGC
+    SM: BLGSP-71-08-00199-01A-11D-A567-33
+    DT: "2017-02-28T11:24:06"
+    ID: HG5JYALXX.6
+    PL: ILLUMINA
+    PM: Illumina HiSeq X Ten
+  - LB: A68634
+    CN: BCGSC
+    PU: HG5JYALXX.7.AAATGC
+    SM: BLGSP-71-08-00199-01A-11D-A567-33
+    DT: "2017-02-28T11:24:06"
+    ID: HG5JYALXX.7
+    PL: ILLUMINA
+    PM: Illumina HiSeq X Ten
