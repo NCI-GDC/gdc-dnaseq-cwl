@@ -1,5 +1,6 @@
 #!/usr/bin/env cwl-runner
-
+#$namespaces:"
+  #edam: "http://edamontology.org/"
 cwlVersion: v1.0
 
 requirements:
@@ -51,7 +52,7 @@ inputs:
 
   - id: INPUT
     type: File
-    # format: "edam:format_2572"
+    format: "edam:format_2572"
     inputBinding:
       prefix: INPUT=
       position: 14
@@ -118,7 +119,7 @@ inputs:
 
   - id: REFERENCE_SEQUENCE
     type: File
-    # format: "edam:format_1929"
+    format: "edam:format_1929"
     inputBinding:
       prefix: REFERENCE_SEQUENCE=
       position: 22

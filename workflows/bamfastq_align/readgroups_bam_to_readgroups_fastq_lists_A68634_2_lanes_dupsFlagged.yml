@@ -1,0 +1,22 @@
+readgroups_bam_file:
+  readgroup_meta_list:
+    - PM: Illumina HiSeq X Ten
+      DT: "2017-02-28T11:24:06"
+      SM: BLGSP-71-08-00199-01A-11D-A567-33
+      CN: BCGSC
+      ID: HG5JYALXX.6
+      PU: HG5JYALXX.6.AAATGC
+      LB: A68634
+      PL: ILLUMINA"
+    - PM: Illumina HiSeq X Ten
+      DT: "2017-02-28T11:24:06"
+      SM: BLGSP-71-08-00199-01A-11D-A567-33
+      CN: BCGSC
+      ID: HG5JYALXX.7
+      PU: HG5JYALXX.7.AAATGC
+      LB: A68634
+      PL: ILLUMINA
+  bam:
+    class: File
+    location: file:///mnt/scratch/bam_readgroups/A68634_2_lanes_dupsFlagged.bam
+    format: http://edamontology.org/format_2572

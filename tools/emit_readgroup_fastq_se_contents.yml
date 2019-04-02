@@ -1,0 +1,21 @@
+readgroup_meta_list:
+  - CN: BCGSC
+    ID: HG5JYALXX.6
+    SM: BLGSP-71-08-00199-01A-11D-A567-33
+    LB: A68634
+    PU: HG5JYALXX.6.AAATGC
+    PL: ILLUMINA
+    DT: "2017-02-28T11:24:06"
+    PM: Illumina HiSeq X Ten
+  - CN: BCGSC
+    ID: HG5JYALXX.7
+    SM: BLGSP-71-08-00199-01A-11D-A567-33
+    LB: A68634
+    PU: HG5JYALXX.7.AAATGC
+    PL: ILLUMINA",
+    DT: "2017-02-28T11:24:06"
+    PM: Illumina HiSeq X Ten
+bam_readgroup_contents:
+  - "{\"ID\": \"199942\", \"CN\": \"BCCAGSC\", \"LB\": \"A68634\", \"PL\": \"illumina\", \"PU\": \"HG5JYALXX.6\", \"SM\": \"BLGSP-71-08-00199-01A-11D-A567-33\"}"
+  - "{\"ID\": \"199943\", \"CN\": \"BCCAGSC\", \"LB\": \"A68634\", \"PL\": \"illumina\", \"PU\": \"HG5JYALXX.7\", \"SM\": \"BLGSP-71-08-00199-01A-11D-A567-33\"}"
+fastq_list: []

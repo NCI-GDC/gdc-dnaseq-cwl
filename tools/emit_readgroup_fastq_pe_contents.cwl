@@ -12,13 +12,10 @@ requirements:
 class: ExpressionTool
 
 inputs:
-  - id: bam_readgroup_json_paths
-    format: "edam:format_3464"
+  - id: bam_readgroup_contents
     type:
       type: array
-      items: File
-      inputBinding:
-        loadContents: true
+      items: string
 
   - id: forward_fastq_list
     format: "edam:format_2182"
@@ -95,24 +92,18 @@ expression: |
 
       // get PU from json files
       function get_bam_pu(fastq_rgname) {
-        console.log("\t\tget_bam_pu() fastq_rgname: " + fastq_rgname);
-        for (var i = 0; i < inputs.bam_readgroup_json_paths.length; i++) {
-          console.log("\t\tget_bam_pu() i: " + i);
-          console.log("\t\tget_bam_pu() inputs.bam_readgroup_json_paths: " + inputs.bam_readgroup_json_paths);
-          console.log("\t\tget_bam_pu() inputs.bam_readgroup_json_paths[i]: " + inputs.bam_readgroup_json_paths[i]);
-          console.log("\t\tget_bam_pu() inputs.bam_readgroup_json_paths[i].contents: " + inputs.bam_readgroup_json_paths[i].contents);
-          console.log("\t\tget_bam_pu() inputs.bam_readgroup_json_paths[i].location: " + inputs.bam_readgroup_json_paths[i].location);
-          console.log("\t\tget_bam_pu() inputs.bam_readgroup_json_paths[i].size: " + inputs.bam_readgroup_json_paths[i].size);
-          console.log("\t\tget_bam_pu() inputs.bam_readgroup_json_paths[i].class: " + inputs.bam_readgroup_json_paths[i].class);
-          var bam_rgdata =  JSON.parse(inputs.bam_readgroup_json_paths[i].contents);
-          console.log("\t\tget_bam_pu() bam_rgdata: " + bam_rgdata);
+        //console.log("\t\tget_bam_pu() fastq_rgname: " + fastq_rgname);
+        for (var i = 0; i < inputs.bam_readgroup_contents.length; i++) {
+          //console.log("\t\tget_bam_pu() i: " + i);
+          var bam_rgdata =  JSON.parse(inputs.bam_readgroup_contents[i]);
+          //console.log("\t\tget_bam_pu() bam_rgdata: " + bam_rgdata);
           if (!('PU' in bam_rgdata)) {
             throw "BAM RG does not contain PU.";
           }
           if (fastq_rgname == bam_rgdata['ID']) {
-            console.log("\t\tget_bam_pu() fastq_rgname: " + fastq_rgname);
-            console.log("\t\tget_bam_pu() bam_rgdata['ID']: " + bam_rgdata['ID']);
-            console.log("\t\tget_bam_pu() bam_rgdata['PU']: " + bam_rgdata['PU']);
+            //console.log("\t\tget_bam_pu() fastq_rgname: " + fastq_rgname);
+            //console.log("\t\tget_bam_pu() bam_rgdata['ID']: " + bam_rgdata['ID']);
+            //console.log("\t\tget_bam_pu() bam_rgdata['PU']: " + bam_rgdata['PU']);
             return bam_rgdata['PU'];
           }
         }
@@ -138,14 +129,14 @@ expression: |
       // graph ID values
       var use_fastq_name = false;
       var use_bam_pu_value = false;
-      console.log("testing:");
+      //console.log("testing:");
       for (var i = 0; i < fastq_rgname_array.length; i++) {
         var fastq_rgname = fastq_rgname_array[i];
-        console.log("\n\tfastq_rgname: " + fastq_rgname);
-        console.log("\tgraph_rgname_array: " + graph_rgname_array);
+        //console.log("\n\tfastq_rgname: " + fastq_rgname);
+        //console.log("\tgraph_rgname_array: " + graph_rgname_array);
         if (!(include(graph_rgname_array, fastq_rgname))) {
           var bam_rgpu = get_bam_pu(fastq_rgname);
-          console.log("\tbam_rgpu: " + bam_rgpu);
+          //console.log("\tbam_rgpu: " + bam_rgpu);
           if (include(graph_rgname_array, bam_rgpu)) {
             use_bam_pu_value = true;
           }
@@ -158,54 +149,62 @@ expression: |
         }
       }
 
-      // build output
-      console.log("\nbuilding:");
-      var output_array = [];
-      if (use_fastq_name) {
-        for (var i = 0; i < inputs.forward_fastq_list.length; i++) {
-          var forward_fastq = inputs.forward_fastq_list[i];
-          var reverse_fastq = inputs.reverse_fastq_list[i];
-          var fq_readgroup_name = fastq_to_rg_id(forward_fastq);
-          for (var j = 0; j < inputs.readgroup_meta_list.length; j++) {
-            var readgroup_id = inputs.readgroup_meta_list[j]["ID"];
-            if (fq_readgroup_name === readgroup_id) {
-              var readgroup_meta = inputs.readgroup_meta_list[j];
-              break;
-            }
+    // build output
+    //console.log("\nbuilding:");
+    var output_array = [];
+    if (use_fastq_name) {
+      for (var i = 0; i < inputs.forward_fastq_list.length; i++) {
+        var forward_fastq = inputs.forward_fastq_list[i];
+        var reverse_fastq = inputs.reverse_fastq_list[i];
+        var fq_readgroup_name = fastq_to_rg_id(forward_fastq);
+        for (var j = 0; j < inputs.readgroup_meta_list.length; j++) {
+          var readgroup_id = inputs.readgroup_meta_list[j]["ID"];
+          if (fq_readgroup_name === readgroup_id) {
+            var readgroup_meta = inputs.readgroup_meta_list[j];
+            break;
           }
+        }
 
-          var output = {"forward_fastq": forward_fastq,
-                        "reverse_fastq": reverse_fastq,
-                        "readgroup_meta": readgroup_meta};
-          output.forward_fastq.format = "edam:format_2182";
-          output.reverse_fastq.format = "edam:format_2182";
-          output_array.push(output);
-        }
+        var output = {"forward_fastq": forward_fastq,
+                      "reverse_fastq": reverse_fastq,
+                      "readgroup_meta": readgroup_meta};
+        output.forward_fastq.format = "http://edamontology.org/format_2182";
+        output.reverse_fastq.format = "http://edamontology.org/format_2182";
+        output_array.push(output);
       }
-      else if (use_bam_pu_value) {
-        for (var i = 0; i < inputs.forward_fastq_list.length; i++) {
-          var forward_fastq = inputs.forward_fastq_list[i];
-          var reverse_fastq = inputs.reverse_fastq_list[i];
-          var fastq_rgname = fastq_to_rg_id(forward_fastq);
-          var bam_rgpu = get_bam_pu(fastq_rgname, inputs.bam_readgroup_json_paths);
-          for (var j = 0; j < inputs.readgroup_meta_list.length; j++) {
-            var readgroup_id = inputs.readgroup_meta_list[j]["ID"];
-            if (bam_rgpu === readgroup_id) {
-              var readgroup_meta = inputs.readgroup_meta_list[j];
-              break;
-            }
-          }
-          var output = {"forward_fastq": forward_fastq,
-                        "reverse_fastq": reverse_fastq,
-                        "readgroup_meta": readgroup_meta};
-          output.forward_fastq.format = "edam:format_2182";
-          output.reverse_fastq.format = "edam:format_2182";
-          output_array.push(output);
-        }
-      }
-      else if (inputs.forward_fastq_list.length > 0) {
-        throw "`use_fastq_name` or `use_bam_pu_value` should be set";
-      }
-      return {'output': output_array}
     }
-  }
+    else if (use_bam_pu_value) {
+      for (var i = 0; i < inputs.forward_fastq_list.length; i++) {
+        var forward_fastq = inputs.forward_fastq_list[i];
+        var reverse_fastq = inputs.reverse_fastq_list[i];
+        var fastq_rgname = fastq_to_rg_id(forward_fastq);
+        var bam_rgpu = get_bam_pu(fastq_rgname, inputs.bam_readgroup_contents);
+        for (var j = 0; j < inputs.readgroup_meta_list.length; j++) {
+          var readgroup_id = inputs.readgroup_meta_list[j]["ID"];
+          if (bam_rgpu === readgroup_id) {
+            var readgroup_meta = inputs.readgroup_meta_list[j];
+            break;
+          }
+        }
+        var output = {"forward_fastq": forward_fastq,
+                      "reverse_fastq": reverse_fastq,
+                      "readgroup_meta": readgroup_meta};
+        output.forward_fastq.format = "http://edamontology.org/format_2182";
+        output.reverse_fastq.format = "http://edamontology.org/format_2182";
+        output_array.push(output);
+      }
+    }
+    else if (inputs.forward_fastq_list.length > 0) {
+      throw "`use_fastq_name` or `use_bam_pu_value` should be set";
+    }
+    // console.log("output_array: " + output_array);
+    // console.log("typeof(output_array): " + typeof(output_array));
+    // console.log("output_array.length: " + output_array.length);
+    for (var i = 0; i < output_array.length; i++) {
+      // console.log('i: ' + i);
+      // console.log(output_array[i]["forward_fastq"]);
+      // console.log(output_array[i]["reverse_fastq"]);
+      // console.log(output_array[i]["readgroup_meta"]);
+    }
+    return {'output': output_array}
+    }
