@@ -35,7 +35,7 @@ inputs:
       items: readgroup.yml#readgroup_meta
 
 outputs:
-  - id: outputs
+  - id: output
     type:
       type: array
       items: readgroup.yml#readgroup_fastq_pe_file
@@ -208,4 +208,3 @@ expression: |
     }
     return {'output': output_array}
     }
-  }

@@ -195,5 +195,3 @@ expression: |
       }
       return {'output': output_array};
     }
-  }
-  
