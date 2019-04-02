@@ -168,8 +168,8 @@ expression: |
         var output = {"forward_fastq": forward_fastq,
                       "reverse_fastq": reverse_fastq,
                       "readgroup_meta": readgroup_meta};
-        output.forward_fastq.format = "edam:format_2182";
-        output.reverse_fastq.format = "edam:format_2182";
+        output.forward_fastq.format = "http://edamontology.org/format_2182";
+        output.reverse_fastq.format = "http://edamontology.org/format_2182";
         output_array.push(output);
       }
     }
@@ -189,8 +189,8 @@ expression: |
         var output = {"forward_fastq": forward_fastq,
                       "reverse_fastq": reverse_fastq,
                       "readgroup_meta": readgroup_meta};
-        output.forward_fastq.format = "edam:format_2182";
-        output.reverse_fastq.format = "edam:format_2182";
+        output.forward_fastq.format = "http://edamontology.org/format_2182";
+        output.reverse_fastq.format = "http://edamontology.org/format_2182";
         output_array.push(output);
       }
     }

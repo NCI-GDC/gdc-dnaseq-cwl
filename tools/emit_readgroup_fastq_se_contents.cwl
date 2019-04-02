@@ -160,7 +160,7 @@ expression: |
 
           var output = {"fastq": fastq,
                         "readgroup_meta": readgroup_meta};
-          output.fastq.format = "edam:format_2182";
+          output.fastq.format = "http://edamontology.org/format_2182";
           output_array.push(output);
         }
       }
@@ -178,7 +178,7 @@ expression: |
           }
           var output = {"fastq": fastq,
                         "readgroup_meta": readgroup_meta};
-          output.fastq.format = "edam:format_2182";
+          output.fastq.format = "http://edamontology.org/format_2182";
           output_array.push(output);
         }
       }
