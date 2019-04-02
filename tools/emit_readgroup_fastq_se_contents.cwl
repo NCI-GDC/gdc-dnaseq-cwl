@@ -86,18 +86,18 @@ expression: |
 
       // get PU from json files
       function get_bam_pu(fastq_rgname) {
-        console.log("\t\tget_bam_pu() fastq_rgname: " + fastq_rgname);
+        // console.log("\t\tget_bam_pu() fastq_rgname: " + fastq_rgname);
         for (var i = 0; i < inputs.bam_readgroup_contents.length; i++) {
-          console.log("\t\tget_bam_pu() i: " + i);
+          // console.log("\t\tget_bam_pu() i: " + i);
           var bam_rgdata =  JSON.parse(inputs.bam_readgroup_contents[i]);
-          console.log("\t\tget_bam_pu() bam_rgdata: " + bam_rgdata);
+          // console.log("\t\tget_bam_pu() bam_rgdata: " + bam_rgdata);
           if (!('PU' in bam_rgdata)) {
             throw "BAM RG does not contain PU.";
           }
           if (fastq_rgname == bam_rgdata['ID']) {
-            console.log("\t\tget_bam_pu() fastq_rgname: " + fastq_rgname);
-            console.log("\t\tget_bam_pu() bam_rgdata['ID']: " + bam_rgdata['ID']);
-            console.log("\t\tget_bam_pu() bam_rgdata['PU']: " + bam_rgdata['PU']);
+            // console.log("\t\tget_bam_pu() fastq_rgname: " + fastq_rgname);
+            // console.log("\t\tget_bam_pu() bam_rgdata['ID']: " + bam_rgdata['ID']);
+            // console.log("\t\tget_bam_pu() bam_rgdata['PU']: " + bam_rgdata['PU']);
             return bam_rgdata['PU'];
           }
         }
@@ -123,14 +123,14 @@ expression: |
       // graph ID values
       var use_fastq_name = false;
       var use_bam_pu_value = false;
-      console.log("testing:");
+      // console.log("testing:");
       for (var i = 0; i < fastq_rgname_array.length; i++) {
         var fastq_rgname = fastq_rgname_array[i];
-        console.log("\n\tfastq_rgname: " + fastq_rgname);
-        console.log("\tgraph_rgname_array: " + graph_rgname_array);
+        // console.log("\n\tfastq_rgname: " + fastq_rgname);
+        // console.log("\tgraph_rgname_array: " + graph_rgname_array);
         if (!(include(graph_rgname_array, fastq_rgname))) {
           var bam_rgpu = get_bam_pu(fastq_rgname);
-          console.log("\tbam_rgpu: " + bam_rgpu);
+          // console.log("\tbam_rgpu: " + bam_rgpu);
           if (include(graph_rgname_array, bam_rgpu)) {
             use_bam_pu_value = true;
           }
@@ -144,7 +144,7 @@ expression: |
       }
 
       // build output
-      console.log("\nbuilding:");
+      // console.log("\nbuilding:");
       var output_array = [];
       if (use_fastq_name) {
         for (var i = 0; i < inputs.fastq_list.length; i++) {
@@ -185,13 +185,13 @@ expression: |
       else if (inputs.fastq_list.length > 0) {
         throw "`use_fastq_name` or `use_bam_pu_value` should be set";
       }
-      console.log("output_array: " + output_array);
-      console.log("typeof(output_array): " + typeof(output_array));
-      console.log("output_array.length: " + output_array.length);
+      // console.log("output_array: " + output_array);
+      // console.log("typeof(output_array): " + typeof(output_array));
+      // console.log("output_array.length: " + output_array.length);
       for (var i = 0; i < output_array.length; i++) {
-        console.log('i: ' + i);
-        console.log(output_array[i]["fastq"]);
-        console.log(output_array[i]["readgroup_meta"]);
+        // console.log('i: ' + i);
+        // console.log(output_array[i]["fastq"]);
+        // console.log(output_array[i]["readgroup_meta"]);
       }
       return {'output': output_array};
     }

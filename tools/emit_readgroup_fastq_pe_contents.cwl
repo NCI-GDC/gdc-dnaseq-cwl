@@ -197,14 +197,14 @@ expression: |
     else if (inputs.forward_fastq_list.length > 0) {
       throw "`use_fastq_name` or `use_bam_pu_value` should be set";
     }
-    console.log("output_array: " + output_array);
-    console.log("typeof(output_array): " + typeof(output_array));
-    console.log("output_array.length: " + output_array.length);
+    // console.log("output_array: " + output_array);
+    // console.log("typeof(output_array): " + typeof(output_array));
+    // console.log("output_array.length: " + output_array.length);
     for (var i = 0; i < output_array.length; i++) {
-      console.log('i: ' + i);
-      console.log(output_array[i]["forward_fastq"]);
-      console.log(output_array[i]["reverse_fastq"]);
-      console.log(output_array[i]["readgroup_meta"]);
+      // console.log('i: ' + i);
+      // console.log(output_array[i]["forward_fastq"]);
+      // console.log(output_array[i]["reverse_fastq"]);
+      // console.log(output_array[i]["readgroup_meta"]);
     }
     return {'output': output_array}
     }
