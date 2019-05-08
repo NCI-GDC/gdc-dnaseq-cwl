@@ -36,11 +36,11 @@ inputs:
       - .fai
       - ^.dict
 
-  - id: TMP_DIR
+  - id: tmp_dir
     type: string
     default: "."
     inputBinding:
-      prefix: --TMP_DIR
+      prefix: --tmp-dir
 
 outputs:
   - id: output_grp
