@@ -8,7 +8,7 @@ readgroups_bam_file_list:
   - bam:
       class: File
       format: edam:format_2572
-      location: /mnt/scratch/bam_readgroups/A68634_2_lanes_dupsFlagged.bam
+      location: /mnt/scratch/A68634_2_lanes_dupsFlagged.bam
     readgroup_meta_list:
       - LB: A68634
         CN: BCGSC
