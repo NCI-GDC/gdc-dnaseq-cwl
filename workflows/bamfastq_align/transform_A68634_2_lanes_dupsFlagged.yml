@@ -1,5 +1,3 @@
-$namespaces:
-  edam: "http://edamontology.org/"
 bam_name: A68634_2_lanes_dupsFlagged_gdc_realn.bam
 job_uuid: 00000000-0000-0000-0000-000000000000
 amplicon_kit_set_file_list: []
