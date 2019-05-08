@@ -30,6 +30,11 @@ inputs:
     inputBinding:
       prefix: --variant
 
+  - id: intervals
+    type: File
+    inputBinding:
+      prefix: --intervals
+
 outputs:
   - id: output
     type: File
