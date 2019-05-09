@@ -158,7 +158,7 @@ arguments:
   - valueFrom: "--PROGRAM=QualityScoreDistribution" # ALL_READS only
 
   - valueFrom: $(inputs.INPUT.nameroot)
-    prefix: OUTPUT=
+    prefix: --OUTPUT=
     separate: false
 
 baseCommand: [java, -jar, /usr/local/bin/gatk-package-4.1.2.0-local.jar, CollectMultipleMetrics]
