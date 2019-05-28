@@ -94,6 +94,10 @@ inputs:
     type: string
   - id: reference_sa_file_size
     type: long
+  - id: sq_header_gdc_id
+    type: string
+  - id: sq_header_size
+    type: long
   - id: run_bamindex
     type:
       type: array
@@ -316,6 +320,18 @@ steps:
     out:
       - id: output
 
+  - id: extract_sq_header
+    run: ../../tools/bio_client_download.cwl
+    in:
+      - id: config-file
+        source: bioclient_config
+      - id: download_handle
+        source: sq_header_gdc_id
+      - id: file_size
+        source: sq_header_size
+    out:
+      - id: output
+
   - id: root_fasta_files
     run: ../../tools/root_fasta_dnaseq.cwl
     in:
@@ -385,6 +401,8 @@ steps:
         source: run_bamindex
       - id: run_markduplicates
         source: run_markduplicates
+      - id: sq_header
+        source: extract_sq_header/output
       - id: thread_count
         source: thread_count
     out:

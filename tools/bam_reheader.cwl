@@ -26,6 +26,11 @@ inputs:
     inputBinding:
       prefix: --bam_path
 
+  - id: header
+    type: File
+    inputBinding:
+      prefix: --header_path
+
 outputs:
   - id: output
     type: File
