@@ -96,7 +96,7 @@ inputs:
     type: long
   - id: sq_header_gdc_id
     type: string
-  - id: sq_header_size
+  - id: sq_header_file_size
     type: long
   - id: run_bamindex
     type:
@@ -328,7 +328,7 @@ steps:
       - id: download_handle
         source: sq_header_gdc_id
       - id: file_size
-        source: sq_header_size
+        source: sq_header_file_size
     out:
       - id: output
 
