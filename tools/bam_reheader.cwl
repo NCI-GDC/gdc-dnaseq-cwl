@@ -5,7 +5,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/bam_reheader:2f4bf6a93f0fe02b640255c2890fb17e06cda2e7dade52116faeebe13258695c
+    dockerPull: quay.io/ncigdc/bam_reheader:f9a52a2065d82bbf7ffe10f3658244afe64c00684e7ae3ecfddb8b8befee9e47
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
     coresMin: 1
