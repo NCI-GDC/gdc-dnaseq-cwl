@@ -5,7 +5,7 @@ cwlVersion: v1.0
 
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/bam_reheader:8c48be466efff5ae84b1711c77c66e72e1e3a99830bc882cc6155337c07d8f74
+    dockerPull: quay.io/ncigdc/bam_reheader:e4f989684b19a9850003022cd9e2e1b931e0c249f8e4a97fe0ed3537851c5507
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
     coresMin: 1
@@ -25,6 +25,11 @@ inputs:
     format: "edam:format_2572"
     inputBinding:
       prefix: --bam_path
+
+  - id: header
+    type: File
+    inputBinding:
+      prefix: --header_path
 
 outputs:
   - id: output

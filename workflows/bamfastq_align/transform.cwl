@@ -67,6 +67,8 @@ inputs:
       - .pac
       - .sa
       - ^.dict
+  - id: sq_header
+    type: File
   - id: thread_count
     type: long
 
@@ -297,6 +299,8 @@ steps:
     in:
       - id: input
         source: picard_mergesamfiles/MERGED_OUTPUT
+      - id: header
+        source: sq_header
     out:
       - id: output
 
