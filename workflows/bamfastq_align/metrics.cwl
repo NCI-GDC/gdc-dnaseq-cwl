@@ -115,8 +115,6 @@ steps:
     in:
       - id: input
         source: bam
-      - id: intervals
-        source: common_biallelic_vcf
       - id: variant
         source: common_biallelic_vcf
     out:
