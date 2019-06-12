@@ -35,4 +35,4 @@ arguments:
     prefix: --output
     separate: true
 
-baseCommand: [java, -jar, /usr/local/bin/gatk-package-4.1.2.0-local.jar, CalculateContamination]
+baseCommand: [java, -jar, /usr/local/bin/gatk-package-4.0.7.0-local.jar, CalculateContamination]
