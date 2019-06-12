@@ -19,7 +19,7 @@ inputs:
     type: string
     default: "."
     inputBinding:
-      prefix: --tmp-dir
+      prefix: --TMP_DIR
 
   - id: bam_nameroot
     type: string

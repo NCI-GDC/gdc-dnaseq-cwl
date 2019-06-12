@@ -40,7 +40,7 @@ inputs:
     type: string
     default: "."
     inputBinding:
-      prefix: --tmp-dir
+      prefix: --TMP_DIR
 
 outputs:
   - id: output_grp
