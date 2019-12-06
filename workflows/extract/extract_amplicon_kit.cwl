@@ -8,48 +8,41 @@ requirements:
   - class: InlineJavascriptRequirement
   - class: SchemaDefRequirement
     types:
-      - $import: ../../tools/amplicon_kit.yml
+      - $import: ../../tools/target_kit_schema.yml
 
 inputs:
-  - id: bioclient_config
-    type: File
-  - id: amplicon_kit_set_uuid
-    type: ../../tools/amplicon_kit.yml#amplicon_kit_set_uuid
+  bioclient_config: File
+  amplicon_kit_set_uuid:
+    type: ../../tools/target_kit_schema.yml#amplicon_kit_set_uuid
 
 outputs:
-  - id: output
-    type: ../../tools/amplicon_kit.yml#amplicon_kit_set_file
+  output:
+    type: ../../tools/target_kit_schema.yml#amplicon_kit_set_file
     outputSource: emit_amplicon_kit/output
 
 steps:
-  - id: extract_amplicon_kit_amplicon
+  extract_amplicon_kit_amplicon:
     run: ../../tools/bio_client_download.cwl
     in:
-      - id: config-file
-        source: bioclient_config
-      - id: download_handle
+      config-file: bioclient_config
+      download_handle:
         source: amplicon_kit_set_uuid
         valueFrom: $(self.amplicon_kit_amplicon_uuid)
     out:
-      - id: output
+      output
 
-  - id: extract_amplicon_kit_target
+  extract_amplicon_kit_target:
     run: ../../tools/bio_client_download.cwl
     in:
-      - id: config-file
-        source: bioclient_config
-      - id: download_handle
+      config-file: bioclient_config
+      download_handle:
         source: amplicon_kit_set_uuid
         valueFrom: $(self.amplicon_kit_target_uuid)
-    out:
-      - id: output
+    out: [ output ]
 
-  - id: emit_amplicon_kit
+  emit_amplicon_kit:
     run: ../../tools/emit_amplicon_kit_file.cwl
     in:
-      - id: amplicon_kit_amplicon_file
-        source: extract_amplicon_kit_amplicon/output
-      - id: amplicon_kit_target_file
-        source: extract_amplicon_kit_target/output
-    out:
-      - id: output
+      amplicon_kit_amplicon_file: extract_amplicon_kit_amplicon/output
+      amplicon_kit_target_file: extract_amplicon_kit_target/output
+    out: [ output ]

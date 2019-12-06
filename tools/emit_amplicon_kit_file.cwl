@@ -5,7 +5,7 @@ cwlVersion: v1.0
 requirements:
   - class: SchemaDefRequirement
     types:
-      - $import: amplicon_kit.yml
+      - $import: target_kit_schema.yml
   - class: InlineJavascriptRequirement
 
 class: ExpressionTool
@@ -19,7 +19,7 @@ inputs:
 
 outputs:
   - id: output
-    type: amplicon_kit.yml#amplicon_kit_set_file
+    type: target_kit_schema.yml#amplicon_kit_set_file
 
 expression: |
   ${

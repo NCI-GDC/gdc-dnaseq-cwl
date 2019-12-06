@@ -1,16 +1,12 @@
-#!/usr/bin/env cwl-runner
-
 cwlVersion: v1.0
-
 class: Workflow
-
+id: gdc_dnaseq_bamfastq_align_wf
 requirements:
   - class: InlineJavascriptRequirement
   - class: ScatterFeatureRequirement
   - class: SchemaDefRequirement
     types:
-      - $import: ../tools/amplicon_kit.yml
-      - $import: ../tools/capture_kit.yml
+      - $import: ../tools/target_kit_schema.yml
       - $import: ../tools/readgroup.yml
   - class: StepInputExpressionRequirement
   - class: SubworkflowFeatureRequirement
@@ -23,19 +19,19 @@ inputs:
   amplicon_kit_set_uuid_list:
     type:
       type: array
-      items: ../tools/amplicon_kit.yml#amplicon_kit_set_uuid
+      items: ../tools/target_kit_schema.yml#amplicon_kit_set_uuid
   capture_kit_set_uuid_list:
     type:
       type: array
-      items: ../tools/capture_kit.yml#capture_kit_set_uuid
+      items: ../tools/target_kit_schema.yml#capture_kit_set_uuid
   readgroup_fastq_pe_uuid_list:
     type:
       type: array
-      items: ../tools/readgroup.yml#readgroup_fastq_pe_uuid
+      items: ../tools/readgroup.yml#readgroup_fastq_uuid
   readgroup_fastq_se_uuid_list:
     type:
       type: array
-      items: ../tools/readgroup.yml#readgroup_fastq_se_uuid
+      items: ../tools/readgroup.yml#readgroup_fastq_uuid
   readgroups_bam_uuid_list:
     type: 
       type: array

@@ -2,45 +2,37 @@
     type: record
     fields:
       - name: CN
-        type: string
+        type: string?
       - name: DS
-        type: ["null", string]
+        type: string? 
       - name: DT
-        type: ["null", string]
+        type: string? 
       - name: FO
-        type: ["null", string]
+        type: string? 
       - name: ID
         type: string
       - name: KS
-        type: ["null", string]
+        type: string? 
       - name: LB
-        type: string
+        type: string?
       - name: PI
-        type: ["null", string]
+        type: string? 
       - name: PL
         type: string
       - name: PM
-        type: ["null", string]
+        type: string? 
       - name: PU
-        type: ["null", string]
+        type: string? 
       - name: SM
         type: string
 
-  - name: readgroup_fastq_pe_file
+  - name: readgroup_fastq_file
     type: record
     fields:
       - name: forward_fastq
         type: File
       - name: reverse_fastq
-        type: File
-      - name: readgroup_meta
-        type: readgroup_meta
-
-  - name: readgroup_fastq_se_file
-    type: record
-    fields:
-      - name: fastq
-        type: File
+        type: File?
       - name: readgroup_meta
         type: readgroup_meta
 
@@ -54,7 +46,7 @@
           type: array
           items: readgroup_meta
  
-  - name: readgroup_fastq_pe_uuid
+  - name: readgroup_fastq_uuid
     type: record
     fields:
       - name: forward_fastq_uuid
@@ -62,19 +54,9 @@
       - name: forward_fastq_file_size
         type: long
       - name: reverse_fastq_uuid
-        type: string
+        type: string?
       - name: reverse_fastq_file_size
-        type: long
-      - name: readgroup_meta
-        type: readgroup_meta
-
-  - name: readgroup_fastq_se_uuid
-    type: record
-    fields:
-      - name: fastq_uuid
-        type: string
-      - name: fastq_file_size
-        type: long
+        type: long?
       - name: readgroup_meta
         type: readgroup_meta
 

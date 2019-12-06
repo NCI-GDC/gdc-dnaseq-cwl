@@ -15,12 +15,12 @@ requirements:
 
 inputs:
   readgroup_fastq_pe_uuid:
-    type: ../../tools/readgroup.yml#readgroup_fastq_pe_uuid
+    type: ../../tools/readgroup.yml#readgroup_fastq_uuid
   bioclient_config: File
 
 outputs:
   output:
-    type: ../../tools/readgroup.yml#readgroup_fastq_pe_file
+    type: ../../tools/readgroup.yml#readgroup_fastq_file
     outputSource: emit_readgroup_fastq_pe_file/output
 
 steps:
@@ -49,7 +49,7 @@ steps:
     out: [ output ]
 
   emit_readgroup_fastq_pe_file:
-    run: ../../tools/emit_readgroup_fastq_pe_file.cwl
+    run: ../../tools/emit_readgroup_fastq_file.cwl
     in:
       forward_fastq: extract_forward_fastq/output
       reverse_fastq: extract_reverse_fastq/output

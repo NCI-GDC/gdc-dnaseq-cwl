@@ -8,48 +8,40 @@ requirements:
   - class: InlineJavascriptRequirement
   - class: SchemaDefRequirement
     types:
-      - $import: ../../tools/capture_kit.yml
+      - $import: ../../tools/target_kit_schema.yml
 
 inputs:
-  - id: bioclient_config
-    type: File
-  - id: capture_kit_set_uuid
-    type: ../../tools/capture_kit.yml#capture_kit_set_uuid
+  bioclient_config: File
+  capture_kit_set_uuid:
+    type: ../../tools/target_kit_schema.yml#capture_kit_set_uuid
 
 outputs:
-  - id: output
-    type: ../../tools/capture_kit.yml#capture_kit_set_file
+  output:
+    type: ../../tools/target_kit_schema.yml#capture_kit_set_file
     outputSource: emit_capture_kit/output
 
 steps:
-  - id: extract_capture_kit_bait
+  extract_capture_kit_bait:
     run: ../../tools/bio_client_download.cwl
     in:
-      - id: config-file
-        source: bioclient_config
-      - id: download_handle
+      config-file: bioclient_config
+      download_handle:
         source: capture_kit_set_uuid
         valueFrom: $(self.capture_kit_bait_uuid)
-    out:
-      - id: output
+    out: [ output ]
 
-  - id: extract_capture_kit_target
+  extract_capture_kit_target:
     run: ../../tools/bio_client_download.cwl
     in:
-      - id: config-file
-        source: bioclient_config
-      - id: download_handle
+      config-file: bioclient_config
+      download_handle:
         source: capture_kit_set_uuid
         valueFrom: $(self.capture_kit_target_uuid)
-    out:
-      - id: output
+    out: [ output ]
 
-  - id: emit_capture_kit
+  emit_capture_kit:
     run: ../../tools/emit_capture_kit_file.cwl
     in:
-      - id: capture_kit_bait_file
-        source: extract_capture_kit_bait/output
-      - id: capture_kit_target_file
-        source: extract_capture_kit_target/output
-    out:
-      - id: output
+      capture_kit_bait_file: extract_capture_kit_bait/output
+      capture_kit_target_file: extract_capture_kit_target/output
+    out: [ output ]

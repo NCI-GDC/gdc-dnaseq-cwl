@@ -10,8 +10,7 @@ requirements:
   - class: ScatterFeatureRequirement
   - class: SchemaDefRequirement
     types:
-      - $import: ../../tools/amplicon_kit.yml
-      - $import: ../../tools/capture_kit.yml
+      - $import: ../../tools/target_kit_schema.yml
       - $import: ../../tools/readgroup.yml
   - class: StepInputExpressionRequirement
   - class: SubworkflowFeatureRequirement
@@ -22,19 +21,19 @@ inputs:
   amplicon_kit_set_file_list:
     type:
       type: array
-      items: ../../tools/amplicon_kit.yml#amplicon_kit_set_file
+      items: ../../tools/target_kit_schema.yml#amplicon_kit_set_file
   capture_kit_set_file_list:
     type:
       type: array
-      items: ../../tools/capture_kit.yml#capture_kit_set_file
+      items: ../../tools/target_kit_schema.yml#capture_kit_set_file
   readgroup_fastq_pe_file_list:
     type:
       type: array
-      items: ../../tools/readgroup.yml#readgroup_fastq_pe_file
+      items: ../../tools/readgroup.yml#readgroup_fastq_file
   readgroup_fastq_se_file_list:
     type:
       type: array
-      items: ../../tools/readgroup.yml#readgroup_fastq_se_file
+      items: ../../tools/readgroup.yml#readgroup_fastq_file
   readgroups_bam_file_list:
     type:
       type: array
@@ -72,7 +71,7 @@ outputs:
 
 steps:
   fastq_clean_pe:
-    run: fastq_clean_pe.cwl
+    run: fastq_clean.cwl
     scatter: input
     in:
       input: readgroup_fastq_pe_file_list
@@ -80,7 +79,7 @@ steps:
     out: [ output, sqlite ]
 
   fastq_clean_se:
-    run: fastq_clean_se.cwl
+    run: fastq_clean.cwl
     scatter: input
     in:
       input: readgroup_fastq_se_file_list

@@ -5,7 +5,7 @@ cwlVersion: v1.0
 requirements:
   - class: SchemaDefRequirement
     types:
-      - $import: capture_kit.yml
+      - $import: target_kit_schema.yml 
   - class: InlineJavascriptRequirement
 
 class: ExpressionTool
@@ -19,7 +19,7 @@ inputs:
 
 outputs:
   - id: output
-    type: capture_kit.yml#capture_kit_set_file
+    type: target_kit_schema.yml#capture_kit_set_file
 
 expression: |
   ${

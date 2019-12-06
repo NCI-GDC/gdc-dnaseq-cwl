@@ -10,19 +10,18 @@ requirements:
   - class: SchemaDefRequirement
     types:
       - $import: ../../tools/readgroup.yml
-      - $import: ../../tools/capture_kit.yml
-      - $import: ../../tools/amplicon_kit.yml
+      - $import: ../../tools/target_kit_schema.yml
 
 inputs:
   bioclient_config: File
   readgroup_fastq_pe_uuid_list:
     type:
       type: array
-      items: ../../tools/readgroup.yml#readgroup_fastq_pe_uuid
+      items: ../../tools/readgroup.yml#readgroup_fastq_uuid
   readgroup_fastq_se_uuid_list:
     type:
       type: array
-      items: ../../tools/readgroup.yml#readgroup_fastq_se_uuid
+      items: ../../tools/readgroup.yml#readgroup_fastq_uuid
   readgroup_bam_uuid_list:
     type:
       type: array
@@ -30,11 +29,11 @@ inputs:
   amplicon_kit_set_uuid_list:
     type:
       type: array
-      items: ../../tools/amplicon_kit.yml#amplicon_kit_set_uuid
+      items: ../../tools/target_kit_schema.yml#amplicon_kit_set_uuid
   capture_kit_set_uuid_list:
     type:
       type: array
-      items: ../../tools/capture_kit.yml#capture_kit_set_uuid
+      items: ../../tools/target_kit_schema.yml#capture_kit_set_uuid
   common_biallelic_vcf_gdc_id: string
   common_biallelic_vcf_file_size: long
   common_biallelic_vcf_index_gdc_id: string
@@ -66,13 +65,13 @@ outputs:
   rg_fastq_pe_files:
     type:
       type: array
-      items: ../../tools/readgroup.yml#readgroup_fastq_pe_file
+      items: ../../tools/readgroup.yml#readgroup_fastq_file
     outputSource: extract_pe_fastqs/output
 
   rg_fastq_se_files:
     type:
       type: array
-      items: ../../tools/readgroup.yml#readgroup_fastq_se_file
+      items: ../../tools/readgroup.yml#readgroup_fastq_file
     outputSource: extract_se_fastqs/output
 
   rg_bam_files:
@@ -84,13 +83,13 @@ outputs:
   amplicon_kit_files:
     type:
       type: array
-      items: ../../tools/amplicon_kit.yml#amplicon_kit_set_file
+      items: ../../tools/target_kit_schema.yml#amplicon_kit_set_file
     outputSource: extract_amplicon_kits/output
 
   capture_kit_files:
     type:
       type: array
-      items: ../../tools/capture_kit.yml#capture_kit_set_file
+      items: ../../tools/target_kit_schema.yml#capture_kit_set_file
     outputSource: extract_capture_kits/output
 
   reference_fasta:

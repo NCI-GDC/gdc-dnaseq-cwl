@@ -18,22 +18,22 @@ outputs:
   pe_file_list:
     type:
       type: array
-      items: ../../tools/readgroup.yml#readgroup_fastq_pe_file
+      items: ../../tools/readgroup.yml#readgroup_fastq_file
     outputSource: emit_readgroup_pe_contents/output
   se_file_list:
     type:
       type: array
-      items: ../../tools/readgroup.yml#readgroup_fastq_se_file
+      items: ../../tools/readgroup.yml#readgroup_fastq_file
     outputSource: emit_readgroup_se_contents/output
   o1_file_list:
     type:
       type: array
-      items: ../../tools/readgroup.yml#readgroup_fastq_se_file
+      items: ../../tools/readgroup.yml#readgroup_fastq_file
     outputSource: emit_readgroup_o1_contents/output
   o2_file_list:
     type:
       type: array
-      items: ../../tools/readgroup.yml#readgroup_fastq_se_file
+      items: ../../tools/readgroup.yml#readgroup_fastq_file
     outputSource: emit_readgroup_o2_contents/output
 
 steps:

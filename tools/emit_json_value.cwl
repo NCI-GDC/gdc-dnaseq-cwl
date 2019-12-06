@@ -8,17 +8,17 @@ requirements:
 class: ExpressionTool
 
 inputs:
-  - id: input
+  input:
     type: File
     inputBinding:
       loadContents: true
       valueFrom: $(null)
 
-  - id: key
+  key:
     type: string
 
 outputs:
-  - id: output
+  output:
     type: string
 
 expression: |
