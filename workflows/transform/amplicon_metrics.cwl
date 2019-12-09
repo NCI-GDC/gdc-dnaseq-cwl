@@ -1,9 +1,6 @@
-#!/usr/bin/env cwl-runner
-
 cwlVersion: v1.0
-
 class: Workflow
-
+id: gdc_dnaseq_amplicon_metrics_wf
 requirements:
   - class: InlineJavascriptRequirement
   - class: SchemaDefRequirement

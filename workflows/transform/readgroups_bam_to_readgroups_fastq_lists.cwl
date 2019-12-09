@@ -1,9 +1,6 @@
-#!/usr/bin/env cwl-runner
-
 cwlVersion: v1.0
-
 class: Workflow
-
+id: gdc_dnaseq_readgroups_bam_to_readgroups_fastq_lists_wf
 requirements:
   - class: SchemaDefRequirement
     types:
@@ -56,7 +53,7 @@ steps:
     out: [ OUTPUT ]
 
   emit_readgroup_pe_contents:
-    run: ../../tools/emit_readgroup_fastq_pe_contents.cwl
+    run: ../../tools/emit_matched_fastq_readgroups.cwl
     in:
       bam_readgroup_contents: bam_readgroup_to_contents/OUTPUT
       forward_fastq_list: biobambam_bamtofastq/output_fastq1
@@ -67,30 +64,36 @@ steps:
     out: [ output ]
 
   emit_readgroup_se_contents:
-    run: ../../tools/emit_readgroup_fastq_se_contents.cwl
+    run: ../../tools/emit_matched_fastq_readgroups.cwl
     in:
       bam_readgroup_contents: bam_readgroup_to_contents/OUTPUT
-      fastq_list: biobambam_bamtofastq/output_fastq_s
+      forward_fastq_list: biobambam_bamtofastq/output_fastq_s
+      reverse_fastq_list:
+        default: []
       readgroup_meta_list:
         source: readgroups_bam_file
         valueFrom: $(self.readgroup_meta_list)
     out: [ output ]
 
   emit_readgroup_o1_contents:
-    run: ../../tools/emit_readgroup_fastq_se_contents.cwl
+    run: ../../tools/emit_matched_fastq_readgroups.cwl
     in:
       bam_readgroup_contents: bam_readgroup_to_contents/OUTPUT
-      fastq_list: biobambam_bamtofastq/output_fastq_o1
+      forward_fastq_list: biobambam_bamtofastq/output_fastq_o1
+      reverse_fastq_list:
+        default: []
       readgroup_meta_list:
         source: readgroups_bam_file
         valueFrom: $(self.readgroup_meta_list)
     out: [ output ]
 
   emit_readgroup_o2_contents:
-    run: ../../tools/emit_readgroup_fastq_se_contents.cwl
+    run: ../../tools/emit_matched_fastq_readgroups.cwl
     in:
       bam_readgroup_contents: bam_readgroup_to_contents/OUTPUT
-      fastq_list: biobambam_bamtofastq/output_fastq_o2
+      forward_fastq_list: biobambam_bamtofastq/output_fastq_o2
+      reverse_fastq_list:
+        default: []
       readgroup_meta_list:
         source: readgroups_bam_file
         valueFrom: $(self.readgroup_meta_list)

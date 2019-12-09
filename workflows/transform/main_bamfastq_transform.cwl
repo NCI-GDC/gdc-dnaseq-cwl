@@ -1,9 +1,6 @@
-#!/usr/bin/env cwl-runner
-
 cwlVersion: v1.0
-
 class: Workflow
-
+id: gdc_dnaseq_main_bamfastq_transform_wf
 requirements:
   - class: InlineJavascriptRequirement
   - class: MultipleInputFeatureRequirement
@@ -107,49 +104,16 @@ steps:
       readgroups_bam_file: readgroups_bam_file_list
     out: [ pe_file_list, se_file_list, o1_file_list, o2_file_list ]
 
-  merge_bam_pe_fastq_records:
-    run: ../../tools/merge_pe_fastq_records.cwl
+  merge_fastq_arrays:
+    run: merge_fastq_array_workflow.cwl
     in:
-      input: readgroups_bam_to_readgroups_fastq_lists/pe_file_list
-    out: [ output ]
-
-  merge_pe_fastq_records:
-    run: ../../tools/merge_pe_fastq_records.cwl
-    in:
-      input:
-        source: [
-          merge_bam_pe_fastq_records/output,
-          fastq_clean_pe/output
-        ]
-    out: [ output ]
-
-  merge_bam_se_fastq_records:
-    run: ../../tools/merge_se_fastq_records.cwl
-    in:
-      input: readgroups_bam_to_readgroups_fastq_lists/se_file_list
-    out: [ output ]
-
-  merge_se_fastq_records:
-    run: ../../tools/merge_se_fastq_records.cwl
-    in:
-      input:
-        source: [
-          merge_bam_se_fastq_records/output,
-          fastq_clean_se/output
-        ]
-    out: [ output ]
-
-  merge_o1_fastq_records:
-    run: ../../tools/merge_se_fastq_records.cwl
-    in:
-      input: readgroups_bam_to_readgroups_fastq_lists/o1_file_list
-    out: [ output ]
-
-  merge_o2_fastq_records:
-    run: ../../tools/merge_se_fastq_records.cwl
-    in:
-      input: readgroups_bam_to_readgroups_fastq_lists/o2_file_list
-    out: [ output ]
+      bam_pe_fastqs: readgroups_bam_to_readgroups_fastq_lists/pe_file_list
+      bam_se_fastqs: readgroups_bam_to_readgroups_fastq_lists/se_file_list
+      bam_o1_fastqs: readgroups_bam_to_readgroups_fastq_lists/o1_file_list
+      bam_o2_fastqs: readgroups_bam_to_readgroups_fastq_lists/o2_file_list
+      fastqs_pe: fastq_clean_pe/output
+      fastqs_se: fastq_clean_se/output
+    out: [ merged_pe_fastq_array, merged_se_fastq_array ]
 
   bwa_pe:
     run: bwa_pe.cwl
@@ -157,7 +121,7 @@ steps:
     in:
       job_uuid: job_uuid
       reference_sequence: reference_sequence
-      readgroup_fastq_pe: merge_pe_fastq_records/output
+      readgroup_fastq_pe: merge_fastq_arrays/merged_pe_fastq_array 
       thread_count: thread_count
     out: [ bam, sqlite ]
 
@@ -167,27 +131,7 @@ steps:
     in:
       job_uuid: job_uuid
       reference_sequence: reference_sequence
-      readgroup_fastq_se: merge_se_fastq_records/output
-      thread_count: thread_count
-    out: [ bam, sqlite ]
-
-  bwa_o1:
-    run: bwa_se.cwl
-    scatter: readgroup_fastq_se
-    in:
-      job_uuid: job_uuid
-      reference_sequence: reference_sequence
-      readgroup_fastq_se: merge_o1_fastq_records/output
-      thread_count: thread_count
-    out: [ bam, sqlite ]
-
-  bwa_o2:
-    run: bwa_se.cwl
-    scatter: readgroup_fastq_se
-    in:
-      job_uuid: job_uuid
-      reference_sequence: reference_sequence
-      readgroup_fastq_se: merge_o2_fastq_records/output
+      readgroup_fastq_se: merge_fastq_arrays/merged_se_fastq_array 
       thread_count: thread_count
     out: [ bam, sqlite ]
 
@@ -211,19 +155,10 @@ steps:
       INPUT:
         source: [
           bwa_pe/bam,
-          bwa_se/bam,
-          bwa_o1/bam,
-          bwa_o2/bam
+          bwa_se/bam
         ]
       OUTPUT: bam_name
     out: [ MERGED_OUTPUT ]
-
-  bam_reheader:
-    run: ../../tools/bam_reheader.cwl
-    in:
-      input: picard_mergesamfiles/MERGED_OUTPUT
-      header: sq_header
-    out: [ output ]
 
   conditional_markduplicates:
     run: conditional_markduplicates.cwl

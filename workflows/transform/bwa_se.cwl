@@ -1,9 +1,6 @@
-#!/usr/bin/env cwl-runner
-
 cwlVersion: v1.0
-
 class: Workflow
-
+id: gdc_dnaseq_bwa_se_wf
 requirements:
   - class: ScatterFeatureRequirement
   - class: SchemaDefRequirement
@@ -24,7 +21,7 @@ inputs:
       - .sa
       - ^.dict
   readgroup_fastq_se:
-    type: ../../tools/readgroup.yml#readgroup_fastq_se_file
+    type: ../../tools/readgroup.yml#readgroup_fastq_file
   thread_count: long
 
 outputs:

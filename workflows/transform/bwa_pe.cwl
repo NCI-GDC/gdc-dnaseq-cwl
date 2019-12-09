@@ -24,7 +24,7 @@ inputs:
       - .sa
       - ^.dict
   readgroup_fastq_pe:
-    type: ../../tools/readgroup.yml#readgroup_fastq_pe_file
+    type: ../../tools/readgroup.yml#readgroup_fastq_file
   thread_count: long
 
 outputs:
