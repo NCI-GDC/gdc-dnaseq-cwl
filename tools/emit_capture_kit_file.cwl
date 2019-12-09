@@ -1,24 +1,21 @@
-#!/usr/bin/env cwl-runner
-
 cwlVersion: v1.0
-
+class: ExpressionTool
+id: emit_capture_kit_file
 requirements:
   - class: SchemaDefRequirement
     types:
       - $import: target_kit_schema.yml 
   - class: InlineJavascriptRequirement
 
-class: ExpressionTool
-
 inputs:
-  - id: capture_kit_bait_file
+  capture_kit_bait_file:
     type: File
 
-  - id: capture_kit_target_file
+  capture_kit_target_file:
     type: File
 
 outputs:
-  - id: output
+  output:
     type: target_kit_schema.yml#capture_kit_set_file
 
 expression: |

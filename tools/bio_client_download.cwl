@@ -1,8 +1,6 @@
-#!/usr/bin/env cwl-runner
-
 cwlVersion: v1.0
-
 class: CommandLineTool
+id: bio_client_download
 requirements:
   - class: DockerRequirement
     dockerPull: quay.io/ncigdc/bio-client:latest

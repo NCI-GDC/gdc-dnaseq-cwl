@@ -1,7 +1,6 @@
 cwlVersion: v1.0
-
 class: Workflow
-
+id: gdc_dnaseq_stage_data_wf
 requirements:
   - class: InlineJavascriptRequirement
   - class: StepInputExpressionRequirement

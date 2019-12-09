@@ -1,26 +1,22 @@
-#!/usr/bin/env cwl-runner
-
 cwlVersion: v1.0
-
+class: ExpressionTool
+id: emit_readgroups_bam_file
 requirements:
   - class: InlineJavascriptRequirement
   - class: SchemaDefRequirement
     types:
       - $import: readgroup.yml
 
-class: ExpressionTool
-
 inputs:
-  - id: bam
-    type: File
+  bam: File
 
-  - id: readgroup_meta_list
+  readgroup_meta_list:
     type:
       type: array
       items: readgroup.yml#readgroup_meta
 
 outputs:
-  - id: output
+  output:
     type: readgroup.yml#readgroups_bam_file
 
 expression: |

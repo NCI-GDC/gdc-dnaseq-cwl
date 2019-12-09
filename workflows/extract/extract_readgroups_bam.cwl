@@ -1,9 +1,6 @@
-#!/usr/bin/env cwl-runner
-
 cwlVersion: v1.0
-
 class: Workflow
-
+id: gdc_dnaseq_extract_readgroups_bam_wf
 requirements:
   - class: InlineJavascriptRequirement
   - class: ScatterFeatureRequirement

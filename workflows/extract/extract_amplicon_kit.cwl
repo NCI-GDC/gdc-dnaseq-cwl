@@ -1,9 +1,6 @@
-#!/usr/bin/env cwl-runner
-
 cwlVersion: v1.0
-
 class: Workflow
-
+id: gdc_dnaseq_extract_amplicon_kit_wf
 requirements:
   - class: InlineJavascriptRequirement
   - class: SchemaDefRequirement
@@ -28,8 +25,7 @@ steps:
       download_handle:
         source: amplicon_kit_set_uuid
         valueFrom: $(self.amplicon_kit_amplicon_uuid)
-    out:
-      output
+    out: [ output ]
 
   extract_amplicon_kit_target:
     run: ../../tools/bio_client_download.cwl

@@ -1,9 +1,6 @@
-#!/usr/bin/env cwl-runner
-
 cwlVersion: v1.0
-
 class: Workflow
-
+id: gdc_dnaseq_extract_capture_kit
 requirements:
   - class: InlineJavascriptRequirement
   - class: SchemaDefRequirement
