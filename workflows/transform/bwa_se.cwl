@@ -38,7 +38,7 @@ steps:
     in:
       INPUT:
         source: readgroup_fastq_se
-        valueFrom: $(self.fastq)
+        valueFrom: $(self.forward_fastq)
       threads: thread_count
     out: [ OUTPUT ]
 
@@ -61,7 +61,7 @@ steps:
       fasta: reference_sequence
       fastq:
         source: readgroup_fastq_se
-        valueFrom: $(self.fastq)
+        valueFrom: $(self.forward_fastq)
       fastqc_json_path: fastqc_basicstats_json/OUTPUT
       readgroup_meta:
         source: readgroup_fastq_se

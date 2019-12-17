@@ -63,8 +63,7 @@ inputs:
   reference_sa_file_size: long
   sq_header_gdc_id: string
   sq_header_file_size: long
-  run_bamindex: long[]
-  run_markduplicates: long[]
+  run_markduplicates: bool
   thread_count: long
 
 outputs:
@@ -131,7 +130,6 @@ steps:
       common_biallelic_vcf: extract_stage_files/common_biallelic_vcf
       known_snp: extract_stage_files/known_snp_vcf
       reference_sequence: extract_stage_files/reference_fasta
-      run_bamindex: run_bamindex
       run_markduplicates: run_markduplicates
       sq_header: extract_stage_files/sq_header_file 
       thread_count: thread_count

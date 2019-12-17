@@ -15,6 +15,7 @@ requirements:
 inputs:
   bam_name: string
   job_uuid: string
+  collect_wgs_metrics: boolean
   amplicon_kit_set_file_list:
     type:
       type: array
@@ -43,8 +44,7 @@ inputs:
     type: File
     secondaryFiles:
       - .tbi
-  run_bamindex: long[]
-  run_markduplicates: long[]
+  run_markduplicates: boolean
   reference_sequence:
     type: File
     secondaryFiles:
@@ -149,48 +149,48 @@ steps:
       job_uuid: job_uuid
     out: [ destination_sqlite, log ]
 
-  picard_mergesamfiles:
-    run: ../../tools/picard_mergesamfiles_aoa.cwl
+  dup_branch_decider:
+    run: ../../tools/decider_markdup_input.cwl
     in:
-      INPUT:
-        source: [
-          bwa_pe/bam,
-          bwa_se/bam
-        ]
-      OUTPUT: bam_name
-    out: [ MERGED_OUTPUT ]
+      run_markdups: run_markduplicates
+      bam:
+        source: [bwa_pe/bam, bwa_se/bam]
+    out: [ do_markdup_workflow, skip_markdup_workflow, out_bam ]
 
   conditional_markduplicates:
     run: conditional_markduplicates.cwl
-    scatter: run_markduplicates
+    scatter: run_markduplicates 
     in:
-      bam: bam_reheader/output
+      bam: dup_branch_decider/out_bam
       job_uuid: job_uuid
-      run_markduplicates: run_markduplicates
-    out: [ output, sqlite ]
-
-  conditional_index:
-    run: conditional_bamindex.cwl
-    scatter: run_bamindex
-    in:
-      bam: bam_reheader/output
-      run_bamindex: run_bamindex
       thread_count: thread_count
+      bam_name: bam_name
+      run_markduplicates: dup_branch_decider/do_markdup_workflow
     out: [ output, sqlite ]
 
-  decide_markduplicates_index:
-    run: ../../tools/decider_conditional_bams.cwl
+  conditional_skip_markduplicates:
+    run: conditional_skip_markduplicates.cwl
+    scatter: skip_markduplicates
     in:
-      conditional_bam1: conditional_markduplicates/output
-      conditional_sqlite1: conditional_markduplicates/sqlite
-      conditional_bam2: conditional_index/output
-      conditional_sqlite2: conditional_index/sqlite
-    out: [ output, sqlite ]
+      bam: dup_branch_decider/out_bam
+      job_uuid: job_uuid
+      thread_count: thread_count
+      bam_name: bam_name
+      skip_markduplicates: dup_branch_decider/skip_markdup_workflow 
+    out: [ output ]
+
+  dup_outputs_decider:
+    run: ../../tools/decider_markdup_output.cwl
+    in:
+      markdup_bam: conditional_markduplicates/output
+      markdup_sqlite: conditional_markduplicates/sqlite
+      skip_markdup_bam: conditional_skip_markduplicates/output
+    out: [ bam, sqlite ] 
 
   gatk_baserecalibrator:
     run: ../../tools/gatk4_baserecalibrator.cwl
     in:
-      input: decide_markduplicates_index/output
+      input: dup_outputs_decider/bam 
       known-sites: known_snp
       reference: reference_sequence
     out: [ output_grp ]
@@ -198,7 +198,7 @@ steps:
   gatk_applybqsr:
     run: ../../tools/gatk4_applybqsr.cwl
     in:
-      input: decide_markduplicates_index/output
+      input: dup_outputs_decider/bam 
       bqsr-recal-file: gatk_baserecalibrator/output_grp
     out: [ output_bam ]
 
@@ -210,7 +210,6 @@ steps:
         valueFrom: "STRICT"
     out: [ OUTPUT ]
 
-  #need eof and dup QNAME detection
   picard_validatesamfile_bqsr_to_sqlite:
     run: ../../tools/picard_validatesamfile_to_sqlite.cwl
     in:
@@ -229,24 +228,23 @@ steps:
       bam: gatk_applybqsr/output_bam
       amplicon_kit_set_file_list: amplicon_kit_set_file_list
       capture_kit_set_file_list: capture_kit_set_file_list
+      collect_wgs_metrics:
+        source: collect_wgs_metrics
+        valueFrom: |
+          ${
+             if (self) {
+               return([1]);
+             } else {
+               return([]);
+             }
+           }
       common_biallelic_vcf: common_biallelic_vcf
       fasta: reference_sequence
       input_state:
         valueFrom: "gatk_applybqsr_readgroups"
       job_uuid: job_uuid
       known_snp: known_snp
-    out: [ sqlite ]
-
-  integrity:
-    run: integrity.cwl
-    in:
-      bai:
-        source: gatk_applybqsr/output_bam
-        valueFrom: $(self.secondaryFiles[0])
-      bam: gatk_applybqsr/output_bam
-      input_state:
-        valueFrom: "gatk_applybqsr_readgroups"
-      job_uuid: job_uuid
+      thread_count: thread_count
     out: [ sqlite ]
 
   merge_all_sqlite:
@@ -258,10 +256,9 @@ steps:
           merge_sqlite_fastq_clean_se/destination_sqlite,
           merge_sqlite_bwa_pe/destination_sqlite,
           merge_sqlite_bwa_se/destination_sqlite,
-          decide_markduplicates_index/sqlite,
+          dup_outputs_decider/sqlite,
           picard_validatesamfile_bqsr_to_sqlite/sqlite,
-          metrics/sqlite,
-          integrity/sqlite
+          metrics/sqlite
           ]
       job_uuid: job_uuid
     out: [ destination_sqlite, log ]

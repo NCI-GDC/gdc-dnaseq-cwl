@@ -18,14 +18,6 @@ requirements:
         }
       return Math.ceil(2 * (req_space / 1048576));
       }      
-    tmpdirMax: |
-      ${
-      var req_space = 0;
-      for (var i = 0; i < inputs.source_sqlite.length; i++) {
-          req_space += inputs.source_sqlite[i].size;
-        }
-      return Math.ceil(2 * (req_space / 1048576));
-      }      
     outdirMin: |
       ${
       var req_space = 0;
@@ -34,14 +26,6 @@ requirements:
         }
       return Math.ceil(req_space / 1048576);
       }      
-    outdirMax: |
-      ${
-      var req_space = 0;
-      for (var i = 0; i < inputs.source_sqlite.length; i++) {
-          req_space += inputs.source_sqlite[i].size;
-        }
-      return Math.ceil(req_space / 1048576);
-      }
 
 inputs:
   source_sqlite:

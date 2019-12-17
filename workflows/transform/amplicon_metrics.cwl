@@ -5,12 +5,12 @@ requirements:
   - class: InlineJavascriptRequirement
   - class: SchemaDefRequirement
     types:
-      - $import: ../../tools/amplicon_kit.yml
+      - $import: ../../tools/target_kit_schema.yml
 
 inputs:
   bam: File
   amplicon_kit_set_file:
-    type: ../../tools/amplicon_kit.yml#amplicon_kit_set_file
+    type: ../../tools/target_kit_schema.yml#amplicon_kit_set_file
   fasta:
     type: File
     secondaryFiles:
@@ -44,6 +44,8 @@ steps:
       TARGET_INTERVALS:
         source: amplicon_kit_set_file
         valueFrom: $(self.amplicon_kit_target_file)
+      METRIC_ACCUMULATION_LEVEL:
+        default: ["null", "ALL_READS"]
     out: [ METRIC_OUTPUT ]
 
   picard_collecttargetedpcrmetrics_to_sqlite:

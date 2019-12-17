@@ -23,6 +23,3 @@ expression: |
     var output_value = JSON.parse(inputs.input.contents)[inputs.key];
     return {'output': output_value};
   }
-
-
-

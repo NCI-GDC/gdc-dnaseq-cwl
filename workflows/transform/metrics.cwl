@@ -1,15 +1,11 @@
-#!/usr/bin/env cwl-runner
-
 cwlVersion: v1.0
-
 class: Workflow
-
+id: gdc_dnaseq_metrics_wf
 requirements:
   - class: InlineJavascriptRequirement
   - class: SchemaDefRequirement
     types:
-      - $import: ../../tools/amplicon_kit.yml
-      - $import: ../../tools/capture_kit.yml
+      - $import: ../../tools/target_kit_schema.yml
   - class: SubworkflowFeatureRequirement
 
 inputs:
@@ -20,11 +16,12 @@ inputs:
   amplicon_kit_set_file_list:
     type:
       type: array
-      items: ../../tools/amplicon_kit.yml#amplicon_kit_set_file
+      items: ../../tools/target_kit_schema.yml#amplicon_kit_set_file
   capture_kit_set_file_list:
     type:
       type: array
-      items: ../../tools/capture_kit.yml#capture_kit_set_file
+      items: ../../tools/target_kit_schema.yml#capture_kit_set_file
+  collect_wgs_metrics: long[]
   common_biallelic_vcf:
     type: File
     secondaryFiles:
@@ -45,6 +42,7 @@ inputs:
     type: File
     secondaryFiles:
       - .tbi
+  thread_count: long
 
 outputs:
   sqlite:
@@ -93,6 +91,7 @@ steps:
     in:
       input: bam
       variant: common_biallelic_vcf
+      reference: fasta
     out: [ output ]
 
   gatk_calculatecontamination:
@@ -115,50 +114,14 @@ steps:
       metric_path: gatk_calculatecontamination/output
     out: [ sqlite ]
 
-  gatk_collectmultiplemetrics:
-    run: ../../tools/gatk4_collectmultiplemetrics.cwl
-    in:
-      DB_SNP: known_snp
-      INPUT: bam
-      REFERENCE_SEQUENCE: fasta
-    out: [ alignment_summary_metrics, bait_bias_detail_metrics, bait_bias_summary_metrics, base_distribution_by_cycle_metrics,
-           gc_bias_detail_metrics, gc_bias_summary_metrics, insert_size_metrics, pre_adapter_detail_metrics, pre_adapter_summary_metrics,
-           quality_by_cycle_metrics, quality_distribution_metrics, quality_yield_metrics ]
-
-  gatk_collectmultiplemetrics_to_sqlite:
-    run: ../../tools/picard_collectmultiplemetrics_to_sqlite.cwl
-    in:
-      bam:
-        source: bam
-        valueFrom: $(self.basename)
-      fasta:
-        source: fasta
-        valueFrom: $(self.basename)
-      input_state: input_state
-      job_uuid: job_uuid
-      vcf:
-        source: known_snp
-        valueFrom: $(self.basename)
-      alignment_summary_metrics: gatk_collectmultiplemetrics/alignment_summary_metrics
-      bait_bias_detail_metrics: gatk_collectmultiplemetrics/bait_bias_detail_metrics
-      bait_bias_summary_metrics: gatk_collectmultiplemetrics/bait_bias_summary_metrics
-      base_distribution_by_cycle_metrics: gatk_collectmultiplemetrics/base_distribution_by_cycle_metrics
-      gc_bias_detail_metrics: gatk_collectmultiplemetrics/gc_bias_detail_metrics
-      gc_bias_summary_metrics: gatk_collectmultiplemetrics/gc_bias_summary_metrics
-      insert_size_metrics: gatk_collectmultiplemetrics/insert_size_metrics
-      pre_adapter_detail_metrics: gatk_collectmultiplemetrics/pre_adapter_detail_metrics
-      pre_adapter_summary_metrics: gatk_collectmultiplemetrics/pre_adapter_summary_metrics
-      quality_by_cycle_metrics: gatk_collectmultiplemetrics/quality_by_cycle_metrics
-      quality_distribution_metrics: gatk_collectmultiplemetrics/quality_distribution_metrics
-      quality_yield_metrics: gatk_collectmultiplemetrics/quality_yield_metrics
-    out: [ log, sqlite ]
-
   picard_collectoxogmetrics:
     run: ../../tools/picard_collectoxogmetrics.cwl
     in:
       DB_SNP: known_snp
       INPUT: bam
       REFERENCE_SEQUENCE: fasta
+      CONTEXTS:
+        default: ["CCG"]
     out: [ OUTPUT ]
 
   picard_collectoxogmetrics_to_sqlite:
@@ -178,31 +141,29 @@ steps:
         valueFrom: $(self.basename)
     out: [ log, sqlite ]
 
-  picard_collectwgsmetrics:
-    run: ../../tools/picard_collectwgsmetrics.cwl
+  wgs_metrics:
+    run: wgs_metrics.cwl
+    scatter: run_wgs 
     in:
-      INPUT: bam
-      REFERENCE_SEQUENCE: fasta
-    out: [ OUTPUT ]
-
-  picard_collectwgsmetrics_to_sqlite:
-    run: ../../tools/picard_collectwgsmetrics_to_sqlite.cwl
-    in:
-      bam:
-        source: bam
-        valueFrom: $(self.basename)
-      fasta:
-        source: fasta
-        valueFrom: $(self.basename)
+      bam: bam
+      run_wgs: collect_wgs_metrics
+      fasta: fasta
       input_state: input_state
-      metric_path: picard_collectwgsmetrics/OUTPUT
       job_uuid: job_uuid
-    out: [ log, sqlite ]
+    out: [ sqlite ]
+
+  merge_wgs_sqlite:
+    run: ../../tools/merge_sqlite.cwl
+    in:
+      source_sqlite: wgs_metrics/sqlite
+      job_uuid: job_uuid
+    out: [ destination_sqlite, log ]
 
   samtools_flagstat:
     run: ../../tools/samtools_flagstat.cwl
     in:
       INPUT: bam
+      threads: thread_count
     out: [ OUTPUT ]
 
   samtools_flagstat_to_sqlite:
@@ -237,6 +198,7 @@ steps:
     run: ../../tools/samtools_stats.cwl
     in:
       INPUT: bam
+      threads: thread_count
     out: [ OUTPUT ]
 
   samtools_stats_to_sqlite:
@@ -258,9 +220,8 @@ steps:
           gatk_calculatecontamination_to_sqlite/sqlite,
           merge_exome_sqlite/destination_sqlite,
           merge_amplicon_sqlite/destination_sqlite,
-          gatk_collectmultiplemetrics_to_sqlite/sqlite,
+          merge_wgs_sqlite/destination_sqlite,
           picard_collectoxogmetrics_to_sqlite/sqlite,
-          picard_collectwgsmetrics_to_sqlite/sqlite,
           samtools_flagstat_to_sqlite/sqlite,
           samtools_idxstats_to_sqlite/sqlite,
           samtools_stats_to_sqlite/sqlite
