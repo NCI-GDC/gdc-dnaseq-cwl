@@ -155,7 +155,7 @@ inputs:
       separate: false
 
 outputs:
-  METRIC_OUTPUT
+  METRIC_OUTPUT:
     type: File
     outputBinding:
       glob: $(inputs.OUTPUT)

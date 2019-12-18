@@ -41,6 +41,9 @@ steps:
       bam:
         source: bam
         valueFrom: $(self.basename)
+      fasta:
+        source: fasta
+        valueFrom: $(self.basename)
       input_state: input_state
       metric_path: picard_collectwgsmetrics/OUTPUT
       job_uuid: job_uuid

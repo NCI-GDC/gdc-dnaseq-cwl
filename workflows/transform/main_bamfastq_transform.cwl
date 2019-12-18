@@ -260,5 +260,15 @@ steps:
           picard_validatesamfile_bqsr_to_sqlite/sqlite,
           metrics/sqlite
           ]
+        valueFrom: |
+          ${
+             var res = [];
+             for (var i = 0; i<self.length; i++) {
+               if(self[i] !== null) {
+                 res.push(self[i])
+               }
+             }
+             return(res);
+           }
       job_uuid: job_uuid
     out: [ destination_sqlite, log ]
