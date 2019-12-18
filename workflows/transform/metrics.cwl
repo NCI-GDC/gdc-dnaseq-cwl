@@ -120,6 +120,8 @@ steps:
       DB_SNP: known_snp
       INPUT: bam
       REFERENCE_SEQUENCE: fasta
+      VALIDATION_STRINGENCY:
+        default: "SILENT"
       CONTEXTS:
         default: ["CCG"]
     out: [ OUTPUT ]

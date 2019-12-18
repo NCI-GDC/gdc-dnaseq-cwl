@@ -55,7 +55,6 @@ inputs:
       - .pac
       - .sa
       - ^.dict
-  sq_header: File
   thread_count: long
 
 outputs:
