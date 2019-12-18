@@ -118,7 +118,7 @@ steps:
            sq_header_file ]
 
   transform:
-    run: ./transform/main_bamfastq_transform.cwl
+    run: ./transform/gdc_dnaseq_main_workflow.cwl
     in:
       bam_name: bam_name
       job_uuid: job_uuid

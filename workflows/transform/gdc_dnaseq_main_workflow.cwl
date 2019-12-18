@@ -1,6 +1,6 @@
 cwlVersion: v1.0
 class: Workflow
-id: gdc_dnaseq_main_bamfastq_transform_wf
+id: gdc_dnaseq_main_wf
 requirements:
   - class: InlineJavascriptRequirement
   - class: MultipleInputFeatureRequirement
