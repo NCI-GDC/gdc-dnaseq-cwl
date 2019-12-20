@@ -57,8 +57,6 @@ inputs:
   reference_pac_file_size: long
   reference_sa_gdc_id: string
   reference_sa_file_size: long
-  sq_header_gdc_id: string
-  sq_header_file_size: long
 
 outputs:
   rg_fastq_pe_files:
@@ -102,10 +100,6 @@ outputs:
   known_snp_vcf: 
     type: File
     outputSource: root_known_snp_files/output
-
-  sq_header_file:
-    type: File
-    outputSource: extract_sq_header/output
 
 steps:
   extract_pe_fastqs:
@@ -242,14 +236,6 @@ steps:
       config-file: bioclient_config
       download_handle: reference_sa_gdc_id
       file_size: reference_sa_file_size
-    out: [ output ]
-
-  extract_sq_header:
-    run: ../../tools/bio_client_download.cwl
-    in:
-      config-file: bioclient_config
-      download_handle: sq_header_gdc_id
-      file_size: sq_header_file_size
     out: [ output ]
 
   root_fasta_files:

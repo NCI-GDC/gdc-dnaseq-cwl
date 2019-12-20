@@ -36,7 +36,6 @@ inputs:
     type: 
       type: array
       items: ../tools/readgroup.yml#readgroups_bam_uuid
-  start_token: File?
   common_biallelic_vcf_gdc_id: string
   common_biallelic_vcf_file_size: long
   common_biallelic_vcf_index_gdc_id: string
@@ -61,9 +60,8 @@ inputs:
   reference_pac_file_size: long
   reference_sa_gdc_id: string
   reference_sa_file_size: long
-  sq_header_gdc_id: string
-  sq_header_file_size: long
-  run_markduplicates: bool
+  run_markduplicates: boolean
+  collect_wgs_metrics: boolean
   thread_count: long
 
 outputs:
@@ -111,17 +109,15 @@ steps:
       reference_pac_file_size: reference_pac_file_size 
       reference_sa_gdc_id: reference_sa_gdc_id 
       reference_sa_file_size: reference_sa_file_size 
-      sq_header_gdc_id: sq_header_gdc_id 
-      sq_header_file_size: sq_header_file_size 
     out: [ rg_fastq_pe_files, rg_fastq_se_files, rg_bam_files, amplicon_kit_files,
-           capture_kit_files, reference_fasta, common_biallelic_vcf, known_snp_vcf,
-           sq_header_file ]
+           capture_kit_files, reference_fasta, common_biallelic_vcf, known_snp_vcf ]
 
   transform:
     run: ./transform/gdc_dnaseq_main_workflow.cwl
     in:
       bam_name: bam_name
       job_uuid: job_uuid
+      collect_wgs_metrics: collect_wgs_metrics
       amplicon_kit_set_file_list: extract_stage_files/amplicon_kit_files
       capture_kit_set_file_list: extract_stage_files/capture_kit_files
       readgroup_fastq_pe_file_list: extract_stage_files/rg_fastq_pe_files
@@ -131,7 +127,6 @@ steps:
       known_snp: extract_stage_files/known_snp_vcf
       reference_sequence: extract_stage_files/reference_fasta
       run_markduplicates: run_markduplicates
-      sq_header: extract_stage_files/sq_header_file 
       thread_count: thread_count
     out: [ output_bam, sqlite ]
 
