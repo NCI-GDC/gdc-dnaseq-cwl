@@ -113,7 +113,7 @@ steps:
            capture_kit_files, reference_fasta, common_biallelic_vcf, known_snp_vcf ]
 
   transform:
-    run: ./transform/gdc_dnaseq_main_workflow.cwl
+    run: ./main/gdc_dnaseq_main_workflow.cwl
     in:
       bam_name: bam_name
       job_uuid: job_uuid
