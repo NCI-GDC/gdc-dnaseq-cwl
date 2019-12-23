@@ -5,7 +5,7 @@ a harmonized BAM file and an sqlite database of various metrics collected.
 
 ## External Users
 
-The entrypoint CWL workflow for external users is `workflows/transform/gdc_dnaseq_main_workflow.cwl`.
+The entrypoint CWL workflow for external users is `workflows/main/gdc_dnaseq_main_workflow.cwl`.
 
 ### Inputs
 
