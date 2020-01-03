@@ -91,7 +91,7 @@
           PM: null
     o2_file_list: []
   job: ./tests/readgroups_bam_to_readgroups_fastq_lists.job.1.json
-  tool: ./workflows/transform/readgroups_bam_to_readgroups_fastq_lists.cwl
+  tool: ./workflows/utils/readgroups_bam_to_readgroups_fastq_lists.cwl
   doc: Processing bam and matching to readgroups. 
 
 - output:
@@ -174,5 +174,5 @@
           PM: null
     o2_file_list: []
   job: ./tests/readgroups_bam_to_readgroups_fastq_lists.job.2.json
-  tool: ./workflows/transform/readgroups_bam_to_readgroups_fastq_lists.cwl
+  tool: ./workflows/utils/readgroups_bam_to_readgroups_fastq_lists.cwl
   doc: Processing bam and matching to readgroups - second situation. 
