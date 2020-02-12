@@ -5,15 +5,17 @@ requirements:
   - class: DockerRequirement
     dockerPull: quay.io/ncigdc/fastq_cleaner:69c602582f0f001269b4f85a610ae4d5af1edd1809c0edda6a3ae13053e62ce3
   - class: InlineJavascriptRequirement
+    expressionLib:
+      $import: ./expression_lib.cwl
   - class: ResourceRequirement
     coresMin: 2
     coresMax: 2
     ramMin: 2000
     ramMax: 2000
-    tmpdirMin: $(Math.ceil(1.1 * (inputs.fastq1.size + inputs.fastq2.size) / 1048576))
-    tmpdirMax: $(Math.ceil(1.1 * (inputs.fastq1.size + inputs.fastq2.size) / 1048576))
-    outdirMin: $(Math.ceil(1.1 * (inputs.fastq1.size + inputs.fastq2.size) / 1048576))
-    outdirMax: $(Math.ceil(1.1 * (inputs.fastq1.size + inputs.fastq2.size) / 1048576))
+    tmpdirMin: $(Math.ceil(1.1 * fastq_files_size(inputs.fastq1, inputs.fastq2)))
+    tmpdirMax: $(Math.ceil(1.1 * fastq_files_size(inputs.fastq1, inputs.fastq2)))
+    outdirMin: $(Math.ceil(1.1 * fastq_files_size(inputs.fastq1, inputs.fastq2)))
+    outdirMax: $(Math.ceil(1.1 * fastq_files_size(inputs.fastq1, inputs.fastq2)))
 
 inputs:
   fastq1:

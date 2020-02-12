@@ -14,3 +14,13 @@
     var divisor = 1048576;
     return Math.ceil(mult * fobj.size / divisor);
   }
+
+- |
+  function fastq_files_size(forward, reverse) {
+    var divisor = 1048576;
+    if (reverse == null) {
+      return Math.ceil(forward.size / divisor)
+    } else {
+      return Math.ceil((forward.size + reverse.size) / divisor)
+    }
+  }
