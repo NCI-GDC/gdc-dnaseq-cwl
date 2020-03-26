@@ -40,6 +40,13 @@ inputs:
     inputBinding:
       prefix: --upload_key
       position: 3
+      
+  - id: storage-type
+    type: string
+    default: aws_s3
+    inputBinding:
+      prefix: --url_type
+      position: 4
 
   - id: input
     type: File
