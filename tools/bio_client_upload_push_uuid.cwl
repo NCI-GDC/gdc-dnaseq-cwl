@@ -5,7 +5,7 @@ cwlVersion: v1.0
 class: CommandLineTool
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/bio-client:latest
+    dockerPull: quay.io/ncigdc/bio-client:cloud-burst1
   - class: ResourceRequirement
     coresMin: 1
     coresMax: 1
@@ -46,6 +46,13 @@ inputs:
     inputBinding:
       prefix: --uuid
       position: 4
+
+  - id: storage-type
+    type: string
+    default: aws_s3
+    inputBinding:
+      prefix: --url_type
+      position: 5
 
   - id: input
     type: File
