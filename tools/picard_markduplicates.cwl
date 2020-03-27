@@ -71,4 +71,7 @@ arguments:
     prefix: METRICS_FILE=
     separate: false
 
+  - valueFrom: 'ASSUME_SORT_ORDER=coordinate'
+    position: 99
+
 baseCommand: [java, -jar, /usr/local/bin/picard.jar, MarkDuplicates]
