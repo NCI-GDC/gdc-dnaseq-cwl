@@ -1,0 +1,82 @@
+{
+    "bam_name": "16b6472c-a4fa-4bd2-9b94-789f30c192aa_new_gdc_aln_wgs_test.bam",
+    "job_uuid": "16b6472c-a4fa-4bd2-9b94-789f30c192aa",
+    "collect_wgs_metrics": true,
+    "amplicon_kit_set_file_list": [],
+    "capture_kit_set_file_list": [],
+    "readgroup_fastq_pe_file_list": [],
+    "readgroup_fastq_se_file_list": [],
+    "readgroups_bam_file_list": [
+        {
+            "bam": {"class":"File", "path": "{PATH_TO}/A77474_1_lane_dupsFlagged.bam"},
+            "readgroup_meta_list": [
+                {
+                  "CN": "BCGSC",
+                  "DT": "2017-09-07T10:26:26-07:00",
+                  "ID": "CBGL8ANXX.3",
+                  "LB": "A77474",
+                  "PL": "ILLUMINA",
+                  "PM": "Illumina HiSeq 2500",
+                  "PU": "CBGL8ANXX.3.CGGCCT",
+                  "SM": "BLGSP-71-06-00090-01B-01E-A77H-33"
+                }
+              ]
+        }
+    ],
+    "common_biallelic_vcf": {
+        "class": "File",
+        "path": "{PATH_TO}/af-only-gnomad-biallelic-autoallo.hg38.vcf.gz",
+        "secondaryFiles": [
+            {
+              "class": "File",
+              "path": "{PATH_TO}/af-only-gnomad-biallelic-autoallo.hg38.vcf.gz.tbi"
+            }
+        ]
+      },
+    "known_snp": {
+        "class": "File",
+        "path": "{PATH_TO}/dbsnp_144.hg38.vcf.gz",
+        "secondaryFiles": [
+            {
+              "class": "File",
+              "path": "{PATH_TO}/dbsnp_144.hg38.vcf.gz.tbi"
+            }
+        ]
+      },
+    "run_markduplicates": true,
+    "reference_sequence": {
+        "class": "File",
+        "path": "{PATH_TO}/GRCh38.d1.vd1.fa",
+        "secondaryFiles": [
+            {
+              "class": "File",
+              "path": "{PATH_TO}/GRCh38.d1.vd1.dict"
+            },
+            {
+              "class": "File",
+              "path": "{PATH_TO}/GRCh38.d1.vd1.fa.amb"
+            },
+            {
+              "class": "File",
+              "path": "{PATH_TO}/GRCh38.d1.vd1.fa.ann"
+            },
+            {
+              "class": "File",
+              "path": "{PATH_TO}/GRCh38.d1.vd1.fa.bwt"
+            },
+            {
+              "class": "File",
+              "path": "{PATH_TO}/GRCh38.d1.vd1.fa.fai"
+            },
+            {
+              "class": "File",
+              "path": "{PATH_TO}/GRCh38.d1.vd1.fa.pac"
+            },
+            {
+              "class": "File",
+              "path": "{PATH_TO}/GRCh38.d1.vd1.fa.sa"
+            }
+        ]
+      },
+    "thread_count": 4
+}

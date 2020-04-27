@@ -7,6 +7,9 @@ a harmonized BAM file and an sqlite database of various metrics collected.
 
 The entrypoint CWL workflow for external users is `workflows/main/gdc_dnaseq_main_workflow.cwl`.
 
+
+The example input json in `example/main_workflow_example_wgs_input.json`.
+
 ### Inputs
 
 | Name | Type | Description |
@@ -15,7 +18,7 @@ The entrypoint CWL workflow for external users is `workflows/main/gdc_dnaseq_mai
 | `job_uuid` | `string` | unique identifier for the workflow run |
 | `collect_wgs_metrics` | `boolean` | set to `true` to generate metrics for WGS data |
 | `amplicon_kit_set_file_list` | `amplicon_kit_set_file[]` | array of objects containing the paths to the amplicon and target files (only for amplicon-based targeted/WXS sequencing) |
-| `capture_kit_set_file_list` | `capture_kit_set_file[]` | array of objects containing the paths to the target and bait files (only for hybrid-selection targeted/WXS sequencing) | 
+| `capture_kit_set_file_list` | `capture_kit_set_file[]` | array of objects containing the paths to the target and bait files (only for hybrid-selection targeted/WXS sequencing) |
 | `readgroup_fastq_pe_file_list` | `readgroup_fastq_file[]` | array of objects containing the paths to paired-end fastq files and their associated readgroup metadata |
 | `readgroup_fastq_se_file_list` | `readgroup_fastq_file[]` | array of objects containing the paths to single-end fastq files and their associated readgroup metadata |
 | `readgroups_bam_file_list` | `readgroups_bam_file[]` | array of objects containing the paths to BAM files and their associated readgroup metadata |
@@ -34,7 +37,7 @@ The entrypoint CWL workflow for external users is `workflows/main/gdc_dnaseq_mai
 | `amplicon_kit_amplicon_file` | `File` | amplicon baits interval file |
 | `amplicon_kit_target_file` | `File` | amplicon target interval file |
 
-* `capture_kit_set_file` - contains the hybrid-selection targeted squencing kit files 
+* `capture_kit_set_file` - contains the hybrid-selection targeted squencing kit files
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
