@@ -1,24 +1,21 @@
-#!/usr/bin/env cwl-runner
-
 cwlVersion: v1.0
-
+class: ExpressionTool
+id: emit_json_value
 requirements:
   - class: InlineJavascriptRequirement
 
-class: ExpressionTool
-
 inputs:
-  - id: input
+  input:
     type: File
     inputBinding:
       loadContents: true
       valueFrom: $(null)
 
-  - id: key
+  key:
     type: string
 
 outputs:
-  - id: output
+  output:
     type: string
 
 expression: |
@@ -26,6 +23,3 @@ expression: |
     var output_value = JSON.parse(inputs.input.contents)[inputs.key];
     return {'output': output_value};
   }
-
-
-

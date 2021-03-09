@@ -1,0 +1,10 @@
+{
+  "readgroups_bam_file": {
+    "bam": {"class": "File", "location": "./data/test.bam"},
+    "readgroup_meta_list": [
+      {"ID": "1", "PL": "ILLUMINA", "CN": "fake", "SM": "newSample", "LB": "A", "PU": "1-PU"},
+      {"ID": "Unknown", "PL": "ILLUMINA", "CN": "fake", "SM": "newSample", "LB": "B", "PU": "2-PU"},
+      {"ID": "Other", "PL": "ILLUMINA", "CN": "fake", "SM": "newSample", "LB": "C", "PU": "3-PU"}
+    ]
+  }
+}

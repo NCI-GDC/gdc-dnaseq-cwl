@@ -1,53 +1,47 @@
-#!/usr/bin/env cwl-runner
-#$namespaces:"
-  #edam: "http://edamontology.org/"
 cwlVersion: v1.0
-
+class: CommandLineTool
+id: samtools_index
 requirements:
   - class: DockerRequirement
     dockerPull: quay.io/ncigdc/samtools:147bd4cc606a63c7435907d97fea6e94e9ea9ed58c18f390cab8bc40b1992df7
   - class: InitialWorkDirRequirement
     listing:
-      - entryname: $(inputs.input.basename)
-        entry: $(inputs.input)
+      - entry: $(inputs.input_bam)
+        writable: false
   - class: InlineJavascriptRequirement
+    expressionLib:
+      $import: ./expression_lib.cwl
   - class: ResourceRequirement
-    coresMin: 1
-    coresMax: 1
-    ramMin: 5000
-    ramMax: 5000
-    tmpdirMin: 50
-    tmpdirMax: 50
-    outdirMin: 50
-    outdirMax: 50
-
-class: CommandLineTool
+    coresMin: $(inputs.threads) 
+    ramMin: 1000
+    tmpdirMin: $(file_size_multiplier(inputs.input_bam))
+    outdirMin: $(file_size_multiplier(inputs.input_bam))
 
 inputs:
-  - id: input
-    type: File
+  input_bam:
     format: "edam:format_2572"
-
-  - id: thread_count
-    type: long
+    type: File
     inputBinding:
-      prefix: -@
+      position: 1
+      valueFrom: $(self.basename)
+
+  threads:
+    type: long 
+    inputBinding:
       position: 0
+      prefix: -@
 
 outputs:
-  - id: output
-    type: File
+  output_bam:
     format: "edam:format_2572"
+    type: File
     outputBinding:
-      glob: $(inputs.input.basename)
+      glob: $(inputs.input_bam.basename)
     secondaryFiles:
-      - ^.bai
+      - "^.bai"
+
+baseCommand: [samtools, index, -b]
 
 arguments:
-  - valueFrom: $(inputs.input.basename)
-    position: 1
-
-  - valueFrom: $(inputs.input.nameroot + ".bai")
+  - valueFrom: $(inputs.input_bam.basename.slice(0,-4) + '.bai')
     position: 2
-
-baseCommand: [/usr/local/bin/samtools, index]

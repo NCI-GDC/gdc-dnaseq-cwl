@@ -1,8 +1,6 @@
-#!/usr/bin/env cwl-runner
-#$namespaces:"
-  #edam: "http://edamontology.org/"
 cwlVersion: v1.0
-
+class: CommandLineTool
+id: fastqc_basicstatistics_json
 requirements:
   - class: InlineJavascriptRequirement
   - class: DockerRequirement
@@ -17,16 +15,14 @@ requirements:
     outdirMin: 1
     outdirMax: 1
 
-class: CommandLineTool
-
 inputs:
-  - id: sqlite_path
+  sqlite_path:
     type: File
     inputBinding:
       prefix: --sqlite_path
 
 outputs:
-  - id: OUTPUT
+  OUTPUT:
     type: File
     format: "edam:format_3464"
     outputBinding:

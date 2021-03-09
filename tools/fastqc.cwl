@@ -1,8 +1,6 @@
-#!/usr/bin/env cwl-runner
-#$namespaces:"
-  #edam: "http://edamontology.org/"
 cwlVersion: v1.0
-
+class: CommandLineTool
+id: fastqc
 requirements:
   - class: DockerRequirement
     dockerPull: quay.io/ncigdc/fastqc:27ec215ea82bd62a76ec86f9c8a692010cc0c99169e68d2fa0c0052450321f57
@@ -17,104 +15,102 @@ requirements:
     outdirMin: 5
     outdirMax: 5
 
-class: CommandLineTool
-
 inputs:
-  - id: adapters
+  adapters:
     type: ["null", File]
     inputBinding:
       prefix: --adapters
 
-  - id: casava
+  casava:
     type: boolean
     default: false
     inputBinding:
       prefix: --casava
 
-  - id: contaminants
+  contaminants:
     type: ["null", File]
     inputBinding:
       prefix: --contaminants
 
-  - id: dir
+  dir:
     type: string
     default: .
     inputBinding:
       prefix: --dir
 
-  - id: extract
+  extract:
     type: boolean
     default: false
     inputBinding:
       prefix: --extract
 
-  - id: format
+  format:
     type: string
     default: fastq
     inputBinding:
       prefix: --format
 
-  - id: INPUT
+  INPUT:
     type: File
     format: "edam:format_2182"
     inputBinding:
       position: 99
 
-  - id: kmers
+  kmers:
     type: long
     default: 7
     inputBinding:
       prefix: --kmers
 
-  - id: limits
+  limits:
     type: ["null", File]
     inputBinding:
       prefix: --limits
 
-  - id: nano
+  nano:
     type: boolean
     default: false
     inputBinding:
       prefix: --nano
 
-  - id: noextract
+  noextract:
     type: boolean
     default: true
     inputBinding:
       prefix: --noextract
 
-  - id: nofilter
+  nofilter:
     type: boolean
     default: false
     inputBinding:
       prefix: --nofilter
 
-  - id: nogroup
+  nogroup:
     type: boolean
     default: false
     inputBinding:
       prefix: --nogroup
 
-  - id: outdir
+  outdir:
     type: string
     default: .
     inputBinding:
       prefix: --outdir
 
-  - id: quiet
+  quiet:
     type: boolean
     default: false
     inputBinding:
       prefix: --quiet
 
-  - id: threads
+  threads:
     type: long
     default: 1
     inputBinding:
       prefix: --threads
 
 outputs:
-  - id: OUTPUT
+  OUTPUT:
     type: File
     outputBinding:
       glob: "*_fastqc.zip"

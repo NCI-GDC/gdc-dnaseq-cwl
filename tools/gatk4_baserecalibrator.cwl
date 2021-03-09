@@ -1,17 +1,13 @@
-#!/usr/bin/env cwl-runner
-#$namespaces:"
-  #edam: "http://edamontology.org/"
 cwlVersion: v1.0
-
+class: CommandLineTool
+id: gatk4_baserecalibrator
 requirements:
   - class: DockerRequirement
     dockerPull: quay.io/ncigdc/gatk:a4a89bba62c91fec4b79b38a55d8a9353f503df0a55dd3950c7b3da640b1c6cf
   - class: InlineJavascriptRequirement
 
-class: CommandLineTool
-
 inputs:
-  - id: input
+  input:
     format: "edam:format_2572"
     type: File
     inputBinding:
@@ -19,7 +15,7 @@ inputs:
     secondaryFiles:
       - ^.bai
 
-  - id: known-sites
+  known-sites:
     format: "edam:format_3016"
     type: File
     inputBinding:
@@ -27,7 +23,7 @@ inputs:
     secondaryFiles:
       - .tbi
 
-  - id: reference
+  reference:
     format: "edam:format_1929"
     type: File
     inputBinding:
@@ -36,14 +32,14 @@ inputs:
       - .fai
       - ^.dict
 
-  - id: tmp_dir
+  tmp_dir:
     type: string
     default: "."
     inputBinding:
       prefix: --TMP_DIR
 
 outputs:
-  - id: output_grp
+  output_grp:
     type: File
     outputBinding:
       glob: $(inputs.input.nameroot + "_bqsr.grp")

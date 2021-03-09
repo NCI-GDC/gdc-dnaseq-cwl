@@ -1,25 +1,22 @@
-#!/usr/bin/env cwl-runner
-
 cwlVersion: v1.0
-
+class: ExpressionTool
+id: emit_amplicon_kit_file
 requirements:
   - class: SchemaDefRequirement
     types:
-      - $import: amplicon_kit.yml
+      - $import: target_kit_schema.yml
   - class: InlineJavascriptRequirement
 
-class: ExpressionTool
-
 inputs:
-  - id: amplicon_kit_amplicon_file
+  amplicon_kit_amplicon_file:
     type: File
 
-  - id: amplicon_kit_target_file
+  amplicon_kit_target_file:
     type: File
 
 outputs:
-  - id: output
-    type: amplicon_kit.yml#amplicon_kit_set_file
+  output:
+    type: target_kit_schema.yml#amplicon_kit_set_file
 
 expression: |
   ${

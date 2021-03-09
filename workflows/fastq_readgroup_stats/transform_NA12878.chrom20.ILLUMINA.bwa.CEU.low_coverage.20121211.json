@@ -1,8 +1,0 @@
-{
-    "input_bam": {
-        "class": "File",
-        "path": "/mnt/scratch/NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211.bam"
-    },
-    "thread_count": 8,
-    "job_uuid": "00000000-0000-0000-0000-000000000000"
-}

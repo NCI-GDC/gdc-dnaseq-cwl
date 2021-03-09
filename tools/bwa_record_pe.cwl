@@ -1,8 +1,6 @@
-#!/usr/bin/env cwl-runner
-#$namespaces:"
-  #edam: "http://edamontology.org/"
 cwlVersion: v1.0
-
+class: CommandLineTool
+id: bwa_record_pe
 requirements:
   - class: DockerRequirement
     dockerPull: quay.io/ncigdc/bwa:6f48348ec54042c9bb420ea5e28eea8f62a81c15b44800673bdfece1f379591b
@@ -21,18 +19,16 @@ requirements:
     outdirMin: $(Math.ceil(2 * (inputs.fastq1.size + inputs.fastq2.size) / 1048576))
     outdirMax: $(Math.ceil(2 * (inputs.fastq1.size + inputs.fastq2.size) / 1048576))
 
-class: CommandLineTool
-
 inputs:
-  - id: fastq1
+  fastq1:
     type: File
     format: "edam:format_2182"
 
-  - id: fastq2
+  fastq2:
     type: File
     format: "edam:format_2182"
 
-  - id: fasta
+  fasta:
     type: File
     format: "edam:format_1929"
     secondaryFiles:
@@ -42,21 +38,20 @@ inputs:
       - .pac
       - .sa
 
-  - id: readgroup_meta
+  readgroup_meta:
     type: readgroup.yml#readgroup_meta
 
-  - id: fastqc_json_path
+  fastqc_json_path:
     type: File
     format: "edam:format_3464"
     inputBinding:
       loadContents: true
       valueFrom: $(null)
 
-  - id: thread_count
-    type: long
+  thread_count: long
 
 outputs:
-  - id: OUTPUT
+  OUTPUT:
     type: File
     format: "edam:format_2572"
     outputBinding:

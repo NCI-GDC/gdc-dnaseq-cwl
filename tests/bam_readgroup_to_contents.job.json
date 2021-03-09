@@ -1,0 +1,4 @@
+{
+  "INPUT": {"class": "File", "location": "./data/test.bam"},
+  "MODE": "lenient"
+}

@@ -1,8 +1,6 @@
-#!/usr/bin/env cwl-runner
-#$namespaces:"
-  #edam: "http://edamontology.org/"
 cwlVersion: v1.0
-
+class: CommandLineTool
+id: root_vcf
 requirements:
   - class: DockerRequirement
     dockerPull: ubuntu:bionic-20180426
@@ -23,17 +21,12 @@ requirements:
     outdirMin: 1
     outdirMax: 1
 
-class: CommandLineTool
-
 inputs:
-  - id: vcf
-    type: File
-
-  - id: vcf_index
-    type: File
+  vcf: File
+  vcf_index: File
 
 outputs:
-  - id: output
+  output:
     type: File
     format: "edam:format_3016"
     outputBinding:

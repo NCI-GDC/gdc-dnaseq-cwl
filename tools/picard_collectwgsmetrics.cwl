@@ -1,8 +1,6 @@
-#!/usr/bin/env cwl-runner
-#$namespaces:"
-  #edam: "http://edamontology.org/"
 cwlVersion: v1.0
-
+class: CommandLineTool
+id: picard_collectwgsmetrics
 requirements:
   - class: DockerRequirement
     dockerPull: quay.io/ncigdc/picard:092d034713aff237cf07ef28c22a46a113d1a59dc7ec6d71beb72295044a46f8
@@ -17,32 +15,37 @@ requirements:
     outdirMin: 10
     outdirMax: 10
 
-class: CommandLineTool
-
 inputs:
-  - id: INPUT
+  INPUT:
     type: File
     format: "edam:format_2572"
     inputBinding:
       prefix: INPUT=
       separate: false
 
-  - id: REFERENCE_SEQUENCE
+  REFERENCE_SEQUENCE:
     type: File
     format: "edam:format_1929"
     inputBinding:
       prefix: REFERENCE_SEQUENCE=
       separate: false
 
-  - id: VALIDATION_STRINGENCY
+  VALIDATION_STRINGENCY:
     default: STRICT
     type: string
     inputBinding:
       prefix: VALIDATION_STRINGENCY=
       separate: false
 
+  USE_FAST_ALGORITHM:
+    type: string
+    default: "true"
+    inputBinding:
+      prefix: USE_FAST_ALGORITHM=
+      separate: false
+
 outputs:
-  - id: OUTPUT
+  OUTPUT:
     type: File
     outputBinding:
       glob: $(inputs.INPUT.nameroot + ".metrics")

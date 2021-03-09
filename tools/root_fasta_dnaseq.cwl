@@ -1,8 +1,6 @@
-#!/usr/bin/env cwl-runner
-#$namespaces:"
-  #edam: "http://edamontology.org/"
 cwlVersion: v1.0
-
+class: CommandLineTool
+id: root_fasta_dnaseq
 requirements:
   - class: DockerRequirement
     dockerPull: ubuntu:bionic-20180426
@@ -35,36 +33,18 @@ requirements:
     outdirMin: 1
     outdirMax: 1
 
-
-class: CommandLineTool
-
 inputs:
-  - id: fasta
-    type: File
-
-  - id: fasta_amb
-    type: File
-
-  - id: fasta_ann
-    type: File
-
-  - id: fasta_bwt
-    type: File
-
-  - id: fasta_dict
-    type: File
-
-  - id: fasta_fai
-    type: File
-
-  - id: fasta_pac
-    type: File
-
-  - id: fasta_sa
-    type: File
+  fasta: File
+  fasta_amb: File
+  fasta_ann: File
+  fasta_bwt: File
+  fasta_dict: File
+  fasta_fai: File
+  fasta_pac: File
+  fasta_sa: File
 
 outputs:
-  - id: output
+  output:
     type: File
     format: "edam:format_1929"
     outputBinding:

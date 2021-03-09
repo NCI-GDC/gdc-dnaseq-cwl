@@ -1,8 +1,6 @@
-#!/usr/bin/env cwl-runner
-#$namespaces:"
-  #edam: "http://edamontology.org/"
 cwlVersion: v1.0
-
+class: CommandLineTool
+id: json_to_sqlite
 requirements:
   - class: DockerRequirement
     dockerPull: quay.io/ncigdc/json-to-sqlite:439b1b7f41fedc927859177a8073ac8b9ab8179b9c474fc274ac415d95b6eb7c
@@ -16,32 +14,30 @@ requirements:
     outdirMin: 10
     outdirMax: 10
 
-class: CommandLineTool
-
 inputs:
-  - id: input_json
+  input_json:
     type: File
     inputBinding:
       prefix: --input_json
 
-  - id: job_uuid 
+  job_uuid:
     type: string
     inputBinding:
       prefix: --job_uuid
 
-  - id: table_name
+  table_name:
     type: string
     inputBinding:
       prefix: --table_name
 
 outputs:
-  - id: sqlite
+  sqlite:
     format: "edam:format_3621"
     type: File
     outputBinding:
       glob: $(inputs.job_uuid).db
 
-  - id: log
+  log:
     type: File
     outputBinding:
       glob: $(inputs.job_uuid).log

@@ -1,8 +1,6 @@
-#!/usr/bin/env cwl-runner
-
 cwlVersion: v1.0
-
 class: CommandLineTool
+id: bio_client_upload_pull_uuid
 requirements:
   - class: DockerRequirement
     dockerPull: quay.io/ncigdc/bio-client:latest
@@ -17,37 +15,37 @@ requirements:
     outdirMax: 1
 
 inputs:
-  - id: config-file
+  config-file:
     type: File
     inputBinding:
       prefix: --config-file
       position: 0
 
-  - id: upload
+  upload:
     type: string
     default: upload
     inputBinding:
       position: 1
 
-  - id: upload-bucket
+  upload-bucket:
     type: string
     inputBinding:
       prefix: --upload-bucket
       position: 2
 
-  - id: upload-key
+  upload-key:
     type: string
     inputBinding:
       prefix: --upload_key
       position: 3
 
-  - id: input
+  input:
     type: File
     inputBinding:
       position: 99
 
 outputs:
-  - id: output
+  output:
     type: File
     outputBinding:
       glob: "*_upload.json"      

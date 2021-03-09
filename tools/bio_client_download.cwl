@@ -1,8 +1,6 @@
-#!/usr/bin/env cwl-runner
-
 cwlVersion: v1.0
-
 class: CommandLineTool
+id: bio_client_download
 requirements:
   - class: DockerRequirement
     dockerPull: quay.io/ncigdc/bio-client:latest
@@ -18,36 +16,36 @@ requirements:
     outdirMax: $(Math.ceil (inputs.file_size / 1048576))
 
 inputs:
-  - id: config-file
+  config-file:
     type: File
     inputBinding:
       prefix: -c
       position: 0
 
-  - id: dir_path
+  dir_path:
     type: string
     default: "."
     inputBinding:
       prefix: --dir_path
       position: 99
 
-  - id: download
+  download:
     type: string
     default: download
     inputBinding:
       position: 1
 
-  - id: download_handle
+  download_handle:
     type: string
     inputBinding:
       position: 98
 
-  - id: file_size
+  file_size:
     type: long
     default: 1
 
 outputs:
-  - id: output
+  output:
     type: File
     outputBinding:
       glob: "*"

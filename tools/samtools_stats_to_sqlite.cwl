@@ -1,8 +1,6 @@
-#!/usr/bin/env cwl-runner
-#$namespaces:"
-  #edam: "http://edamontology.org/"
 cwlVersion: v1.0
-
+class: CommandLineTool
+id: samtools_stats_to_sqlite
 requirements:
   - class: DockerRequirement
     dockerPull: quay.io/ncigdc/samtools_metrics_sqlite:f64466282ce61dfc9251e7c32c5130928abf0a68c1f8e00b47d9709c5b3e3321
@@ -17,36 +15,34 @@ requirements:
     outdirMin: 5
     outdirMax: 5
 
-class: CommandLineTool
-
 inputs:
-  - id: bam
+  bam:
     type: string
     inputBinding:
       prefix: --bam
 
-  - id: input_state
+  input_state:
     type: string
     inputBinding:
       prefix: --input_state
 
-  - id: metric_path
+  metric_path:
     type: File
     inputBinding:
       prefix: --metric_path
 
-  - id: job_uuid
+  job_uuid:
     type: string
     inputBinding:
       prefix: --job_uuid
 
 outputs:
-  - id: log
+  log:
     type: File
     outputBinding:
       glob: $(inputs.job_uuid+"_samtools_stats.log")
 
-  - id: sqlite
+  sqlite:
     format: "edam:format_3621"
     type: File
     outputBinding:

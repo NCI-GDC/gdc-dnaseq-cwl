@@ -1,8 +1,6 @@
-#!/usr/bin/env cwl-runner
-# $namespaces:
-#  edam: "http://edamontology.org/"
 cwlVersion: v1.0
-
+class: CommandLineTool
+id: bam_readgroup_to_contents
 requirements:
   - class: DockerRequirement
     dockerPull: quay.io/ncigdc/bam_readgroup_to_json:685e4954df4d70f89315a256ecfb707a2dd80b9fcf0d8d10918398df938c6a28
@@ -20,23 +18,21 @@ requirements:
     types:
       - $import: readgroup.yml
 
-class: CommandLineTool
-
 inputs:
-  - id: INPUT
+  INPUT:
     type: File
     format: "edam:format_2572"
     inputBinding:
       prefix: --bam_path
 
-  - id: MODE
+  MODE:
     type: string
     default: strict
     inputBinding:
       prefix: --mode
 
 outputs:
-  - id: OUTPUT
+  OUTPUT:
     type:
       type: array
       items: string
@@ -47,16 +43,13 @@ outputs:
           var output_array = [];
           for (var i = 0; i < self.length; i++) {
             var data = self[i].contents;
-            // console.log("data: " + data);
-            // console.log("typeof(data): " + typeof(data));
             output_array.push(data);
           }
-          // console.log("output_array: " + output_array);
           return output_array;
         }
       loadContents: true
 
-  - id: log
+  log:
     type: File
     outputBinding:
       glob: "output.log"

@@ -1,8 +1,6 @@
-#!/usr/bin/env cwl-runner
-#$namespaces:"
-  #edam: "http://edamontology.org/"
 cwlVersion: v1.0
-
+class: CommandLineTool
+id: picard_collecthsmetrics
 requirements:
   - class: DockerRequirement
     dockerPull: quay.io/ncigdc/picard:092d034713aff237cf07ef28c22a46a113d1a59dc7ec6d71beb72295044a46f8
@@ -17,24 +15,22 @@ requirements:
     outdirMin: 1000
     outdirMax: 1000
 
-class: CommandLineTool
-
 inputs:
-  - id: BAIT_INTERVALS
+  BAIT_INTERVALS:
     type: File
     inputBinding:
       prefix: BAIT_INTERVALS=
       position: 10
       separate: false
 
-  - id: BAIT_SET_NAME
-    type: ["null", string]
+  BAIT_SET_NAME:
+    type: string? 
     inputBinding:
       prefix: BAIT_SET_NAME=
       position: 11
       separate: false
 
-  - id: CLIP_OVERLAPPING_READS
+  CLIP_OVERLAPPING_READS:
     type: string
     default: "true"
     inputBinding:
@@ -42,7 +38,7 @@ inputs:
       position: 12
       separate: false
 
-  - id: COVERAGE_CAP
+  COVERAGE_CAP:
     type: int
     default: 200
     inputBinding:
@@ -50,7 +46,7 @@ inputs:
       position: 13
       separate: false
 
-  - id: INPUT
+  INPUT:
     type: File
     format: "edam:format_2572"
     inputBinding:
@@ -58,7 +54,7 @@ inputs:
       position: 14
       separate: false
 
-  - id: METRIC_ACCUMULATION_LEVEL
+  METRIC_ACCUMULATION_LEVEL:
     type:
       type: array
       items: string
@@ -72,7 +68,7 @@ inputs:
       - "SAMPLE"
       - "READ_GROUP"
 
-  - id: MINIMUM_BASE_QUALITY
+  MINIMUM_BASE_QUALITY:
     type: int
     default: 20
     inputBinding:
@@ -80,7 +76,7 @@ inputs:
       position: 16
       separate: false
 
-  - id: MINIMUM_MAPPING_QUALITY
+  MINIMUM_MAPPING_QUALITY:
     type: int
     default: 20
     inputBinding:
@@ -88,7 +84,7 @@ inputs:
       position: 17
       separate: false
 
-  - id: NEAR_DISTANCE
+  NEAR_DISTANCE:
     type: int
     default: 250
     inputBinding:
@@ -96,28 +92,28 @@ inputs:
       position: 18
       separate: false
 
-  - id: OUTPUT
+  OUTPUT:
     type: string
     inputBinding:
       prefix: OUTPUT=
       position: 19
       separate: false
 
-  - id: PER_BASE_COVERAGE
-    type: ["null", File]
+  PER_BASE_COVERAGE:
+    type: string? 
     inputBinding:
       prefix: PER_BASE_COVERAGE=
       position: 20
       separate: false
 
-  - id: PER_TARGET_COVERAGE
-    type: ["null", File]
+  PER_TARGET_COVERAGE:
+    type: string? 
     inputBinding:
       prefix: PER_TARGET_COVERAGE=
       position: 21
       separate: false
 
-  - id: REFERENCE_SEQUENCE
+  REFERENCE_SEQUENCE:
     type: File
     format: "edam:format_1929"
     inputBinding:
@@ -127,7 +123,7 @@ inputs:
     secondaryFiles:
       - .fai
 
-  - id: SAMPLE_SIZE
+  SAMPLE_SIZE:
     type: int
     default: 10000
     inputBinding:
@@ -135,14 +131,14 @@ inputs:
       position: 23
       separate: false
 
-  - id: TARGET_INTERVALS
+  TARGET_INTERVALS:
     type: File
     inputBinding:
       prefix: TARGET_INTERVALS=
       position: 24
       separate: false
 
-  - id: VALIDATION_STRINGENCY
+  VALIDATION_STRINGENCY:
     default: STRICT
     type: string
     inputBinding:
@@ -150,7 +146,7 @@ inputs:
       position: 25
       separate: false
 
-  - id: java_xmx
+  java_xmx:
     default: 48G
     type: string
     inputBinding:
@@ -159,7 +155,7 @@ inputs:
       separate: false
 
 outputs:
-  - id: METRIC_OUTPUT
+  METRIC_OUTPUT:
     type: File
     outputBinding:
       glob: $(inputs.OUTPUT)

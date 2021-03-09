@@ -1,6 +1,0 @@
-{
-    "bam_path" : {
-        "class": "File",
-        "path" : "test.bam"
-    }
-}

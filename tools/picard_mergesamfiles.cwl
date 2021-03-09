@@ -1,114 +1,85 @@
-#!/usr/bin/env cwl-runner
-#$namespaces:"
-  #edam: "http://edamontology.org/"
 cwlVersion: v1.0
-
+class: CommandLineTool
+id: picard_mergesamfiles
 requirements:
   - class: DockerRequirement
     dockerPull: quay.io/ncigdc/picard:092d034713aff237cf07ef28c22a46a113d1a59dc7ec6d71beb72295044a46f8
   - class: InlineJavascriptRequirement
+    expressionLib:
+      $import: ./expression_lib.cwl
   - class: ResourceRequirement
     coresMin: 1
     coresMax: 1
     ramMin: 10000
     ramMax: 10000
-    tmpdirMin: |
-      ${
-      var req_space = 0;
-      for (var i = 0; i < inputs.INPUT.length; i++) {
-          req_space += inputs.INPUT[i].size;
-        }
-      return Math.ceil(2 * req_space / 1048576);
-      }      
-    tmpdirMax: |
-      ${
-      var req_space = 0;
-      for (var i = 0; i < inputs.INPUT.length; i++) {
-          req_space += inputs.INPUT[i].size;
-        }
-      return Math.ceil(2 * req_space / 1048576);
-      }      
-    outdirMin: |
-      ${
-      var req_space = 0;
-      for (var i = 0; i < inputs.INPUT.length; i++) {
-          req_space += inputs.INPUT[i].size;
-        }
-      return Math.ceil(req_space / 1048576);
-      }      
-    outdirMax: |
-      ${
-      var req_space = 0;
-      for (var i = 0; i < inputs.INPUT.length; i++) {
-          req_space += inputs.INPUT[i].size;
-        }
-      return Math.ceil(req_space / 1048576);
-      }
-
-class: CommandLineTool
+    tmpdirMin: $(Math.ceil(2 * sum_file_array_size(inputs.INPUT)))
+    outdirMin: $(Math.ceil(2 * sum_file_array_size(inputs.INPUT)))
 
 inputs:
-  - id: ASSUME_SORTED
-    type: boolean
-    default: false
+  ASSUME_SORTED:
+    type: string
+    default: "false"
     inputBinding:
       prefix: ASSUME_SORTED=
       separate: false
 
-  - id: CREATE_INDEX
+  CREATE_INDEX:
     type: string
     default: "true"
     inputBinding:
       prefix: CREATE_INDEX=
       separate: false
 
-  - id: INPUT
-    format: "edam:format_2572"
+  INPUT:
     type:
       type: array
       items: File
+      inputBinding:
+        prefix: INPUT=
+        separate: false
+    format: "edam:format_2572"
 
-  - id: INTERVALS
-    type: ["null", File]
+  INTERVALS:
+    type: File? 
     inputBinding:
       prefix: INTERVALS=
       separate: false
 
-  - id: MERGE_SEQUENCE_DICTIONARIES
+  MERGE_SEQUENCE_DICTIONARIES:
     type: string
     default: "false"
     inputBinding:
       prefix: MERGE_SEQUENCE_DICTIONARIES=
       separate: false
 
-  - id: OUTPUT
+  OUTPUT:
     type: string
     inputBinding:
       prefix: OUTPUT=
       separate: false
 
-  - id: SORT_ORDER
+  SORT_ORDER:
     type: string
     default: coordinate
     inputBinding:
       prefix: SORT_ORDER=
       separate: false
 
-  - id: TMP_DIR
+  TMP_DIR:
     type: string
     default: .
     inputBinding:
       prefix: TMP_DIR=
       separate: false
 
-  - id: USE_THREADING
+  USE_THREADING:
     type: string
     default: "true"
     inputBinding:
       prefix: USE_THREADING=
       separate: false
 
-  - id: VALIDATION_STRINGENCY
+  VALIDATION_STRINGENCY:
     type: string
     default: STRICT
     inputBinding:
@@ -116,32 +87,12 @@ inputs:
       separate: false
 
 outputs:
-  - id: MERGED_OUTPUT
+  MERGED_OUTPUT:
     format: "edam:format_2572"
     type: File
     outputBinding:
       glob: $(inputs.OUTPUT)
+    secondaryFiles:
+      - "^.bai"
 
-arguments:
-  - valueFrom: |
-      ${
-        if (inputs.INPUT.length == 0) {
-          var cmd = ['/usr/bin/touch', inputs.OUTPUT];
-          return cmd
-        }
-        else {
-          var cmd = ["java", "-jar", "/usr/local/bin/picard.jar", "MergeSamFiles"];
-          var use_input = [];
-          for (var i = 0; i < inputs.INPUT.length; i++) {
-            var filesize = inputs.INPUT[i].size;
-            if (filesize > 0) {
-              use_input.push("INPUT=" + inputs.INPUT[i].path);
-            }
-          }
-
-          var run_cmd = cmd.concat(use_input);
-          return run_cmd
-        }
-
-      }
-baseCommand: []
+baseCommand: [java, -jar, /usr/local/bin/picard.jar, MergeSamFiles]

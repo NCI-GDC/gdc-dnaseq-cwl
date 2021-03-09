@@ -1,0 +1,178 @@
+- output:
+    OUTPUT: [
+        "{\"ID\": \"1\", \"CN\": \"fake\", \"PL\": \"ILLUMINA\", \"SM\": \"fake\"}", 
+        "{\"ID\": \"2\", \"CN\": \"fake\", \"PL\": \"ILLUMINA\", \"SM\": \"fake\"}", 
+        "{\"ID\": \"3\", \"CN\": \"fake\", \"PL\": \"ILLUMINA\", \"SM\": \"fake2\", \"PU\": \"3-PU\"}" 
+    ]
+    log:
+      class: "File"
+      basename: output.log 
+  job: ./tests/bam_readgroup_to_contents.job.json
+  tool: ./tools/bam_readgroup_to_contents.cwl
+  doc: Extracting readgroup from bam header. 
+
+- output:
+    pe_file_list:
+      - forward_fastq:
+          class: "File"
+          basename: 1_1.fq.gz
+        reverse_fastq:
+          class: "File"
+          basename: 1_2.fq.gz
+        readgroup_meta:
+          LB: "A" 
+          CN: "fake" 
+          PU: "1-PU" 
+          FO: null 
+          ID: "1" 
+          KS: null 
+          SM: "newSample" 
+          DT: null 
+          PI: null 
+          DS: null 
+          PL: "ILLUMINA" 
+          PM: null
+      - forward_fastq:
+          class: "File"
+          basename: 2_1.fq.gz
+        reverse_fastq:
+          class: "File"
+          basename: 2_2.fq.gz
+        readgroup_meta:
+          LB: "newSample" 
+          CN: "fake" 
+          PU: null
+          FO: null
+          ID: "2" 
+          KS: null 
+          SM: "newSample" 
+          DT: null 
+          PI: null 
+          DS: null 
+          PL: "ILLUMINA" 
+          PM: null
+      - forward_fastq:
+          class: "File"
+          basename: 3_1.fq.gz
+        reverse_fastq:
+          class: "File"
+          basename: 3_2.fq.gz
+        readgroup_meta:
+          LB: "newSample" 
+          CN: "fake" 
+          PU: "3-PU"
+          FO: null
+          ID: "3" 
+          KS: null 
+          SM: "newSample" 
+          DT: null 
+          PI: null 
+          DS: null 
+          PL: "ILLUMINA" 
+          PM: null
+    se_file_list: []
+    o1_file_list:
+      - forward_fastq:
+          class: "File"
+          basename: 3_o1.fq.gz
+        reverse_fastq: null
+        readgroup_meta:
+          LB: "newSample" 
+          CN: "fake" 
+          PU: "3-PU"
+          FO: null
+          ID: "3" 
+          KS: null 
+          SM: "newSample" 
+          DT: null 
+          PI: null 
+          DS: null 
+          PL: "ILLUMINA" 
+          PM: null
+    o2_file_list: []
+  job: ./tests/readgroups_bam_to_readgroups_fastq_lists.job.1.json
+  tool: ./workflows/utils/readgroups_bam_to_readgroups_fastq_lists.cwl
+  doc: Processing bam and matching to readgroups. 
+
+- output:
+    pe_file_list:
+      - forward_fastq:
+          class: "File"
+          basename: 1_1.fq.gz
+        reverse_fastq:
+          class: "File"
+          basename: 1_2.fq.gz
+        readgroup_meta:
+          LB: "A" 
+          CN: "fake" 
+          PU: "1-PU" 
+          FO: null 
+          ID: "1" 
+          KS: null 
+          SM: "newSample" 
+          DT: null 
+          PI: null 
+          DS: null 
+          PL: "ILLUMINA" 
+          PM: null
+      - forward_fastq:
+          class: "File"
+          basename: 2_1.fq.gz
+        reverse_fastq:
+          class: "File"
+          basename: 2_2.fq.gz
+        readgroup_meta:
+          LB: "B" 
+          CN: "fake" 
+          PU: "2-PU" 
+          FO: null
+          ID: "2" 
+          KS: null 
+          SM: "newSample" 
+          DT: null 
+          PI: null 
+          DS: null 
+          PL: "ILLUMINA" 
+          PM: null
+      - forward_fastq:
+          class: "File"
+          basename: 3_1.fq.gz
+        reverse_fastq:
+          class: "File"
+          basename: 3_2.fq.gz
+        readgroup_meta:
+          LB: "newSample" 
+          CN: "fake" 
+          PU: "3-PU"
+          FO: null
+          ID: "3" 
+          KS: null 
+          SM: "newSample" 
+          DT: null 
+          PI: null 
+          DS: null 
+          PL: "ILLUMINA" 
+          PM: null
+    se_file_list: []
+    o1_file_list:
+      - forward_fastq:
+          class: "File"
+          basename: 3_o1.fq.gz
+        reverse_fastq: null
+        readgroup_meta:
+          LB: "newSample" 
+          CN: "fake" 
+          PU: "3-PU"
+          FO: null
+          ID: "3" 
+          KS: null 
+          SM: "newSample" 
+          DT: null 
+          PI: null 
+          DS: null 
+          PL: "ILLUMINA" 
+          PM: null
+    o2_file_list: []
+  job: ./tests/readgroups_bam_to_readgroups_fastq_lists.job.2.json
+  tool: ./workflows/utils/readgroups_bam_to_readgroups_fastq_lists.cwl
+  doc: Processing bam and matching to readgroups - second situation. 
