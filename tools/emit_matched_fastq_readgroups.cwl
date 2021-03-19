@@ -45,7 +45,7 @@ expression: |
       // /begin 3DFace / CC-BY-SA-4.0
       // https://stackoverflow.com/questions/3820381/need-a-basename-function-in-javascript#comment29942319_15270931
       function local_basename(path) {
-        var basename = path.split(/[\\/]/).pop();
+        var basename = decodeURIComponent(path.split(/[\\/]/).pop());
         return basename
       }
       // /end 3DFace / CC-BY-SA-4.0
