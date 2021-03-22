@@ -110,8 +110,12 @@ expression: |
                       "reverse_fastq": reverse_fastq,
                       "readgroup_meta": readgroup_meta};
         output.forward_fastq.format = "edam:format_2182";
+        output.forward_fastq.basename = decodeURIComponent(output.forward_fastq.basename)
+        output.forward_fastq.nameroot = decodeURIComponent(output.forward_fastq.nameroot)
         if(reverse_fastq !== null) {
           output.reverse_fastq.format = "edam:format_2182";
+          output.reverse_fastq.basename = decodeURIComponent(output.reverse_fastq.basename)
+          output.reverse_fastq.nameroot = decodeURIComponent(output.reverse_fastq.nameroot)
         }
         return(output);
       }
