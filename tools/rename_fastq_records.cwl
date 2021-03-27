@@ -11,9 +11,7 @@ inputs:
   input:
     type:
       type: array
-      items:
-        type: array
-        items: readgroup.yml#readgroup_fastq_file
+      items: readgroup.yml#readgroup_fastq_file
 
 outputs:
   output:
@@ -23,10 +21,8 @@ outputs:
 
 expression: |
   ${
-        function rename(root, suffix, index) {
-            if (root.endsWith(suffix)) {
-                var n = index + suffix
-            }
+        function rename(root, index, suffix) {
+            var n = root.toString() + "_" + index.toString() + suffix
             return n
         }
         var output = [];
@@ -41,17 +37,17 @@ expression: |
             var readgroup_array = inputs.input[i];
             for (var j = 0; j < readgroup_array.length; j++) {
                 var readgroup = readgroup_array[j];
-                var foward_fq = readgroup['forward_fastq']['basename']
+                var foward_fq = readgroup["forward_fastq"]["basename"]
                 for (var k = 0; k < suffixes.length; k++) {
-                    if (foward_fq.endsWith(k)) {
-                        readgroup['forward_fastq']['basename'] = rename(foward_fq, k, j)
+                    if (foward_fq.endsWith(suffixes[k])) {
+                        readgroup["forward_fastq"]["basename"] = rename(i, j, suffixes[k]);
                     }
                 }
-                if (readgroup['reverse_fastq'] is not null){
-                    var reverse_fq = readgroup['reverse_fastq']['basename']
+                if (readgroup["reverse_fastq"]){
+                    var reverse_fq = readgroup["reverse_fastq"]["basename"]
                     for (var k = 0; k < suffixes.length; k++) {
-                        if (reverse_fq.endsWith(k)) {
-                            readgroup['reverse_fastq']['basename'] = rename(reverse_fq, k, j)
+                        if (reverse_fq.endsWith(suffixes[k])) {
+                            readgroup["reverse_fastq"]["basename"] = rename(i, j, suffixes[k]);
                         }
                     }
                 }
