@@ -1,6 +1,6 @@
 cwlVersion: v1.0
 class: Workflow
-id: gdc_dnaseq_merge_fastq_array_wf 
+id: gdc_dnaseq_merge_fastq_array_wf
 requirements:
   - class: InlineJavascriptRequirement
   - class: MultipleInputFeatureRequirement
@@ -53,13 +53,13 @@ outputs:
     type:
       type: array
       items: ../../tools/readgroup.yml#readgroup_fastq_file
-    outputSource: merge_pe_fastq_records/output 
+    outputSource: merge_pe_fastq_records/output
 
   merged_se_fastq_array:
     type:
       type: array
       items: ../../tools/readgroup.yml#readgroup_fastq_file
-    outputSource: merge_all_se_fastq_records/output 
+    outputSource: merge_all_se_fastq_records/output
 
 steps:
   merge_bam_pe_fastq_records:
@@ -68,32 +68,56 @@ steps:
       input: bam_pe_fastqs
     out: [ output ]
 
+  rename_bam_pe_fastq_records:
+    run: ../../tools/rename_fastq_records.cwl
+    in:
+      input: merge_bam_pe_fastq_records/output
+    out: [ output ]
+
   merge_pe_fastq_records:
     run: ../../tools/merge_fastq_records.cwl
     in:
       input:
         source: [
-          merge_bam_pe_fastq_records/output,
-          fastqs_pe 
+          rename_bam_pe_fastq_records/output,
+          fastqs_pe
         ]
     out: [ output ]
 
   merge_bam_se_fastq_records:
     run: ../../tools/merge_fastq_records.cwl
     in:
-      input: bam_se_fastqs 
+      input: bam_se_fastqs
+    out: [ output ]
+
+  rename_bam_se_fastq_records:
+    run: ../../tools/rename_fastq_records.cwl
+    in:
+      input: merge_bam_se_fastq_records/output
     out: [ output ]
 
   merge_bam_o1_fastq_records:
     run: ../../tools/merge_fastq_records.cwl
     in:
-      input: bam_o1_fastqs 
+      input: bam_o1_fastqs
+    out: [ output ]
+
+  rename_bam_o1_fastq_records:
+    run: ../../tools/rename_fastq_records.cwl
+    in:
+      input: merge_bam_o1_fastq_records/output
     out: [ output ]
 
   merge_bam_o2_fastq_records:
     run: ../../tools/merge_fastq_records.cwl
     in:
-      input: bam_o2_fastqs 
+      input: bam_o2_fastqs
+    out: [ output ]
+
+  rename_bam_o2_fastq_records:
+    run: ../../tools/rename_fastq_records.cwl
+    in:
+      input: merge_bam_o2_fastq_records/output
     out: [ output ]
 
   merge_all_se_fastq_records:
@@ -101,10 +125,9 @@ steps:
     in:
       input:
         source: [
-          merge_bam_se_fastq_records/output,
-          merge_bam_o1_fastq_records/output,
-          merge_bam_o2_fastq_records/output,
+          rename_bam_se_fastq_records/output,
+          rename_bam_o1_fastq_records/output,
+          rename_bam_o2_fastq_records/output,
           fastqs_se
         ]
     out: [ output ]
-
