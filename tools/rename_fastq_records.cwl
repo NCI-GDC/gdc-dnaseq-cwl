@@ -43,17 +43,15 @@ expression: |
                 var readgroup = readgroup_array[j];
                 var foward_fq = readgroup['forward_fastq']['basename']
                 for (var k = 0; k < suffixes.length; k++) {
-                    if (ff_root.endsWith(k)) {
-                        readgroup['forward_fastq']['listing'] = [foward_fq]
-                        readgroup['forward_fastq']['basename'] = rename (foward_fq, k, j)
+                    if (foward_fq.endsWith(k)) {
+                        readgroup['forward_fastq']['basename'] = rename(foward_fq, k, j)
                     }
                 }
-                if ( "nameroot" in readgroup['reverse_fastq']){
+                if (readgroup['reverse_fastq'] is not null){
                     var reverse_fq = readgroup['reverse_fastq']['basename']
                     for (var k = 0; k < suffixes.length; k++) {
-                        if (rf_root.endsWith(k)) {
-                            readgroup['reverse_fastq']['listing'] = [reverse_fq]
-                            readgroup['reverse_fastq']['basename'] = rename (reverse_fq, k, j)
+                        if (reverse_fq.endsWith(k)) {
+                            readgroup['reverse_fastq']['basename'] = rename(reverse_fq, k, j)
                         }
                     }
                 }
