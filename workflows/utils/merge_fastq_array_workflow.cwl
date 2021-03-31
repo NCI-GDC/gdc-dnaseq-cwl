@@ -72,6 +72,8 @@ steps:
     run: ../../tools/rename_fastq_records.cwl
     in:
       input: merge_bam_pe_fastq_records/output
+      tag:
+        valueFrom: "gdc_bam_pe"
     out: [ output ]
 
   merge_pe_fastq_records:
@@ -94,6 +96,8 @@ steps:
     run: ../../tools/rename_fastq_records.cwl
     in:
       input: merge_bam_se_fastq_records/output
+      tag:
+        valueFrom: "gdc_bam_se"
     out: [ output ]
 
   merge_bam_o1_fastq_records:
@@ -106,6 +110,8 @@ steps:
     run: ../../tools/rename_fastq_records.cwl
     in:
       input: merge_bam_o1_fastq_records/output
+      tag:
+        valueFrom: "gdc_bam_o1"
     out: [ output ]
 
   merge_bam_o2_fastq_records:
@@ -118,6 +124,8 @@ steps:
     run: ../../tools/rename_fastq_records.cwl
     in:
       input: merge_bam_o2_fastq_records/output
+      tag:
+        valueFrom: "gdc_bam_o2"
     out: [ output ]
 
   merge_all_se_fastq_records:
@@ -131,3 +139,4 @@ steps:
           fastqs_se
         ]
     out: [ output ]
+
