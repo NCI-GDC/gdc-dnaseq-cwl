@@ -55,7 +55,7 @@ outputs:
     type: File
     format: "edam:format_2572"
     outputBinding:
-      glob: $(inputs.readgroup_meta['ID'] + ".bam")
+      glob: $(inputs.fastq1.nameroot.split('_').slice(0,4).join('_') + ".bam")
 
 arguments:
   - valueFrom: |
@@ -108,7 +108,7 @@ arguments:
         var encoding = fastqc_json[inputs.fastq1.basename]["Encoding"];
         var rg_str = to_rg();
 
-        var outbam = inputs.readgroup_meta['ID'] + ".bam";
+        var outbam = inputs.fastq1.nameroot.split('_').slice(0,4).join('_') + ".bam";
 
         if (encoding == "Illumina 1.3" || encoding == "Illumina 1.5") {
           return bwa_aln_64(rg_str, outbam)
@@ -126,3 +126,4 @@ arguments:
       }
 
 baseCommand: [bash, -c]
+
