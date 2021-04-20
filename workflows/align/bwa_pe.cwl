@@ -33,21 +33,34 @@ outputs:
     outputSource: merge_sqlite/destination_sqlite
 
 steps:
-  fastqc1:
-    run: ../../tools/fastqc.cwl
+
+  fastq1_remove_duplicate_qname:
+    run: ../../tools/fastq_remove_duplicate_qname.cwl
     in:
       INPUT:
         source: readgroup_fastq_pe
         valueFrom: $(self.forward_fastq)
+    out: [ OUTPUT, METRICS ]
+
+  fastq2_remove_duplicate_qname:
+    run: ../../tools/fastq_remove_duplicate_qname.cwl
+    in:
+      INPUT:
+        source: readgroup_fastq_pe
+        valueFrom: $(self.reverse_fastq)
+    out: [ OUTPUT, METRICS ]
+
+  fastqc1:
+    run: ../../tools/fastqc.cwl
+    in:
+      INPUT: fastq1_remove_duplicate_qname/OUTPUT
       threads: thread_count
     out: [ OUTPUT ]
 
   fastqc2:
     run: ../../tools/fastqc.cwl
     in:
-      INPUT:
-        source: readgroup_fastq_pe
-        valueFrom: $(self.reverse_fastq)
+      INPUT: fastq2_remove_duplicate_qname/OUTPUT
       threads: thread_count
     out: [ OUTPUT ]
 
@@ -75,12 +88,8 @@ steps:
     run: ../../tools/bwa_record_pe.cwl
     in:
       fasta: reference_sequence
-      fastq1:
-        source: readgroup_fastq_pe
-        valueFrom: $(self.forward_fastq)
-      fastq2:
-        source: readgroup_fastq_pe
-        valueFrom: $(self.reverse_fastq)
+      fastq1: fastq1_remove_duplicate_qname/OUTPUT
+      fastq2: fastq2_remove_duplicate_qname/OUTPUT
       fastqc_json_path: fastqc_basicstats_json/OUTPUT
       readgroup_meta:
         source: readgroup_fastq_pe
