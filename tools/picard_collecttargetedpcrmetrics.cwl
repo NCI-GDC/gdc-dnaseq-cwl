@@ -3,7 +3,7 @@ class: CommandLineTool
 id: picard_collecttargetedpcrmetrics
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/picard:092d034713aff237cf07ef28c22a46a113d1a59dc7ec6d71beb72295044a46f8
+    dockerPull: quay.io/ncigdc/picard:2.26.9
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
     coresMin: 1
@@ -24,7 +24,7 @@ inputs:
       separate: false
 
   CUSTOM_AMPLICON_SET_NAME:
-    type: string? 
+    type: string?
     inputBinding:
       prefix: CUSTOM_AMPLICON_SET_NAME=
       position: 11
@@ -100,14 +100,14 @@ inputs:
       separate: false
 
   PER_BASE_COVERAGE:
-    type: string? 
+    type: string?
     inputBinding:
       prefix: PER_BASE_COVERAGE=
       position: 20
       separate: false
 
   PER_TARGET_COVERAGE:
-    type: string? 
+    type: string?
     inputBinding:
       prefix: PER_TARGET_COVERAGE=
       position: 21
