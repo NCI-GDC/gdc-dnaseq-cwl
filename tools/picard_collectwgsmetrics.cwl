@@ -3,7 +3,7 @@ class: CommandLineTool
 id: picard_collectwgsmetrics
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/picard:092d034713aff237cf07ef28c22a46a113d1a59dc7ec6d71beb72295044a46f8
+    dockerPull: quay.io/ncigdc/picard:2.26.9
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
     coresMin: 1

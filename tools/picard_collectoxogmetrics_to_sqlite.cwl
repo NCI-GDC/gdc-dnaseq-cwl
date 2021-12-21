@@ -57,5 +57,5 @@ outputs:
     type: File
     outputBinding:
       glob: $(inputs.job_uuid + ".db")
-          
+
 baseCommand: [/usr/local/bin/picard_metrics_sqlite, --metric_name, CollectOxoGMetrics]

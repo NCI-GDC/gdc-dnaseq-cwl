@@ -3,7 +3,7 @@ class: CommandLineTool
 id: picard_validatesamfile
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/picard:092d034713aff237cf07ef28c22a46a113d1a59dc7ec6d71beb72295044a46f8
+    dockerPull: quay.io/ncigdc/picard:2.26.9
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
     coresMin: 1
@@ -39,7 +39,7 @@ inputs:
 
   MAX_OUTPUT:
     type: long
-    default: 2147483647
+    default: 100
     inputBinding:
       prefix: MAX_OUTPUT=
       separate: false
@@ -82,7 +82,7 @@ arguments:
   - valueFrom: $(inputs.INPUT.basename + ".metrics")
     prefix: OUTPUT=
     separate: false
-      
+
 successCodes: [0, 2, 3]
 
 baseCommand: [java, -jar, /usr/local/bin/picard.jar, ValidateSamFile, IS_BISULFITE_SEQUENCED=false]

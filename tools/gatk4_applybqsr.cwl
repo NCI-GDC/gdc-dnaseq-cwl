@@ -3,7 +3,7 @@ class: CommandLineTool
 id: gatk4_applybqsr
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/gatk:a4a89bba62c91fec4b79b38a55d8a9353f503df0a55dd3950c7b3da640b1c6cf
+    dockerPull: quay.io/ncigdc/gatk:4.2.4.0
   - class: InlineJavascriptRequirement
 
 inputs:
@@ -32,7 +32,7 @@ inputs:
     type: string
     default: "."
     inputBinding:
-      prefix: --TMP_DIR
+      prefix: --tmp-dir
 
 outputs:
   output_bam:
@@ -47,4 +47,4 @@ arguments:
   - valueFrom: $(inputs.input.basename)
     prefix: --output
 
-baseCommand: [java, -jar, /usr/local/bin/gatk-package-4.0.7.0-local.jar, ApplyBQSR]
+baseCommand: [ApplyBQSR]
