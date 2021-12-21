@@ -42,6 +42,6 @@ arguments:
     prefix: --output
     separate: true
   - valueFrom: $(inputs.variant)
-    prefix: -- intervals
+    prefix: --intervals
 
 baseCommand: [GetPileupSummaries]
