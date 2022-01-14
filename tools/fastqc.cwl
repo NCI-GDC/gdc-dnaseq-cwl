@@ -52,7 +52,6 @@ inputs:
 
   INPUT:
     type: File
-    format: "edam:format_2182"
     inputBinding:
       position: 99
 
@@ -114,5 +113,5 @@ outputs:
     type: File
     outputBinding:
       glob: "*_fastqc.zip"
-          
+
 baseCommand: [/usr/local/FastQC/fastqc]

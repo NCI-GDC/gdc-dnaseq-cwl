@@ -18,7 +18,6 @@ requirements:
 inputs:
   INPUT:
     type: File
-    format: "edam:format_2572"
     inputBinding:
       position: 0
     secondaryFiles:

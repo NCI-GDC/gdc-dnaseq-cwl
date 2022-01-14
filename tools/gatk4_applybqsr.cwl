@@ -3,12 +3,11 @@ class: CommandLineTool
 id: gatk4_applybqsr
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/gatk:4.2.4.0
+    dockerPull: quay.io/ncigdc/gatk:4.2.4.1
   - class: InlineJavascriptRequirement
 
 inputs:
   input:
-    format: "edam:format_2572"
     type: File
     inputBinding:
       prefix: --input
@@ -36,7 +35,6 @@ inputs:
 
 outputs:
   output_bam:
-    format: "edam:format_2572"
     type: File
     outputBinding:
       glob: $(inputs.input.basename)

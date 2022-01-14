@@ -20,13 +20,11 @@ requirements:
 inputs:
   fastq1:
     type: File
-    format: "edam:format_2182"
     inputBinding:
       prefix: --fastq
 
   fastq2:
     type: File?
-    format: "edam:format_2182"
     inputBinding:
       prefix: --fastq2
 
@@ -39,13 +37,11 @@ inputs:
 outputs:
   cleaned_fastq1:
     type: File
-    format: "edam:format_2182"
     outputBinding:
       glob: $(inputs.fastq1.basename)
 
   cleaned_fastq2:
     type: File?
-    format: "edam:format_2182"
     outputBinding:
       glob: |
        ${
@@ -55,7 +51,6 @@ outputs:
 
   result_json:
     type: File
-    format: "edam:format_3464"
     outputBinding:
       glob: "result.json"
 

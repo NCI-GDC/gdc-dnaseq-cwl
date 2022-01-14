@@ -3,7 +3,7 @@ class: CommandLineTool
 id: picard_collectwgsmetrics
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/picard:2.26.9
+    dockerPull: quay.io/ncigdc/picard:2.26.10
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
     coresMin: 1
@@ -18,14 +18,12 @@ requirements:
 inputs:
   INPUT:
     type: File
-    format: "edam:format_2572"
     inputBinding:
       prefix: INPUT=
       separate: false
 
   REFERENCE_SEQUENCE:
     type: File
-    format: "edam:format_1929"
     inputBinding:
       prefix: REFERENCE_SEQUENCE=
       separate: false

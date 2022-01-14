@@ -22,15 +22,12 @@ requirements:
 inputs:
   fastq1:
     type: File
-    format: "edam:format_2182"
 
   fastq2:
     type: File
-    format: "edam:format_2182"
 
   fasta:
     type: File
-    format: "edam:format_1929"
     secondaryFiles:
       - .amb
       - .ann
@@ -43,7 +40,6 @@ inputs:
 
   fastqc_json_path:
     type: File
-    format: "edam:format_3464"
     inputBinding:
       loadContents: true
       valueFrom: $(null)
@@ -53,7 +49,6 @@ inputs:
 outputs:
   OUTPUT:
     type: File
-    format: "edam:format_2572"
     outputBinding:
       glob: $(inputs.fastq1.nameroot.split('_').slice(0,4).join('_') + ".bam")
 

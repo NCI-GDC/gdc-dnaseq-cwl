@@ -2,7 +2,7 @@ cwlVersion: v1.0
 id: picard_collectoxogmetrics
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/picard:2.26.9
+    dockerPull: quay.io/ncigdc/picard:2.26.10
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
     coresMin: 1
@@ -19,21 +19,18 @@ class: CommandLineTool
 inputs:
   DB_SNP:
     type: File
-    format: "edam:format_3016"
     inputBinding:
       prefix: DB_SNP=
       separate: false
 
   INPUT:
     type: File
-    format: "edam:format_2572"
     inputBinding:
       prefix: INPUT=
       separate: false
 
   REFERENCE_SEQUENCE:
     type: File
-    format: "edam:format_1929"
     inputBinding:
       prefix: REFERENCE_SEQUENCE=
       separate: false

@@ -22,11 +22,9 @@ requirements:
 inputs:
   fastq:
     type: File
-    format: "edam:format_2182"
 
   fasta:
     type: File
-    format: "edam:format_1929"
     secondaryFiles:
       - .amb
       - .ann
@@ -52,7 +50,6 @@ inputs:
 outputs:
   OUTPUT:
     type: File
-    format: "edam:format_2572"
     outputBinding:
       glob: $(inputs.fastq.nameroot.split('_').slice(0,4).join('_') + ".bam")
 

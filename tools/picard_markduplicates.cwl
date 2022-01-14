@@ -3,7 +3,7 @@ class: CommandLineTool
 id: picard_markduplicates
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/picard:2.26.9
+    dockerPull: quay.io/ncigdc/picard:2.26.10
   - class: InlineJavascriptRequirement
     expressionLib:
       $import: ./expression_lib.cwl
@@ -23,7 +23,6 @@ inputs:
       inputBinding:
         prefix: INPUT=
         separate: false
-    format: "edam:format_2572"
 
   TMP_DIR:
     default: .
@@ -54,7 +53,6 @@ inputs:
 outputs:
   OUTPUT:
     type: File
-    format: "edam:format_2572"
     outputBinding:
       glob: $(inputs.OUTBAM)
 

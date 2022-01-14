@@ -24,7 +24,6 @@ inputs:
 outputs:
   OUTPUT:
     type: File
-    format: "edam:format_3464"
     outputBinding:
       glob: "fastqc.json"
 
