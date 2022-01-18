@@ -4,9 +4,9 @@ install: make build
 stages:
 - name: test
 - name: publish-release
-  if: branch = main AND type != pull_request
+  if: branch = master AND type != pull_request
 - name: publish-staging
-  if: branch != main AND type != pull_request
+  if: branch != master AND type != pull_request
 jobs:
   include:
   - stage: test
