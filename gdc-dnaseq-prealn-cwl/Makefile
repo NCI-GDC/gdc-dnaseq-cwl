@@ -1,7 +1,7 @@
 # quay repo not git repo
 REPO = gdc-dnaseq-prealn-cwl
 # TODO: Replace me
-ENTRY_CWL = "gdc_dnaseq.bamfastq_align.workflow.cwl"
+ENTRY_CWL = "gdc_dnaseq.aligned_reads.workflow.cwl"
 
 VERSION := $(shell date -u +"%Y%m%dT%H%MZ")
 COMMIT_HASH:=$(shell git rev-parse HEAD)

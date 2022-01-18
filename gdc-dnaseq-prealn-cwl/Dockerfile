@@ -6,6 +6,7 @@ ARG WORKFLOW
 COPY ./${WORKFLOW} /opt
 # TODO: Copy additional directories as needed
 COPY ./tools /tools
+COPY ./subworkflows /subworkflows
 
 RUN apk add make
 RUN make -C /opt init-pip
