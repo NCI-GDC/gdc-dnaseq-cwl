@@ -3,8 +3,7 @@ class: CommandLineTool
 id: picard_collecthsmetrics_to_sqlite
 requirements:
   - class: DockerRequirement
-    dockerImageId: picard_metrics_sqlite:dev1
-    # dockerPull: picard_metrics_sqlite:c60c4485657b
+    dockerPull: quay.io/ncigdc/picard_metrics_sqlite:1.0.0
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
     coresMin: 1

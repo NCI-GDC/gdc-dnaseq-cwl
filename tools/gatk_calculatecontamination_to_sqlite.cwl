@@ -3,8 +3,7 @@ class: CommandLineTool
 id: gatk_calculatecontamination_to_sqlite
 requirements:
   - class: DockerRequirement
-    dockerImageId: picard_metrics_sqlite:dev1
-    # dockerPull: quay.io/ncigdc/picard_metrics_sqlite:e71798322233d02d67db0158aeeef27990d2d400aadfc92c3687ba85555b0cf8
+    dockerPull: quay.io/ncigdc/picard_metrics_sqlite:1.0.0
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
     coresMin: 1
