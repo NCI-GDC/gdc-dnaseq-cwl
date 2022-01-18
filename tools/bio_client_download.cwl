@@ -49,5 +49,5 @@ outputs:
     type: File
     outputBinding:
       glob: "*"
-    
+
 baseCommand: [/usr/local/bin/bio_client.py]

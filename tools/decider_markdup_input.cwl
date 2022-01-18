@@ -1,24 +1,22 @@
 cwlVersion: v1.0
 class: ExpressionTool
-id: decider_markdup_input 
+id: decider_markdup_input
 requirements:
   - class: InlineJavascriptRequirement
 
 inputs:
   run_markdups: boolean
-  bam: 
-    format: "edam:format_2572"
+  bam:
     type:
       type: array
       items:
         type: array
         items: File
-  
+
 outputs:
   do_markdup_workflow: long[]
   skip_markdup_workflow: long[]
   out_bam:
-    format: "edam:format_2572"
     type: File[]
 
 expression: |

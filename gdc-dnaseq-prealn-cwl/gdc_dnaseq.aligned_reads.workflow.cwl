@@ -75,7 +75,7 @@ outputs:
 
 steps:
   extract_stage_files:
-    run: ./extract/stage_data_workflow.cwl
+    run: ../subworkflows/extract/stage_data_workflow.cwl
     in:
       bioclient_config: bioclient_config
       readgroup_bam_uuid_list: readgroups_bam_uuid_list
@@ -111,7 +111,7 @@ steps:
            capture_kit_files, reference_fasta, common_biallelic_vcf, known_snp_vcf ]
 
   transform:
-    run: ./main/gdc_dnaseq_ar_workflow.cwl
+    run: ../subworkflows/main/gdc_dnaseq_ar_workflow.cwl
     in:
       bam_file:
         source: extract_stage_files/rg_bam_files
@@ -134,9 +134,6 @@ steps:
       upload-bucket: bioclient_load_bucket
       upload-key:
         valueFrom: $(inputs.job_uuid)/$(inputs.input.basename)
-      job_uuid:
-        source: job_uuid
-        valueFrom: $(null)
     out: [ output ]
 
   load_bai:
@@ -149,9 +146,6 @@ steps:
       upload-bucket: bioclient_load_bucket
       upload-key:
         valueFrom: $(inputs.job_uuid)/$(inputs.input.nameroot).bai
-      job_uuid:
-        source: job_uuid
-        valueFrom: $(null)
     out: [ output ]
 
   load_sqlite:
@@ -162,9 +156,6 @@ steps:
       upload-bucket: bioclient_load_bucket
       upload-key:
         valueFrom: $(inputs.job_uuid)/$(inputs.input.basename)
-      job_uuid:
-        source: job_uuid
-        valueFrom: $(null)
     out: [ output ]
 
   emit_bam_uuid:

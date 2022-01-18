@@ -12,28 +12,26 @@ requirements:
     expressionLib:
       $import: ./expression_lib.cwl
   - class: ResourceRequirement
-    coresMin: $(inputs.threads) 
+    coresMin: $(inputs.threads)
     ramMin: 1000
     tmpdirMin: $(file_size_multiplier(inputs.input_bam))
     outdirMin: $(file_size_multiplier(inputs.input_bam))
 
 inputs:
   input_bam:
-    format: "edam:format_2572"
     type: File
     inputBinding:
       position: 1
       valueFrom: $(self.basename)
 
   threads:
-    type: long 
+    type: long
     inputBinding:
       position: 0
       prefix: -@
 
 outputs:
   output_bam:
-    format: "edam:format_2572"
     type: File
     outputBinding:
       glob: $(inputs.input_bam.basename)

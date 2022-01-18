@@ -3,7 +3,7 @@ class: CommandLineTool
 id: picard_validatesamfile
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/picard:2.26.9
+    dockerPull: quay.io/ncigdc/picard:2.26.10
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
     coresMin: 1
@@ -32,7 +32,6 @@ inputs:
 
   INPUT:
     type: File
-    format: "edam:format_2572"
     inputBinding:
       prefix: INPUT=
       separate: false

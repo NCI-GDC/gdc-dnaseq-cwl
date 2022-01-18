@@ -18,7 +18,6 @@ requirements:
 inputs:
   INPUT:
     type: File
-    format: "edam:format_2572"
     inputBinding:
       prefix: --bam_path
 
@@ -30,7 +29,6 @@ inputs:
 
 outputs:
   OUTPUT:
-    format: "edam:format_3464"
     type:
       type: array
       items: File

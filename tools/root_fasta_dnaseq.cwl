@@ -46,7 +46,6 @@ inputs:
 outputs:
   output:
     type: File
-    format: "edam:format_1929"
     outputBinding:
       glob: $(inputs.fasta.basename)
     secondaryFiles:

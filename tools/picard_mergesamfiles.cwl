@@ -3,7 +3,7 @@ class: CommandLineTool
 id: picard_mergesamfiles
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/picard:2.26.9
+    dockerPull: quay.io/ncigdc/picard:2.26.10
   - class: InlineJavascriptRequirement
     expressionLib:
       $import: ./expression_lib.cwl
@@ -37,7 +37,6 @@ inputs:
       inputBinding:
         prefix: INPUT=
         separate: false
-    format: "edam:format_2572"
 
   INTERVALS:
     type: File?
@@ -88,7 +87,6 @@ inputs:
 
 outputs:
   MERGED_OUTPUT:
-    format: "edam:format_2572"
     type: File
     outputBinding:
       glob: $(inputs.OUTPUT)

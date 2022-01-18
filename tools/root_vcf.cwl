@@ -28,7 +28,6 @@ inputs:
 outputs:
   output:
     type: File
-    format: "edam:format_3016"
     outputBinding:
       glob: $(inputs.vcf.basename)
     secondaryFiles:

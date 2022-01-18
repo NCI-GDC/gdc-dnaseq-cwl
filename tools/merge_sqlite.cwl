@@ -17,7 +17,7 @@ requirements:
           req_space += inputs.source_sqlite[i].size;
         }
       return Math.ceil(2 * (req_space / 1048576));
-      }      
+      }
     outdirMin: |
       ${
       var req_space = 0;
@@ -25,11 +25,10 @@ requirements:
           req_space += inputs.source_sqlite[i].size;
         }
       return Math.ceil(req_space / 1048576);
-      }      
+      }
 
 inputs:
   source_sqlite:
-    format: "edam:format_3621"
     type:
       type: array
       items: File
@@ -43,7 +42,6 @@ inputs:
 
 outputs:
   destination_sqlite:
-    format: "edam:format_3621"
     type: File
     outputBinding:
       glob: $(inputs.job_uuid + ".db")

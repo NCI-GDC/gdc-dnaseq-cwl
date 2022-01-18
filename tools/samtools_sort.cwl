@@ -13,7 +13,6 @@ requirements:
 
 inputs:
   input_bam:
-    format: "edam:format_2572"
     type: File
     inputBinding:
       position: 3
@@ -39,7 +38,6 @@ inputs:
 
 outputs:
   bam:
-    format: "edam:format_2572"
     type: File
     outputBinding:
       glob: $(inputs.output_bam)

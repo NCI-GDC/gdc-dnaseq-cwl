@@ -48,6 +48,6 @@ outputs:
   output:
     type: File
     outputBinding:
-      glob: "*_upload.json"      
+      glob: "*_upload.json"
 
 baseCommand: [/usr/local/bin/bio_client.py]

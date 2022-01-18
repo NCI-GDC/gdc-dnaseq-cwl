@@ -3,12 +3,11 @@ class: CommandLineTool
 id: gatk4_baserecalibrator
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/gatk:4.2.4.0
+    dockerPull: quay.io/ncigdc/gatk:4.2.4.1
   - class: InlineJavascriptRequirement
 
 inputs:
   input:
-    format: "edam:format_2572"
     type: File
     inputBinding:
       prefix: --input
@@ -16,7 +15,6 @@ inputs:
       - ^.bai
 
   known-sites:
-    format: "edam:format_3016"
     type: File
     inputBinding:
       prefix: --known-sites
@@ -24,7 +22,6 @@ inputs:
       - .tbi
 
   reference:
-    format: "edam:format_1929"
     type: File
     inputBinding:
       prefix: --reference

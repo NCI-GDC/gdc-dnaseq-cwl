@@ -31,7 +31,6 @@ inputs:
       separate: false
 
   filename:
-    format: "edam:format_2572"
     type: File
     inputBinding:
       prefix: filename=
@@ -123,7 +122,6 @@ inputs:
 
 outputs:
   output_fastq1:
-    format: "edam:format_2182"
     type:
       type: array
       items: File
@@ -133,7 +131,6 @@ outputs:
         ${ return self.sort(function(a,b) { return a.location > b.location ? 1 : (a.location < b.location ? -1 : 0) }) }
 
   output_fastq2:
-    format: "edam:format_2182"
     type:
       type: array
       items: File
@@ -143,7 +140,6 @@ outputs:
         ${ return self.sort(function(a,b) { return a.location > b.location ? 1 : (a.location < b.location ? -1 : 0) }) }
 
   output_fastq_o1:
-    format: "edam:format_2182"
     type:
       type: array
       items: File
@@ -153,7 +149,6 @@ outputs:
         ${ return self.sort(function(a,b) { return a.location > b.location ? 1 : (a.location < b.location ? -1 : 0) }) }
 
   output_fastq_o2:
-    format: "edam:format_2182"
     type:
       type: array
       items: File
@@ -163,7 +158,6 @@ outputs:
         ${ return self.sort(function(a,b) { return a.location > b.location ? 1 : (a.location < b.location ? -1 : 0) }) }
 
   output_fastq_s:
-    format: "edam:format_2182"
     type:
       type: array
       items: File

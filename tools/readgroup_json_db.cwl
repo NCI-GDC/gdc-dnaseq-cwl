@@ -18,7 +18,6 @@ requirements:
 inputs:
   json_path:
     type: File
-    format: "edam:format_3464"
     inputBinding:
       prefix: --json_path
 
@@ -35,8 +34,7 @@ outputs:
 
   output_sqlite:
     type: File
-    format: "edam:format_3621"
     outputBinding:
-      glob: $(inputs.job_uuid + ".db")         
-          
+      glob: $(inputs.job_uuid + ".db")
+
 baseCommand: [/usr/local/bin/readgroup_json_db]
