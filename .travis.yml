@@ -1,0 +1,29 @@
+services:
+  - docker
+
+install: make build
+
+stages:
+  - name: test
+  - name: publish-release
+    if: branch = main AND type != pull_request
+  - name: publish-staging
+    if: branch != main AND type != pull_request
+
+jobs:
+  include:
+    - stage: test
+      name: Test
+      script:
+        - make validate
+    - stage: publish-staging
+      name: Publish staging image
+      script:
+        - make publish-staging
+    - stage: publish-release
+      name: Publish production image
+      script:
+        - make publish-release
+
+env:
+  global:
