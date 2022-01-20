@@ -35,13 +35,6 @@ inputs:
       prefix: VALIDATION_STRINGENCY=
       separate: false
 
-  USE_FAST_ALGORITHM:
-    type: string
-    default: "true"
-    inputBinding:
-      prefix: USE_FAST_ALGORITHM=
-      separate: false
-
 outputs:
   OUTPUT:
     type: File
