@@ -47,4 +47,4 @@ outputs:
     outputBinding:
       glob: $(inputs.job_uuid + ".db")
 
-baseCommand: [/usr/local/bin/picard_metrics_sqlite, --metric_name, CollectTargetedPcrMetrics]
+baseCommand: [--metric_name, CollectTargetedPcrMetrics]
