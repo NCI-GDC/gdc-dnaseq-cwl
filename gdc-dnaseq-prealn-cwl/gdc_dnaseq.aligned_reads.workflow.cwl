@@ -145,7 +145,8 @@ steps:
         valueFrom: $(self.secondaryFiles[0])
       upload-bucket: bioclient_load_bucket
       upload-key:
-        valueFrom: $(inputs.job_uuid)/$(inputs.input.nameroot).bai
+        source: job_uuid
+        valueFrom: $(self)/$(inputs.input.basename)
     out: [ output ]
 
   load_sqlite:
