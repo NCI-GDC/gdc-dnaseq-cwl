@@ -137,7 +137,8 @@ steps:
       input: transform/output_bam
       upload-bucket: bioclient_load_bucket
       upload-key:
-        valueFrom: $(inputs.job_uuid)/$(inputs.input.basename)
+        source: job_uuid
+        valueFrom: $(self)/$(inputs.input.basename)
     out: [ output ]
 
   load_bai:
@@ -149,7 +150,8 @@ steps:
         valueFrom: $(self.secondaryFiles[0])
       upload-bucket: bioclient_load_bucket
       upload-key:
-        valueFrom: $(inputs.job_uuid)/$(inputs.input.nameroot).bai
+        source: job_uuid
+        valueFrom: $(self)/$(inputs.input.nameroot).bai
     out: [ output ]
 
   load_sqlite:
@@ -159,7 +161,8 @@ steps:
       input: transform/sqlite
       upload-bucket: bioclient_load_bucket
       upload-key:
-        valueFrom: $(inputs.job_uuid)/$(inputs.input.basename)
+        source: job_uuid
+        valueFrom: $(self)/$(inputs.input.basename)
     out: [ output ]
 
   emit_bam_uuid:
