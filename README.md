@@ -1,10 +1,10 @@
 # GDC DNA-Seq Alignment Workflow
-![Version badge](https://img.shields.io/badge/biobambam-2.0.87-brightgreen.svg)
-![Version badge](https://img.shields.io/badge/BWA-0.7.15--r1142--dirty-brightgreen.svg)
-![Version badge](https://img.shields.io/badge/GATK-4.0.7-brightgreen.svg)<br>
+![Version badge](https://img.shields.io/badge/biobambam-2.0.87-yellowgreen.svg)
+![Version badge](https://img.shields.io/badge/BWA-0.7.15-yellowgreen.svg)
+![Version badge](https://img.shields.io/badge/GATK-4.2.4.1-brightgreen.svg)<br>
 ![Version badge](https://img.shields.io/badge/samtools-1.8-yellowgreen.svg)
 ![Version badge](https://img.shields.io/badge/FastQC-v0.11.7-yellowgreen.svg)
-![Version badge](https://img.shields.io/badge/Picard-2.18.4--SNAPSHOT-yellowgreen.svg)<br>
+![Version badge](https://img.shields.io/badge/Picard-2.26.10-brightgreen.svg)<br>
 
 This workflow takes a set of input WGS/WXS/Targeted Sequencing FASTQ/BAM files and generates
 a harmonized BAM file and an sqlite database of various metrics collected.
@@ -14,33 +14,21 @@ The CC-BY-SA-4.0 code blocks are denoted by `/begin <AUTHOR> CC-BY-SA-4.0` to `/
 
 ## Environment
 
-The workflows are tested under multiple Ubuntu versions:
-* Ubuntu 14.04
+These workflows are developed and tested on these versions of Ubuntu linux but should run on others.
+
 * Ubuntu 16.04
 * Ubuntu 18.04
 
-The docker images are tested under multiple environments. <br>
-https://docs.docker.com/engine/reference/builder/ <br>
-The most tested ones are:
-* Docker version 19.03.2, build 6a30dfc
-* Docker version 18.09.1, build 4c52b90
-* Docker version 18.03.0-ce, build 0520e24
-* Docker version 17.12.1-ce, build 7390fc6
-
-The CWL are tested under multiple `cwltools` environments. <br>
+The CWL is developed for `cwltools` version `1.0.20180306163216`. <br>
 https://www.commonwl.org/ <br>
-The most tested one is:
-* cwltool 1.0.20180306163216
-
 
 ## For external users
 
 The repository has only been tested on GDC data and in the particular environment GDC is running in. Some of the reference data required for the workflow production are hosted in [GDC reference files](https://gdc.cancer.gov/about-data/data-harmonization-and-generation/gdc-reference-files "GDC reference files"). For any questions related to GDC data, please contact the GDC Help Desk at support@nci-gdc.datacommons.io.
 
-The entrypoint CWL workflow for external users is `workflows/main/gdc_dnaseq_main_workflow.cwl`.
+The entrypoint CWL workflow for external users is `subworkflows/main/gdc_dnaseq_main_workflow.cwl`.
 
-
-The example input json in `example/main_workflow_example_wgs_input.json`.
+An example input yaml is available here: `example/gdc_dnaseq_main_workflow_example_input.yaml`.
 
 ### Inputs
 
@@ -117,4 +105,6 @@ The example input json in `example/main_workflow_example_wgs_input.json`.
 
 ## GDC Users
 
-The entrypoint CWL workflow for GDC users is `workflows/gdc_dnaseq.bamfastq_align.workflow.cwl`.
+There are two entry points:
+ - harmonization of FASTQ and BAM data: `gdc-dnaseq-aln-cwl/gdc_dnaseq.bamfastq_align.workflow.cwl`.
+ - trusted pre-aligned data: `gdc-dnaseq-prealn-cwl/gdc_dnaseq.aligned_reads.workflow.cwl`.
