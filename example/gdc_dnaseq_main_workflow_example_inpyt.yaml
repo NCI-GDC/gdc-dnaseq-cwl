@@ -1,0 +1,52 @@
+# this assumes reference and data files are in the same location as this yaml
+# input data is assumed to be WGS so no amplicon kits, or capture kits apply
+bam_name: desired-output-name.bam
+job_uuid: example-test-uuid
+collect_wgs_metrics: True
+amplicon_kit_set_file_list: []
+capture_kit_set_file_list: []
+readgroup_fastq_pe_file_list:
+  - forward_fastq:
+      class: File
+      location: input_R1.fastq.gz
+    reverse_fastq:
+      class: File
+      location: input_R2.fastq.gz
+    readgroup_meta:
+      ID: input_id
+      PL: ILLUMINA
+      SM: input_sample_id
+readgroup_fastq_se_file_list: []
+readgroups_bam_file_list: []
+common_biallelic_vcf:
+  class: File
+  location: somatic-hg38_small_exac_common_3.hg38.vcf.gz
+  secondaryFiles:
+    - class: File
+      location: somatic-hg38_small_exac_common_3.hg38.vcf.gz.tbi
+known_snp:
+  class: File
+  location: dbsnp_144.hg38.vcf.gz
+  secondaryFiles:
+    - class: File
+      location: dbsnp_144.hg38.vcf.gz.tbi
+run_markduplicates: True
+reference_sequence:
+  class: File
+  location: GRCh38.d1.vd1.fa
+  secondaryFiles:
+    - class: File
+      location: GRCh38.d1.vd1.fa.amb
+    - class: File
+      location: GRCh38.d1.vd1.fa.ann
+    - class: File
+      location: GRCh38.d1.vd1.fa.bwt
+    - class: File
+      location: GRCh38.d1.vd1.fa.fai
+    - class: File
+      location: GRCh38.d1.vd1.fa.pac
+    - class: File
+      location: GRCh38.d1.vd1.fa.sa
+    - class: File
+      location: GRCh38.d1.vd1.dict
+thread_count: 8
