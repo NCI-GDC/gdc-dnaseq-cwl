@@ -1,6 +1,6 @@
 # GDC DNA-Seq Alignment Workflow
 ![Version badge](https://img.shields.io/badge/biobambam-2.0.87-yellowgreen.svg)
-![Version badge](https://img.shields.io/badge/BWA-0.7.15--r1142--dirty-yellowgreen.svg)
+![Version badge](https://img.shields.io/badge/BWA-0.7.15-yellowgreen.svg)
 ![Version badge](https://img.shields.io/badge/GATK-4.2.4.1-brightgreen.svg)<br>
 ![Version badge](https://img.shields.io/badge/samtools-1.8-yellowgreen.svg)
 ![Version badge](https://img.shields.io/badge/FastQC-v0.11.7-yellowgreen.svg)
@@ -26,7 +26,7 @@ https://www.commonwl.org/ <br>
 
 The repository has only been tested on GDC data and in the particular environment GDC is running in. Some of the reference data required for the workflow production are hosted in [GDC reference files](https://gdc.cancer.gov/about-data/data-harmonization-and-generation/gdc-reference-files "GDC reference files"). For any questions related to GDC data, please contact the GDC Help Desk at support@nci-gdc.datacommons.io.
 
-The entrypoint CWL workflow for external users is `workflows/subworkflows/main/gdc_dnaseq_main_workflow.cwl`.
+The entrypoint CWL workflow for external users is `subworkflows/main/gdc_dnaseq_main_workflow.cwl`.
 
 An example input yaml is available here: `example/gdc_dnaseq_main_workflow_example_input.yaml`.
 
@@ -106,5 +106,5 @@ An example input yaml is available here: `example/gdc_dnaseq_main_workflow_examp
 ## GDC Users
 
 There are two entry points:
- - harmonization of FASTQ and BAM data: `workflows/gdc-dnaseq-aln-cwl/gdc_dnaseq.bamfastq_align.workflow.cwl`.
- - trusted pre-aligned data: `workflows/gdc-dnaseq-prealn-cwl/gdc_dnaseq.aligned_reads.workflow.cwl`.
+ - harmonization of FASTQ and BAM data: `gdc-dnaseq-aln-cwl/gdc_dnaseq.bamfastq_align.workflow.cwl`.
+ - trusted pre-aligned data: `gdc-dnaseq-prealn-cwl/gdc_dnaseq.aligned_reads.workflow.cwl`.
