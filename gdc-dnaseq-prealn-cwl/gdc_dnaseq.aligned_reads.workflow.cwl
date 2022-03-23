@@ -147,7 +147,7 @@ steps:
       upload-bucket: bioclient_load_bucket
       upload-key:
         source: job_uuid
-        valueFrom: $(self)/$(inputs.input.basename)
+        valueFrom: $(self)/$(inputs.input.nameroot).bai
     out: [ output ]
 
   load_sqlite:
