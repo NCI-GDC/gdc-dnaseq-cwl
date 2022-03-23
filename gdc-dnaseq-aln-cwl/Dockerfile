@@ -1,5 +1,5 @@
 
-FROM quay.io/ncigdc/bio-alpine:py36
+FROM quay.io/ncigdc/bio-alpine:py36-8dee591
 
 ARG WORKFLOW
 
