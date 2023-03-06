@@ -1,7 +1,7 @@
 # Makefile to manage an individual CWL Docker image
 
 WORKFLOW_NAME = gdc_dnaseq_cwl
-ENTRY_CWL = "workflow.cwl"
+ENTRY_CWL = "gdc_dnaseq.aligned_reads.workflow.cwl"
 
 .PHONY: pack pack-%
 pack:
