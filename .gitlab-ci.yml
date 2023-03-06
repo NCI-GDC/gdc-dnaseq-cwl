@@ -18,5 +18,7 @@ build_dockers:
   before_script:
     - docker info
     - apk add --no-cache bash moreutils git go curl
+  variables:
+    REGISTRY: "docker.osdc.io"
   script:
     - /bin/bash build.sh -b "$CI_COMMIT_BRANCH" -n "$CI_COMMIT_SHORT_SHA"
