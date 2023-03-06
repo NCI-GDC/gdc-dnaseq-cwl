@@ -9,9 +9,6 @@ include:
     file:
       - templates/global/full.yaml
 
-stages:
-  - build
-
 build_dockers:
   stage: build
   services:
