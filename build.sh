@@ -28,7 +28,7 @@ TAG_VERSIONS=("${CURRENT_VERSION}" "${GIT_DESCRIBE}")
 
 # Initialize Registry array
 REGISTRIES=()
-if [ "$BRANCH" = "main" ] || [ -n "$SCM_TAG" ]; then
+if [ "$BRANCH" = "$CI_DEFAULT_BRANCH" ] || [ -n "$SCM_TAG" ]; then
 	# Which internal registry to push the images to.
 	REGISTRIES+=("containers.osdc.io" "quay.io")
 
