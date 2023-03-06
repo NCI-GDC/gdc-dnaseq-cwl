@@ -15,5 +15,8 @@ build_dockers:
     - docker:20.10.16-dind
   tags:
     - dind
+  before_script:
+    - docker info
+    - apk add --no-cache bash moreutils git go curl
   script:
     - /bin/bash build.sh -b "$CI_COMMIT_BRANCH" -n "$CI_COMMIT_SHORT_SHA"
