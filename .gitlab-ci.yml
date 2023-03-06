@@ -1,0 +1,24 @@
+---
+# To contribute improvements to CI/CD templates, please follow the Development guide at:
+# https://docs.gitlab.com/ee/development/cicd/templates.html
+# This specific template is located at:
+# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Python.gitlab-ci.yml
+include:
+  - project: nci-gdc/gitlab-templates
+    ref: master
+    file:
+      - templates/global/full.yaml
+
+build_dockers:
+  stage: build
+  services:
+    - docker:20.10.16-dind
+  tags:
+    - dind
+  before_script:
+    - docker info
+    - apk add --no-cache bash moreutils git go curl
+  variables:
+    BASE_CONTAINER_REGISTRY: "docker.osdc.io"
+  script:
+    - /bin/bash build.sh -b "$CI_COMMIT_BRANCH" -n "$CI_COMMIT_SHORT_SHA"

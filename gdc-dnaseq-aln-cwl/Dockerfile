@@ -1,15 +1,11 @@
-
-FROM quay.io/ncigdc/bio-alpine:py36-8dee591
+ARG REGISTRY
+FROM ${REGISTRY}/ncigdc/bio-alpine:cwltool
 
 ARG WORKFLOW
 
-COPY ./${WORKFLOW} /opt
-# TODO: Copy additional directories as needed
+COPY ./${WORKFLOW} /opt 
 COPY ./tools /tools
 COPY ./subworkflows /subworkflows
-
-RUN apk add make
-RUN make -C /opt init-pip
 
 WORKDIR /opt
 

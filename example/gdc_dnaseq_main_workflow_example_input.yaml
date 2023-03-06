@@ -2,7 +2,7 @@
 # input data is assumed to be WGS so no amplicon kits, or capture kits apply
 bam_name: desired-output-name.bam
 job_uuid: example-test-uuid
-collect_wgs_metrics: True
+collect_wgs_metrics: true
 amplicon_kit_set_file_list: []
 capture_kit_set_file_list: []
 readgroup_fastq_pe_file_list:
@@ -30,7 +30,7 @@ known_snp:
   secondaryFiles:
     - class: File
       location: dbsnp_144.hg38.vcf.gz.tbi
-run_markduplicates: True
+run_markduplicates: true
 reference_sequence:
   class: File
   location: GRCh38.d1.vd1.fa
