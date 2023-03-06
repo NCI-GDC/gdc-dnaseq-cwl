@@ -33,7 +33,7 @@ if [ "$BRANCH" = "$CI_DEFAULT_BRANCH" ] || [ -n "$SCM_TAG" ]; then
 	REGISTRIES+=("containers.osdc.io" "quay.io")
 
 	# Add datetime to version tags
-	DATETIME_VERSION="$(shell date -u +'%Y%m%dT%H%MZ')"
+	DATETIME_VERSION="$(date -u +'%Y%m%dT%H%MZ')"
 	TAG_VERSIONS+=("${DATETIME_VERSION}")
 else
 	REGISTRIES+=("dev-containers.osdc.io")
