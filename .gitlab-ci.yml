@@ -12,7 +12,7 @@ include:
 stages:
   - build
 
-build:
+build_dockers:
   stage: build
   services:
     - docker:20.10.16-dind
