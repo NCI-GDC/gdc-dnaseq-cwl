@@ -1,5 +1,5 @@
 ARG REGISTRY
-FROM ${REGISTRY}/ncigdc/bio-alpine:cwltool
+FROM ${REGISTRY}/ncigdc/bio-alpine:cwltool3
 
 ARG WORKFLOW
 
