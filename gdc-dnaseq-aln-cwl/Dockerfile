@@ -1,5 +1,5 @@
-ARG REGISTRY
-FROM ${REGISTRY}/ncigdc/bio-alpine:cwltool
+ARG REGISTRY=docker.osdc.io
+FROM ${REGISTRY}/ncigdc/bio-alpine:cwltool3
 
 ARG WORKFLOW
 

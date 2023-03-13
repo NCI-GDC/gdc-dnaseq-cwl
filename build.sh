@@ -14,10 +14,11 @@ export DOCKER_BUILDKIT=1
 export BUILDKIT_STEP_LOG_MAX_SIZE=10485760
 export BUILDKIT_STEP_LOG_MAX_SPEED=1048576
 
+BASE_CONTAINER_REGISTRY=${BASE_CONTAINER_REGISTRY:-docker.osdc.io}
+PROXY=${PROXY:-}
 BRANCH="${BRANCH-}"
 GIT_DESCRIBE=$(git describe --tags --always)
 BUILD_ROOT_DIR=$(pwd)
-BASE_CONTAINER_REGISTRYREGISTRY="${BASE_CONTAINER_REGISTRY}"
 
 CLEAN_BRANCH_NAME=${BRANCH/\//_}
 LOWERCASE_BRANCH_NAME="$(tr "[:upper:]" "[:lower:]" <<<"$CLEAN_BRANCH_NAME")"
@@ -72,8 +73,8 @@ for directory in *; do
 			--label org.opencontainers.image.created="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
 			--label org.opencontainers.image.revision="$(git rev-parse --short HEAD)" \
 			--label org.opencontainers.ref.name="${directory}:${CURRENT_VERSION}" \
-			--build-arg http_proxy=http://cloud-proxy:3128 \
-			--build-arg https_proxy=http://cloud-proxy:3128 \
+			--build-arg http_proxy="${PROXY}" \
+			--build-arg https_proxy="${PROXY}" \
       --build-arg WORKFLOW="${directory}"
 
 		# Assign the final tags now so later images can build on this one.
