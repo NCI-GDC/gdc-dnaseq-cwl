@@ -8,8 +8,8 @@ requirements:
   - class: ResourceRequirement
     coresMin: $(inputs.threads)
     ramMin: 1000
-    tmpdirMin: $((2 * inputs.input_bam.size) / 1048576)
-    outdirMin: $((2 * inputs.input_bam.size) / 1048576)
+    tmpdirMin: $(Math.ceil((2 * inputs.input_bam.size) / 1048576))
+    outdirMin: $(Math.ceil((2 * inputs.input_bam.size) / 1048576))
 
 inputs:
   input_bam:
