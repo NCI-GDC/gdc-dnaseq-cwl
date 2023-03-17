@@ -9,6 +9,8 @@ COPY ./subworkflows /subworkflows
 
 WORKDIR /opt
 
+RUN apk add make
+
 ENTRYPOINT ["make"]
 
 CMD ["pack"]
