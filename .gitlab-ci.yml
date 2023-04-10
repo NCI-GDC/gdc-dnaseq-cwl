@@ -9,6 +9,9 @@ include:
     file:
       - templates/global/full.yaml
 
+stages:
+  - build
+
 build_dockers:
   stage: build
   services:
@@ -17,7 +20,7 @@ build_dockers:
     - dind
   before_script:
     - docker info
-    - apk add --no-cache bash moreutils git go curl
+    - apk add --no-cache bash moreutils git go curl just
   variables:
     BASE_CONTAINER_REGISTRY: "docker.osdc.io"
   script:
