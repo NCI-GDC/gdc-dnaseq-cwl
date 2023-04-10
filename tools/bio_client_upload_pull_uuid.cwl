@@ -3,7 +3,7 @@ class: CommandLineTool
 id: bio_client_upload_pull_uuid
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/bio-client:latest
+    dockerPull: "{{ docker_repo }}/bio-client:{{ bio_client }}"
   - class: ResourceRequirement
     coresMin: 1
     coresMax: 1

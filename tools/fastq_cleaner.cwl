@@ -3,7 +3,7 @@ class: CommandLineTool
 id: fastq_cleaner
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/fastq_cleaner:69c602582f0f001269b4f85a610ae4d5af1edd1809c0edda6a3ae13053e62ce3
+    dockerPull: "{{ docker_repo }}/fastq_cleaner:{{ fastq_cleaner }}"
   - class: InlineJavascriptRequirement
     expressionLib:
       $import: ./expression_lib.cwl

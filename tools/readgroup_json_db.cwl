@@ -3,7 +3,7 @@ class: CommandLineTool
 id: readgroup_json_db
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/readgroup_json_db:d1c36c48491afa45c76c23624ecf69b37b4f276019cb6e168364f564452e5b37
+    dockerPull: "{{ docker_repo }}/readgroup_json_db:{{ readgroup_json_db }}"
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
     coresMin: 1

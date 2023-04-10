@@ -3,7 +3,7 @@ class: CommandLineTool
 id: gatk4_getpileupsummaries
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/gatk:4.2.4.1
+    dockerPull: "{{ docker_repo }}/gatk:{{ gatk }}"
   - class: InlineJavascriptRequirement
 
 inputs:

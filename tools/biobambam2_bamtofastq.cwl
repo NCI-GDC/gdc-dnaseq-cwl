@@ -3,7 +3,7 @@ class: CommandLineTool
 id: biobambam2_bamtofastq
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/biobambam:533ed9be5fd34b177b5a906262c615bff1a4cdc2c84b78c2244cbd7283842120
+    dockerPull: "{{ docker_repo }}/biobambam:{{ biobambam}}"
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
     coresMin: 1

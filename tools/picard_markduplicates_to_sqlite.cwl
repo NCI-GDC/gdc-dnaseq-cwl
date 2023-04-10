@@ -3,7 +3,7 @@ class: CommandLineTool
 id: picard_markduplicates_to_sqlite
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/picard_metrics_sqlite:1.0.0
+    dockerPull: "{{ docker_repo }}/picard_metrics_sqlite:{{ picard_metrics_sqlite }}"
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
     coresMin: 1
