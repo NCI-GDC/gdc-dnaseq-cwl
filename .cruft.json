@@ -1,0 +1,15 @@
+{
+    "template": "git@github.com:NCI-GDC/bio-cwl-template.git",
+    "commit": "056b2f9464fe38c674a906a74f4641650b7d9747",
+    "context": {
+      "cookiecutter": {
+        "repository_name": "gdc-dnaseq-cwl",
+        "workflow_name": "gdc_dnaseq_cwl",
+        "commit": "056b2f9464fe38c674a906a74f4641650b7d9747",
+        "_template": "git@github.com:NCI-GDC/bio-cwl-template.git"
+      }
+    },
+    "directory": null,
+    "checkout": null
+  }
+
