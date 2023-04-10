@@ -1,0 +1,13 @@
+{
+ "docker_repo": "quay.io/ncigdc",
+ "bam_readgroup_to_json": "685e4954df4d70f89315a256ecfb707a2dd80b9fcf0d8d10918398df938c6a28",
+ "bio_alpine": "base",
+ "bio_client": "latest",
+ "gatk": "4.2.4.1",
+ "merge_sqlite": "1b3a6f55be8579ecfb4c9c0513c3b710717a8f4cd8e79c88ee8c0f28f604faa3",
+ "picard": "2.26.10",
+ "picard_metrics_sqlite": "1.0.0",
+ "readgroup_json_db": "d1c36c48491afa45c76c23624ecf69b37b4f276019cb6e168364f564452e5b37",
+ "samtools": "147bd4cc606a63c7435907d97fea6e94e9ea9ed58c18f390cab8bc40b1992df7",
+ "samtools_metrics_sqlite": "f64466282ce61dfc9251e7c32c5130928abf0a68c1f8e00b47d9709c5b3e3321"
+}
