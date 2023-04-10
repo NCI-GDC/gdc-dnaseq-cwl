@@ -75,7 +75,7 @@ for directory in *; do
 			--label org.opencontainers.ref.name="${directory}:${CURRENT_VERSION}" \
 			--build-arg http_proxy="${PROXY}" \
 			--build-arg https_proxy="${PROXY}" \
-      --build-arg WORKFLOW="${directory}"
+			--build-arg WORKFLOW="${directory}"
 
 		# Assign the final tags now so later images can build on this one.
 		populate_image_tags "${directory}"
