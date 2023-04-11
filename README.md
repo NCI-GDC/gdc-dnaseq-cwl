@@ -14,13 +14,28 @@ The CC-BY-SA-4.0 code blocks are denoted by `/begin <AUTHOR> CC-BY-SA-4.0` to `/
 
 ## Environment
 
-These workflows are developed and tested on these versions of Ubuntu linux but should run on others.
+### Pre-requisites
 
-* Ubuntu 16.04
-* Ubuntu 18.04
+Workflow development requires the following programs installed:
 
-The CWL is developed for `cwltools` version `1.0.20180306163216`. <br>
+- `docker`
+- `just`
+- `python>=3.8`
+  - `cwltool==3.1.20230213100550`
+
+These workflows are developed and tested on Ubuntu. 
+
+* Ubuntu 20.04
+
+The CWL is developed for `cwltools` version `3.1.20230213100550`
+<br>
 https://www.commonwl.org/ <br>
+
+## GDC Users
+
+There are two entry points:
+ - harmonization of FASTQ and BAM data: `gdc-dnaseq-aln-cwl/gdc_dnaseq.bamfastq_align.workflow.cwl`.
+ - trusted pre-aligned data: `gdc-dnaseq-prealn-cwl/gdc_dnaseq.aligned_reads.workflow.cwl`.
 
 ## For external users
 
@@ -103,8 +118,3 @@ An example input yaml is available here: `example/gdc_dnaseq_main_workflow_examp
 | `output_bam` | `File` | harmonized and indexed BAM file |
 | `sqlite` | `File` | sqlite file containing metrics data |
 
-## GDC Users
-
-There are two entry points:
- - harmonization of FASTQ and BAM data: `gdc-dnaseq-aln-cwl/gdc_dnaseq.bamfastq_align.workflow.cwl`.
- - trusted pre-aligned data: `gdc-dnaseq-prealn-cwl/gdc_dnaseq.aligned_reads.workflow.cwl`.

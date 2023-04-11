@@ -20,4 +20,4 @@ WORKDIR /opt
 
 ENTRYPOINT ["just"]
 
-CMD ["pack"]
+CMD ["_print-cwl"]
