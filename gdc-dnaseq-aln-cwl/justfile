@@ -1,0 +1,48 @@
+ENTRY_CWL := "gdc_dnaseq.bamfastq_align.workflow.cwl"
+
+# Pack and apply Jinja templating. Creates cwl.json file
+pack: _validate_entry
+    #!/bin/sh
+    if [ ! -f cwl.json ]; then
+        just _cwltool-pack > tmp.json
+        just _jinja tmp.json > cwl.json
+        rm tmp.json
+    fi
+    just _print-cwl
+
+# Ensures CWL entrypoint script exists
+_validate_entry:
+    #!/bin/sh
+    if [ ! -f {{ENTRY_CWL}} ]; then
+        echo "No entry CWL file found!"
+        echo {{ENTRY_CWL}}
+        exit 1;
+    fi
+
+# Prints cwl.json if exists
+_print-cwl:
+    @cat cwl.json
+
+# Packs CWL workflow into single json file
+_cwltool-pack: _validate_entry
+	python3 -m cwltool --pack {{ENTRY_CWL}}
+
+# Apply template to JSON from dockers.json, errors on missing keys
+_jinja JSON:
+    jinja -u 'strict' -d dockers.json {{JSON}}
+
+# Validates CWL workflow
+validate: _validate_entry
+	python3 -m cwltool --validate {{ENTRY_CWL}}
+
+# Formats and prints all Dockers used in workflow
+get-dockers:
+  just pack | grep dockerPull | cut -f2- -d ":" | sort | uniq | sed "s/\"//g"
+
+# Prints all dockerPull declarations in unformatted workflow
+get-dockers-template:
+  just _cwltool-pack | grep dockerPull | cut -f2- -d ":" | sort | uniq | sed "s/\"//g"
+
+# Print template input file for workflow
+inputs:
+  python3 -m cwltool --make-template {{ENTRY_CWL}}

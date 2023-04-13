@@ -3,7 +3,7 @@ class: CommandLineTool
 id: root_vcf
 requirements:
   - class: DockerRequirement
-    dockerPull: ubuntu:bionic-20180426
+    dockerPull: "{{ docker_repo }}/bio-alpine:{{ bio_alpine }}"
   - class: InitialWorkDirRequirement
     listing:
       - entryname: $(inputs.vcf.basename)

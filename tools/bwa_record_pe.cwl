@@ -3,7 +3,7 @@ class: CommandLineTool
 id: bwa_record_pe
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/bwa:6f48348ec54042c9bb420ea5e28eea8f62a81c15b44800673bdfece1f379591b
+    dockerPull: "{{ docker_repo }}/bwa:{{ bwa }}"
   - class: InlineJavascriptRequirement
   - class: SchemaDefRequirement
     types:

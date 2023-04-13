@@ -3,7 +3,7 @@ class: CommandLineTool
 id: json_to_sqlite
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/json-to-sqlite:439b1b7f41fedc927859177a8073ac8b9ab8179b9c474fc274ac415d95b6eb7c
+    dockerPull: "{{ docker_repo }}/json-to-sqlite:{{ json_to_sqlite }}"
   - class: ResourceRequirement
     coresMin: 1
     coresMax: 1

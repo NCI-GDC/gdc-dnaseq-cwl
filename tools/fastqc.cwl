@@ -3,7 +3,7 @@ class: CommandLineTool
 id: fastqc
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/fastqc:27ec215ea82bd62a76ec86f9c8a692010cc0c99169e68d2fa0c0052450321f57
+    dockerPull: "{{ docker_repo }}/fastqc:{{ fastqc }}"
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
     coresMin: $(inputs.threads)

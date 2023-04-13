@@ -107,3 +107,6 @@ ENV/
 
 # VSCode
 .vscode/
+
+# Packed cwl
+cwl.json

@@ -3,7 +3,7 @@ class: CommandLineTool
 id: bam_readgroup_to_contents
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/bam_readgroup_to_json:685e4954df4d70f89315a256ecfb707a2dd80b9fcf0d8d10918398df938c6a28
+    dockerPull: "{{ docker_repo }}/bam_readgroup_to_json:{{ bam_readgroup_to_json }}"
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
     coresMin: 1

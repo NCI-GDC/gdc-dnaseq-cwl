@@ -1,5 +1,5 @@
 ARG REGISTRY=docker.osdc.io
-FROM ${REGISTRY}/ncigdc/bio-alpine:cwltool3
+FROM ${REGISTRY}/ncigdc/bio-alpine:cwltool3 as builder
 
 ARG WORKFLOW
 
@@ -9,9 +9,15 @@ COPY ./subworkflows /subworkflows
 
 WORKDIR /opt
 
-RUN apk add make
+RUN just validate && just pack 
 
-ENTRYPOINT ["make"]
+FROM ${REGISTRY}/ncigdc/bio-alpine:just
 
-CMD ["pack"]
+COPY --from=builder /opt/cwl.json /opt/cwl.json
+COPY --from=builder /opt/justfile /opt/justfile
 
+WORKDIR /opt
+
+ENTRYPOINT ["just"]
+
+CMD ["_print-cwl"]

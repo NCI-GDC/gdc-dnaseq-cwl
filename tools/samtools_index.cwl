@@ -3,7 +3,7 @@ class: CommandLineTool
 id: samtools_index
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/samtools:147bd4cc606a63c7435907d97fea6e94e9ea9ed58c18f390cab8bc40b1992df7
+    dockerPull: "{{ docker_repo }}/samtools:{{ samtools }}"
   - class: InitialWorkDirRequirement
     listing:
       - entry: $(inputs.input_bam)

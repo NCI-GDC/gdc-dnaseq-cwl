@@ -4,7 +4,7 @@ id: fastqc_basicstatistics_json
 requirements:
   - class: InlineJavascriptRequirement
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/fastqc_to_json:0ebd446f08d9eb6ed5b069e9ae53ad822236dc56bb1154f9df0e0c22b5724ae7
+    dockerPull: "{{ docker_repo }}/fastqc_to_json:{{ fastqc_to_json }}"
   - class: ResourceRequirement
     coresMin: 1
     coresMax: 1

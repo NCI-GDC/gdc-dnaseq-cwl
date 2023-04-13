@@ -2,7 +2,7 @@ cwlVersion: v1.0
 id: picard_collectoxogmetrics
 requirements:
   - class: DockerRequirement
-    dockerPull: quay.io/ncigdc/picard:2.26.10
+    dockerPull: "{{ docker_repo }}/picard:{{ picard }}"
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
     coresMin: 1
