@@ -14,8 +14,18 @@ requirements:
     tmpdirMax: $(Math.ceil (inputs.file_size / 1048576))
     outdirMin: $(Math.ceil (inputs.file_size / 1048576))
     outdirMax: $(Math.ceil (inputs.file_size / 1048576))
+  - class: EnvVarRequirement
+      envDef:
+      - envName: "REQUESTS_CA_BUNDLE"
+        envValue: $(inputs.cert.listing[0].path)
 
 inputs:
+  cert:
+      type: Directory
+      default:
+        class: Directory
+        location: /usr/local/share/ca-certificates/extra/
+
   config-file:
     type: File
     inputBinding:
