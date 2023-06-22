@@ -15,9 +15,9 @@ requirements:
     outdirMin: $(Math.ceil (inputs.file_size / 1048576))
     outdirMax: $(Math.ceil (inputs.file_size / 1048576))
   - class: EnvVarRequirement
-      envDef:
-      - envName: "REQUESTS_CA_BUNDLE"
-        envValue: $(inputs.cert.listing[0].path)
+    envDef:
+    - envName: "REQUESTS_CA_BUNDLE"
+      envValue: $(inputs.cert.listing[0].path)
 
 inputs:
   cert:
