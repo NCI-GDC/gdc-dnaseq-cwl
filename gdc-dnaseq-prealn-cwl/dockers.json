@@ -1,5 +1,5 @@
 {
- "docker_repo": "quay.io/ncigdc",
+ "docker_repo": "docker.osdc.io/ncigdc",
  "bam_readgroup_to_json": "685e4954df4d70f89315a256ecfb707a2dd80b9fcf0d8d10918398df938c6a28",
  "bio_alpine": "base",
  "bio_client": "latest",
