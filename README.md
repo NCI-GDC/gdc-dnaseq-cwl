@@ -12,6 +12,101 @@ a harmonized BAM file and an sqlite database of various metrics collected.
 This repository is licensed under Apache License Version 2.0. Exceptions are code blocks licensed under CC-BY-SA-4.0. <br>
 The CC-BY-SA-4.0 code blocks are denoted by `/begin <AUTHOR> CC-BY-SA-4.0` to `/end <AUTHOR> CC-BY-SA-4.0`.
 
+---
+## gdc-dnaseq-prealn
+
+### Dockers
+
+[bio_alpine](https://github.com/NCI-GDC/bio-containers)
+
+[bio-client](https://github.com/NCI-GDC/bio-client)
+
+[gatk](https://github.com/NCI-GDC/gatk-docker)
+
+[merge_sqlite](https://github.com/NCI-GDC/merge-sqlite)
+
+[picard](https://github.com/NCI-GDC/picard-docker)
+
+[picard_metrics_sqlite](https://github.com/NCI-GDC/picard_metrics_sqlite)
+
+[readgroup_json_db](https://github.com/NCI-GDC/readgroup_json_db)
+
+[samtools](https://github.com/NCI-GDC/samtools-docker)
+
+[samtools_metrics_sqlite](https://github.com/NCI-GDC/samtools_metrics_sqlite)
+
+## gdc-dnaseq-aln
+
+### Dockers
+
+[bam_readgroup_to_json](https://github.com/NCI-GDC/bam_readgroup_to_json)
+
+[bio_alpine](https://github.com/NCI-GDC/bio-containers)
+
+[bio-client](https://github.com/NCI-GDC/bio-client)
+
+[biobambam](https://github.com/NCI-GDC/biobambam-docker)
+
+[bwa](https://github.com/NCI-GDC/bwa-docker)
+
+[fastq_cleaner](https://github.com/NCI-GDC/fastq_cleaner)
+
+[fastqc](https://github.com/NCI-GDC/fastqc-docker)
+
+[fastqc_db](https://github.com/NCI-GDC/fastqc_db)
+
+[fastqc_to_json](https://github.com/NCI-GDC/fastqc_to_json)
+
+[gatk](https://github.com/NCI-GDC/gatk-docker)
+
+[json_to_sqlite](https://github.com/NCI-GDC/json-to-sqlite)
+
+[merge_sqlite](https://github.com/NCI-GDC/merge-sqlite)
+
+[picard](https://github.com/NCI-GDC/picard-docker)
+
+[picard_metrics_sqlite](https://github.com/NCI-GDC/picard_metrics_sqlite)
+
+[readgroup_json_db](https://github.com/NCI-GDC/readgroup_json_db)
+
+[samtools](https://github.com/NCI-GDC/samtools-docker)
+
+[samtools_metrics_sqlite](https://github.com/NCI-GDC/samtools_metrics_sqlite)
+
+## External Users (`subworkflows/main/gdc_dnaseq_main_workflow.cwl`)
+
+[bam_readgroup_to_json](https://github.com/NCI-GDC/bam_readgroup_to_json)
+
+[biobambam](https://github.com/NCI-GDC/biobambam-docker)
+
+[bwa](https://github.com/NCI-GDC/bwa-docker)
+
+[fastq_cleaner](https://github.com/NCI-GDC/fastq_cleaner)
+
+[fastqc](https://github.com/NCI-GDC/fastqc-docker)
+
+[fastqc_db](https://github.com/NCI-GDC/fastqc_db)
+
+[fastqc_to_json](https://github.com/NCI-GDC/fastqc_to_json)
+
+[gatk](https://github.com/NCI-GDC/gatk-docker)
+
+[json_to_sqlite](https://github.com/NCI-GDC/json-to-sqlite)
+
+[merge_sqlite](https://github.com/NCI-GDC/merge-sqlite)
+
+[picard](https://github.com/NCI-GDC/picard-docker)
+
+[picard_metrics_sqlite](https://github.com/NCI-GDC/picard_metrics_sqlite)
+
+[readgroup_json_db](https://github.com/NCI-GDC/readgroup_json_db)
+
+[samtools](https://github.com/NCI-GDC/samtools-docker)
+
+[samtools_metrics_sqlite](https://github.com/NCI-GDC/samtools_metrics_sqlite)
+ 
+----
+
 ## Pre-requisites
 - Docker
 - [just](https://github.com/casey/just)
@@ -30,7 +125,7 @@ The CWL is developed for `cwltools` version `3.1.20230213100550`
 <br>
 https://www.commonwl.org/ <br>
 
-## Environment
+----
 
 ## Repository Structure
 
@@ -64,12 +159,13 @@ Ideally any CWL script referenced by another file is in the same directory or a 
 
 This will enable moving an entire subdirectory, if needed, without needing to update any references contained within.
 
-
 ## GDC Users
 
 There are two entry points:
  - harmonization of FASTQ and BAM data: `gdc-dnaseq-aln-cwl/gdc_dnaseq.bamfastq_align.workflow.cwl`.
  - trusted pre-aligned data: `gdc-dnaseq-prealn-cwl/gdc_dnaseq.aligned_reads.workflow.cwl`.
+
+----
 
 ## For external users
 
@@ -160,10 +256,6 @@ An example input yaml is available here: `example/gdc_dnaseq_main_workflow_examp
 | `sqlite` | `File` | sqlite file containing metrics data |
 
 Further documentation available [here](https://docs.google.com/document/d/17NFwGvn4vMEXZV9Qmg30BqAcKrdxBYCOB4pFdkkwIIo/edit#)
-
-# Using this template
-
-This template repository should be used as the base for new workflow repositories which will use the new Docker packaging scheme.
 
 # CWL Workflow Development
 
@@ -263,5 +355,4 @@ in the packed cwl.json file.
 ------
 
 While this prevents the CWL from being used directly, it enables easy updating of multiple Docker images for GPAS, and allows external users to supply their own images/tags.
-
 
