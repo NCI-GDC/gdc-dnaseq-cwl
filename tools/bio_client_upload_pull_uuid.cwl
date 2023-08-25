@@ -3,8 +3,8 @@ class: CommandLineTool
 id: bio_client_upload_pull_uuid
 requirements:
   - class: DockerRequirement
-    dockerPull: "{{ docker_repo }}/bio-client:{{ bio_client }}"
-  - class: ResourceRequirement
+dockerPull: "{{ docker_repository }}/bio-client:{{ bio_client }}"
+- class: ResourceRequirement
     coresMin: 1
     coresMax: 1
     ramMin: 1000
@@ -16,14 +16,14 @@ requirements:
   - class: EnvVarRequirement
     envDef:
     - envName: "REQUESTS_CA_BUNDLE"
-      envValue: $(inputs.cert.listing[0].path)
+      envValue: $(inputs.cert.path)
 
 inputs:
   cert:
-      type: Directory
+      type: File
       default:
-        class: Directory
-        location: /usr/local/share/ca-certificates/extra/
+        class: File
+        location: /etc/ssl/certs/ca-certificates.crt
 
   config-file:
     type: File
