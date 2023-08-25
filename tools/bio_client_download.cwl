@@ -3,8 +3,8 @@ class: CommandLineTool
 id: bio_client_download
 requirements:
   - class: DockerRequirement
-dockerPull: "{{ docker_repository }}/bio-client:{{ bio_client }}"
-- class: InlineJavascriptRequirement
+    dockerPull: "{{ docker_repo }}/bio-client:{{ bio_client }}"
+  - class: InlineJavascriptRequirement
   - class: ResourceRequirement
     coresMin: 1
     coresMax: 1
