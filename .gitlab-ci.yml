@@ -12,9 +12,10 @@ include:
 build_dockers:
   stage: build
   services:
-    - docker:20.10.16-dind
+    - docker:${DOCKER_VERSION}-dind
   tags:
     - dind
+  image: docker:${DOCKER_VERSION}-dind
   before_script:
     - docker info
     - apk add --no-cache bash moreutils git go curl just

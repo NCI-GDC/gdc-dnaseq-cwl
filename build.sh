@@ -17,7 +17,7 @@ export BUILDKIT_STEP_LOG_MAX_SPEED=1048576
 BASE_CONTAINER_REGISTRY=${BASE_CONTAINER_REGISTRY:-docker.osdc.io}
 PROXY=${PROXY:-}
 BRANCH="${BRANCH-}"
-GIT_DESCRIBE=$(git describe --tags --always)
+GIT_SHORT_HASH=$(git rev-parse --short HEAD)
 BUILD_ROOT_DIR=$(pwd)
 
 CLEAN_BRANCH_NAME=${BRANCH/\//_}
@@ -25,7 +25,7 @@ LOWERCASE_BRANCH_NAME="$(tr "[:upper:]" "[:lower:]" <<<"$CLEAN_BRANCH_NAME")"
 CURRENT_VERSION="${LOWERCASE_BRANCH_NAME}-${BUILDNUMBER}"
 
 # As what versions (i.e., "...:version") to tag the build images.
-TAG_VERSIONS=("${CURRENT_VERSION}" "${GIT_DESCRIBE}")
+TAG_VERSIONS=("${CURRENT_VERSION}" "${GIT_SHORT_HASH}")
 
 # Initialize Registry array
 REGISTRIES=()
