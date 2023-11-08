@@ -17,14 +17,14 @@ requirements:
   - class: EnvVarRequirement
     envDef:
     - envName: "REQUESTS_CA_BUNDLE"
-      envValue: $(inputs.cert.listing[0].path)
+      envValue: $(inputs.cert.path)
 
 inputs:
   cert:
-      type: Directory
+      type: File
       default:
-        class: Directory
-        location: /usr/local/share/ca-certificates/extra/
+        class: File
+        location: /etc/ssl/certs/ca-certificates.crt
 
   config-file:
     type: File
