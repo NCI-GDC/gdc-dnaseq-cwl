@@ -4,7 +4,8 @@ _init-pip:
   python3 -m pip install cwltool==3.1.20230213100550 jinja-cli
 
 _init-hooks:
-	pre-commit install
+  python3 -m pip install --upgrade pre-commit
+  pre-commit install
 
 # Builds individual workflow
 build WORKFLOW:
