@@ -1,9 +1,10 @@
 ENTRY_CWL := "gdc_dnaseq.bamfastq_align.workflow.cwl"
 
 # Pack and apply Jinja templating. Creates cwl.json file
-pack: _validate_entry
+pack:
     #!/bin/sh
     if [ ! -f cwl.json ]; then
+        just _validate_entry
         just _cwltool-pack > tmp.json
         just _jinja tmp.json > cwl.json
         rm tmp.json

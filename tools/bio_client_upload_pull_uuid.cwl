@@ -13,8 +13,18 @@ requirements:
     tmpdirMax: 1
     outdirMin: 1
     outdirMax: 1
+  - class: EnvVarRequirement
+    envDef:
+    - envName: "REQUESTS_CA_BUNDLE"
+      envValue: $(inputs.cert.path)
 
 inputs:
+  cert:
+      type: File
+      default:
+        class: File
+        location: /etc/ssl/certs/ca-certificates.crt
+
   config-file:
     type: File
     inputBinding:
