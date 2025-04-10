@@ -51,4 +51,4 @@ outputs:
     outputBinding:
       glob: $(inputs.job_uuid + ".log")
 
-baseCommand: [/usr/local/bin/merge_sqlite]
+baseCommand: [merge_sqlite]
