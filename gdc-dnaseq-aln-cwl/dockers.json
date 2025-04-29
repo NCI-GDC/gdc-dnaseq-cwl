@@ -1,6 +1,6 @@
 {
  "docker_repo": "docker.osdc.io/ncigdc",
- "bam_readgroup_to_json": "685e4954df4d70f89315a256ecfb707a2dd80b9fcf0d8d10918398df938c6a28",
+ "bam_readgroup_to_json": "build-20-0c05c3d8",
  "bio_alpine": "base",
  "bio_client": "latest",
  "biobambam": "2.0.95-e069a11",
