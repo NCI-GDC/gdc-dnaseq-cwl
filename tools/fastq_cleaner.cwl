@@ -54,4 +54,4 @@ outputs:
     outputBinding:
       glob: "result.json"
 
-baseCommand: [/usr/local/bin/fastq_cleaner]
+baseCommand: [/fastq_cleaner/fastq_cleaner]
