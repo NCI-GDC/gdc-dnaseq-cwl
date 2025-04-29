@@ -5,7 +5,7 @@
  "bio_client": "latest",
  "biobambam": "2.0.95-e069a11",
  "bwa": "0.7.15-b6ff73f",
- "fastq_cleaner": "1.0.0-b46e821",
+ "fastq_cleaner": "1.0.0-35e9b18",
  "fastqc": "0.11.7-181d296",
  "fastqc_db": "build-13-b99c2c5f",
  "fastqc_to_json": "build-30-070550d3",
