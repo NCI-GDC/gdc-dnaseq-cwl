@@ -10,7 +10,7 @@
  "fastqc_db": "build-13-b99c2c5f",
  "fastqc_to_json": "build-30-070550d3",
  "gatk": "4.2.4.1",
- "json_to_sqlite": "build-8-bc1edcc8",
+ "json_to_sqlite": "build-10-d4565f7e",
  "merge_sqlite": "build-14-a8cee54a",
  "picard": "2.26.10",
  "picard_metrics_sqlite": "1.0.0",
