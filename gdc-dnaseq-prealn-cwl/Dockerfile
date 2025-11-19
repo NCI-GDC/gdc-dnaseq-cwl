@@ -9,6 +9,7 @@ COPY ./subworkflows /subworkflows
 
 WORKDIR /opt
 
+
 RUN just validate && just pack 
 
 FROM ${REGISTRY}/ncigdc/bio-alpine:just

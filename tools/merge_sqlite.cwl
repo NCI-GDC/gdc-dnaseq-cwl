@@ -3,7 +3,7 @@ class: CommandLineTool
 id: merge_sqlite
 requirements:
   - class: DockerRequirement
-    dockerPull: "{{ docker_repo }}/merge_sqlite:{{ merge_sqlite }}"
+    dockerPull: "{{ docker_repo }}/merge-sqlite:{{ merge_sqlite }}"
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
     coresMin: 1
@@ -51,4 +51,4 @@ outputs:
     outputBinding:
       glob: $(inputs.job_uuid + ".log")
 
-baseCommand: [/usr/local/bin/merge_sqlite]
+baseCommand: [merge_sqlite]
