@@ -53,4 +53,4 @@ outputs:
     outputBinding:
       glob: "output.log"
 
-baseCommand: [/usr/local/bin/bam_readgroup_to_json]
+baseCommand: [bam_readgroup_to_json]
