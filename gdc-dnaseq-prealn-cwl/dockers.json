@@ -3,7 +3,7 @@
  "bam_readgroup_to_json": "1.0.1",
  "bio_alpine": "base",
  "bio_client": "latest",
- "gatk": "4.2.4.1",
+ "gatk": "4.2.4.1-bc63f4b",
  "merge_sqlite": "1.1.0",
  "picard": "2.26.10-7c1f408",
  "picard_metrics_sqlite": "1.1.0",

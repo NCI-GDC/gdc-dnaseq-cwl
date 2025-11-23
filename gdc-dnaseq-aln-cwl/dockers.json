@@ -9,7 +9,7 @@
  "fastqc": "0.11.7-181d296",
  "fastqc_db": "1.0.0",
  "fastqc_to_json": "1.0.0",
- "gatk": "4.2.4.1",
+ "gatk": "4.2.4.1-bc63f4b",
  "json_to_sqlite": "1.1.0",
  "merge_sqlite": "1.1.0",
  "picard": "2.26.10-7c1f408",
