@@ -114,4 +114,4 @@ outputs:
     outputBinding:
       glob: "*_fastqc.zip"
 
-baseCommand: [/usr/local/FastQC/fastqc]
+baseCommand: [/usr/local/bin/fastqc]
