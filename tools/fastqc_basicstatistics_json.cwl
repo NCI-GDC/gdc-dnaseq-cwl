@@ -1,3 +1,4 @@
+
 cwlVersion: v1.0
 class: CommandLineTool
 id: fastqc_basicstatistics_json
@@ -27,4 +28,4 @@ outputs:
     outputBinding:
       glob: "fastqc.json"
 
-baseCommand: [/usr/local/bin/fastqc_to_json]
+baseCommand: []
