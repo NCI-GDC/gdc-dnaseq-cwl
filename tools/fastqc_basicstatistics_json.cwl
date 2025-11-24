@@ -17,17 +17,11 @@ requirements:
     outdirMax: 1
 
 inputs:
-#  sqlite_path:
-#    type: File
-#    inputBinding:
-#      prefix: --sqlite_path
-
   sqlite_path:
     type: File
     inputBinding:
-      valueFrom: "--sqlite_path=$(self.path)"
-      position: 1
-      shellQuote: false
+      prefix: --sqlite_path
+
 
 outputs:
   OUTPUT:
