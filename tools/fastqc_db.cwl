@@ -37,4 +37,4 @@ outputs:
     outputBinding:
       glob: $(inputs.INPUT.nameroot + ".db")
 
-baseCommand: [fastqc_db]
+baseCommand: []
