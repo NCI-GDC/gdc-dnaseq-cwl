@@ -8,7 +8,7 @@
  "fastq_cleaner": "1.0.0-28dc9d4",
  "fastqc": "0.11.7-181d296",
  "fastqc_db": "build-21-8ce4c415",
- "fastqc_to_json": "build-55-7ec40c9c",
+ "fastqc_to_json": "build-56-52d15c82",
  "gatk": "4.2.4.1-bc63f4b",
  "json_to_sqlite": "1.1.0",
  "merge_sqlite": "1.1.0",
