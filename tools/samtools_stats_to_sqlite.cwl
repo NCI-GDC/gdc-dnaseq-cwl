@@ -3,7 +3,7 @@ class: CommandLineTool
 id: samtools_stats_to_sqlite
 requirements:
   - class: DockerRequirement
-    dockerPull: "{{ docker_repo }}/samtools_metrics_sqlite:{{ samtools_metrics_sqlite }}"
+    dockerPull: "{{ docker_repo }}/samtools_metrics_sqlite:{{ samtools-metrics-sqlite }}"
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
     coresMin: 1
