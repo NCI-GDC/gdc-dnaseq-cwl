@@ -4,7 +4,7 @@ id: gatk4_baserecalibrator
 requirements:
   - class: DockerRequirement
 #    dockerPull: "{{ docker_repo }}/gatk:{{ gatk }}"
-    dockerPull: docker.osdc.io/broadinstitute/gatk:{{ gatk }}"
+    dockerPull: "docker.osdc.io/broadinstitute/gatk:{{ gatk }}"
   - class: InlineJavascriptRequirement
 
 inputs:

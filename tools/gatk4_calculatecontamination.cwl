@@ -3,7 +3,7 @@ class: CommandLineTool
 id: gatk4_calculatecontamination
 requirements:
   - class: DockerRequirement
-    dockerPull: "{{ docker_repo }}/gatk:{{ gatk }}"
+    dockerPull: "docker.osdc.io/broadinstitute/gatk:{{ gatk }}"
   - class: InlineJavascriptRequirement
 
 inputs:
