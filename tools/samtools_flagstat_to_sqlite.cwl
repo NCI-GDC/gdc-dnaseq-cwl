@@ -47,4 +47,4 @@ outputs:
     outputBinding:
       glob: $(inputs.job_uuid + ".db")
 
-baseCommand: [/usr/local/bin/samtools_metrics_sqlite, --metric_name, flagstat]
+baseCommand: [ --metric_name, flagstat]
