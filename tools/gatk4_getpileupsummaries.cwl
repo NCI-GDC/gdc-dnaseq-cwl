@@ -3,8 +3,8 @@ class: CommandLineTool
 id: gatk4_getpileupsummaries
 requirements:
   - class: DockerRequirement
-#    dockerPull: "{{ docker_repo }}/gatk:{{ gatk }}"
-    dockerPull: "docker.osdc.io/broadinstitute/gatk:{{ gatk }}"
+    dockerPull: "{{ docker_repo }}/gatk:{{ gatk }}"
+#    dockerPull: "docker.osdc.io/broadinstitute/gatk:{{ gatk }}"
   - class: InlineJavascriptRequirement
 
 inputs:
