@@ -4,7 +4,7 @@
  "bio_alpine": "base",
  "bio_client": "latest",
  "gatk": "4.2.4.1-2817807",
- "merge_sqlite": "build-20-8b90d900",
+ "merge_sqlite": "build-24-d69854a5",
  "picard": "2.26.10-7c1f408",
  "picard_metrics_sqlite": "1.1.0",
  "readgroup_json_db": "2.0.0",
