@@ -13,7 +13,7 @@
  "json_to_sqlite": "1.1.0",
  "merge_sqlite": "build-24-d69854a5",
  "picard": "2.26.10-7c1f408",
- "picard_metrics_sqlite": "1.1.0",
+ "picard_metrics_sqlite": "build-15-c23d584b",
  "readgroup_json_db": "2.0.0",
  "samtools": "1.9-6c12b02",
  "samtools_metrics_sqlite": "1.0.0"
