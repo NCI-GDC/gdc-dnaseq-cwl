@@ -36,15 +36,23 @@ inputs:
     inputBinding:
       prefix: --job_uuid
 
+  metric_name:
+    type: string
+    default: flagstat
+    inputBinding:
+      prefix: --metric_name
+
+stdout: "$(inputs.job_uuid)_samtools_flagstat.log"
+
 outputs:
   log:
     type: File
     outputBinding:
-      glob: $(inputs.job_uuid+"_samtools_flagstat.log")
+      glob: "$(inputs.job_uuid)_samtools_flagstat.log"
 
   sqlite:
     type: File
     outputBinding:
-      glob: $(inputs.job_uuid + ".db")
+      glob: "$(inputs.job_uuid).db"
 
-baseCommand: [ --metric_name, flagstat]
+baseCommand: samtools_metrics_sqlite
