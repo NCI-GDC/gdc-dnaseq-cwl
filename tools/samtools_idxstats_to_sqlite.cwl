@@ -28,7 +28,7 @@ inputs:
 
   metric_name:
     type: string
-    default: flagstat
+    default: idxstats
     inputBinding:
       prefix: --metric_name
 
