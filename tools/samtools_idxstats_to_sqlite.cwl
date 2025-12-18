@@ -55,4 +55,4 @@ outputs:
     outputBinding:
       glob: "$(inputs.job_uuid).db"
 
-baseCommand: samtools_metrics_sqlite
+# baseCommand: samtools_metrics_sqlite
