@@ -11,7 +11,7 @@
  "fastqc_to_json": "build-60-ecf911aa",
  "gatk": "4.2.4.1-2817807",
  "json_to_sqlite": "1.1.0",
- "merge_sqlite": "build-68-de9a346f",
+ "merge_sqlite": "build-72-89f3272a",
  "picard": "2.26.10-7c1f408",
  "picard_metrics_sqlite": "build-15-c23d584b",
  "readgroup_json_db": "2.0.0",
