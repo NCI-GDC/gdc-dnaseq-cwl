@@ -4,9 +4,9 @@
  "bio_alpine": "base",
  "bio_client": "latest",
  "gatk": "4.2.4.1-2817807",
- "merge_sqlite": "build-75-ca920894",
+ "merge_sqlite": "1.1.1",
  "picard": "2.26.10-7c1f408",
- "picard_metrics_sqlite": "build-15-c23d584b",
+ "picard_metrics_sqlite": "1.1.1",
  "readgroup_json_db": "2.0.0",
  "samtools": "1.9-6c12b02",
  "samtools_metrics_sqlite": "1.0.0"
