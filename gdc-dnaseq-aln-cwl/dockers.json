@@ -7,7 +7,7 @@
  "bwa": "0.7.19-f9758a0",
  "fastq_cleaner": "1.0.0-28dc9d4",
  "fastqc": "0.11.7-181d296",
- "fastqc_db": "build-29-811475",
+ "fastqc_db": "build-29-81147589",
  "fastqc_to_json": "build-70-cf28cfb1",
  "gatk": "4.2.4.1-2817807",
  "json_to_sqlite": "1.1.0",
