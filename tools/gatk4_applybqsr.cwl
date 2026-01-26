@@ -47,6 +47,6 @@ arguments:
     prefix: --output
 
   - prefix: --compression-level
-    valueFrom: 7
+    valueFrom: "7"
 
 baseCommand: [ApplyBQSR]
