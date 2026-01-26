@@ -37,4 +37,4 @@ outputs:
     outputBinding:
       glob: $(inputs.job_uuid + ".db")
 
-baseCommand: [/usr/local/bin/readgroup_json_db]
+baseCommand: []

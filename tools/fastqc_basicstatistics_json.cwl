@@ -1,3 +1,4 @@
+
 cwlVersion: v1.0
 class: CommandLineTool
 id: fastqc_basicstatistics_json
@@ -21,10 +22,11 @@ inputs:
     inputBinding:
       prefix: --sqlite_path
 
+
 outputs:
   OUTPUT:
     type: File
     outputBinding:
       glob: "fastqc.json"
 
-baseCommand: [/usr/local/bin/fastqc_to_json]
+baseCommand: []
