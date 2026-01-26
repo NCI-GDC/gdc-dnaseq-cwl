@@ -113,6 +113,7 @@ An example input yaml is available here: `example/gdc_dnaseq_main_workflow_examp
 
 ### Outputs
 
+
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | `output_bam` | `File` | harmonized and indexed BAM file |
