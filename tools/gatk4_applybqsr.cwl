@@ -46,4 +46,7 @@ arguments:
   - valueFrom: $(inputs.input.basename)
     prefix: --output
 
+  - prefix: --compression-level
+    valueFrom: 7
+
 baseCommand: [ApplyBQSR]
