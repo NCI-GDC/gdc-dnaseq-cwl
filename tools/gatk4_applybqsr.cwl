@@ -46,7 +46,7 @@ arguments:
   - valueFrom: $(inputs.input.basename)
     prefix: --output
 
-  - prefix: --compression-level
-    valueFrom: "7"
+  - prefix: --java-options
+    valueFrom: "-Dsamjdk.compression_level=7"
 
 baseCommand: [ApplyBQSR]
