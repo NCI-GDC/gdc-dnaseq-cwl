@@ -4,6 +4,9 @@ id: samtools_sort
 requirements:
   - class: DockerRequirement
     dockerPull: "{{ docker_repo }}/samtools:{{ samtools }}"
+    dockerRunOptions:
+      - --ulimit
+      - nofile=524288:524288e
   - class: InlineJavascriptRequirement
   - class: ResourceRequirement
     coresMin: $(inputs.threads)
