@@ -22,7 +22,7 @@ inputs:
 
   sort_mem:
     type: string
-    default: "5G"
+    default: "2G"
     inputBinding:
       position: 1
       prefix: -m
