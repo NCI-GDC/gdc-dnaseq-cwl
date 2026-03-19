@@ -11,30 +11,39 @@ requirements:
     tmpdirMin: $(Math.ceil((2 * inputs.input_bam.size) / 1048576))
     outdirMin: $(Math.ceil((2 * inputs.input_bam.size) / 1048576))
 
+baseCommand: [samtools, sort]
+
 inputs:
-  input_bam:
-    type: File
-    inputBinding:
-      position: 3
-
-  output_bam:
-    type: string
-    inputBinding:
-      position: 1
-      prefix: -o
-
   threads:
     type: long
     inputBinding:
       position: 0
       prefix: -@
 
+  sort_mem:
+    type: string
+    default: "2G"
+    inputBinding:
+      position: 1
+      prefix: -m
+
+  output_bam:
+    type: string
+    inputBinding:
+      position: 2
+      prefix: -o
+
   prefix:
     type: string
     default: "tmp_srt"
     inputBinding:
-      position: 2
+      position: 3
       prefix: -T
+
+  input_bam:
+    type: File
+    inputBinding:
+      position: 4
 
 outputs:
   bam:
@@ -42,4 +51,3 @@ outputs:
     outputBinding:
       glob: $(inputs.output_bam)
 
-baseCommand: [samtools, sort]

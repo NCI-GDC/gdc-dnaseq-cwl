@@ -6,6 +6,9 @@ requirements:
 #    dockerPull: "{{ docker_repo }}/gatk:{{ gatk }}"
     dockerPull: "{{ docker_repo }}/gatk:{{ gatk }}"
   - class: InlineJavascriptRequirement
+  - class: EnvVarRequirement
+    envDef:
+      JAVA_TOOL_OPTIONS: "-Dsamjdk.compression_level=7"
 
 inputs:
   input:
