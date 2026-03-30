@@ -1,4 +1,5 @@
 # GDC DNA-Seq Alignment Workflow
+
 ![Version badge](https://img.shields.io/badge/biobambam-2.0.87-yellowgreen.svg)
 ![Version badge](https://img.shields.io/badge/BWA-0.7.15-yellowgreen.svg)
 ![Version badge](https://img.shields.io/badge/GATK-4.2.4.1-brightgreen.svg)<br>
